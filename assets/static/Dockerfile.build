@@ -1,0 +1,31 @@
+FROM bitwalker/alpine-elixir-phoenix:1.6.6
+
+ENV MIX_ENV prod
+
+# Add the files to the image
+ADD . . 
+
+# Cache Elixir deps
+RUN mix deps.get --only prod
+RUN mix deps.compile
+
+WORKDIR assets
+# Cache Node deps
+# node needs pngquant, which needs libpng
+RUN apk update
+RUN apk add libpng-dev
+RUN npm i npm@latest -g
+RUN npm i
+
+# Compile JavaScript
+RUN npm run deploy
+
+WORKDIR ..
+# Compile app
+RUN mix compile
+RUN mix phx.digest
+
+# Generate release
+ENTRYPOINT ["mix"]
+CMD ["release", "--env=prod"]
+

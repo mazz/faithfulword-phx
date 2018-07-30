@@ -1,0 +1,25 @@
+<nav id="navbar" class="navbar is-transparent is-fixed-top is-primary">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/test">
+        <%= gettext("Olivetree") %>
+      </a>
+      <span class="navbar-burger burger" data-target="navbar">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </div>
+    <div id="navbarMenu" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item" href="/test"><%= gettext "Login" %></a>
+        <a class="navbar-item" href="/test"><%= gettext "About" %></a>
+      </div>
+      <div class="navbar-end">
+        <%= if user_logged_in?(@conn) do %>
+        <% end %>
+        <a class="navbar-item" href="/test"><%= gettext "Sign Up" %></a>
+      </div>
+    </div>
+  </div>
+</nav>
