@@ -17,6 +17,12 @@ defmodule OlivetreeWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/about", PageController, :about
+    get "/login", AuthController, :show_login
+    post "/login", AuthController, :do_login
+    get "/register", AuthController, :show_register
+    post "/register", AuthController, :do_register
+
   end
 
   # Other scopes may use custom stacks.
