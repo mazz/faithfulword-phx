@@ -20,7 +20,7 @@ defmodule Olivetree.Mixfile do
   def application do
     [
       mod: {Olivetree.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :bamboo]
     ]
   end
 
@@ -41,6 +41,7 @@ defmodule Olivetree.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
+      {:bamboo, "~> 1.1"},
       {:distillery, "~> 1.5", runtime: false}
     ]
   end

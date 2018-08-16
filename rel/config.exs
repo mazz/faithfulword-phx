@@ -39,6 +39,11 @@ environment :prod do
   set cookie: :"BlpgdJmrY<iE1]Nteye$AZEIOU!D=^o3c@>I>%|{Ni318xmkWzId=Y%{`Ajc,F1="
 end
 
+config :olivetree, Olivetree.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
+  domain: "sandbox30725.mailgun.org"
+
 # You may define one or more releases in this file.
 # If you have not set a default release, or selected one
 # when running `mix release`, the first release in the file

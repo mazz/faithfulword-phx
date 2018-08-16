@@ -1,4 +1,6 @@
 defmodule OlivetreeWeb.AuthController do
+  import Olivetree.Mailer
+  
   use OlivetreeWeb, :controller
 
   plug :scrub_params, "auth" when action in [:do_login]
@@ -10,7 +12,10 @@ defmodule OlivetreeWeb.AuthController do
   def do_login(conn, %{"auth" => auth_params}) do
     with {:ok, email} <- Map.fetch(auth_params, "email"),
          {:ok, password} <- Map.fetch(auth_params, "password") do
-        #  {:ok, admin} <- Users.auth_admin(email, password) do
+        #  {:ok, admin} <- Users.auth_admin(email, password) do                
+      Olivetree.Mailer.welcome_email 
+      |> Olivetree.Mailer.deliver_now
+
       conn
       # |> Guardian.Plug.sign_in(admin)
       |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: "username"))
