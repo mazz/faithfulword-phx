@@ -4,3 +4,11 @@ mix phx.new olivetree --app olivetree --binary-id
 (cd assets && npm i npm@latest -g && npm i -D && npm run deploy && npm install)
 
 https://github.com/bigardone/passwordless-auth
+
+
+mix guardian.gen.secret
+l2CguhHAfa+bkRRIuOnVUnzhtJuFvcw4qpkaOP4HzjpqR8sPBkPm6ZXcXOBiEBd6
+
+# toltec -- mix phx.gen.context Accounts User users name:string email:string:unique password_hash:string
+
+mix phx.gen.schema Admin admins email:string encrypted_password:string name:string password:string password_confirmation:string

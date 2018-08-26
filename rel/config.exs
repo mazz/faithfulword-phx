@@ -39,6 +39,15 @@ environment :prod do
   set cookie: :"BlpgdJmrY<iE1]Nteye$AZEIOU!D=^o3c@>I>%|{Ni318xmkWzId=Y%{`Ajc,F1="
 end
 
+config :elixir_jobs, ElixirJobsWeb.Guardian,
+  issuer: "Elixi rJobs",
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY")
+  
+config :olivetree, OlivetreeWeb.Guardian,
+  issuer: "Olivetee",
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY")
+  #"l2CguhHAfa+bkRRIuOnVUnzhtJuFvcw4qpkaOP4HzjpqR8sPBkPm6ZXcXOBiEBd6"
+
 config :olivetree, Olivetree.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
