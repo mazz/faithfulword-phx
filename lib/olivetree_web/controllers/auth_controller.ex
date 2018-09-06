@@ -8,8 +8,8 @@ defmodule OlivetreeWeb.AuthController do
 
   plug :scrub_params, "auth" when action in [:do_login]
 
-  def show_login(conn, _params) do
-    render(conn, "login.html")
+  def new(conn, _params) do
+    render(conn, "new.html")
   end
 
   def do_login(conn, %{"auth" => auth_params}) do
@@ -24,7 +24,7 @@ defmodule OlivetreeWeb.AuthController do
       _ ->
         conn
         |> put_flash(:error, "Invalid credentials!")
-        |> render("login.html")
+        |> render("new.html")
     end
   end
 
@@ -32,7 +32,7 @@ defmodule OlivetreeWeb.AuthController do
     conn
     |> Guardian.Plug.sign_out()
     |> put_flash(:info, gettext("Successfully logged out! See you!"))
-    |> redirect(to: auth_path(conn, :show_login))
+    |> redirect(to: auth_path(conn, :new))
   end
 
   def show_register(conn, _params) do
@@ -58,7 +58,7 @@ defmodule OlivetreeWeb.AuthController do
   def auth_error(conn, {_type, _reason}, _opts) do
     conn
     |> put_flash(:error, gettext("Authentication required"))
-    |> redirect(to: auth_path(conn, :show_login))
+    |> redirect(to: auth_path(conn, :new))
   end
 
 end

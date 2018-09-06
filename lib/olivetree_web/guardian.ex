@@ -5,6 +5,7 @@ defmodule OlivetreeWeb.Guardian do
   """
 
   use Guardian, otp_app: :olivetree
+  use SansPassword
 
   alias Olivetree.Users
   alias Olivetree.Users.Admin
@@ -23,4 +24,13 @@ defmodule OlivetreeWeb.Guardian do
       _ -> {:error, :resource_not_found}
     end
   end
+
+  # # SansPassword
+
+  # @impl true
+  # def deliver_magic_link(user, magic_token, extra_params) do
+  #   user
+  #   |> Olivetree.Mailer.magic_link_email(magic_token, extra_params)
+  #   |> Olivetree.Mailer.deliver
+  # end
 end

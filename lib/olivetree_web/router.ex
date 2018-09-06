@@ -20,7 +20,7 @@ defmodule OlivetreeWeb.Router do
 
     get "/", PageController, :index
     get "/about", PageController, :about
-    get "/login", AuthController, :show_login
+    get "/login", AuthController, :new
     post "/login", AuthController, :do_login
     get "/register", AuthController, :show_register
     post "/register", AuthController, :do_register
