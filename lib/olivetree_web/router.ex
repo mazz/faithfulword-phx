@@ -22,8 +22,6 @@ defmodule OlivetreeWeb.Router do
     get "/about", PageController, :about
     get "/login", AuthController, :new
     post "/login", AuthController, :create
-    get "/register", AuthController, :show_register
-    post "/register", AuthController, :do_register
     get "/login/:magic_token", AuthController, :callback
   end
 

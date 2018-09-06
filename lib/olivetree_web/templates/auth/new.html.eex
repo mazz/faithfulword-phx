@@ -4,7 +4,7 @@
       <%= email_input(f, :email,
           id: "auth_email",
           class: "input is-medium",
-          placeholder: gettext("Your account's e-mail"),
+          placeholder: gettext("Your e-mail"),
           required: true) %>
       <%= error_tag(f, :email) %>
     </div>
