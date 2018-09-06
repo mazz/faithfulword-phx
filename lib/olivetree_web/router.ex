@@ -33,7 +33,7 @@ defmodule OlivetreeWeb.Router do
   scope "/", OlivetreeWeb do
     # Use the default browser stack
     pipe_through [:browser, :authentication_required]
-    get "/logout", AuthController, :do_logout
+    get "/logout", AuthController, :destroy
 
     # scope "/admin", Admin, as: :admin do
     #   get "/offers/published", OfferController, :index_published

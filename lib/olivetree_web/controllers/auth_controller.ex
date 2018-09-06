@@ -28,7 +28,7 @@ defmodule OlivetreeWeb.AuthController do
     end
   end
 
-  def do_logout(conn, _params) do
+  def destroy(conn, _params) do
     conn
     |> Guardian.Plug.sign_out()
     |> put_flash(:info, gettext("Successfully logged out! See you!"))
