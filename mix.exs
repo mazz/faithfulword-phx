@@ -46,7 +46,8 @@ defmodule Olivetree.Mixfile do
       # Auth
       {:guardian, "~> 1.1"},
       {:comeonin, "~> 4.1"},
-      {:bcrypt_elixir, "~> 1.1"}
+      {:bcrypt_elixir, "~> 1.1"},
+      {:sans_password, "~> 1.0.0"}
     ]
   end
 

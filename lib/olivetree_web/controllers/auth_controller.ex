@@ -6,13 +6,13 @@ defmodule OlivetreeWeb.AuthController do
   alias Olivetree.Users
   alias OlivetreeWeb.Guardian
 
-  plug :scrub_params, "auth" when action in [:do_login]
+  plug :scrub_params, "auth" when action in [:create]
 
   def new(conn, _params) do
     render(conn, "new.html")
   end
 
-  def do_login(conn, %{"auth" => auth_params}) do
+  def create(conn, %{"auth" => auth_params}) do
     with {:ok, email} <- Map.fetch(auth_params, "email"),
          {:ok, password} <- Map.fetch(auth_params, "password"),
          {:ok, admin} <- Users.auth_admin(email, password) do
