@@ -11,8 +11,8 @@
 # and so on) as they will fail if something goes wrong.
 
 Olivetree.Users.create_admin(%{
-  email: "user@olivetree",
-  password: "123456",
-  password_confirmation: "123456",
-  name: "Dummy Admin"
+  email: "michaelkhanna@gmail.com",
+  # password: "123456",
+  # password_confirmation: "123456",
+  name: "Michael Hanna"
 })

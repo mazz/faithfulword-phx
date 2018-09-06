@@ -33,4 +33,21 @@ defmodule OlivetreeWeb.Guardian do
   #   |> Olivetree.Mailer.magic_link_email(magic_token, extra_params)
   #   |> Olivetree.Mailer.deliver
   # end
+
+  @impl true
+  def deliver_magic_link(_user, magic_token, _opts) do
+    require Logger
+    alias OlivetreeWeb.Endpoint
+    import OlivetreeWeb.Router.Helpers
+
+    Logger.info """
+
+    Typically, we'd send an email here, but for the purposes of this
+    demo, you can just click this link in your console:
+
+        #{auth_url(Endpoint, :callback, magic_token)}
+
+    """
+  end
+
 end

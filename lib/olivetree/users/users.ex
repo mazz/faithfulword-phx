@@ -82,6 +82,17 @@ defmodule Olivetree.Users do
     |> Repo.one!()
   end
 
+  def get_or_create_by_email(email) do
+    case Repo.get_by(Admin, email: email) do
+      nil ->
+        create_admin(%{email: email, name: "New User"})
+
+      admin ->
+        {:ok, admin}
+    end
+  end
+
+
   @doc """
   Gets a single admin by email.
 

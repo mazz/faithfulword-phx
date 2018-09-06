@@ -1,5 +1,12 @@
 
   <div class="col-lg-6">
-    <h4>Main Section</h4>
+    <%= if @current_user do %>
+      <h1 class="page-header">Authenticated</h1>
+      <p class="lead">You are currently signed in as <code><%= @current_user.email %></code>.</p>
+    <% else %>
+      <h1 class="page-header">Unauthenticated</h1>
+      <p class="lead">You are not signed in.</p>
+      <%= link "Login", to: auth_path(@conn, :new), class: "btn btn-lg btn-primary" %>
+    <% end %>
   </div>
 </div>
