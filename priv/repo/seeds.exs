@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-Olivetree.Users.create_admin(%{
+Olivetree.Accounts.create_admin(%{
   email: "mazz@protonmail.com",
   name: "Michael Hanna"
 })

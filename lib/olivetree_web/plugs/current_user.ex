@@ -5,7 +5,7 @@ defmodule OlivetreeWeb.Plugs.CurrentUser do
 
   import Plug.Conn
 
-  alias Olivetree.Users.Admin
+  alias Olivetree.Accounts.Admin
   alias OlivetreeWeb.Guardian.Plug, as: GuardianPlug
 
   def init(_), do: []

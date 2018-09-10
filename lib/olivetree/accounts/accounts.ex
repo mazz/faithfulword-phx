@@ -1,13 +1,13 @@
-defmodule Olivetree.Users do
+defmodule Olivetree.Accounts do
   @moduledoc """
   The Users context.
   """
 
   alias Olivetree.Repo
 
-  alias Olivetree.Users.Queries.Admin, as: AdminQuery
+  alias Olivetree.Accounts.Queries.Admin, as: AdminQuery
 
-  alias Olivetree.Users.Admin
+  alias Olivetree.Accounts.Admin
 
   @doc """
   Returns the list of admins.

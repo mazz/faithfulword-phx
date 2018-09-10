@@ -7,8 +7,8 @@ defmodule OlivetreeWeb.Guardian do
   use Guardian, otp_app: :olivetree
   use SansPassword
 
-  alias Olivetree.Users
-  alias Olivetree.Users.Admin
+  alias Olivetree.Accounts
+  alias Olivetree.Accounts.Admin
 
   def subject_for_token(%Admin{} = resource, _claims) do
     {:ok, to_string(resource.id)}
@@ -19,7 +19,7 @@ defmodule OlivetreeWeb.Guardian do
   end
 
   def resource_from_claims(claims) do
-    case Users.get_admin_by_id(claims["sub"]) do
+    case Accounts.get_admin_by_id(claims["sub"]) do
       %Admin{} = admin -> {:ok, admin}
       _ -> {:error, :resource_not_found}
     end

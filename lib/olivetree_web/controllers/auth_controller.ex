@@ -3,7 +3,7 @@ defmodule OlivetreeWeb.AuthController do
   
   use OlivetreeWeb, :controller
 
-  alias Olivetree.Users
+  alias Olivetree.Accounts
   alias OlivetreeWeb.Guardian
 
   plug :scrub_params, "auth" when action in [:create]
@@ -14,7 +14,7 @@ defmodule OlivetreeWeb.AuthController do
 
   def create(conn, %{"auth" => auth_params}) do
     with {:ok, email} <- Map.fetch(auth_params, "email") do
-      case Users.get_or_create_by_email(email) do 
+      case Accounts.get_or_create_by_email(email) do 
         {:ok, user} ->
           {:ok, _, _} = Guardian.send_magic_link(user)
           render(conn, "create.html")
@@ -28,7 +28,7 @@ defmodule OlivetreeWeb.AuthController do
 
     # with {:ok, email} <- Map.fetch(auth_params, "email"),
     #      {:ok, password} <- Map.fetch(auth_params, "password"),
-    #      {:ok, admin} <- Users.auth_admin(email, password) do
+    #      {:ok, admin} <- Accounts.auth_admin(email, password) do
     #   conn
     #   |> Guardian.Plug.sign_in(admin)
     #   |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: admin.name))
@@ -55,17 +55,12 @@ defmodule OlivetreeWeb.AuthController do
   end
 
   def callback(conn, %{"magic_token" => magic_token}) do
-    require Logger
-
-    # {} = OlivetreeWeb.Guardian.exchange_magic(magic_token)
-    {:ok, access_token, _claims} = OlivetreeWeb.Guardian.exchange_magic(magic_token)
-    Logger.debug """
-    access_token: #{inspect(access_token)}
-    _claims: #{inspect(_claims)}
-    Sent an email, but for the purposes of this
-    demo, you can just click this link in your console:
-    """
-
+    # require Logger
+    # {:ok, access_token, _claims} = OlivetreeWeb.Guardian.exchange_magic(magic_token)
+    # Logger.debug """
+    # access_token: #{inspect(access_token)}
+    # _claims: #{inspect(_claims)}
+    # """
     case Guardian.decode_magic(magic_token) do
       {:ok, user, _claims} ->
         conn

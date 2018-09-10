@@ -1,4 +1,4 @@
-defmodule Olivetree.Users.Queries.Admin do
+defmodule Olivetree.Accounts.Queries.Admin do
   @moduledoc """
   Module to build queries related to the Admin schema
   """

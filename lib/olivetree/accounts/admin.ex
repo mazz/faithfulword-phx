@@ -1,7 +1,7 @@
-defmodule Olivetree.Users.Admin do
+defmodule Olivetree.Accounts.Admin do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Olivetree.Users.Admin
+  alias Olivetree.Accounts.Admin
 
 
   @primary_key {:id, :binary_id, autogenerate: true}
