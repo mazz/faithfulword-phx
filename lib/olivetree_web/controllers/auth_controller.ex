@@ -55,6 +55,17 @@ defmodule OlivetreeWeb.AuthController do
   end
 
   def callback(conn, %{"magic_token" => magic_token}) do
+    require Logger
+
+    # {} = OlivetreeWeb.Guardian.exchange_magic(magic_token)
+    {:ok, access_token, _claims} = OlivetreeWeb.Guardian.exchange_magic(magic_token)
+    Logger.debug """
+    access_token: #{inspect(access_token)}
+    _claims: #{inspect(_claims)}
+    Sent an email, but for the purposes of this
+    demo, you can just click this link in your console:
+    """
+
     case Guardian.decode_magic(magic_token) do
       {:ok, user, _claims} ->
         conn
