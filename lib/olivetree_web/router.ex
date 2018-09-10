@@ -20,9 +20,9 @@ defmodule OlivetreeWeb.Router do
 
     get "/", PageController, :index
     get "/about", PageController, :about
-    get "/login", AuthController, :new
-    post "/login", AuthController, :create
-    get "/login/:magic_token", AuthController, :callback
+    get "/login", LoginController, :new
+    post "/login", LoginController, :create
+    get "/login/:magic_token", LoginController, :callback
   end
 
   pipeline :authentication_required do
@@ -32,7 +32,7 @@ defmodule OlivetreeWeb.Router do
   scope "/", OlivetreeWeb do
     # Use the default browser stack
     pipe_through [:browser, :authentication_required]
-    get "/logout", AuthController, :destroy
+    get "/logout", LoginController, :destroy
 
     # scope "/admin", Admin, as: :admin do
     #   get "/offers/published", OfferController, :index_published

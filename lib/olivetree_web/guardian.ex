@@ -41,7 +41,7 @@ defmodule OlivetreeWeb.Guardian do
     Sent an email, but for the purposes of this
     demo, you can just click this link in your console:
 
-        #{auth_url(Endpoint, :callback, magic_token)}
+        #{login_url(Endpoint, :callback, magic_token)}
 
     """
   end

@@ -1,4 +1,4 @@
-defmodule OlivetreeWeb.AuthController do
+defmodule OlivetreeWeb.LoginController do
   import Olivetree.Mailer
   
   use OlivetreeWeb, :controller
@@ -6,14 +6,14 @@ defmodule OlivetreeWeb.AuthController do
   alias Olivetree.Accounts
   alias OlivetreeWeb.Guardian
 
-  plug :scrub_params, "auth" when action in [:create]
+  plug :scrub_params, "login" when action in [:create]
 
   def new(conn, _params) do
     render(conn, "new.html")
   end
 
-  def create(conn, %{"auth" => auth_params}) do
-    with {:ok, email} <- Map.fetch(auth_params, "email") do
+  def create(conn, %{"login" => login_params}) do
+    with {:ok, email} <- Map.fetch(login_params, "email") do
       case Accounts.get_or_create_by_email(email) do 
         {:ok, user} ->
           {:ok, _, _} = Guardian.send_magic_link(user)
@@ -45,13 +45,13 @@ defmodule OlivetreeWeb.AuthController do
     conn
     |> Guardian.Plug.sign_out()
     |> put_flash(:info, gettext("Successfully logged out! See you!"))
-    |> redirect(to: auth_path(conn, :new))
+    |> redirect(to: login_path(conn, :new))
   end
 
-  def auth_error(conn, {_type, _reason}, _opts) do
+  def login_error(conn, {_type, _reason}, _opts) do
     conn
     |> put_flash(:error, gettext("Authentication required"))
-    |> redirect(to: auth_path(conn, :new))
+    |> redirect(to: login_path(conn, :new))
   end
 
   def callback(conn, %{"magic_token" => magic_token}) do
@@ -70,7 +70,7 @@ defmodule OlivetreeWeb.AuthController do
       _ ->
         conn
         |> put_flash(:error, "Invalid magic link.")
-        |> redirect(to: auth_path(conn, :new))
+        |> redirect(to: login_path(conn, :new))
     end
   end
 end

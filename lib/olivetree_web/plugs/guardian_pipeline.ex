@@ -9,7 +9,7 @@ defmodule OlivetreeWeb.Plugs.GuardianPipeline do
 
   plug Guardian.Plug.Pipeline,
     module: OlivetreeWeb.Guardian,
-    error_handler: OlivetreeWeb.AuthController
+    error_handler: OlivetreeWeb.LoginController
 
   plug Guardian.Plug.VerifySession
   plug Guardian.Plug.VerifyHeader
