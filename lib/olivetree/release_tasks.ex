@@ -16,7 +16,7 @@ defmodule Olivetree.ReleaseTasks do
 
     IO.puts "Loading #{me}.."
     # Load the code for olivetree, but don't start it
-    :ok = Application.load(:olivetree)
+    :ok = Application.load(me)
 
     IO.puts "Starting dependencies.."
     # Start apps necessary for executing migrations
