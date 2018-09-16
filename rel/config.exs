@@ -38,10 +38,6 @@ environment :prod do
   set include_src: false
   set cookie: :"BlpgdJmrY<iE1]Nteye$AZEIOU!D=^o3c@>I>%|{Ni318xmkWzId=Y%{`Ajc,F1="
 end
-
-config :elixir_jobs, ElixirJobsWeb.Guardian,
-  issuer: "Elixi rJobs",
-  secret_key: System.get_env("GUARDIAN_SECRET_KEY")
   
 config :olivetree, OlivetreeWeb.Guardian,
   issuer: "Olivetee",
