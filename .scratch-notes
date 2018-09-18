@@ -20,7 +20,7 @@ mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_
 mix deps.get
 mix deps.compile
 cd assets
-nodejs install
+npm install
 cd ..
 
 # have a postgresql instance running locally on port 5432
