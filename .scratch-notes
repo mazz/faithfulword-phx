@@ -1,3 +1,6 @@
+# much from https://gist.github.com/jswny/83e03537830b0d997924e8f1965d88bc
+# and https://github.com/odarriba/elixir_jobs
+
 asdf plugin-add erlang
 asdf plugin-add elixir
 asdf plugin-add nodes
