@@ -14,7 +14,7 @@ WORKDIR assets
 # node needs pngquant, which needs libpng
 RUN apk update
 RUN apk add libpng-dev
-RUN npm i npm@latest -g
+RUN npm i npm@5.6.0 -g
 RUN npm i
 
 # Compile JavaScript
