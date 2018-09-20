@@ -5,7 +5,7 @@ defmodule Olivetree.Mixfile do
     [
       app: :olivetree,
       version: "0.1.0",
-      elixir: "~> 1.6",
+      elixir: "~> 1.7.3",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
@@ -42,7 +42,7 @@ defmodule Olivetree.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:bamboo, "~> 1.1"},
-      {:distillery, "~> 1.5.3", runtime: false},
+      {:distillery, "~> 2.0.10", runtime: false},
       # Auth
       {:guardian, "~> 1.1"},
       {:comeonin, "~> 4.1"},
