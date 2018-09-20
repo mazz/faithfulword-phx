@@ -42,7 +42,7 @@ defmodule Olivetree.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:bamboo, "~> 1.1"},
-      {:distillery, "~> 1.5.5", runtime: false}
+      {:distillery, "~> 1.5.5", runtime: false},
       # Auth
       {:guardian, "~> 1.1"},
       {:comeonin, "~> 4.1"},
