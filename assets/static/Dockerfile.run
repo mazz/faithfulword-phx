@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-erlang:21.0
+FROM bitwalker/alpine-erlang:21.0.3
 
 # Set environment variables
 ENV MIX_ENV=prod
