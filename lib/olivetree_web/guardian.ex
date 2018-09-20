@@ -32,9 +32,9 @@ defmodule OlivetreeWeb.Guardian do
     alias OlivetreeWeb.Endpoint
     import OlivetreeWeb.Router.Helpers
 
-    # _user
-    # |> Olivetree.Mailer.magic_link_email(magic_token, _opts)
-    # |> Olivetree.Mailer.deliver_now
+    _user
+    |> Olivetree.Mailer.magic_link_email(magic_token, _opts)
+    |> Olivetree.Mailer.deliver_now
 
     Logger.debug """
 

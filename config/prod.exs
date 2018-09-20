@@ -16,7 +16,7 @@ use Mix.Config
 config :olivetree, OlivetreeWeb.Endpoint,
   http: [:inet6, port: {:system, "PORT"}],
   load_from_system_env: false,
-  url: [host: {:system, "HOST"}, port: {:system, "PORT"}],
+  url: [host: {:system, "HOST"}, port: {:system, "PORT"}, compress: true],
   server: true,
   root: ".",
   version: Application.spec(:olivetree, :vsn),
@@ -62,6 +62,20 @@ config :logger, level: :info
 #
 #     config :olivetree, OlivetreeWeb.Endpoint, server: true
 #
+
+config :olivetree, Olivetree.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
+  domain: "objectaaron.com"
+  # domain: "sandbox30725.mailgun.org"
+
+config :olivetree, OlivetreeWeb.Guardian,
+  secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
+  issuer: "Olivetree",
+  token_ttl: %{
+    "magic" => {30, :minutes},
+    "access" => {1, :days}
+  }
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
