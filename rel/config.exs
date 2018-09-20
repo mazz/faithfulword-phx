@@ -38,6 +38,16 @@ environment :prod do
   set include_src: false
   set cookie: :"BlpgdJmrY<iE1]Nteye$AZEIOU!D=^o3c@>I>%|{Ni318xmkWzId=Y%{`Ajc,F1="
 end
+  
+config :olivetree, OlivetreeWeb.Guardian,
+  issuer: "Olivetee",
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY")
+  #"l2CguhHAfa+bkRRIuOnVUnzhtJuFvcw4qpkaOP4HzjpqR8sPBkPm6ZXcXOBiEBd6"
+
+config :olivetree, Olivetree.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
+  domain: "sandbox30725.mailgun.org"
 
 # You may define one or more releases in this file.
 # If you have not set a default release, or selected one

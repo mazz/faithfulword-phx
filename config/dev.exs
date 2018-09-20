@@ -13,6 +13,10 @@ config :olivetree, OlivetreeWeb.Endpoint,
   check_origin: false,
   watchers: [npm: ["run", "watch", "--stdin", cd: Path.expand("../assets/", __DIR__)]]
 
+config :olivetree, OlivetreeWeb.Guardian,
+  issuer: "Olivetree",
+  secret_key: "l2CguhHAfa+bkRRIuOnVUnzhtJuFvcw4qpkaOP4HzjpqR8sPBkPm6ZXcXOBiEBd6"
+
 
 # ## SSL Support
 #
