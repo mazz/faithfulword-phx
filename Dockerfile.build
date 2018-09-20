@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir-phoenix:1.6.5
+FROM bitwalker/alpine-elixir-phoenix:1.7.3
 
 ENV MIX_ENV prod
 
@@ -6,6 +6,8 @@ ENV MIX_ENV prod
 ADD . . 
 
 # Cache Elixir deps
+RUN mix local.hex --force
+RUN mix local.rebar --force
 RUN mix deps.get --only prod
 RUN mix deps.compile
 
