@@ -23,6 +23,21 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
 
+config :olivetree, Olivetree.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
+  domain: "sandbox30725.mailgun.org"
+  # domain: "objectaaron.com"
+
+config :olivetree, OlivetreeWeb.Guardian,
+  secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
+  issuer: "Olivetree",
+  token_ttl: %{
+    "magic" => {30, :minutes},
+    "access" => {1, :days}
+  }
+
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
