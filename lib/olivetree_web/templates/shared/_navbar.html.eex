@@ -1,7 +1,7 @@
 <nav id="navbar" class="navbar is-transparent is-fixed-top is-primary">
   <div class="container">
     <div class="navbar-brand">
-      <a class="navbar-item" href="/test">
+      <a class="navbar-item" href="#">
         <%= gettext("Olivetree") %>
       </a>
       <span class="navbar-burger burger" data-target="navbar">
@@ -12,13 +12,19 @@
     </div>
     <div id="navbarMenu" class="navbar-menu">
       <div class="navbar-start">
-        <a class="navbar-item" href="/test"><%= gettext "Login" %></a>
-        <a class="navbar-item" href="/test"><%= gettext "About" %></a>
+        <%= if !user_logged_in?(@conn) do %>
+        <a class="navbar-item" href="/login"><%= gettext "Login" %></a>
+        <% end %>
+        <a class="navbar-item" href="/about"><%= gettext "About" %></a>
       </div>
       <div class="navbar-end">
         <%= if user_logged_in?(@conn) do %>
+        <%= link(gettext("Log out"), to: login_path(@conn, :destroy), class: "navbar-item") %>
         <% end %>
-        <a class="navbar-item" href="/test"><%= gettext "Sign Up" %></a>
+        <%= if !user_logged_in?(@conn) do %>
+        <a class="navbar-item" href="/login"><%= gettext "Sign Up" %></a>
+        <% end %>
+
       </div>
     </div>
   </div>
