@@ -1,3 +1,3 @@
 #!/bin/sh
 
-$RELEASE_ROOT_DIR/bin/olivetree command Elixir.Olivetree.ReleaseTasks seed
+$RELEASE_ROOT_DIR/bin/faithfulword command Elixir.Faithfulword.ReleaseTasks seed

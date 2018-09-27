@@ -44,8 +44,8 @@ end
 # when running `mix release`, the first release in the file
 # will be used by default
 
-release :olivetree do
-  set version: current_version(:olivetree)
+release :faithfulword do
+  set version: current_version(:faithfulword)
   set applications: [
     :runtime_tools
   ]

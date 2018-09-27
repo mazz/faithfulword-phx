@@ -1,4 +1,4 @@
-# Olivetree
+# Faithfulword
 
 To start your Phoenix server:
 

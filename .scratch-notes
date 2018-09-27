@@ -13,9 +13,9 @@ asdf global erlang 21.0.9
 asdf global elixir 1.7.3
 asdf global nodejs 8.9.1
 
-git clone https://bitbucket.org/sidha/olivetree.git
+git clone https://bitbucket.org/sidha/faithfulword.git
 
-cd olivetree
+cd faithfulword
 
 mix local.hex
 mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez
@@ -49,9 +49,9 @@ docker-compose up
 
 ### misc notes
 
-https://bitbucket.org/sidha/olivetree.git
+https://bitbucket.org/sidha/faithfulword.git
 
-mix phx.new olivetree --app olivetree --binary-id
+mix phx.new faithfulword --app faithfulword --binary-id
 (cd assets && npm i npm@latest -g && npm i -D && npm run deploy && npm install)
 
 mix guardian.gen.secret
@@ -63,9 +63,9 @@ mix phx.gen.schema Admin admins email:string encrypted_password:string name:stri
 
 ### misc notes
 
-https://bitbucket.org/sidha/olivetree.git
+https://bitbucket.org/sidha/faithfulword.git
 
-mix phx.new olivetree --app olivetree --binary-id
+mix phx.new faithfulword --app faithfulword --binary-id
 (cd assets && npm i npm@latest -g && npm i -D && npm run deploy && npm install)
 
 mix guardian.gen.secret
@@ -74,4 +74,15 @@ l2CguhHAfa+bkRRIuOnVUnzhtJuFvcw4qpkaOP4HzjpqR8sPBkPm6ZXcXOBiEBd6
 # toltec -- mix phx.gen.context Accounts User users name:string email:string:unique password_hash:string
 
 mix phx.gen.schema Admin admins email:string encrypted_password:string name:string password:string password_confirmation:string
+
+# rename a project
+
+git grep -l 'olivetree' | xargs sed -i '' -e 's/olivetree/faithfulword/g'
+mv ./lib/olivetree ./lib/faithfulword
+mv ./lib/olivetree.ex ./lib/faithfulword.ex
+mv ./test/olivetree ./test/faithfulword
+mv ./lib/olivetree_web ./lib/faithfulword_web
+mv ./lib/olivetree_web.ex ./lib/faithfulword_web.ex
+mix ecto.reset
+
 

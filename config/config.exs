@@ -6,16 +6,16 @@
 use Mix.Config
 
 # General application configuration
-config :olivetree,
-  ecto_repos: [Olivetree.Repo],
+config :faithfulword,
+  ecto_repos: [Faithfulword.Repo],
   generators: [binary_id: true]
 
 # Configures the endpoint
-config :olivetree, OlivetreeWeb.Endpoint,
+config :faithfulword, FaithfulwordWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "jRHmPC7IBcXtJdHCX0bEOePKYwavyeyOIlKVIV13VEVkvoGlBv/lQV3CHPh4RoKr",
-  render_errors: [view: OlivetreeWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Olivetree.PubSub,
+  render_errors: [view: FaithfulwordWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Faithfulword.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
@@ -23,15 +23,15 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:user_id]
 
-config :olivetree, Olivetree.Mailer,
+config :faithfulword, Faithfulword.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
   domain: "sandbox30725.mailgun.org"
   # domain: "objectaaron.com"
 
-config :olivetree, OlivetreeWeb.Guardian,
+config :faithfulword, FaithfulwordWeb.Guardian,
   secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
-  issuer: "Olivetree",
+  issuer: "Faithfulword",
   token_ttl: %{
     "magic" => {30, :minutes},
     "access" => {1, :days}

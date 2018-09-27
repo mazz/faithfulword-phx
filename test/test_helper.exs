@@ -1,4 +1,4 @@
 ExUnit.start()
 
-Ecto.Adapters.SQL.Sandbox.mode(Olivetree.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Faithfulword.Repo, :manual)
 

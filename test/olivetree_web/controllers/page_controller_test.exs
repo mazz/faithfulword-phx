@@ -1,5 +1,5 @@
-defmodule OlivetreeWeb.PageControllerTest do
-  use OlivetreeWeb.ConnCase
+defmodule FaithfulwordWeb.PageControllerTest do
+  use FaithfulwordWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

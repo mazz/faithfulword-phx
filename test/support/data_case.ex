@@ -1,4 +1,4 @@
-defmodule Olivetree.DataCase do
+defmodule Faithfulword.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -16,20 +16,20 @@ defmodule Olivetree.DataCase do
 
   using do
     quote do
-      alias Olivetree.Repo
+      alias Faithfulword.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Olivetree.DataCase
+      import Faithfulword.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Olivetree.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Faithfulword.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Olivetree.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Faithfulword.Repo, {:shared, self()})
     end
 
     :ok

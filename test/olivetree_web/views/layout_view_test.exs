@@ -1,3 +1,3 @@
-defmodule OlivetreeWeb.LayoutViewTest do
-  use OlivetreeWeb.ConnCase, async: true
+defmodule FaithfulwordWeb.LayoutViewTest do
+  use FaithfulwordWeb.ConnCase, async: true
 end

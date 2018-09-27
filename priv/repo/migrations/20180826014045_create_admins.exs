@@ -1,4 +1,4 @@
-defmodule Olivetree.Repo.Migrations.CreateAdmins do
+defmodule Faithfulword.Repo.Migrations.CreateAdmins do
   use Ecto.Migration
 
   def change do

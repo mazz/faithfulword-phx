@@ -1,4 +1,4 @@
-defmodule OlivetreeWeb.ChannelCase do
+defmodule FaithfulwordWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,15 +21,15 @@ defmodule OlivetreeWeb.ChannelCase do
       use Phoenix.ChannelTest
 
       # The default endpoint for testing
-      @endpoint OlivetreeWeb.Endpoint
+      @endpoint FaithfulwordWeb.Endpoint
     end
   end
 
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Olivetree.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Faithfulword.Repo)
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Olivetree.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Faithfulword.Repo, {:shared, self()})
     end
     :ok
   end

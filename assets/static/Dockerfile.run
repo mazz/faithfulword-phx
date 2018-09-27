@@ -4,10 +4,10 @@ FROM bitwalker/alpine-erlang:21.0.3
 ENV MIX_ENV=prod
 
 # Copy tarball release
-ADD _build/prod/rel/olivetree/releases/0.1.0/olivetree.tar.gz ./
+ADD _build/prod/rel/faithfulword/releases/0.1.0/faithfulword.tar.gz ./
 
 # Set user
 USER default
 
 # Set entrypoint
-ENTRYPOINT ["./bin/olivetree"]
+ENTRYPOINT ["./bin/faithfulword"]

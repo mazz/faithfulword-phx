@@ -6,21 +6,21 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :olivetree, OlivetreeWeb.Endpoint,
+config :faithfulword, FaithfulwordWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
   watchers: [npm: ["run", "watch", "--stdin", cd: Path.expand("../assets/", __DIR__)]]
 
-config :olivetree, Olivetree.Mailer,
+config :faithfulword, Faithfulword.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
   domain: "sandbox30725.mailgun.org"
 
-config :olivetree, OlivetreeWeb.Guardian,
+config :faithfulword, FaithfulwordWeb.Guardian,
   secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
-  issuer: "Olivetree",
+  issuer: "Faithfulword",
   token_ttl: %{
     "magic" => {30, :minutes},
     "access" => {1, :days}
@@ -44,13 +44,13 @@ config :olivetree, OlivetreeWeb.Guardian,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :olivetree, OlivetreeWeb.Endpoint,
+config :faithfulword, FaithfulwordWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
-      ~r{lib/olivetree_web/views/.*(ex)$},
-      ~r{lib/olivetree_web/templates/.*(eex)$}
+      ~r{lib/faithfulword_web/views/.*(ex)$},
+      ~r{lib/faithfulword_web/templates/.*(eex)$}
     ]
   ]
 
@@ -62,10 +62,10 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
-config :olivetree, Olivetree.Repo,
+config :faithfulword, Faithfulword.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "olivetree_dev",
+  database: "faithfulword_dev",
   hostname: "localhost",
   pool_size: 10

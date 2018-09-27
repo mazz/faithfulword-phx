@@ -1,9 +1,9 @@
-defmodule Olivetree.Mixfile do
+defmodule Faithfulword.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :olivetree,
+      app: :faithfulword,
       version: "0.1.0",
       elixir: "~> 1.7.3",
       elixirc_paths: elixirc_paths(Mix.env),
@@ -19,7 +19,7 @@ defmodule Olivetree.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Olivetree.Application, []},
+      mod: {Faithfulword.Application, []},
       extra_applications: [:logger, :runtime_tools, :bamboo]
     ]
   end
