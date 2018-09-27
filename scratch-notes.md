@@ -85,4 +85,29 @@ mv ./lib/olivetree_web ./lib/faithfulword_web
 mv ./lib/olivetree_web.ex ./lib/faithfulword_web.ex
 mix ecto.reset
 
+# add config/prod.secret.exs
+
+```
+use Mix.Config
+
+# In this file, we keep production configuration that
+# you'll likely want to automate and keep away from
+# your version control system.
+#
+# You should document the content of this
+# file or create a script for recreating it, since it's
+# kept out of version control and might be hard to recover
+# or recreate for your teammates (or yourself later on).
+config :faithfulword, Faithfulword.Endpoint,
+  secret_key_base: "hKnGenEUlnSVHDOy3aIO4/fTgqhZbAckrCBiS6diF2xMoh6tHF9WiDId5lW+pp8p"
+
+# Configure your database
+config :faithfulword, Faithfulword.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
+  hostname: "faithfulword-db",
+  database: "faithfulword_prod",
+  pool_size: 15
+```
 
