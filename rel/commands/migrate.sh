@@ -1,3 +1,3 @@
 #!/bin/sh
 
-$RELEASE_ROOT_DIR/bin/faithfulword command Elixir.Faithfulword.ReleaseTasks seed
+release_ctl eval --mfa "FaithfulWord.ReleaseTasks.migrate/1" --argv -- "$@"

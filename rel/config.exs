@@ -2,7 +2,8 @@
 # They can then be used by adding `plugin MyPlugin` to
 # either an environment, or release definition, where
 # `MyPlugin` is the name of the plugin module.
-Path.join(["rel", "plugins", "*.exs"])
+~w(rel plugins *.exs)
+|> Path.join()
 |> Path.wildcard()
 |> Enum.map(&Code.eval_file(&1))
 
@@ -13,7 +14,7 @@ use Mix.Releases.Config,
     default_environment: Mix.env()
 
 # For a full list of config options for both releases
-# and environments, visit https://hexdocs.pm/distillery/configuration.html
+# and environments, visit https://hexdocs.pm/distillery/config/distillery.html
 
 
 # You may define one or more environments in this file,
@@ -30,13 +31,20 @@ environment :dev do
   # dev mode.
   set dev_mode: true
   set include_erts: false
-  set cookie: :"7q~tjMpw|x(hEm1*MH_,z%852l[VN1{<eCybFkH`.1%0a,yeg_!Hjew/f*,<;8PK"
+  set cookie: :"7z>MXzl!PzpU6XV<D|SB,UWL>QQd{@(/=O1WF=jnM8<B{_3Ub7&BHM2;21|VV4*y"
 end
 
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: :"BlpgdJmrY<iE1]Nteye$AZEIOU!D=^o3c@>I>%|{Ni318xmkWzId=Y%{`Ajc,F1="
+  set cookie: :"diy7,@9[~V7:2]ALlC)$a0>,^,R3]t8`T}6/h1~>;WN(u<T0(?5yw4uF3g%VF{;s"
+
+  set config_providers: [
+    {Mix.Releases.Config.Providers.Elixir, ["${RELEASE_ROOT_DIR}/etc/config.exs"]}
+  ]
+  set overlays: [
+    {:copy, "rel/config/config.exs", "etc/config.exs"}
+  ]
 end
 
 # You may define one or more releases in this file.
@@ -44,13 +52,16 @@ end
 # when running `mix release`, the first release in the file
 # will be used by default
 
-release :faithfulword do
-  set version: current_version(:faithfulword)
+release :faithful_word_umbrella do
+  set version: current_version(:faithful_word)
   set applications: [
-    :runtime_tools
+    :runtime_tools,
+    faithful_word: :permanent,
+    faithful_word_web: :permanent
   ]
   set commands: [
-    "migrate": "rel/commands/migrate.sh"
+    migrate: "rel/commands/migrate.sh",
+    seed: "rel/commands/seed.sh"
   ]
 end
 

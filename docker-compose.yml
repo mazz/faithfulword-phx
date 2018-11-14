@@ -1,38 +1,29 @@
-version: "3"
+# https://docs.docker.com/compose/compose-file/
+version: '3.7'
 services:
-  db:
-    image: postgres:10.4-alpine
-    container_name: faithfulword-db
-    environment:
-      - POSTGRES_PASSWORD=postgres 
-      - POSTGRES_DB=faithfulword_prod
-    networks:
-      - nginx-network
-  admin:
-    image: faithfulword-release
-    container_name: faithfulword-admin
-    build:
-      context: .
-      dockerfile: Dockerfile.run
-    command: migrate
-    networks:
-      - nginx-network
+  faithful_word:
+    build: .
     depends_on:
-      - db
-  server:
-    image: faithfulword-release
-    container_name: faithfulword-server
+      - postgres
     environment:
-      - PORT=5000
-      - HOST="objectaaron.com"
-    expose:
-      - "5000"
-    command: foreground
-    networks:
-      - nginx-network
-    depends_on:
-      - db
-      - admin
-networks:
-  nginx-network:
-    external: true
+      DATABASE_URL: ecto://faithful_word:faithful_word@postgres/faithful_word
+      HOSTNAME: localhost
+      PORT: 4000
+      # mix phx.gen.secret
+      SECRET_KEY_BASE: fzBk8OEcI8thGxlypWPUqfR2w2WopdN8v8pmpuy2JNj2eerbYFnlecuVMrFPGYnW
+    ports:
+      - 4000:4000
+
+  postgres:
+    image: postgres:10.5-alpine
+    environment:
+      POSTGRES_DB: faithful_word
+      POSTGRES_PASSWORD: faithful_word
+      POSTGRES_USER: faithful_word
+    ports:
+      - 15432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data: {}

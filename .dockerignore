@@ -1,17 +1,34 @@
-# Git data
+# The directory Mix will write compiled artifacts to.
+_build/
+
+# If you run "mix test --cover", coverage assets end up here.
+cover/
+
+# The directory Mix downloads your dependencies sources to.
+deps/
+
+# Where 3rd-party dependencies like ExDoc output generated docs.
+doc/
+
+# Ignore .fetch files in case you like to edit your project deps locally.
+.fetch
+
+# If the VM crashes, it generates a dump, let's ignore it too.
+erl_crash.dump
+
+# Also ignore archive artifacts (built via "mix archive.build").
+*.ez
+
+# Developer tools
 .git
+.tool-versions
 
-# Elixir build artifacts
-_build
-# Don't ignore the directory where our releases get built
-!_build/prod/rel
-deps
+# Umbrella
+apps/**/config/*.secret.exs
+apps/**/node_modules
+apps/**/priv/static
 
-# Node build artifacts
-assets/node_modules
-
-# Tests
-test
-
-# Compiled static artifacts
-priv/static
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
