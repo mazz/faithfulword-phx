@@ -57,7 +57,7 @@ release :faithful_word_umbrella do
   set applications: [
     :runtime_tools,
     faithful_word: :permanent,
-    faithful_word_web: :permanent
+    faithful_word_api: :permanent
   ]
   set commands: [
     migrate: "rel/commands/migrate.sh",

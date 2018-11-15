@@ -16,25 +16,25 @@ COPY mix.* /app/
 # Explicit list of umbrella apps
 RUN mkdir -p \
     /app/apps/faithful_word \
-    /app/apps/faithful_word_web
+    /app/apps/faithful_word_api
 COPY apps/faithful_word/mix.* /app/apps/faithful_word/
-COPY apps/faithful_word_web/mix.* /app/apps/faithful_word_web/
+COPY apps/faithful_word_api/mix.* /app/apps/faithful_word_api/
 RUN mix do deps.get --only prod, deps.compile
 
 # docker build -t faithful_word:frontend --target=frontend .
 FROM node:10.12-alpine as frontend
 WORKDIR /app
-COPY apps/faithful_word_web/assets/package*.json /app/
+COPY apps/faithful_word_api/assets/package*.json /app/
 COPY --from=deps /app/deps/phoenix /deps/phoenix
 COPY --from=deps /app/deps/phoenix_html /deps/phoenix_html
 RUN npm ci
-COPY apps/faithful_word_web/assets /app
+COPY apps/faithful_word_api/assets /app
 RUN npm run deploy
 
 # docker build -t faithful_word:releaser --target=releaser .
 FROM deps as releaser
 COPY . /app/
-COPY --from=frontend /priv/static apps/faithful_word_web/priv/static
+COPY --from=frontend /priv/static apps/faithful_word_api/priv/static
 RUN mix do phx.digest, release --env=prod --no-tar
 
 # docker run -it --rm elixir:1.7.3-alpine sh -c 'head -n1 /etc/issue'

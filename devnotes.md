@@ -1,11 +1,12 @@
-git grep -l ‘old_name’ | xargs sed -i ‘’ -e 's/old_name/new_name/g’
-git grep -l ‘OldName’ | xargs sed -i ‘’ -e 's/OldName/NewName/g’
+git grep -l 'old_name' | xargs sed -i '' -e 's/old_name/new_name/g'
+git grep -l 'OldName' | xargs sed -i '' -e 's/OldName/NewName/g'
 mv ./lib/old_name ./lib/new_name
 mv ./lib/old_name.ex ./lib/new_name.ex
 If you have a similar folder structure in the tests folder, you probably also need:
 mv ./test/old_name ./test/new_name
 mv ./lib/old_name_web ./lib/new_name_web
 mv ./lib/old_name_web.ex ./lib/new_name_web.ex
+
 
 
 https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part-2/
