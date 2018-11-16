@@ -41,6 +41,13 @@ defmodule FaithfulWordApi do
       import FaithfulWordApi.ErrorHelpers
       import FaithfulWordApi.Gettext
       alias FaithfulWordApi.Router.Helpers, as: Routes
+
+      def render_shared(template, assigns \\ []) do
+        render(FaithfulWordApi.SharedView, template, assigns)
+      end
+
+      def user_logged_in?(conn), do: !is_nil(Map.get(conn.assigns, :current_user))
+
     end
   end
 

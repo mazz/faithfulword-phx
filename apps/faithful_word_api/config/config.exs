@@ -16,6 +16,24 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   render_errors: [view: FaithfulWordApi.ErrorView, accepts: ~w(html json)],
   pubsub: [name: FaithfulWordApi.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :faithful_word, FaithfulWord.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
+  domain: "sandbox30725.mailgun.org"
+  # domain: "objectaaron.com"
+
+config :faithful_word_api, FaithfulWordApi.Guardian,
+  secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
+  issuer: "FaithfulWord",
+  token_ttl: %{
+    "magic" => {30, :minutes},
+    "access" => {1, :days}
+  }
+
+config :recaptcha,
+  public_key: {:system, "hBzfjdYMN6jVEACa/n1HE9DCLLT23K3a9XgPJrE8A9FWltZ2IJYzJ18rbSZDJRss"},
+  secret: {:system, "ElzXHXqoPHbsKOf06eErAXonnJx4JuCksEtttbzOgAaOTfsniPrmr3W9FfdB6wqo"}
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

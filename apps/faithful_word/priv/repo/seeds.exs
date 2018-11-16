@@ -9,3 +9,8 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+FaithfulWord.Accounts.create_admin(%{
+  email: "mazz@protonmail.com",
+  name: "Michael Hanna"
+})

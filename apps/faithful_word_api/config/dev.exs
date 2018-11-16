@@ -25,6 +25,20 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
     ]
   ]
 
+config :faithful_word, FaithfulWord.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
+  domain: "sandbox30725.mailgun.org"
+  # domain: "objectaaron.com"
+
+config :faithful_word_api, FaithfulWordApi.Guardian,
+  secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
+  issuer: "FaithfulWord",
+  token_ttl: %{
+    "magic" => {30, :minutes},
+    "access" => {1, :days}
+  }
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
