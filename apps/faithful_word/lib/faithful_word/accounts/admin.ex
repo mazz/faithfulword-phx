@@ -4,9 +4,9 @@ defmodule FaithfulWord.Accounts.Admin do
   alias FaithfulWord.Accounts.Admin
 
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-  schema "admins" do
+  # @primary_key {:id, :binary_id, autogenerate: true}
+  # @foreign_key_type :binary_id
+  schema "admin" do
     field :email, :string
     # field :encrypted_password, :string
     field :name, :string
