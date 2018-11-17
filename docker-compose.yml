@@ -8,11 +8,12 @@ services:
     environment:
       DATABASE_URL: ecto://faithful_word:faithful_word@postgres/faithful_word
       HOSTNAME: localhost
-      PORT: 4000
+      PORT: 80
       # mix phx.gen.secret
       SECRET_KEY_BASE: fzBk8OEcI8thGxlypWPUqfR2w2WopdN8v8pmpuy2JNj2eerbYFnlecuVMrFPGYnW
-    ports:
-      - 4000:4000
+    labels:
+      - "traefik.frontend.rule=Host:api.faithfulword.app"
+      - "traefik.frontend.entryPoints=http,https"
 
   postgres:
     image: postgres:11.0-alpine
@@ -27,3 +28,8 @@ services:
 
 volumes:
   postgres-data: {}
+
+networks:
+  default:
+    external:
+      name: web

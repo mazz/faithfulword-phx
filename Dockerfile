@@ -45,9 +45,9 @@ RUN addgroup -g 1000 faithful_word && \
       -u 1000 \
       faithful_word
 RUN apk add -U bash libssl1.0
-USER faithful_word
+USER root
 WORKDIR /app
 COPY --from=releaser /app/_build/prod/rel/faithful_word_umbrella /app
-EXPOSE 4000
+EXPOSE 80
 ENTRYPOINT ["/app/bin/faithful_word_umbrella"]
 CMD ["foreground"]
