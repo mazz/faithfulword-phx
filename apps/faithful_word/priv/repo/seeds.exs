@@ -14,3 +14,8 @@ FaithfulWord.Accounts.create_admin(%{
   email: "mazz@protonmail.com",
   name: "Michael Hanna"
 })
+
+FaithfulWord.Accounts.create_admin(%{
+  email: "faithfulaudiodev@gmail.com",
+  name: "FaithfulAudio Dev"
+})

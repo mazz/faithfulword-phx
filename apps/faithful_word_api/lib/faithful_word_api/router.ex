@@ -31,6 +31,14 @@ defmodule FaithfulWordApi.Router do
     plug Guardian.Plug.EnsureAuthenticated
   end
 
+  scope "/v1.3", FaithfulWordApi do
+    pipe_through(:api)
+
+    get "/books", BookController, :index
+    # post("/sessions", SessionController, :create)
+    # post("/users", UserController, :create)
+  end
+
   scope "/", FaithfulWordApi do
     # Use the default browser stack
     pipe_through [:browser, :authentication_required]
