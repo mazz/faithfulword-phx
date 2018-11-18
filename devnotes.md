@@ -13,13 +13,13 @@ https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part
 
 docker-compose pull
 docker-compose build --pull faithful_word
-docker-compose up -d postgres
+docker-compose up --build -d postgres
 docker-compose run --rm faithful_word migrate
 docker-compose run --rm faithful_word seed
 
 Booting the application in Docker-Compose
 
-docker-compose up faithful_word
+docker-compose up --build faithful_word
 
 You can then browse the application by visiting http://localhost:4000 as normal, and should see the typical (production-style) log output in the shell session that’s running the above docker-compose command.
 
