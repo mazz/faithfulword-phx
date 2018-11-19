@@ -40,3 +40,17 @@ docker rm
 
 docker exec -ti faithfulword-phx_postgres_1 psql -p 5432 -U faithful_word
 
+## restore database
+
+docker exec -ti faithfulword-phx_postgres_1 psql -p 5432 -U faithful_word
+
+drop database faithful_word;
+create database faithful_word;
+SET session_replication_role = replica;
+\q
+docker exec -i faithfulword-phx_postgres_1 psql -p 5432 -U faithful_word < 2018-11-18-fw-saved-1.3-base.pgsql
+docker exec -ti faithfulword-phx_postgres_1 psql -p 5432 -U faithful_word
+SET session_replication_role = DEFAULT;
+
+
+
