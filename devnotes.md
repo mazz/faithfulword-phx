@@ -29,3 +29,14 @@ Cleaning Up
 If you’d like to reset the database, or otherwise clean up after the Docker-Compose environment, you can use the down subcommand, optionally including a flag to clear the data volume as well. Without the flag, it will still remove the containers and Docker-specific network that was created for you.
 
 `docker-compose down --volume`
+
+## docker cleanup
+docker ps -a
+docker rmi 
+docker image ls
+docker rm 
+
+## use psql
+
+docker exec -ti faithfulword-phx_postgres_1 psql -p 5432 -U faithful_word
+
