@@ -51,8 +51,8 @@ defmodule FaithfulWordApi.MixProject do
       {:guardian, "~> 1.1"},
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.1"},
-      {:sans_password, "~> 1.0.0"},
-      {:recaptcha, "~> 2.3"}
+      # {:sans_password, "~> 1.0.0"},
+      # {:recaptcha, "~> 2.3"}
     ]
   end
 

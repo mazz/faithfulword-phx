@@ -17,25 +17,18 @@ defmodule FaithfulWordApi.SignupController do
   end
 
   def create(conn, %{"login" => login_params}) do
-    with {:ok, email} <- Map.fetch(login_params, "email") do
-
-      # email_found = Ecto.Query.from(admin in FaithfulWord.Accounts.Admin,
-      #   where: admin.email  == email,
-      #   select: selected_email
-      #   |> FaithfulWord.Repo.all
-
-      # Logger.debug("email_found #{inspect %{attributes: email_found}}")
-
-      case Accounts.get_or_create_by_email(email) do
-        {:ok, user} ->
-          {:ok, _, _} = Guardian.send_magic_link(user)
-          render(conn, "create.html")
-
-        {:error, changeset} ->
-          conn
-          |> assign(:changeset, changeset)
-          |> render("new.html")
-      end
+    with {:ok, email} <- Map.fetch(login_params, "email"),
+         {:ok, password} <- Map.fetch(login_params, "password"),
+         {:ok, admin} <- Users.auth_admin(email, password) do
+      conn
+      |> Guardian.Plug.sign_in(admin)
+      |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: admin.name))
+      # |> redirect(to: offer_path(conn, :index))
+    else
+      _ ->
+        conn
+        |> put_flash(:error, "Invalid credentials!")
+        |> render("new.html")
     end
 
     # with {:ok, email} <- Map.fetch(auth_params, "email"),

@@ -12,10 +12,14 @@
 
 FaithfulWord.Accounts.create_admin(%{
   email: "mazz@protonmail.com",
+  password: "123456",
+  password_confirmation: "123456",
   name: "Michael Hanna"
 })
 
 FaithfulWord.Accounts.create_admin(%{
   email: "faithfulaudiodev@gmail.com",
+  password: "123456",
+  password_confirmation: "123456",
   name: "FaithfulAudio Dev"
 })

@@ -2,10 +2,10 @@
   <div class="hero-body particles-container">
     <div class="container has-text-centered">
       <h1 class="title">
-        <%= gettext("Lorem ipsum dolor sit amet") %>
+        <%= gettext("Welcome to Faithful Word") %>
       </h1>
       <h2 class="subtitle">
-        <%= gettext("Phasellus quis vulputate mauris. Ut sit amet gravida dolor.") %>
+        <%= gettext("Holding fast the faithful word as he hath been taught, that he may be able by sound doctrine both to exhort and to convince the gainsayers. -- Titus 1:9") %>
       </h2>
       <%# <%= if (show_new_offer_button(@conn)) do %>
   <%# <%= link(gettext("Post a job offer!"), to: {:javascript, rest}, class: "button new-offer-btn is-primary is-large") %>

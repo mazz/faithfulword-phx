@@ -25,17 +25,6 @@ defmodule FaithfulWordApi.LoginController do
       #   |> FaithfulWord.Repo.all
 
       # Logger.debug("email_found #{inspect %{attributes: email_found}}")
-
-      case Accounts.get_admin_by_email!(email) do
-        {:ok, user} ->
-          {:ok, _, _} = Guardian.send_magic_link(user)
-          render(conn, "create.html")
-
-        {:error, changeset} ->
-          conn
-          |> assign(:changeset, changeset)
-          |> render("new.html")
-      end
     end
 
     # with {:ok, email} <- Map.fetch(auth_params, "email"),

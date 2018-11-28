@@ -9,6 +9,14 @@
       <%= error_tag(f, :email) %>
     </div>
     <div class="field">
+      <%= password_input(f, :password,
+          id: "auth_password",
+          class: "input is-medium",
+          placeholder: gettext("Your password"),
+          required: true) %>
+      <%= error_tag(f, :password) %>
+    </div>
+    <div class="field">
       <%= submit("Submit", class: "button is-primary is-medium") %>
     </div>
   <% end %>

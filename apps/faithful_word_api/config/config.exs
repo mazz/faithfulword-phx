@@ -30,10 +30,6 @@ config :faithful_word_api, FaithfulWordApi.Guardian,
     "access" => {1, :days}
   }
 
-config :recaptcha,
-  public_key: {:system, "hBzfjdYMN6jVEACa/n1HE9DCLLT23K3a9XgPJrE8A9FWltZ2IJYzJ18rbSZDJRss"},
-  secret: {:system, "ElzXHXqoPHbsKOf06eErAXonnJx4JuCksEtttbzOgAaOTfsniPrmr3W9FfdB6wqo"}
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
