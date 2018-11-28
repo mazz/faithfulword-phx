@@ -16,16 +16,36 @@ defmodule FaithfulWordApi.LoginController do
     render(conn, "new.html")
   end
 
-  def create(conn, %{"login" => login_params}) do
-    with {:ok, email} <- Map.fetch(login_params, "email") do
-
-      # email_found = Ecto.Query.from(admin in FaithfulWord.Accounts.Admin,
-      #   where: admin.email  == email,
-      #   select: selected_email
-      #   |> FaithfulWord.Repo.all
-
-      # Logger.debug("email_found #{inspect %{attributes: email_found}}")
+  def create(conn, %{"login" => auth_params}) do
+    with {:ok, email} <- Map.fetch(auth_params, "email"),
+         {:ok, password} <- Map.fetch(auth_params, "password"),
+         {:ok, admin} <- Accounts.auth_admin(email, password) do
+      conn
+      |> Guardian.Plug.sign_in(admin)
+      |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: admin.name))
+      |> redirect(to: Routes.page_path(conn, :index))
+    else
+      _ ->
+        conn
+        |> put_flash(:error, "Invalid credentials!")
+        |> render("new.html")
     end
+  end
+
+  # def create(conn, %{"login" => login_params}) do
+  #   with {:ok, email} <- Map.fetch(login_params, "email"),
+  #     {:ok, password} <- Map.fetch(login_params, "password"),
+  #     {:ok, admin} <- Accounts.auth_admin(email, password) do
+  #       conn
+  #       |> Guardian.Plug.sign_in(admin)
+  #       |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: admin.name))
+  #       |> redirect(to: Routes.page_path(conn, :index))
+  #     else
+  #     _ ->
+  #       conn
+  #       |> put_flash(:error, "Invalid credentials.")
+  #       |> redirect(to: Routes.login_path(conn, :new))
+  # end
 
     # with {:ok, email} <- Map.fetch(auth_params, "email"),
     #      {:ok, password} <- Map.fetch(auth_params, "password"),
@@ -40,7 +60,7 @@ defmodule FaithfulWordApi.LoginController do
     #     |> put_flash(:error, "Invalid credentials!")
     #     |> render("new.html")
     # end
-  end
+  # end
 
   def destroy(conn, _params) do
     conn
@@ -49,29 +69,9 @@ defmodule FaithfulWordApi.LoginController do
     |> redirect(to: Routes.login_path(conn, :new))
   end
 
-  def login_error(conn, {_type, _reason}, _opts) do
+  def auth_error(conn, {_type, _reason}, _opts) do
     conn
     |> put_flash(:error, gettext("Authentication required"))
     |> redirect(to: Routes.login_path(conn, :new))
-  end
-
-  def callback(conn, %{"magic_token" => magic_token}) do
-    # require Logger
-    # {:ok, access_token, _claims} = FaithfulWordApi.Guardian.exchange_magic(magic_token)
-    # Logger.debug """
-    # access_token: #{inspect(access_token)}
-    # _claims: #{inspect(_claims)}
-    # """
-    case Guardian.decode_magic(magic_token) do
-      {:ok, user, _claims} ->
-        conn
-        |> Guardian.Plug.sign_in(user)
-        |> redirect(to: Routes.page_path(conn, :index))
-
-      _ ->
-        conn
-        |> put_flash(:error, "Invalid magic link.")
-        |> redirect(to: Routes.login_path(conn, :new))
-    end
   end
 end
