@@ -22,9 +22,11 @@ defmodule FaithfulWordApi.Router do
     get "/about", PageController, :about
     get "/login", LoginController, :new
     post "/login", LoginController, :create
+    # get "/login", AuthController, :new
+    # post "/login", AuthController, :create
+
     get "/signup", SignupController, :new
     post "/signup", SignupController, :create
-    get "/login/:magic_token", LoginController, :callback
   end
 
   pipeline :authentication_required do
