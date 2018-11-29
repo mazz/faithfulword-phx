@@ -8,9 +8,8 @@ defmodule FaithfulWord.Mailer do
       to: user.email,
       from: "noreply@faithfword.app",
       subject: "Welcome to FaithfulWord.",
-      html_body: "<strong>FaithfulWord -- Click the link to login</strong></br></br>
-      Magic Link:</br></br>https://faithfword.app/login/#{magic_token}",
-      text_body: "Thanks for joining!\n\nClick the magic link:\n\nhttps://faithfword.app/login/#{magic_token}"
+      html_body: "<strong>FaithfulWord -- welcome\n\n",
+      text_body: "Thanks for joining!\n"
     )
   end
 end

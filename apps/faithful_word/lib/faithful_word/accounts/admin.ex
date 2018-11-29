@@ -8,10 +8,11 @@ defmodule FaithfulWord.Accounts.Admin do
   # @foreign_key_type :binary_id
   schema "admin" do
     field :email, :string
-    # field :encrypted_password, :string
+    field :encrypted_password, :string
     field :name, :string
-    # field :password, :string, virtual: true
-    # field :password_confirmation, :string, virtual: true
+
+    field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
 
     timestamps()
   end
@@ -19,12 +20,11 @@ defmodule FaithfulWord.Accounts.Admin do
   @doc false
   def changeset(%Admin{} = admin, attrs) do
     admin
-    # |> cast(attrs, [:name, :email, :password, :password_confirmation])
-    |> cast(attrs, [:name, :email])
-    |> validate_required([:name, :email])
-    # |> validate_passwords()
-    # |> unique_constraint(:email)
-    # |> generate_passwords()
+    |> cast(attrs, [:name, :email, :password, :password_confirmation])
+    |> validate_required([:email])
+    |> validate_passwords()
+    |> unique_constraint(:email)
+    |> generate_passwords()
   end
 
   def check_password(%Admin{} = admin, password) do

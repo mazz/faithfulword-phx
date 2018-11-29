@@ -24,11 +24,12 @@ config :faithful_word, FaithfulWord.Mailer,
 
 config :faithful_word_api, FaithfulWordApi.Guardian,
   secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
-  issuer: "FaithfulWord",
-  token_ttl: %{
-    "magic" => {30, :minutes},
-    "access" => {1, :days}
-  }
+  issuer: "FaithfulWordApi"
+
+# config :faithful_word_api, FaithfulWordApi.Guardian,
+#   issuer: "FaithfulWordApi",
+#   secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"
+
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
