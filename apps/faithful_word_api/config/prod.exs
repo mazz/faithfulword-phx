@@ -18,7 +18,7 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   url: [host: "example.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :faithful_word_api, FaithfulWordApi.Guardian,
+config :faithful_word_api, FaithfulWordApi.Auth.Guardian,
   issuer: "FaithfulWordApi",
   secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"
 

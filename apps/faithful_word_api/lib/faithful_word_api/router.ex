@@ -8,11 +8,15 @@ defmodule FaithfulWordApi.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
 
-    plug FaithfulWordApi.Plugs.GuardianPipeline
+    # plug FaithfulWordApi.Plugs.GuardianPipeline
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :api_auth do
+    plug(FaithfulWordApi.Auth.Pipeline)
   end
 
   scope "/", FaithfulWordApi do
@@ -39,6 +43,22 @@ defmodule FaithfulWordApi.Router do
     get "/books", BookController, :index
     # post("/sessions", SessionController, :create)
     # post("/users", UserController, :create)
+
+    # post("/sessions", SessionController, :create)
+    # post("/users", UserController, :create)
+  end
+
+  scope "/apiauth", FaithfulWordApi do
+    pipe_through(:api)
+    post("/sessions", SessionController, :create)
+    post("/users", UserController, :create)
+  end
+
+  scope "/apiauth", FaithfulWordApi do
+    pipe_through([:api, :api_auth])
+
+    delete("/sessions", SessionController, :delete)
+    post("/sessions/refresh", SessionController, :refresh)
   end
 
   scope "/", FaithfulWordApi do

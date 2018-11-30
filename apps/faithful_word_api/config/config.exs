@@ -16,7 +16,7 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   render_errors: [view: FaithfulWordApi.ErrorView, accepts: ~w(html json)],
   pubsub: [name: FaithfulWordApi.PubSub, adapter: Phoenix.PubSub.PG2]
 
-config :faithful_word_api, FaithfulWordApi.Guardian,
+config :faithful_word_api, FaithfulWordApi.Auth.Guardian,
   issuer: "FaithfulWordApi",
   secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"
 

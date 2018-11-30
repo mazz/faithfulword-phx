@@ -206,6 +206,22 @@ defmodule FaithfulWord.Accounts do
 
   alias FaithfulWord.Accounts.User
 
+  def authenticate(email, password) do
+    user = Repo.get_by(User, email: String.downcase(email))
+
+    case check_password(user, password) do
+      true -> {:ok, user}
+      _ -> :error
+    end
+  end
+
+  defp check_password(user, password) do
+    case user do
+      nil -> Comeonin.Argon2.dummy_checkpw()
+      _ -> Comeonin.Argon2.checkpw(password, user.password_hash)
+    end
+  end
+
   @doc """
   Returns the list of user.
 
@@ -233,7 +249,7 @@ defmodule FaithfulWord.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user(id), do: Repo.get!(User, id)
 
   @doc """
   Creates a user.
