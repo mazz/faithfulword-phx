@@ -42,5 +42,7 @@ defmodule FaithfulWordApi.Endpoint do
     key: "_faithful_word_api_key",
     signing_salt: "kTTPuGj0"
 
+  plug(CORSPlug)
+
   plug FaithfulWordApi.Router
 end
