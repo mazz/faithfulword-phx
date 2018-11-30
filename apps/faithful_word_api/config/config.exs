@@ -16,19 +16,9 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   render_errors: [view: FaithfulWordApi.ErrorView, accepts: ~w(html json)],
   pubsub: [name: FaithfulWordApi.PubSub, adapter: Phoenix.PubSub.PG2]
 
-config :faithful_word, FaithfulWord.Mailer,
-  adapter: Bamboo.MailgunAdapter,
-  api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
-  domain: "sandbox30725.mailgun.org"
-  # domain: "objectaaron.com"
-
 config :faithful_word_api, FaithfulWordApi.Guardian,
-  secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
-  issuer: "FaithfulWordApi"
-
-# config :faithful_word_api, FaithfulWordApi.Guardian,
-#   issuer: "FaithfulWordApi",
-#   secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"
+  issuer: "FaithfulWordApi",
+  secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"
 
 
 # Import environment specific config. This must remain at the bottom

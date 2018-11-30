@@ -9,3 +9,8 @@ use Mix.Config
 config :faithful_word_api, FaithfulWordApi.Endpoint,
   http: [port: 4002],
   server: false
+
+
+config :faithful_word_api, FaithfulWordApi.Guardian,
+  issuer: "FaithfulWordApi",
+  secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"

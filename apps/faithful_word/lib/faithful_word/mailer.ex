@@ -3,7 +3,7 @@ defmodule FaithfulWord.Mailer do
 
   use Bamboo.Mailer, otp_app: :faithful_word
 
-  def welcome_email(user, magic_token, _opts) do
+  def welcome_email(user, _opts) do
     new_email(
       to: user.email,
       from: "noreply@faithfword.app",

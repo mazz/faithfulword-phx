@@ -4,7 +4,7 @@ defmodule FaithfulWordApi.Guardian do
   and to the session.
   """
 
-  use Guardian, otp_app: :faithful_word
+  use Guardian, otp_app: :faithful_word_api
 
   require Logger
   alias FaithfulWord.Accounts

@@ -46,11 +46,11 @@ defmodule FaithfulWordApi.MixProject do
       {:faithful_word, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:bamboo, "~> 1.1"},
-      # Auth
       {:guardian, "~> 1.1"},
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.1"},
+      {:argon2_elixir, "~> 1.3"}
+      # Auth
       # {:sans_password, "~> 1.0.0"},
       # {:recaptcha, "~> 2.3"}
     ]

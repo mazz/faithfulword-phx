@@ -37,7 +37,13 @@ defmodule FaithfulWord.MixProject do
   defp deps do
     [
       {:ecto_sql, "~> 3.0"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:bamboo, "~> 1.1"}
+      # {:guardian, "~> 1.1"},
+      # {:comeonin, "~> 4.1"},
+      # {:bcrypt_elixir, "~> 1.1"},
+      # {:argon2_elixir, "~> 1.3"}
+
     ]
   end
 

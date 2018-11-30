@@ -23,3 +23,12 @@ FaithfulWord.Accounts.create_admin(%{
   password_confirmation: "12345678",
   name: "FaithfulAudio Dev"
 })
+
+user =
+  FaithfulWord.Accounts.User.registration_changeset(%FaithfulWord.Accounts.User{}, %{
+    name: "Michael Hanna",
+    email: "michael@faithfulword.app",
+    password: "12345678"
+  })
+
+  FaithfulWord.Repo.insert!(user)
