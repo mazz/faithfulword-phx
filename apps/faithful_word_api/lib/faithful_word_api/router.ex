@@ -8,7 +8,7 @@ defmodule FaithfulWordApi.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
 
-    plug FaithfulWordApi.Sessions.GuardianPipeline
+    plug FaithfulWordApi.Session.GuardianPipeline
   end
 
   pipeline :api do

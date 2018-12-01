@@ -1,4 +1,4 @@
-defmodule FaithfulWordApi.Sessions.CurrentUser do
+defmodule FaithfulWordApi.Session.CurrentUser do
   @moduledoc """
   Plug to store current user (if defined) on the connection.
   """

@@ -1,11 +1,11 @@
-defmodule FaithfulWordApi.Sessions.GuardianPipeline do
+defmodule FaithfulWordApi.Session.GuardianPipeline do
   @moduledoc """
   Main pipeline for Guardian set-up on each request.
   """
 
   use Guardian.Plug.Pipeline, otp_app: :faithful_word_api
 
-  alias FaithfulWordApi.Sessions.CurrentUser
+  alias FaithfulWordApi.Session.CurrentUser
 
   plug Guardian.Plug.Pipeline,
     module: FaithfulWordApi.Auth.Guardian,
