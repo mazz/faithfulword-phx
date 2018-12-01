@@ -4,8 +4,8 @@ defmodule FaithfulWordApi.LoginController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.Accounts
-  alias FaithfulWord.Accounts.Admin
-  alias FaithfulWordApi.Guardian
+  alias FaithfulWord.Accounts.User
+  alias FaithfulWordApi.Auth.Guardian
 
   # require Ecto.Query
   # require Logger
@@ -19,10 +19,10 @@ defmodule FaithfulWordApi.LoginController do
   def create(conn, %{"login" => auth_params}) do
     with {:ok, email} <- Map.fetch(auth_params, "email"),
          {:ok, password} <- Map.fetch(auth_params, "password"),
-         {:ok, admin} <- Accounts.auth_admin(email, password) do
+         {:ok, user} <- Accounts.auth_user(email, password) do
       conn
-      |> Guardian.Plug.sign_in(admin)
-      |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: admin.name))
+      |> Guardian.Plug.sign_in(user)
+      |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: user.name))
       |> redirect(to: Routes.page_path(conn, :index))
     else
       _ ->
@@ -31,36 +31,6 @@ defmodule FaithfulWordApi.LoginController do
         |> render("new.html")
     end
   end
-
-  # def create(conn, %{"login" => login_params}) do
-  #   with {:ok, email} <- Map.fetch(login_params, "email"),
-  #     {:ok, password} <- Map.fetch(login_params, "password"),
-  #     {:ok, admin} <- Accounts.auth_admin(email, password) do
-  #       conn
-  #       |> Guardian.Plug.sign_in(admin)
-  #       |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: admin.name))
-  #       |> redirect(to: Routes.page_path(conn, :index))
-  #     else
-  #     _ ->
-  #       conn
-  #       |> put_flash(:error, "Invalid credentials.")
-  #       |> redirect(to: Routes.login_path(conn, :new))
-  # end
-
-    # with {:ok, email} <- Map.fetch(auth_params, "email"),
-    #      {:ok, password} <- Map.fetch(auth_params, "password"),
-    #      {:ok, admin} <- Accounts.auth_admin(email, password) do
-    #   conn
-    #   |> Guardian.Plug.sign_in(admin)
-    #   |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: admin.name))
-    #   |> redirect(to: page_path(conn, :index))
-    # else
-    #   _ ->
-    #     conn
-    #     |> put_flash(:error, "Invalid credentials!")
-    #     |> render("new.html")
-    # end
-  # end
 
   def destroy(conn, _params) do
     conn

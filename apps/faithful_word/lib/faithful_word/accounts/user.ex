@@ -40,4 +40,17 @@ defmodule FaithfulWord.Accounts.User do
         changeset
     end
   end
+
+  def check_password(%User{} = user, password) do
+    case Comeonin.Argon2.checkpw(password, user.password_hash) do
+      true -> {:ok, user}
+      _ -> {:error, :wrong_credentials}
+    end
+  end
+
+  def check_password(_, _) do
+    Comeonin.Argon2.dummy_checkpw()
+    {:error, :wrong_credentials}
+  end
+
 end

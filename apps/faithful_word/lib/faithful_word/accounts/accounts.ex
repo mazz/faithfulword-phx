@@ -7,6 +7,7 @@ defmodule FaithfulWord.Accounts do
 
   alias FaithfulWord.Repo
   alias FaithfulWord.Accounts.Queries.Admin, as: AdminQuery
+  alias FaithfulWord.Accounts.Queries.User, as: UserQuery
   alias FaithfulWord.Accounts.Admin
   alias FaithfulWord.Accounts.User
 
@@ -320,6 +321,24 @@ defmodule FaithfulWord.Accounts do
   """
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def get_user_by_id(id) do
+    User
+    |> UserQuery.by_id(id)
+    |> Repo.one()
+  end
+
+  def auth_user(email, password) do
+    user =
+      User
+      |> UserQuery.by_email(email)
+      |> Repo.one()
+
+    case User.check_password(user, password) do
+      {:ok, user} -> {:ok, user}
+      {:error, error} -> {:error, error}
+    end
   end
 end
 
