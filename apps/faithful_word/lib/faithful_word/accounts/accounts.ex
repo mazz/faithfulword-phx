@@ -210,7 +210,9 @@ defmodule FaithfulWord.Accounts do
   def authenticate(email, password) do
     user = Repo.get_by(User, email: String.downcase(email))
 
-    case check_password(user, password) do
+    case check_password(user, password) &&
+      check_suspended(user) &&
+      check_confirmed(user) do
       true -> {:ok, user}
       _ -> :error
     end
@@ -220,6 +222,20 @@ defmodule FaithfulWord.Accounts do
     case user do
       nil -> Comeonin.Argon2.dummy_checkpw()
       _ -> Comeonin.Argon2.checkpw(password, user.password_hash)
+    end
+  end
+
+  def check_suspended(user) do
+    case user.suspended == false do
+      true -> true
+      _ -> false
+    end
+  end
+
+  def check_confirmed(user) do
+    case user.confirmed == true do
+      true -> true
+      _ -> false
     end
   end
 
@@ -329,17 +345,24 @@ defmodule FaithfulWord.Accounts do
     |> Repo.one()
   end
 
-  def auth_user(email, password) do
-    user =
-      User
-      |> UserQuery.by_email(email)
-      |> Repo.one()
+  # def auth_user(email, password) do
+  #   user =
+  #     User
+  #     |> UserQuery.by_email(email)
+  #     |> Repo.one()
 
-    case User.check_password(user, password) do
-      {:ok, user} -> {:ok, user}
-      {:error, error} -> {:error, error}
-    end
+  #   case User.check_password(user, password) do
+  #     {:ok, user} -> {:ok, user}
+  #     {:error, error} -> {:error, error}
+  #   end
+  # end
+
+  def get_user_by_email!(email) do
+    User
+    |> UserQuery.by_email(email)
+    |> Repo.one!()
   end
+
 end
 
 

@@ -8,6 +8,10 @@ defmodule FaithfulWord.Accounts.User do
     field(:name, :string)
     field(:password, :string, virtual: true)
     field(:password_hash, :string)
+    # user confirmed via second auth factor i.e. email
+    field(:confirmed, :boolean, default: false)
+    # the user cannot log in if true
+    field(:suspended, :boolean, default: false)
 
     timestamps()
   end

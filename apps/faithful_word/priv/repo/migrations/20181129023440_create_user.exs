@@ -8,6 +8,11 @@ defmodule FaithfulWord.Repo.Migrations.CreateUser do
       add(:name, :string, null: false)
       add(:email, :citext, null: false)
       add(:password_hash, :string, null: false)
+      # user confirmed via second auth factor i.e. email
+      add(:confirmed, :boolean, default: false)
+      # the user cannot log in if true
+
+      add(:suspended, :boolean, default: false)
 
       timestamps()
     end
