@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Repo.Migrations.CreateMediamusic do
+defmodule FaithfulWord.DB.Repo.Migrations.CreateMediamusic do
   use Ecto.Migration
 
   def change do

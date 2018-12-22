@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Repo.Migrations.CreateBook do
+defmodule FaithfulWord.DB.Repo.Migrations.CreateBook do
   use Ecto.Migration
 
   def change do

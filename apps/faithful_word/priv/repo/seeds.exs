@@ -5,7 +5,7 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     FaithfulWord.Repo.insert!(%FaithfulWord.SomeSchema{})
+#     FaithfulWord.DB.Repo.insert!(%FaithfulWord.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
@@ -31,4 +31,4 @@ user =
     password: "12345678"
   })
 
-  FaithfulWord.Repo.insert!(user)
+  FaithfulWord.DB.Repo.insert!(user)

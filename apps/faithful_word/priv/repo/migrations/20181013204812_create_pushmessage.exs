@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Repo.Migrations.CreatePushmessage do
+defmodule FaithfulWord.DB.Repo.Migrations.CreatePushmessage do
   use Ecto.Migration
 
   def change do

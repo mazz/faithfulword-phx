@@ -1,5 +1,15 @@
 defmodule FaithfulWord.Accounts.User do
-  use Ecto.Schema
+#
+#
+#
+#
+# DEPRECATED ################################################################################
+#
+#
+#
+#
+
+use Ecto.Schema
   import Ecto.Changeset
   alias FaithfulWord.Accounts.User
 

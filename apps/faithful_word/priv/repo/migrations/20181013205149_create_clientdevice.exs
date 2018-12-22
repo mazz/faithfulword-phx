@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Repo.Migrations.CreateClientdevice do
+defmodule FaithfulWord.DB.Repo.Migrations.CreateClientdevice do
   use Ecto.Migration
 
   def change do

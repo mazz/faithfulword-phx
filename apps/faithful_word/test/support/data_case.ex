@@ -16,7 +16,7 @@ defmodule FaithfulWord.DataCase do
 
   using do
     quote do
-      alias FaithfulWord.Repo
+      alias FaithfulWord.DB.Repo
 
       import Ecto
       import Ecto.Changeset
@@ -26,10 +26,10 @@ defmodule FaithfulWord.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(FaithfulWord.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(FaithfulWord.DB.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(FaithfulWord.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(FaithfulWord.DB.Repo, {:shared, self()})
     end
 
     :ok

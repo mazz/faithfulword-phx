@@ -5,7 +5,8 @@
 use Mix.Config
 
 config :faithful_word,
-  ecto_repos: [FaithfulWord.Repo]
+  ecto_repos: [FaithfulWord.DB.Repo],
+  oauth: [facebook: []]
 
 config :faithful_word, FaithfulWord.Mailer,
   adapter: Bamboo.MailgunAdapter,

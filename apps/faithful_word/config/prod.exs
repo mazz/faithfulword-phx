@@ -4,7 +4,7 @@
 # the umbrella root.
 use Mix.Config
 
-config :faithful_word, FaithfulWord.Repo,
+config :faithful_word, FaithfulWord.DB.Repo,
   pool_size: 15
 
 config :faithful_word, FaithfulWord.Mailer,

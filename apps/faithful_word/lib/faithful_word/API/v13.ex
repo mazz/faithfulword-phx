@@ -1,7 +1,7 @@
 defmodule FaithfulWord.API.V13 do
 
   import Ecto.Query, warn: false
-  alias FaithfulWord.Repo
+  alias FaithfulWord.DB.Repo
   alias FaithfulWord.Content.Book
   alias FaithfulWord.Content.LanguageIdentifier
 
@@ -24,7 +24,7 @@ defmodule FaithfulWord.API.V13 do
           where: title.language_id  == ^language,
           order_by: b.absolute_id,
           select: %{title: b.basename, localizedTitle: title.localizedname, uuid: b.uuid, languageId: title.language_id})
-          |> FaithfulWord.Repo.all
+          |> FaithfulWord.DB.Repo.all
       else
         nil
       end

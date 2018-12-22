@@ -38,7 +38,8 @@ defmodule FaithfulWord.MixProject do
     [
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
-      {:bamboo, "~> 1.1"}
+      {:bamboo, "~> 1.1"},
+      {:yaml_elixir, "~> 2.1.0"}
       # {:guardian, "~> 1.1"},
       # {:comeonin, "~> 4.1"},
       # {:bcrypt_elixir, "~> 1.1"},

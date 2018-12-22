@@ -37,6 +37,13 @@ defmodule FaithfulWordApi.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # {:arc, github: "Betree/arc", override: true},
+      # {:arc, "~> 0.11.0"},
+      # {:arc_ecto, "~> 0.11.1"},
+      {:httpoison, "~> 1.5.0"},
+      # {:google_api_you_tube, "~> 0.2.0"},
+      {:kaur, "~> 1.1"},
+      {:oauth2, "~> 0.9"},
       {:phoenix, "~> 1.4.0"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},

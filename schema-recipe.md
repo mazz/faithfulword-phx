@@ -85,7 +85,7 @@ SET session_replication_role = DEFAULT;
 
 
 
-Ecto.Query.from(t in FaithfulWord.BookTitle, join: b in FaithfulWord.Book, on: t.book_id == b.id, where: t.language_id  == "en", order_by: b.absolute_id, select: {b.uuid, t.language_id, b.basename, t.localizedname}) |> FaithfulWord.Repo.all
+Ecto.Query.from(t in FaithfulWord.BookTitle, join: b in FaithfulWord.Book, on: t.book_id == b.id, where: t.language_id  == "en", order_by: b.absolute_id, select: {b.uuid, t.language_id, b.basename, t.localizedname}) |> FaithfulWord.DB.Repo.all
 
 
 

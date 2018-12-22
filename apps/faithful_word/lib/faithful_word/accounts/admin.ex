@@ -1,4 +1,14 @@
 defmodule FaithfulWord.Accounts.Admin do
+
+#
+#
+#
+#
+# DEPRECATED ################################################################################
+#
+#
+#
+#
   use Ecto.Schema
   import Ecto.Changeset
   alias FaithfulWord.Accounts.Admin

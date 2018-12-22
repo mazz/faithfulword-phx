@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Repo.Migrations.CreateMediachapter do
+defmodule FaithfulWord.DB.Repo.Migrations.CreateMediachapter do
   use Ecto.Migration
 
   def change do

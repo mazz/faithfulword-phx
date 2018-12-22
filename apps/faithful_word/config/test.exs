@@ -5,7 +5,7 @@
 use Mix.Config
 
 # Configure your database
-config :faithful_word, FaithfulWord.Repo,
+config :faithful_word, FaithfulWord.DB.Repo,
   database: "faithful_word_test",
   pool: Ecto.Adapters.SQL.Sandbox
 

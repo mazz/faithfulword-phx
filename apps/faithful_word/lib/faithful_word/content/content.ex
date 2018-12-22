@@ -4,7 +4,7 @@ defmodule FaithfulWord.Content do
   """
 
   import Ecto.Query, warn: false
-  alias FaithfulWord.Repo
+  alias FaithfulWord.DB.Repo
 
   alias FaithfulWord.Content.Book
 

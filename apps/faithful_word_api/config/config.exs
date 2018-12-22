@@ -6,7 +6,7 @@ use Mix.Config
 
 # General application configuration
 config :faithful_word_api,
-  ecto_repos: [FaithfulWord.Repo],
+  ecto_repos: [FaithfulWord.DB.Repo],
   generators: [context_app: :faithful_word, binary_id: true]
 
 # Configures the endpoint

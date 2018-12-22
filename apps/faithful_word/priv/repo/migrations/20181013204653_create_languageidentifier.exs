@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Repo.Migrations.CreateLanguageidentifier do
+defmodule FaithfulWord.DB.Repo.Migrations.CreateLanguageidentifier do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Repo.Migrations.Admin do
+defmodule FaithfulWord.DB.Repo.Migrations.Admin do
   use Ecto.Migration
 
   def change do

@@ -4,7 +4,7 @@ defmodule FaithfulWord.Analytics do
   """
 
   import Ecto.Query, warn: false
-  alias FaithfulWord.Repo
+  alias FaithfulWord.DB.Repo
 
   alias FaithfulWord.Analytics.ClientDevice
 

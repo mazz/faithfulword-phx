@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Repo.Migrations.CreateAppversion do
+defmodule FaithfulWord.DB.Repo.Migrations.CreateAppversion do
   use Ecto.Migration
 
   def change do
