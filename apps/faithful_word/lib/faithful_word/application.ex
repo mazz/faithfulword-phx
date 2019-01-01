@@ -7,7 +7,7 @@ defmodule FaithfulWord.Application do
 
   def start(_type, _args) do
     children = [
-      FaithfulWord.Repo
+      FaithfulWord.DB.Repo
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one, name: FaithfulWord.Supervisor)

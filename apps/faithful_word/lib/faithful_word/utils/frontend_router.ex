@@ -4,8 +4,8 @@ defmodule FaithfulWord.Utils.FrontendRouter do
   """
 
   alias FaithfulWord.DB.Schema.User
-  alias FaithfulWord.DB.Schema.Speaker
-  alias FaithfulWord.DB.Schema.Comment
+  # alias FaithfulWord.DB.Schema.Speaker
+  # alias FaithfulWord.DB.Schema.Comment
 
   @doc """
   Base frontend URL
@@ -38,14 +38,14 @@ defmodule FaithfulWord.Utils.FrontendRouter do
   @doc """
   Comment's URL
   """
-  def comment_url(video_hash_id, %Comment{statement: statement}),
-    do: statement_url(video_hash_id, statement.id)
+  # def comment_url(video_hash_id, %Comment{statement: statement}),
+  #   do: statement_url(video_hash_id, statement.id)
 
   @doc """
   Speaker URL
   """
-  def speaker_url(%Speaker{slug: slug, id: id}),
-    do: url("s/#{slug || id}")
+  # def speaker_url(%Speaker{slug: slug, id: id}),
+  #   do: url("s/#{slug || id}")
 
   @doc """
   URL to unsubscribe from newsletter

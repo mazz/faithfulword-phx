@@ -1,5 +1,3 @@
-import FaithfulWordApi
-
 defmodule FaithfulWord.Utils do
   @moduledoc """
   Helpers / utils functions

@@ -27,6 +27,8 @@ defmodule FaithfulWord.ReleaseTasks do
     stop_services()
   end
 
+  def priv_dir(app), do: "#{:code.priv_dir(app)}"
+
   defp start_services do
     IO.puts("Starting dependencies..")
     # Start apps necessary for executing migrations
