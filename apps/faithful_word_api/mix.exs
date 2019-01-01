@@ -40,7 +40,7 @@ defmodule FaithfulWordApi.MixProject do
       # {:arc, github: "Betree/arc", override: true},
       # {:arc, "~> 0.11.0"},
       # {:arc_ecto, "~> 0.11.1"},
-      {:httpoison, "~> 1.5.0"},
+      # {:httpoison, "~> 1.5.0"},
       # {:google_api_you_tube, "~> 0.2.0"},
       {:kaur, "~> 1.1"},
       {:oauth2, "~> 0.9"},

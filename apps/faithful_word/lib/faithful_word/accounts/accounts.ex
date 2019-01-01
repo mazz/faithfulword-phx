@@ -95,7 +95,7 @@ defmodule FaithfulWord.Accounts do
 
     if fetch_default_picture?() && user.picture_url == nil do
       Task.start(fn ->
-        pic_url = DB.Type.UserPicture.default_url(:thumb, user)
+        pic_url = FaithfulWord.DB.Type.UserPicture.default_url(:thumb, user)
         fetch_picture(user, pic_url)
       end)
     end
@@ -199,7 +199,7 @@ defmodule FaithfulWord.Accounts do
   def fetch_picture(user, picture_url) do
     # TODO config instead of matching env
     if Application.get_env(:faithful_word, :env) != :test do
-      case DB.Type.UserPicture.store({picture_url, user}) do
+      case FaithfulWord.DB.Type.UserPicture.store({picture_url, user}) do
         {:ok, picture} ->
           Repo.update(User.changeset_picture(user, picture))
 

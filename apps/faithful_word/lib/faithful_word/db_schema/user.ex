@@ -5,18 +5,18 @@ defmodule FaithfulWord.DB.Schema.User do
   """
 
   use Ecto.Schema
-  # use Arc.Ecto.Schema
+  use Arc.Ecto.Schema
   import Ecto.Changeset
 
-  # alias DB.Type.{Achievement, UserPicture}
-  # alias DB.Schema.{UserAction, Comment, Vote, Flag, Speaker}
+  alias FaithfulWord.DB.Type.{Achievement, UserPicture}
+  alias FaithfulWord.DB.Schema.{UserAction}#, Comment, Vote, Flag, Speaker}
 
   schema "users" do
     field(:username, :string)
     field(:email, :string)
     field(:encrypted_password, :string)
     field(:name, :string)
-    # field(:picture_url, UserPicture.Type)
+    field(:picture_url, UserPicture.Type)
     field(:reputation, :integer, default: 0)
     field(:today_reputation_gain, :integer, default: 0)
     field(:locale, :string)
@@ -38,11 +38,11 @@ defmodule FaithfulWord.DB.Schema.User do
 
     # Assocs
     has_many(:actions, UserAction, on_delete: :nilify_all)
-    has_many(:comments, Comment, on_delete: :nilify_all)
-    has_many(:votes, Vote, on_delete: :delete_all)
-    has_many(:flags_posted, Flag, foreign_key: :source_user_id, on_delete: :delete_all)
+    # has_many(:comments, Comment, on_delete: :nilify_all)
+    # has_many(:votes, Vote, on_delete: :delete_all)
+    # has_many(:flags_posted, Flag, foreign_key: :source_user_id, on_delete: :delete_all)
 
-    belongs_to(:speaker, Speaker)
+    # belongs_to(:speaker, Speaker)
 
     timestamps()
   end
@@ -192,7 +192,7 @@ defmodule FaithfulWord.DB.Schema.User do
       put_change(
         changeset,
         :email_confirmation_token,
-        DB.Utils.TokenGenerator.generate(@token_length)
+        FaithfulWord.DB.Utils.TokenGenerator.generate(@token_length)
       )
 
   defp generate_email_verification_token(changeset, true),

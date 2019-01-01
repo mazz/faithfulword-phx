@@ -97,7 +97,7 @@ defmodule FaithfulWord.Authenticator.OAuth.Facebook do
   end
 
   defp config do
-    Application.get_env(:cf, :oauth)[:facebook]
+    Application.get_env(:faithful_word, :oauth)[:facebook]
   end
 
   defp get_config(key) do
@@ -151,10 +151,10 @@ defmodule FaithfulWord.Authenticator.OAuth.Facebook do
   end
 
   defp app_id do
-    Application.get_env(:cf, :oauth)[:facebook][:client_id]
+    Application.get_env(:faithful_word, :oauth)[:facebook][:client_id]
   end
 
   defp app_secret do
-    Application.get_env(:cf, :oauth)[:facebook][:client_secret]
+    Application.get_env(:faithful_word, :oauth)[:facebook][:client_secret]
   end
 end

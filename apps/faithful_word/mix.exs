@@ -39,7 +39,15 @@ defmodule FaithfulWord.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:bamboo, "~> 1.1"},
-      {:yaml_elixir, "~> 2.1.0"}
+      {:yaml_elixir, "~> 2.1.0"},
+      {:not_qwerty123, "~> 2.2"},
+      {:arc, "~> 0.11.0"},
+      {:arc_ecto, "~> 0.11.0"},
+      {:ecto_enum, "~> 1.1"},
+      {:burnex, "~> 1.1"},
+      {:guardian, "~> 1.1"},
+      {:guardian_db, "~> 2.0"},
+      {:floki, "~> 0.20.4"}
       # {:guardian, "~> 1.1"},
       # {:comeonin, "~> 4.1"},
       # {:bcrypt_elixir, "~> 1.1"},
