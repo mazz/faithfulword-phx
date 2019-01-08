@@ -5,7 +5,7 @@ defmodule FaithfulWord.DB.Schema.ResetPasswordRequest do
   @primary_key {:token, :string, []}
   schema "accounts_reset_password_requests" do
     field(:source_ip, :string)
-    belongs_to(:user, DB.Schema.User)
+    belongs_to(:user, FaithfulWord.DB.Schema.User)
 
     timestamps(updated_at: false)
   end

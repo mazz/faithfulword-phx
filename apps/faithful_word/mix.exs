@@ -36,9 +36,12 @@ defmodule FaithfulWord.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:httpoison, "~> 1.5.0"},
+      {:mochiweb, "~> 2.18"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:bamboo, "~> 1.1"},
+      {:yamerl, "~> 0.7.0"},
       {:yaml_elixir, "~> 2.1.0"},
       {:not_qwerty123, "~> 2.2"},
       {:arc, "~> 0.11.0"},
@@ -47,7 +50,11 @@ defmodule FaithfulWord.MixProject do
       {:burnex, "~> 1.1"},
       {:guardian, "~> 1.1"},
       {:guardian_db, "~> 2.0"},
-      {:floki, "~> 0.20.4"}
+      {:floki, "~> 0.20.4"},
+      {:parse_trans, "~> 3.3"},
+      {:scrivener_ecto, "~> 2.0"},
+      {:google_api_you_tube, "~> 0.2.0"},
+      {:hashids, "~> 2.0"}
       # {:guardian, "~> 1.1"},
       # {:comeonin, "~> 4.1"},
       # {:bcrypt_elixir, "~> 1.1"},
