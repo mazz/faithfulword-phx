@@ -11,8 +11,8 @@ defmodule FaithfulWord.Content.Music do
     field :uuid, Ecto.UUID
 
     # timestamps()
-    has_many :mediamusic, FaithfulWord.MediaMusic
-    has_many :musictitle, FaithfulWord.MusicTitle
+    has_many :mediamusic, FaithfulWord.Content.MediaMusic
+    has_many :musictitle, FaithfulWord.Content.MusicTitle
 
   end
 

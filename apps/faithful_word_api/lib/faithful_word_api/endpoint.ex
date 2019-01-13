@@ -25,6 +25,14 @@ defmodule FaithfulWordApi.Endpoint do
 
   plug Plug.RequestId
   plug Plug.Logger
+  plug(FaithfulWordApi.SecurityHeaders)
+
+  plug(
+    Corsica,
+    max_age: 3600,
+    allow_headers: ~w(Accept Content-Type Authorization Origin),
+    origins: {FaithfulWord.RestApi.CORS, :check_origin}
+  )
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
@@ -41,8 +49,6 @@ defmodule FaithfulWordApi.Endpoint do
     store: :cookie,
     key: "_faithful_word_api_key",
     signing_salt: "kTTPuGj0"
-
-  plug(CORSPlug)
 
   plug FaithfulWordApi.Router
 end

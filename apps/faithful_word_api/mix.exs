@@ -57,7 +57,7 @@ defmodule FaithfulWordApi.MixProject do
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.1"},
       {:argon2_elixir, "~> 1.3"},
-      {:cors_plug, "~> 2.0"}
+      {:corsica, "~> 1.1"}
       # Auth
       # {:sans_password, "~> 1.0.0"},
       # {:recaptcha, "~> 2.3"}

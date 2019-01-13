@@ -9,6 +9,10 @@ config :faithful_word_api,
   ecto_repos: [FaithfulWord.DB.Repo],
   generators: [context_app: :faithful_word, binary_id: true]
 
+config :faithful_word_api,
+  cors_origins: "*"
+  # cors_origins: []
+
 # Configures the endpoint
 config :faithful_word_api, FaithfulWordApi.Endpoint,
   url: [host: "localhost"],

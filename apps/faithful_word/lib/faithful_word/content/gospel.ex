@@ -11,8 +11,8 @@ defmodule FaithfulWord.Content.Gospel do
     field :uuid, Ecto.UUID
 
     # timestamps()
-    has_many :mediagospel, FaithfulWord.MediaGospel
-    has_many :gospeltitle, FaithfulWord.GospelTitle
+    has_many :mediagospel, FaithfulWord.Content.MediaGospel
+    has_many :gospeltitle, FaithfulWord.Content.GospelTitle
 
   end
 

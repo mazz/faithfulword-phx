@@ -11,8 +11,8 @@ defmodule FaithfulWord.Content.Book do
     field :basename, :string
     field :uuid, Ecto.UUID
 
-    has_many :chapter, FaithfulWord.Chapter
-    has_many :booktitle, FaithfulWord.BookTitle
+    has_many :chapter, FaithfulWord.Content.Chapter
+    has_many :booktitle, FaithfulWord.Content.BookTitle
   end
 
   @doc false

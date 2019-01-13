@@ -41,6 +41,8 @@ defmodule FaithfulWord.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:bamboo, "~> 1.1"},
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_s3, "~> 2.0"},
       {:yamerl, "~> 0.7.0"},
       {:yaml_elixir, "~> 2.1.0"},
       {:not_qwerty123, "~> 2.2"},

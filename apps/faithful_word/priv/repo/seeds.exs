@@ -31,4 +31,13 @@ user =
     password: "12345678"
   })
 
+book =
+  FaithfulWord.Content.Book.changeset(%FaithfulWord.Content.Book{}, %{
+    absolute_id: 100,
+    basename: "Genesis",
+    uuid: Ecto.UUID.generate,
+    chapter: %FaithfulWord.Content.Chapter{}
+  })
+
   FaithfulWord.DB.Repo.insert!(user)
+  FaithfulWord.DB.Repo.insert!(book)
