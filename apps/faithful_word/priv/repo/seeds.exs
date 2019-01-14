@@ -48,16 +48,16 @@ book =
 
 Logger.warn("Application.get_env #{Application.get_env(:faithful_word, :env)}")
 # Create Admin in dev or if we're running image locally
-if Application.get_env(:faithful_word, :env) == :dev do
-  Logger.warn("API is running in dev mode. Inserting default user admin@faithfulword.app")
+# if Application.get_env(:faithful_word, :env) == :dev do
+Logger.warn("API is running in dev mode. Inserting default user admin@faithfulword.app")
 
-  admin =
-    User.registration_changeset(%User{reputation: 4200, username: "Jedediah"}, %{
-      email: "admin@faithfulword.app",
-      password: "password"
-    })
+admin =
+  User.registration_changeset(%User{reputation: 4200, username: "Jedediah"}, %{
+    email: "admin@faithfulword.app",
+    password: "password"
+  })
 
-  # No need to warn if already exists
-  Repo.insert(admin)
-end
+# No need to warn if already exists
+Repo.insert(admin)
+# end
 

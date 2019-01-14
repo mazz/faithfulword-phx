@@ -31,7 +31,7 @@ defmodule FaithfulWordApi.Endpoint do
     Corsica,
     max_age: 3600,
     allow_headers: ~w(Accept Content-Type Authorization Origin),
-    origins: {FaithfulWord.RestApi.CORS, :check_origin}
+    origins: {FaithfulWordApi.CORS, :check_origin}
   )
 
   plug Plug.Parsers,
