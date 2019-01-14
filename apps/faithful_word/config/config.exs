@@ -14,6 +14,7 @@ frontend_url = String.trim_trailing("http://localhost:3000/") <> "/"
 # TODO: add youtube_api_key keys
 
 config :faithful_word,
+  env: Mix.env(),
   ecto_repos: [FaithfulWord.DB.Repo],
   frontend_url: frontend_url,
   youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4", #fwsaved-web

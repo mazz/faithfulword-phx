@@ -10,6 +10,10 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+alias FaithfulWord.DB.Repo
+alias FaithfulWord.DB.Schema.User
+require Logger
+
 FaithfulWord.Accounts.create_admin(%{
   email: "mazz@protonmail.com",
   password: "12345678",
@@ -39,5 +43,21 @@ book =
     chapter: %FaithfulWord.Content.Chapter{}
   })
 
-  FaithfulWord.DB.Repo.insert!(user)
-  FaithfulWord.DB.Repo.insert!(book)
+  Repo.insert!(user)
+  Repo.insert!(book)
+
+Logger.warn("Application.get_env #{Application.get_env(:faithful_word, :env)}")
+# Create Admin in dev or if we're running image locally
+if Application.get_env(:faithful_word, :env) == :dev do
+  Logger.warn("API is running in dev mode. Inserting default user admin@faithfulword.app")
+
+  admin =
+    User.registration_changeset(%User{reputation: 4200, username: "Jedediah"}, %{
+      email: "admin@faithfulword.app",
+      password: "password"
+    })
+
+  # No need to warn if already exists
+  Repo.insert(admin)
+end
+

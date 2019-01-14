@@ -24,8 +24,7 @@ defmodule FaithfulWordApi.UserView do
       picture_url: FaithfulWord.DB.Type.UserPicture.url({user.picture_url, user}, :thumb),
       mini_picture_url: FaithfulWord.DB.Type.UserPicture.url({user.picture_url, user}, :mini_thumb),
       registered_at: user.inserted_at,
-      achievements: user.achievements,
-      speaker_id: user.speaker_id
+      achievements: user.achievements
     }
   end
 
@@ -42,8 +41,7 @@ defmodule FaithfulWordApi.UserView do
       locale: user.locale,
       registered_at: user.inserted_at,
       achievements: user.achievements,
-      is_publisher: user.is_publisher,
-      speaker_id: user.speaker_id
+      is_publisher: user.is_publisher
     }
   end
 

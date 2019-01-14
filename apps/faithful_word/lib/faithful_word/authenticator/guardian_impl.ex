@@ -5,7 +5,7 @@ defmodule FaithfulWord.Authenticator.GuardianImpl do
   alias FaithfulWord.DB.Schema.User
   alias Kaur.Result
 
-  @aud "captain_fact_#{Mix.env()}"
+  @aud "faithful_word_#{Mix.env()}"
 
   def subject_for_token(%User{id: id}, _claims) do
     Result.ok("User:#{id}")

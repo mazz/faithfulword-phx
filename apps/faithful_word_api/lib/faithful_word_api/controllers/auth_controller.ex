@@ -25,6 +25,8 @@ defmodule FaithfulWordApi.AuthController do
   Auth with identity (name|email + password)
   """
   def callback(conn, %{"provider" => "identity", "email" => email, "password" => password}) do
+    Logger.warn("email: #{email}")
+
     case Authenticator.get_user_for_email_or_name_password(email, password) do
       nil ->
         conn

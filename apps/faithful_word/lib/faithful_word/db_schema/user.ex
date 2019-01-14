@@ -257,7 +257,7 @@ defmodule FaithfulWord.DB.Schema.User do
 
   def validate_locale(changeset), do: changeset
 
-  @forbidden_username_keywords ~w(captainfact captain admin newuser temporary deleted supprimé)
+  @forbidden_username_keywords ~w(faithfulword faithful admin newuser temporary deleted supprimé)
   # Only alphanum, '-' and '_'
   @username_regex ~r/^[a-zA-Z0-9-_]+$/
   defp validate_username(changeset = %{changes: %{username: username}}) do
