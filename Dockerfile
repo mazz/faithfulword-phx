@@ -1,5 +1,5 @@
 # docker build -t faithful_word:builder --target=builder .
-FROM elixir:1.7.3-alpine as builder
+FROM elixir:1.7.4-alpine as builder
 RUN apk add --no-cache \
     gcc \
     git \
@@ -22,7 +22,7 @@ COPY apps/faithful_word_api/mix.* /app/apps/faithful_word_api/
 RUN mix do deps.get --only prod, deps.compile
 
 # docker build -t faithful_word:frontend --target=frontend .
-FROM node:10.12-alpine as frontend
+FROM node:10.14-alpine as frontend
 WORKDIR /app
 COPY apps/faithful_word_api/assets/package*.json /app/
 COPY --from=deps /app/deps/phoenix /deps/phoenix
