@@ -1,7 +1,7 @@
 defmodule FaithfulWord.Authenticator.GuardianImpl do
   use Guardian, otp_app: :faithful_word
 
-  alias FaihfulWord.DB.Repo
+  alias FaithfulWord.DB.Repo
   alias FaithfulWord.DB.Schema.User
   alias Kaur.Result
 
