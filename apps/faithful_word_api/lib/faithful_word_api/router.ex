@@ -51,55 +51,55 @@ defmodule FaithfulWordApi.Router do
 
     # ---- Public endpoints ----
     # get("/", ApiInfoController, :get)
-    # get("/videos", VideoController, :index)
+    get("/videos", VideoController, :index)
     # get("/speakers/:slug_or_id", SpeakerController, :show)
     # post("/search/video", VideoController, :search)
     # get("/videos/:video_id/statements", StatementController, :get)
     # get("/newsletter/unsubscribe/:token", UserController, :newsletter_unsubscribe)
+  end
 
-    # ---- Authenticathed endpoints ----
-    scope "/" do
-      pipe_through([:api_auth])
+  # ---- Authenticathed endpoints ----
+  scope "/", FaithfulWordApi do
+    pipe_through([:api_auth])
 
-      # Authentication
-      scope "/auth" do
-        delete("/", AuthController, :logout)
-        delete("/:provider/link", AuthController, :unlink_provider)
-        post("/:provider/callback", AuthController, :callback)
-      end
-
-      # # Users
-      # scope "/users" do
-      #   post("/", UserController, :create)
-      #   post("/request_invitation", UserController, :request_invitation)
-      #   get("/username/:username", UserController, :show)
-
-      #   scope "/reset_password" do
-      #     post("/request", UserController, :reset_password_request)
-      #     get("/verify/:token", UserController, :reset_password_verify)
-      #     post("/confirm", UserController, :reset_password_confirm)
-      #   end
-
-      #   scope "/me" do
-      #     get("/", UserController, :show_me)
-      #     put("/", UserController, :update)
-      #     delete("/", UserController, :delete)
-      #     get("/available_flags", UserController, :available_flags)
-      #     put("/confirm_email/:token", UserController, :confirm_email)
-      #     put("/achievements/:achievement", UserController, :unlock_achievement)
-      #     post("/onboarding/complete_step", UserController, :complete_onboarding_step)
-      #     post("/onboarding/complete_steps", UserController, :complete_onboarding_steps)
-      #     delete("/onboarding", UserController, :delete_onboarding)
-      #   end
-      # end
-
-      # # Videos
-      # post("/videos", VideoController, :get_or_create)
-
-      # # Moderation
-      # get("/moderation/random", ModerationController, :random)
-      # post("/moderation/feedback", ModerationController, :post_feedback)
+    # Authentication
+    scope "/auth" do
+      delete("/", AuthController, :logout)
+      delete("/:provider/link", AuthController, :unlink_provider)
+      post("/:provider/callback", AuthController, :callback)
     end
+
+    # # Users
+    # scope "/users" do
+    #   post("/", UserController, :create)
+    #   post("/request_invitation", UserController, :request_invitation)
+    #   get("/username/:username", UserController, :show)
+
+    #   scope "/reset_password" do
+    #     post("/request", UserController, :reset_password_request)
+    #     get("/verify/:token", UserController, :reset_password_verify)
+    #     post("/confirm", UserController, :reset_password_confirm)
+    #   end
+
+    #   scope "/me" do
+    #     get("/", UserController, :show_me)
+    #     put("/", UserController, :update)
+    #     delete("/", UserController, :delete)
+    #     get("/available_flags", UserController, :available_flags)
+    #     put("/confirm_email/:token", UserController, :confirm_email)
+    #     put("/achievements/:achievement", UserController, :unlock_achievement)
+    #     post("/onboarding/complete_step", UserController, :complete_onboarding_step)
+    #     post("/onboarding/complete_steps", UserController, :complete_onboarding_steps)
+    #     delete("/onboarding", UserController, :delete_onboarding)
+    #   end
+    # end
+
+    # # Videos
+    # post("/videos", VideoController, :get_or_create)
+
+    # # Moderation
+    # get("/moderation/random", ModerationController, :random)
+    # post("/moderation/feedback", ModerationController, :post_feedback)
   end
 
   pipeline :authentication_required do
