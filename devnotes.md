@@ -54,3 +54,24 @@ SET session_replication_role = DEFAULT;
 
 
 
+## loader.io
+Target Verification: faithfulword.app
+
+    Verify over HTTP
+
+Place this verification token in a file:
+
+loaderio-aceec519d8ce807bcc175e37c2731776
+
+Upload the file to your server so it is accessible at one of the following URLs:
+
+    http://faithfulword.app/loaderio-aceec519d8ce807bcc175e37c2731776/
+    http://faithfulword.app/loaderio-aceec519d8ce807bcc175e37c2731776.html
+    http://faithfulword.app/loaderio-aceec519d8ce807bcc175e37c2731776.txt
+
+
+mix deps.get ; mix deps.compile
+mix ecto.drop; mix ecto.create ; mix ecto.migrate
+mix run apps/faithful_word/priv/repo/seeds.ex
+
+https://github.com/FaithfulAudio/faithfulword-phx.git -b add-cf-authenticator-files
