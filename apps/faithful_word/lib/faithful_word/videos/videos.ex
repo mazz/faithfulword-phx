@@ -11,8 +11,8 @@ defmodule FaithfulWord.Videos do
   alias Ecto.Multi
   alias FaithfulWord.DB.Repo
   alias FaithfulWord.DB.Schema.Video
-  alias FaithfulWord.DB.Schema.Speaker
-  alias FaithfulWord.DB.Schema.VideoSpeaker
+  # alias FaithfulWord.DB.Schema.Speaker
+  # alias FaithfulWord.DB.Schema.VideoSpeaker
   alias FaithfulWord.DB.Schema.VideoCaption
 
   alias FaithfulWord.Actions.ActionCreator
@@ -138,18 +138,18 @@ defmodule FaithfulWord.Videos do
     video_id_2 => [%Speaker{...}]
   }
   """
-  def videos_speakers(videos_ids) do
-    query =
-      from(
-        s in Speaker,
-        join: vs in VideoSpeaker,
-        on: vs.speaker_id == s.id,
-        where: vs.video_id in ^videos_ids,
-        select: {vs.video_id, s}
-      )
+  # def videos_speakers(videos_ids) do
+  #   query =
+  #     from(
+  #       s in Speaker,
+  #       join: vs in VideoSpeaker,
+  #       on: vs.speaker_id == s.id,
+  #       where: vs.video_id in ^videos_ids,
+  #       select: {vs.video_id, s}
+  #     )
 
-    Enum.group_by(Repo.all(query), &elem(&1, 0), &elem(&1, 1))
-  end
+  #   Enum.group_by(Repo.all(query), &elem(&1, 0), &elem(&1, 1))
+  # end
 
   @doc """
   Download and store captions for a video.

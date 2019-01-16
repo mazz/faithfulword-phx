@@ -6,7 +6,7 @@ defmodule FaithfulWord.Actions.ActionCreator do
   """
 
   alias FaithfulWord.DB.Schema.UserAction
-  # alias FaithfulWord.DB.Schema.Video
+  alias FaithfulWord.DB.Schema.Video
   # alias FaithfulWord.DB.Schema.Speaker
   # alias FaithfulWord.DB.Schema.Statement
   # alias FaithfulWord.DB.Schema.Comment
@@ -70,17 +70,17 @@ defmodule FaithfulWord.Actions.ActionCreator do
   #   )
   # end
 
-  # def action_add(user_id, video = %Video{}) do
-  #   action(
-  #     user_id,
-  #     :video,
-  #     :add,
-  #     video_id: video.id,
-  #     changes: %{
-  #       url: Video.build_url(video)
-  #     }
-  #   )
-  # end
+  def action_add(user_id, video = %Video{}) do
+    action(
+      user_id,
+      :video,
+      :add,
+      video_id: video.id,
+      changes: %{
+        url: Video.build_url(video)
+      }
+    )
+  end
 
   # Update
 
@@ -95,15 +95,15 @@ defmodule FaithfulWord.Actions.ActionCreator do
   #   )
   # end
 
-  # def action_update(user_id, %{data: video = %Video{}, changes: changes}) do
-  #   action(
-  #     user_id,
-  #     :video,
-  #     :update,
-  #     video_id: video.id,
-  #     changes: changes
-  #   )
-  # end
+  def action_update(user_id, %{data: video = %Video{}, changes: changes}) do
+    action(
+      user_id,
+      :video,
+      :update,
+      video_id: video.id,
+      changes: changes
+    )
+  end
 
   # def action_update(user_id, %{data: %Speaker{id: id}, changes: changes}) do
   #   action(user_id, :speaker, :update, speaker_id: id, changes: changes)
