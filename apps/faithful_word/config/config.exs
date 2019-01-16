@@ -63,4 +63,9 @@ config :faithful_word,
 
 config :guardian, Guardian.DB, repo: FaithfulWord.DB.Repo
 
+config :rollbax,
+  enabled: true,
+  access_token: "a68f30a241f64dddab0349d1f4375506",
+  environment: "production"
+
 import_config "#{Mix.env()}.exs"

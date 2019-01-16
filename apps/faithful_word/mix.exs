@@ -56,7 +56,8 @@ defmodule FaithfulWord.MixProject do
       {:parse_trans, "~> 3.3"},
       {:scrivener_ecto, "~> 2.0"},
       {:google_api_you_tube, "~> 0.2.0"},
-      {:hashids, "~> 2.0"}
+      {:hashids, "~> 2.0"},
+      {:rollbax, "~> 0.9.2"}
       # {:guardian, "~> 1.1"},
       # {:comeonin, "~> 4.1"},
       # {:bcrypt_elixir, "~> 1.1"},

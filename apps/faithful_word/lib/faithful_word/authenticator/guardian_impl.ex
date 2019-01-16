@@ -57,8 +57,8 @@ defmodule FaithfulWord.Authenticator.GuardianImpl do
   defmodule Pipeline do
     use Guardian.Plug.Pipeline,
       otp_app: :faithful_word,
-      module: CF.Authenticator.GuardianImpl,
-      error_handler: CF.Authenticator.GuardianImpl.ErrorHandler
+      module: FaithfulWord.Authenticator.GuardianImpl,
+      error_handler: FaithfulWord.Authenticator.GuardianImpl.ErrorHandler
   end
 
   defmodule ErrorHandler do

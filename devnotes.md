@@ -72,6 +72,6 @@ Upload the file to your server so it is accessible at one of the following URLs:
 
 mix deps.get ; mix deps.compile
 mix ecto.drop; mix ecto.create ; mix ecto.migrate
-mix run apps/faithful_word/priv/repo/seeds.ex
+mix run apps/faithful_word/priv/repo/seeds.exs
 
 https://github.com/FaithfulAudio/faithfulword-phx.git -b add-cf-authenticator-files

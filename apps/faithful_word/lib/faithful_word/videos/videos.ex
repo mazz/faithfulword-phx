@@ -55,7 +55,7 @@ defmodule FaithfulWord.Videos do
     case Video.parse_url(url) do
       {:youtube, id} ->
         Video
-        |> Video.with_speakers()
+        # |> Video.with_speakers()
         |> Repo.get_by(youtube_id: id)
 
       _ ->
