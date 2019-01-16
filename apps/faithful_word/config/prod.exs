@@ -7,6 +7,41 @@ use Mix.Config
 config :faithful_word, FaithfulWord.DB.Repo,
   pool_size: 15
 
+
+# ---- [Global config keys] ----
+
+frontend_url = String.trim_trailing("http://localhost:3000/") <> "/"
+
+# ---- [APP CONFIG] :faithful_word ----
+
+# TODO: add facebook keys
+# TODO: add youtube_api_key keys
+
+config :faithful_word,
+  env: Mix.env(),
+  ecto_repos: [FaithfulWord.DB.Repo],
+  frontend_url: frontend_url,
+  youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4", #fwsaved-web
+  oauth: [
+    facebook: [
+      client_id: "client_id",
+      client_secret: "client_secret",
+      redirect_uri: Path.join(frontend_url, "login/callback/facebook")
+    ]
+  ]
+
+
+# TODO: add ex_aws keys
+
+config :ex_aws,
+  access_key_id: ["access_key_id", :instance_role],
+  secret_access_key: ["secret_access_key", :instance_role]
+
+# TODO: add arc keys
+
+config :arc,
+  bucket: "s3_bucket"
+
 config :faithful_word, FaithfulWord.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
