@@ -13,6 +13,8 @@ defmodule FaithfulWordApi.UserController do
 
   alias Kaur.Result
 
+  require Logger
+
   action_fallback(FaithfulWordApi.FallbackController)
 
   plug(
@@ -86,6 +88,7 @@ defmodule FaithfulWordApi.UserController do
   end
 
   def confirm_email(conn, %{"token" => token}) do
+    Logger.debug("confirm_email token: #{token}")
     try do
       Accounts.confirm_email!(token)
       send_resp(conn, :no_content, "")

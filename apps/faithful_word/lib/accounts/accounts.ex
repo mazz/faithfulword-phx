@@ -226,6 +226,7 @@ defmodule FaithfulWord.Accounts do
     do: user
 
   def confirm_email!(user = %User{email_confirmed: false}) do
+    Logger.debug("user email_confirmed false: #{user}")
     Multi.new()
     |> Multi.update(:user, User.changeset_confirm_email(user, true))
     |> Multi.insert(:action, ActionCreator.action_email_confirmed(user.id))

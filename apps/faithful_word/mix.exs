@@ -6,6 +6,7 @@ defmodule FaithfulWord.MixProject do
       app: :faithful_word,
       version: "0.1.0",
       build_path: "../../_build",
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",

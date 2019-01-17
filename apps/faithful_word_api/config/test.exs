@@ -11,6 +11,6 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   server: false
 
 
-config :faithful_word_api, FaithfulWordApi.Auth.Guardian,
-  issuer: "FaithfulWordApi",
-  secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"
+# config :faithful_word_api, FaithfulWordApi.Auth.Guardian,
+#   issuer: "FaithfulWordApi",
+#   secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"
