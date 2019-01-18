@@ -11,6 +11,8 @@ defmodule FaithfulWord.Actions.ActionCreator do
   # alias FaithfulWord.DB.Schema.Statement
   # alias FaithfulWord.DB.Schema.Comment
 
+  require Logger
+
   # Create
 
   # def action_create(user_id, statement = %Statement{}) do
@@ -214,7 +216,12 @@ defmodule FaithfulWord.Actions.ActionCreator do
   # end
 
   def action_email_confirmed(user_id) do
-    admin_action(:user, :email_confirmed, target_user_id: user_id)
+    Logger.debug("action_email_confirmed: #{user_id}")
+
+    action = admin_action(:user, :email_confirmed, target_user_id: user_id)
+    Logger.debug("action")
+    IO.inspect(action)
+    action
   end
 
   @doc """
@@ -237,12 +244,15 @@ defmodule FaithfulWord.Actions.ActionCreator do
   creators like `action_admin_delete`.
   """
   def admin_action(entity, action_type, params \\ []) do
-    UserAction.changeset_admin(
+    Logger.debug("admin_action: #{entity} #{action_type}")
+    changeset = UserAction.changeset_admin(
       %UserAction{},
       Enum.into(params, %{
         type: action_type,
         entity: entity
       })
     )
+    Logger.debug("UserAction.changeset_admin")
+    IO.inspect(changeset)
   end
 end

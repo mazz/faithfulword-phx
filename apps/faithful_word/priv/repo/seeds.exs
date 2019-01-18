@@ -37,8 +37,27 @@ admin =
 
 Logger.debug("admin user inserted:")
 IO.inspect(admin)
-
-# No need to warn if already exists
 Repo.insert(admin)
+# No need to warn if already exists
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Amos"}, %{
+  email: "amos@faithfulword.app",
+  password: "password"
+}))
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Peter"}, %{
+  email: "peter@faithfulword.app",
+  password: "password"
+}))
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Joseph"}, %{
+  email: "joseph@faithfulword.app",
+  password: "password"
+}))
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Adam"}, %{
+  email: "adam@faithfulword.app",
+  password: "password"
+}))
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "John"}, %{
+  email: "john@faithfulword.app",
+  password: "password"
+}))
 # end
 

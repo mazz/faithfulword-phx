@@ -10,6 +10,7 @@ defmodule FaithfulWord.DB.Schema.User do
 
   alias FaithfulWord.DB.Type.{Achievement, UserPicture}
   alias FaithfulWord.DB.Schema.{UserAction}#, Comment, Vote, Flag, Speaker}
+  require Logger
 
   schema "users" do
     field(:username, :string)
@@ -110,6 +111,9 @@ defmodule FaithfulWord.DB.Schema.User do
   end
 
   def changeset_confirm_email(model, is_confirmed) do
+    IO.inspect(model)
+    Logger.debug("changeset_confirm_email: #{is_confirmed}")
+
     model
     |> change(email_confirmed: is_confirmed)
     |> generate_email_verification_token(is_confirmed)
