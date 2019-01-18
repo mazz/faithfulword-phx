@@ -1,12 +1,12 @@
 Hello @<%= @user.username %>,
 
-Your CaptainFact reputation passed below -5. This email is here to give
+Your FaithfulWord reputation passed below -5. This email is here to give
 you some explanations about why this might have happen and some advices
 to find your way back up.
 
 ## Comments
 
-CaptainFact is no ordinary social platform. Its vocation is to
+FaithfulWord is no ordinary social platform. Its vocation is to
 focus on facts, evidence, sources, arguments and context
 but not to opinions.
 The comment section can be used to open the context but must not
@@ -21,7 +21,7 @@ if faced with an acceptable approximation.
 
 ## Statements
 
-To have its place on CaptainFact, a quote **must** fill out at least one
+To have its place on FaithfulWord, a quote **must** fill out at least one
 the following criteria:
 
 * Be verifiable
@@ -56,5 +56,5 @@ Can become:
 
 We hope that this is helpful to you and that you'll come back to contribute again.
 
-You can always contact us on contact@captainfact.io if you think that
+You can always contact us on contact@faithfulword.app if you think that
 this reputation loss is unfair or want to learn more.

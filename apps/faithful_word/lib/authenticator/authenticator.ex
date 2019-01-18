@@ -42,7 +42,7 @@ defmodule FaithfulWord.Authenticator do
   end
 
   @doc """
-  Associate a third party account with an existing CaptainFact account
+  Associate a third party account with an existing FaithfulWord account
   """
   def associate_user_with_third_party(user, provider, code) do
     case OAuth.fetch_user_from_third_party(provider, code) do

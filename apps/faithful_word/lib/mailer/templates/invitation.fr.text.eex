@@ -1,4 +1,4 @@
-Votre invitation pour rejoindre CaptainFact est prête !
+Votre invitation pour rejoindre FaithfulWord est prête !
 
 Pour créer un compte dès maintenant, utilisez votre lien d'invitation unique :
 <%= invitation_url(@invitation_token) %>

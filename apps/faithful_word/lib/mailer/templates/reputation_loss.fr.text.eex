@@ -1,12 +1,12 @@
 Bonjour @<%= @user.username %>,
 
-Votre réputation sur CaptainFact est récemment passée en dessous de -5. Ce mail
+Votre réputation sur FaithfulWord est récemment passée en dessous de -5. Ce mail
 a pour objectif de vous expliquer ce qui a pu se passer et de vous donner quelques
 conseils pour remonter la pente.
 
 ## Commentaires
 
-CaptainFact n'est pas une plateforme sociale ordinaire. Elle a pour vocation de
+FaithfulWord n'est pas une plateforme sociale ordinaire. Elle a pour vocation de
 s'intéresser aux faits, aux preuves, aux sources, aux arguments et au contexte
 **mais pas aux opinions**. La partie commentaire peut être utilisée pour ouvrir
 le contexte mais ne doit pas dévier du sujet initial. Les hors-sujets sont
@@ -21,7 +21,7 @@ si l'on est confrontés à une approximation acceptable.
 
 ## Citations
 
-Pour avoir sa place sur CaptainFact, une citation **doit** remplir au moins un
+Pour avoir sa place sur FaithfulWord, une citation **doit** remplir au moins un
 des critères suivants :
 
 *   Être vérifiable
@@ -58,5 +58,5 @@ Peut devenir :
 Nous espérons que ces quelques informations vous sont utiles et que vous
 contribuerez à nouveau.
 
-Vous pouvez toujours nous contacter sur contact@captainfact.io si vous pensez
+Vous pouvez toujours nous contacter sur contact@faithfulword.app si vous pensez
 que cette perte de réputation est injuste ou si vous voulez en savoir plus.

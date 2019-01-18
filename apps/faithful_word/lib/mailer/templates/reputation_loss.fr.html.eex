@@ -1,11 +1,11 @@
 Bonjour @<%= @user.username %>,<br>
 <br>
-Votre réputation sur CaptainFact est récemment passée en dessous de -5. Ce mail
+Votre réputation sur FaithfulWord est récemment passée en dessous de -5. Ce mail
 a pour objectif de vous expliquer ce qui a pu se passer et de vous donner quelques
 conseils pour remonter la pente.<br>
 <div>
    <h2>Commentaires</h2>
-   <p>CaptainFact n'est pas une plateforme sociale ordinaire. Elle a pour vocation de
+   <p>FaithfulWord n'est pas une plateforme sociale ordinaire. Elle a pour vocation de
       s'intéresser aux faits, aux preuves, aux sources, aux arguments et au contexte
       <strong>mais pas aux opinions</strong>.
       La partie commentaire peut être utilisée pour ouvrir le contexte mais ne doit
@@ -19,7 +19,7 @@ conseils pour remonter la pente.<br>
       si l'on est confrontés à une approximation acceptable.
    </p>
    <h2>Citations</h2>
-   <p>Pour avoir sa place sur CaptainFact, une citation <strong>doit</strong> remplir au moins un
+   <p>Pour avoir sa place sur FaithfulWord, une citation <strong>doit</strong> remplir au moins un
       des critères suivants :
    </p>
    <ul>
@@ -60,6 +60,6 @@ conseils pour remonter la pente.<br>
 <p>
   Nous espérons que ces quelques informations vous sont utiles et que vous
   contribuerez à nouveau. Vous pouvez toujours nous contacter
-  sur <a href="mailto:contact@captainfact.io">contact@captainfact.io</a> si vous
+  sur <a href="mailto:contact@faithfulword.app">contact@faithfulword.app</a> si vous
   pensez que cette perte de réputation est injuste ou si vous voulez en savoir plus.
 </p>

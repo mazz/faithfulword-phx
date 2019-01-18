@@ -1,11 +1,11 @@
 Hello @<%= @user.username %>,<br>
 <br>
-Your CaptainFact reputation passed below -5. This email is here to give
+Your FaithfulWord reputation passed below -5. This email is here to give
 you some explanations about why this might have happen and some advices
 to find your way back up.<br>
 <div>
    <h2>Comments</h2>
-   <p>CaptainFact is no ordinary social platform. Its vocation is to
+   <p>FaithfulWord is no ordinary social platform. Its vocation is to
       focus on facts, evidence, sources, arguments and context
       but not to opinions.
       The comment section can be used to open the context but must not
@@ -19,7 +19,7 @@ to find your way back up.<br>
       if faced with an acceptable approximation.
    </p>
    <h2>Statements</h2>
-   <p>To have its place on CaptainFact, a quote <strong>must</strong> fill out at least one
+   <p>To have its place on FaithfulWord, a quote <strong>must</strong> fill out at least one
       the following criteria:
    </p>
    <ul>
@@ -58,6 +58,6 @@ to find your way back up.<br>
 <p>
   We hope that this is helpful to you and that you'll come back
   to contribute again. You can also contact us
-  at <a href="mailto:contact@captainfact.io">contact@captainfact.io</a> if you
+  at <a href="mailto:contact@faithfulword.app">contact@faithfulword.app</a> if you
   think that this reputation loss is unfair or want to learn more.
 </p>

@@ -3,10 +3,10 @@
 
 --------------------------------------------------------------------------------
 
-<%= gettext_mail("CaptainFact is a free and open source project.") %>
+<%= gettext_mail("FaithfulWord is a free and open source project.") %>
 <%= gettext_mail("If you like it, please share the word!") %>
 
 Discord: https://discord.gg/2Qd7hMz
-Github: https://github.com/CaptainFact
-Facebook: https://www.facebook.com/CaptainFact.io/
-Twitter: https://twitter.com/CaptainFact_io
+Github: https://github.com/FaithfulWord
+Facebook: https://www.facebook.com/faithfulword.app/
+Twitter: https://twitter.com/FaithfulWord_io

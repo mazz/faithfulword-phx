@@ -56,7 +56,7 @@
                                               <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-spacing:0px;" align="center" border="0">
                                                 <tbody>
                                                   <tr>
-                                                    <td style="width:90px;"><img alt="" title="" height="auto" src="https://captainfact.io/assets/img/logo.png" style="border:none;border-radius:0px;display:block;font-size:13px;outline:none;text-decoration:none;width:100%;height:auto;" width="90"></td>
+                                                    <td style="width:90px;"><img alt="" title="" height="auto" src="https://faithfulword.app/assets/img/logo.png" style="border:none;border-radius:0px;display:block;font-size:13px;outline:none;text-decoration:none;width:100%;height:auto;" width="90"></td>
                                                   </tr>
                                                 </tbody>
                                               </table>
@@ -65,7 +65,7 @@
                                           <tr>
                                             <td style="word-wrap:break-word;font-size:0px;padding:0px 20px 0px 20px;" align="center">
                                               <div style="cursor:auto;color:#FFFFFF;font-family:Ubuntu, Lato, Tahoma, sans-serif;font-size:14px;line-height:22px;text-align:center;">
-                                                <h1 style="font-family: &apos;Cabin&apos;, sans-serif; color: #FFFFFF; font-size: 32px; line-height: 100%;"><span style="font-size:48px;">CaptainFact</span></h1>
+                                                <h1 style="font-family: &apos;Cabin&apos;, sans-serif; color: #FFFFFF; font-size: 32px; line-height: 100%;"><span style="font-size:48px;">FaithfulWord</span></h1>
                                               </div>
                                             </td>
                                           </tr>
@@ -186,7 +186,7 @@
                                             <td style="word-wrap:break-word;font-size:0px;padding:0px 20px 0px 20px;" align="left">
                                               <div style="cursor:auto;color:#949494;font-family:Ubuntu, Lato, Tahoma, sans-serif;font-size:14px;line-height:22px;text-align:left;">
                                                 <p>
-                                                <%= gettext_mail("CaptainFact is a free and open source project.") %>
+                                                <%= gettext_mail("FaithfulWord is a free and open source project.") %>
                                                 <%= gettext_mail("If you like it, please share the word!") %>
                                                 <br><span style="font-size:12px;">&#xA0;</span></p>
                                               </div>
@@ -204,9 +204,9 @@
                                         <ul style="font-family: Ubuntu, Lato, Tahoma, sans-serif;">
                                           <li><a href="https://opencollective.com/captainfact_io">OpenCollective (Dons)</a></li>
                                           <li><a href="https://discord.gg/2Qd7hMz">Discord</a></li>
-                                          <li><a href="https://github.com/CaptainFact">Github</a></li>
-                                          <li><a href="https://www.facebook.com/CaptainFact.io/">Facebook</a></li>
-                                          <li><a href="https://twitter.com/CaptainFact_io">Twitter</a></li>
+                                          <li><a href="https://github.com/FaithfulWord">Github</a></li>
+                                          <li><a href="https://www.facebook.com/faithfulword.app/">Facebook</a></li>
+                                          <li><a href="https://twitter.com/FaithfulWord_io">Twitter</a></li>
                                         </ul>
                                       </span>
                                     </div>
