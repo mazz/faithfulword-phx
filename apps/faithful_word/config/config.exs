@@ -17,6 +17,7 @@ config :faithful_word,
   env: Mix.env(),
   ecto_repos: [FaithfulWord.DB.Repo],
   frontend_url: frontend_url,
+  invitation_system: true,
   youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4", #fwsaved-web
   oauth: [
     facebook: [
