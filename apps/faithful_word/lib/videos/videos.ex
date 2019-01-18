@@ -93,9 +93,9 @@ defmodule FaithfulWord.Videos do
         |> Video.changeset_generate_hash_id()
         |> Repo.update()
       end)
-      |> Multi.run(:action, fn %{video: video} ->
-        Repo.insert(ActionCreator.action_add(user.id, video))
-      end)
+      # |> Multi.run(:action, fn %{video: video} ->
+      #   Repo.insert(ActionCreator.action_add(user.id, video))
+      # end)
       |> Repo.transaction()
       |> case do
         {:ok, %{video: video}} ->
