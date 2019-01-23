@@ -11,7 +11,7 @@ defmodule FaithfulWord.DB.Schema.Chapter do
     field :uuid, Ecto.UUID
     field :book_id, :id
 
-    has_many :mediachapter, FaithfulWord.DB.Schema.MediaChapter
+    has_many :mediachapters, FaithfulWord.DB.Schema.MediaChapter
     # timestamps()
   end
 

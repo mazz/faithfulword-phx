@@ -7,7 +7,7 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateBooktitle do
       add :uuid, :uuid
       add :localizedname, :string
       add :language_id, :string
-      add :book_id, references(:book, on_delete: :nothing)
+      add :book_id, references(:books, on_delete: :nothing)
 
       # timestamps()
     end

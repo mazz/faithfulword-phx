@@ -9,13 +9,13 @@ mix phx.gen.schema Chapter chapter absolute_id:integer uuid:uuid basename:string
 mix phx.gen.schema BookTitle booktitle uuid:uuid localizedname:string language_id:string book_id:references:book
 
 book.ex:
-      has_many :chapter, FaithfulWord.Chapter
-      has_many :booktitle, FaithfulWord.BookTitle
+      has_many :chapters, FaithfulWord.Chapter
+      has_many :booktitles, FaithfulWord.BookTitle
 
 mix phx.gen.schema MediaChapter mediachapter absolute_id:integer uuid:uuid track_number:integer localizedname:string path:string language_id:string presenter_name:string source_material:string chapter_id:references:chapter
 
 chapter.ex:
-      has_many :mediachapter, FaithfulWord.MediaChapter
+      has_many :mediachapters, FaithfulWord.MediaChapter
 
 ### Gospel
 
@@ -58,6 +58,19 @@ mix phx.gen.schema ClientDevice clientdevice uuid:uuid firebase_token:string apn
 ### AppVersion
 
 mix phx.gen.schema AppVersion appversion uuid:uuid version_number:string ios_supported:boolean android_supported:boolean
+
+
+### Org
+
+mix phx.gen.schema Org orgs uuid:uuid basename:string
+
+CREATE TABLE orgs (
+    id integer DEFAULT nextval('org_id_seq'::regclass) PRIMARY KEY,
+    uuid uuid,
+    basename character varying(128),
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
+);
 
 ### Channel
 
@@ -112,6 +125,14 @@ CREATE TABLE mediaitems (
     playlist_id integer REFERENCES playlists(id)
 );
 
+CREATE TABLE mediaphrases (
+    id integer DEFAULT nextval('mediaphrase_id_seq'::regclass) PRIMARY KEY,
+    uuid uuid,
+    language_id character varying(16),
+    body text,
+    sermonphrase_id integer REFERENCES sermonphrases(id)
+);
+
 ### MediaItemTag
 
 mix phx.gen.schema MediaItemTag mediaitemtags uuid:uuid tag_id:references:tags mediaitem_id:references:mediaitems
@@ -145,21 +166,6 @@ CREATE TABLE musictitles (
     language_id character varying(16),
     music_id integer REFERENCES music(id)
 );
-
-### Org
-
-mix phx.gen.schema Org orgs uuid:uuid basename:string
-
-CREATE TABLE orgs (
-    id integer DEFAULT nextval('org_id_seq'::regclass) PRIMARY KEY,
-    uuid uuid,
-    basename character varying(128),
-    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp with time zone
-);
-
-
-
 
 
 

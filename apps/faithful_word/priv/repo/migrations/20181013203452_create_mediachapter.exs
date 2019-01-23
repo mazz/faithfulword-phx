@@ -14,7 +14,7 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateMediachapter do
       add :language_id, :string
       add :presenter_name, :string
       add :source_material, :string
-      add :chapter_id, references(:chapter, on_delete: :nothing)
+      add :chapter_id, references(:chapters, on_delete: :nothing)
 
       timestamps()
     end

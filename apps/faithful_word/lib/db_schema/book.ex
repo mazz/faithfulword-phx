@@ -11,8 +11,8 @@ defmodule FaithfulWord.DB.Schema.Book do
     field :basename, :string
     field :uuid, Ecto.UUID
 
-    has_many :chapter, FaithfulWord.DB.Schema.Chapter
-    has_many :booktitle, FaithfulWord.DB.Schema.BookTitle
+    has_many :chapters, FaithfulWord.DB.Schema.Chapter
+    has_many :booktitles, FaithfulWord.DB.Schema.BookTitle
   end
 
   @doc false

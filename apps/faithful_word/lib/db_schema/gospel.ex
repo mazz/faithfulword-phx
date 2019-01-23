@@ -12,7 +12,7 @@ defmodule FaithfulWord.DB.Schema.Gospel do
 
     # timestamps()
     has_many :mediagospel, FaithfulWord.DB.Schema.MediaGospel
-    has_many :gospeltitle, FaithfulWord.DB.Schema.GospelTitle
+    has_many :gospeltitles, FaithfulWord.DB.Schema.GospelTitle
 
   end
 

@@ -7,7 +7,7 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateChapter do
       add :absolute_id, :integer
       add :uuid, :uuid
       add :basename, :string
-      add :book_id, references(:book, on_delete: :nothing)
+      add :book_id, references(:books, on_delete: :nothing)
 
       # timestamps()
     end
