@@ -15,8 +15,10 @@ FROM builder as deps
 COPY mix.* /app/
 # Explicit list of umbrella apps
 RUN mkdir -p \
+    /app/apps/db \
     /app/apps/faithful_word \
     /app/apps/faithful_word_api
+COPY apps/db/mix.* /app/apps/db/
 COPY apps/faithful_word/mix.* /app/apps/faithful_word/
 COPY apps/faithful_word_api/mix.* /app/apps/faithful_word_api/
 RUN mix do deps.get --only prod, deps.compile

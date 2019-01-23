@@ -12,6 +12,7 @@ defmodule FaithfulWord.MixProject do
       lockfile: "../../mix.lock",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -58,11 +59,15 @@ defmodule FaithfulWord.MixProject do
       {:scrivener_ecto, "~> 2.0"},
       {:google_api_you_tube, "~> 0.2.0"},
       {:hashids, "~> 2.0"},
-      {:rollbax, "~> 0.9.2"}
+      {:rollbax, "~> 0.9.2"},
       # {:guardian, "~> 1.1"},
       # {:comeonin, "~> 4.1"},
       # {:bcrypt_elixir, "~> 1.1"},
       # {:argon2_elixir, "~> 1.3"}
+
+      # ---- Internal ----
+      {:db, in_umbrella: true}
+
 
     ]
   end

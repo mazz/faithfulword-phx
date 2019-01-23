@@ -12,6 +12,7 @@ defmodule FaithfulWordApi.MixProject do
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -50,14 +51,18 @@ defmodule FaithfulWordApi.MixProject do
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
-      {:faithful_word, in_umbrella: true},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:guardian, "~> 1.1"},
       {:comeonin, "~> 4.1"},
       {:bcrypt_elixir, "~> 1.1"},
       {:argon2_elixir, "~> 1.3"},
-      {:corsica, "~> 1.1"}
+      {:corsica, "~> 1.1"},
+
+      # ---- Internal ----
+      {:faithful_word, in_umbrella: true},
+      {:db, in_umbrella: true}
+
       # Auth
       # {:sans_password, "~> 1.0.0"},
       # {:recaptcha, "~> 2.3"}
