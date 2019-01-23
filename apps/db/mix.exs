@@ -1,4 +1,4 @@
-defmodule Db.MixProject do
+defmodule DB.MixProject do
   use Mix.Project
 
   def project do

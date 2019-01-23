@@ -1,8 +1,8 @@
-defmodule DbTest do
+defmodule DBTest do
   use ExUnit.Case
-  doctest Db
+  doctest DB
 
   test "greets the world" do
-    assert Db.hello() == :world
+    assert DB.hello() == :world
   end
 end

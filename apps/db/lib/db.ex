@@ -1,4 +1,4 @@
-defmodule Db do
+defmodule DB do
   @moduledoc """
   Documentation for Db.
   """
