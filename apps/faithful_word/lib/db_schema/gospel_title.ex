@@ -1,22 +1,22 @@
-defmodule FaithfulWord.Content.BookTitle do
+defmodule FaithfulWord.DB.Schema.GospelTitle do
   use Ecto.Schema
   import Ecto.Changeset
 
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @foreign_key_type :binary_id
-  schema "booktitle" do
+  # @primary_key {:id, :binary_id, autogenerate: true}
+  # @foreign_key_type :binary_id
+  schema "gospeltitles" do
     field :language_id, :string
     field :localizedname, :string
     field :uuid, Ecto.UUID
-    field :book_id, :binary_id
+    field :gospel_id, :id
 
-    timestamps()
+    # timestamps()
   end
 
   @doc false
-  def changeset(book_title, attrs) do
-    book_title
+  def changeset(gospel_title, attrs) do
+    gospel_title
     |> cast(attrs, [:uuid, :localizedname, :language_id])
     |> validate_required([:uuid, :localizedname, :language_id])
   end

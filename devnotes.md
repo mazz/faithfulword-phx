@@ -75,3 +75,14 @@ mix ecto.drop; mix ecto.create ; mix ecto.migrate
 mix run apps/faithful_word/priv/repo/seeds.exs
 
 https://github.com/FaithfulAudio/faithfulword-phx.git -b add-cf-authenticator-files
+
+# export binary db file
+
+"/Applications/Postgres.app/Contents/Versions/11/bin/pg_dump" -U postgres --no-owner --no-acl -W -Fc -C -d kjvrvg_dev > 2019-01-22-media-item-1.3-base-bin.sql
+
+# import 1.3 database
+
+"/Applications/Postgres.app/Contents/Versions/11/bin/pg_restore" -U postgres --clean --dbname=faithful_word_dev 2019-01-22-media-item-1.3-base-bin.sql"
+
+./dbimport.py dbimport 2019-01-20-media-item-1.3-base.pgsql 
+

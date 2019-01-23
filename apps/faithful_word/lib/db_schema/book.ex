@@ -1,18 +1,18 @@
-defmodule FaithfulWord.Content.Book do
+defmodule FaithfulWord.DB.Schema.Book do
   use Ecto.Schema
   import Ecto.Changeset
 
 
   # @primary_key {:id, :serial, autogenerate: true}
   # @foreign_key_type :serial
-  schema "book" do
+  schema "books" do
     # field :id, :integer, autogenerate: true, primary_key: true
     field :absolute_id, :integer
     field :basename, :string
     field :uuid, Ecto.UUID
 
-    has_many :chapter, FaithfulWord.Content.Chapter
-    has_many :booktitle, FaithfulWord.Content.BookTitle
+    has_many :chapter, FaithfulWord.DB.Schema.Chapter
+    has_many :booktitle, FaithfulWord.DB.Schema.BookTitle
   end
 
   @doc false

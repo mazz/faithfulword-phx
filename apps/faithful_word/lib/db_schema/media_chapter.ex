@@ -1,11 +1,11 @@
-defmodule FaithfulWord.Content.MediaGospel do
+defmodule FaithfulWord.DB.Schema.MediaChapter do
   use Ecto.Schema
   import Ecto.Changeset
 
 
   # @primary_key {:id, :binary_id, autogenerate: true}
   # @foreign_key_type :binary_id
-  schema "mediagospel" do
+  schema "mediachapters" do
     field :absolute_id, :integer
     field :language_id, :string
     field :localizedname, :string
@@ -16,14 +16,14 @@ defmodule FaithfulWord.Content.MediaGospel do
     field :source_material, :string
     field :track_number, :integer
     field :uuid, Ecto.UUID
-    field :gospel_id, :id
+    field :chapter_id, :id
 
-    # timestamps()
+    timestamps()
   end
 
   @doc false
-  def changeset(media_gospel, attrs) do
-    media_gospel
+  def changeset(media_chapter, attrs) do
+    media_chapter
     |> cast(attrs, [:absolute_id, :uuid, :track_number, :localizedname, :path, :large_thumbnail_path, :small_thumbnail_path, :language_id, :presenter_name, :source_material])
     |> validate_required([:absolute_id, :uuid, :track_number, :localizedname, :path, :large_thumbnail_path, :small_thumbnail_path, :language_id, :presenter_name, :source_material])
   end

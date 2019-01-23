@@ -59,6 +59,110 @@ mix phx.gen.schema ClientDevice clientdevice uuid:uuid firebase_token:string apn
 
 mix phx.gen.schema AppVersion appversion uuid:uuid version_number:string ios_supported:boolean android_supported:boolean
 
+### Channel
+
+mix phx.gen.schema Channel channels uuid:uuid ordinal:integer basename:string org_id:references:orgs
+
+CREATE TABLE channels (
+    id integer DEFAULT nextval('channel_id_seq'::regclass) PRIMARY KEY,
+    uuid uuid,
+    ordinal integer,
+    basename character varying(128),
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    org_id integer REFERENCES orgs(id),
+    updated_at timestamp with time zone
+);
+
+### Playlist
+
+mix phx.gen.schema Playlist playlists ordinal:integer uuid:uuid localizedname:string language_id:string channel_id:references:channels
+
+CREATE TABLE playlists (
+    id integer DEFAULT nextval('playlist_id_seq'::regclass) PRIMARY KEY,
+    ordinal integer,
+    uuid uuid,
+    localizedname character varying(128),
+    language_id character varying(16),
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone,
+    channel_id integer REFERENCES channels(id)
+);
+
+### MediaItem
+
+mix phx.gen.schema MediaItem mediaitems ordinal:integer uuid:uuid track_number:integer medium:string localizedname:string path:string small_thumbnail_path:string large_thumbnail_path:string content_provider_link:string ipfs_link:string language_id:string presenter_name:string source_material:string playlist_id:references:playlists
+
+CREATE TABLE mediaitems (
+    id integer DEFAULT nextval('mediaitem_id_seq'::regclass) PRIMARY KEY,
+    ordinal integer,
+    uuid uuid,
+    track_number integer,
+    medium character varying(32),
+    localizedname character varying(128),
+    path character varying(384),
+    small_thumbnail_path character varying(384),
+    large_thumbnail_path character varying(384),
+    content_provider_link character varying(384),
+    ipfs_link character varying(384),
+    language_id character varying(16),
+    presenter_name character varying(80),
+    source_material character varying(128),
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone,
+    playlist_id integer REFERENCES playlists(id)
+);
+
+### MediaItemTag
+
+mix phx.gen.schema MediaItemTag mediaitemtags uuid:uuid tag_id:references:tags mediaitem_id:references:mediaitems
+
+CREATE TABLE mediaitemtag (
+    id SERIAL PRIMARY KEY,
+    uuid uuid,
+    tag_id integer REFERENCES tags(id),
+    mediaitem_id integer REFERENCES mediaitems(id)
+);
+
+### Tag
+
+mix phx.gen.schema Tag tags uuid:uuid basename:string description:string
+
+CREATE TABLE tags (
+    id integer DEFAULT nextval('tag_id_seq'::regclass) PRIMARY KEY,
+    uuid uuid,
+    basename character varying(128),
+    description text
+);
+
+### MusicTitle
+
+mix phx.gen.schema MusicTitle musictitles uuid:uuid localizedname:string language_id:string music_id:references:music
+
+CREATE TABLE musictitles (
+    id integer DEFAULT nextval('musictitle_id_seq'::regclass) PRIMARY KEY,
+    uuid uuid,
+    localizedname character varying(128),
+    language_id character varying(16),
+    music_id integer REFERENCES music(id)
+);
+
+### Org
+
+mix phx.gen.schema Org orgs uuid:uuid basename:string
+
+CREATE TABLE orgs (
+    id integer DEFAULT nextval('org_id_seq'::regclass) PRIMARY KEY,
+    uuid uuid,
+    basename character varying(128),
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
+);
+
+
+
+
+
+
 ### importing db
 
 "/Applications/Postgres.app/Contents/Versions/10/bin/pg_dump" -p5432 -U postgres --no-owner --no-acl kjvrvg_dev > ~/tmp/kjvrvg-13_dev.pgsql
@@ -110,3 +214,6 @@ Add the resource to your :api scope in lib/faithful_word_api/router.ex:
     resources "/pushmessage", PushMessageController, except: [:new, :edit]
     resources "/clientdevice", ClientDeviceController, except: [:new, :edit]
     resources "/appversion", AppVersionController, except: [:new, :edit]
+
+## new tables for 1.3
+

@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.MediaChapterController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.Content
-  alias FaithfulWord.Content.MediaChapter
+  alias FaithfulWord.DB.Schema.MediaChapter
 
   action_fallback FaithfulWordApi.FallbackController
 

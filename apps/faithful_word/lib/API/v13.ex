@@ -2,8 +2,8 @@ defmodule FaithfulWord.API.V13 do
 
   import Ecto.Query, warn: false
   alias FaithfulWord.DB.Repo
-  alias FaithfulWord.Content.Book
-  alias FaithfulWord.Content.LanguageIdentifier
+  alias FaithfulWord.DB.Schema.Book
+  alias FaithfulWord.DB.Schema.LanguageIdentifier
 
   require Ecto.Query
   require Logger
@@ -18,8 +18,8 @@ defmodule FaithfulWord.API.V13 do
     if !Enum.empty?(languages) do
 
       if Enum.find(languages, fn(_element) -> String.starts_with?(language, languages) end) do
-        Ecto.Query.from(title in FaithfulWord.Content.BookTitle,
-          join: b in FaithfulWord.Content.Book,
+        Ecto.Query.from(title in FaithfulWord.DB.Schema.BookTitle,
+          join: b in FaithfulWord.DB.Schema.Book,
           on: title.book_id == b.id,
           where: title.language_id  == ^language,
           order_by: b.absolute_id,

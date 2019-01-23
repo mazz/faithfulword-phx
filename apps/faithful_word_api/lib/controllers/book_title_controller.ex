@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.BookTitleController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.Content
-  alias FaithfulWord.Content.BookTitle
+  alias FaithfulWord.DB.Schema.BookTitle
 
   action_fallback FaithfulWordApi.FallbackController
 

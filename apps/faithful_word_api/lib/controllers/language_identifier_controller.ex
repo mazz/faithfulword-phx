@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.LanguageIdentifierController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.Content
-  alias FaithfulWord.Content.LanguageIdentifier
+  alias FaithfulWord.DB.Schema.LanguageIdentifier
 
   action_fallback FaithfulWordApi.FallbackController
 

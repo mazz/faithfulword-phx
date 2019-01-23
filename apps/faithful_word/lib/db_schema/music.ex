@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Content.Music do
+defmodule FaithfulWord.DB.Schema.Music do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,8 +11,8 @@ defmodule FaithfulWord.Content.Music do
     field :uuid, Ecto.UUID
 
     # timestamps()
-    has_many :mediamusic, FaithfulWord.Content.MediaMusic
-    has_many :musictitle, FaithfulWord.Content.MusicTitle
+    has_many :mediamusic, FaithfulWord.DB.Schema.MediaMusic
+    has_many :musictitle, FaithfulWord.DB.Schema.MusicTitle
 
   end
 

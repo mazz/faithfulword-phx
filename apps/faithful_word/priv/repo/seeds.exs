@@ -15,11 +15,11 @@ alias FaithfulWord.DB.Schema.User
 require Logger
 
 book =
-  FaithfulWord.Content.Book.changeset(%FaithfulWord.Content.Book{}, %{
+  FaithfulWord.DB.Schema.Book.changeset(%FaithfulWord.DB.Schema.Book{}, %{
     absolute_id: 100,
     basename: "Genesis",
     uuid: Ecto.UUID.generate,
-    chapter: %FaithfulWord.Content.Chapter{}
+    chapter: %FaithfulWord.DB.Schema.Chapter{}
   })
 
   Repo.insert!(book)

@@ -6,7 +6,7 @@ defmodule FaithfulWord.Content do
   import Ecto.Query, warn: false
   alias FaithfulWord.DB.Repo
 
-  alias FaithfulWord.Content.Book
+  alias FaithfulWord.DB.Schema.Book
 
   @doc """
   Returns the list of book.
@@ -102,7 +102,7 @@ defmodule FaithfulWord.Content do
     Book.changeset(book, %{})
   end
 
-  alias FaithfulWord.Content.Chapter
+  alias FaithfulWord.DB.Schema.Chapter
 
   @doc """
   Returns the list of chapter.
@@ -198,7 +198,7 @@ defmodule FaithfulWord.Content do
     Chapter.changeset(chapter, %{})
   end
 
-  alias FaithfulWord.Content.BookTitle
+  alias FaithfulWord.DB.Schema.BookTitle
 
   @doc """
   Returns the list of booktitle.
@@ -294,7 +294,7 @@ defmodule FaithfulWord.Content do
     BookTitle.changeset(book_title, %{})
   end
 
-  alias FaithfulWord.Content.MediaChapter
+  alias FaithfulWord.DB.Schema.MediaChapter
 
   @doc """
   Returns the list of mediachapter.
@@ -390,7 +390,7 @@ defmodule FaithfulWord.Content do
     MediaChapter.changeset(media_chapter, %{})
   end
 
-  alias FaithfulWord.Content.Gospel
+  alias FaithfulWord.DB.Schema.Gospel
 
   @doc """
   Returns the list of gospel.
@@ -486,7 +486,7 @@ defmodule FaithfulWord.Content do
     Gospel.changeset(gospel, %{})
   end
 
-  alias FaithfulWord.Content.MediaGospel
+  alias FaithfulWord.DB.Schema.MediaGospel
 
   @doc """
   Returns the list of mediagospel.
@@ -582,7 +582,7 @@ defmodule FaithfulWord.Content do
     MediaGospel.changeset(media_gospel, %{})
   end
 
-  alias FaithfulWord.Content.GospelTitle
+  alias FaithfulWord.DB.Schema.GospelTitle
 
   @doc """
   Returns the list of gospeltitle.
@@ -678,7 +678,7 @@ defmodule FaithfulWord.Content do
     GospelTitle.changeset(gospel_title, %{})
   end
 
-  alias FaithfulWord.Content.Music
+  alias FaithfulWord.DB.Schema.Music
 
   @doc """
   Returns the list of music.
@@ -774,7 +774,7 @@ defmodule FaithfulWord.Content do
     Music.changeset(music, %{})
   end
 
-  alias FaithfulWord.Content.MediaMusic
+  alias FaithfulWord.DB.Schema.MediaMusic
 
   @doc """
   Returns the list of mediamusic.
@@ -870,7 +870,7 @@ defmodule FaithfulWord.Content do
     MediaMusic.changeset(media_music, %{})
   end
 
-  alias FaithfulWord.Content.MusicTitle
+  alias FaithfulWord.DB.Schema.MusicTitle
 
   @doc """
   Returns the list of musictitle.
@@ -966,7 +966,7 @@ defmodule FaithfulWord.Content do
     MusicTitle.changeset(music_title, %{})
   end
 
-  alias FaithfulWord.Content.LanguageIdentifier
+  alias FaithfulWord.DB.Schema.LanguageIdentifier
 
   @doc """
   Returns the list of languageidentifier.

@@ -1,23 +1,24 @@
-defmodule FaithfulWord.Content.Chapter do
+defmodule FaithfulWord.DB.Schema.Gospel do
   use Ecto.Schema
   import Ecto.Changeset
 
 
   # @primary_key {:id, :binary_id, autogenerate: true}
   # @foreign_key_type :binary_id
-  schema "chapter" do
+  schema "gospel" do
     field :absolute_id, :integer
     field :basename, :string
     field :uuid, Ecto.UUID
-    field :book_id, :id
 
-    has_many :mediachapter, FaithfulWord.Content.MediaChapter
     # timestamps()
+    has_many :mediagospel, FaithfulWord.DB.Schema.MediaGospel
+    has_many :gospeltitle, FaithfulWord.DB.Schema.GospelTitle
+
   end
 
   @doc false
-  def changeset(chapter, attrs) do
-    chapter
+  def changeset(gospel, attrs) do
+    gospel
     |> cast(attrs, [:absolute_id, :uuid, :basename])
     |> validate_required([:absolute_id, :uuid, :basename])
   end
