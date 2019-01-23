@@ -3,7 +3,7 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateLanguageidentifier do
 
   def change do
     create table(:languageidentifiers) do
-      # add :id, :binary_id, primary_key: true
+
       add :uuid, :uuid
       add :identifier, :string
       add :source_material, :string

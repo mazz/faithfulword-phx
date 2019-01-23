@@ -3,8 +3,6 @@ defmodule FaithfulWord.PushNotifications.PushMessage do
   import Ecto.Changeset
 
 
-  # @primary_key {:id, :binary_id, autogenerate: true}
-  # @foreign_key_type :binary_id
   schema "pushmessage" do
     field :created_at, :utc_datetime
     field :message, :string, size: 4096

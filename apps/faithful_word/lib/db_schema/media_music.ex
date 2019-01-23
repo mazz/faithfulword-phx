@@ -3,8 +3,6 @@ defmodule FaithfulWord.DB.Schema.MediaMusic do
   import Ecto.Changeset
 
 
-  # @primary_key {:id, :binary_id, autogenerate: true}
-  # @foreign_key_type :binary_id
   schema "mediamusic" do
     field :absolute_id, :integer
     field :language_id, :string

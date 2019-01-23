@@ -13,9 +13,6 @@ defmodule FaithfulWord.Accounts.Admin do
   import Ecto.Changeset
   alias FaithfulWord.Accounts.Admin
 
-
-  # @primary_key {:id, :binary_id, autogenerate: true}
-  # @foreign_key_type :binary_id
   schema "admin" do
     field :email, :string
     field :encrypted_password, :string

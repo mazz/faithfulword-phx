@@ -3,7 +3,6 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateGospeltitle do
 
   def change do
     create table(:gospeltitles) do
-      # add :id, :binary_id, primary_key: true
       add :uuid, :uuid
       add :localizedname, :string
       add :language_id, :string

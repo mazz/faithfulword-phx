@@ -2,9 +2,6 @@ defmodule FaithfulWord.DB.Schema.MediaChapter do
   use Ecto.Schema
   import Ecto.Changeset
 
-
-  # @primary_key {:id, :binary_id, autogenerate: true}
-  # @foreign_key_type :binary_id
   schema "mediachapters" do
     field :absolute_id, :integer
     field :language_id, :string

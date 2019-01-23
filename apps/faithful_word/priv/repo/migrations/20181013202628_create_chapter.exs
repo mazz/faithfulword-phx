@@ -3,7 +3,6 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateChapter do
 
   def change do
     create table(:chapters) do
-      # add :id, :binary_id, primary_key: true
       add :absolute_id, :integer
       add :uuid, :uuid
       add :basename, :string

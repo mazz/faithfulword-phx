@@ -133,6 +133,17 @@ CREATE TABLE mediaphrases (
     sermonphrase_id integer REFERENCES sermonphrases(id)
 );
 
+### Tag
+
+mix phx.gen.schema Tag tags uuid:uuid basename:string description:string
+
+CREATE TABLE tags (
+    id integer DEFAULT nextval('tag_id_seq'::regclass) PRIMARY KEY,
+    uuid uuid,
+    basename character varying(128),
+    description text
+);
+
 ### MediaItemTag
 
 mix phx.gen.schema MediaItemTag mediaitemtags uuid:uuid tag_id:references:tags mediaitem_id:references:mediaitems
@@ -144,16 +155,6 @@ CREATE TABLE mediaitemtag (
     mediaitem_id integer REFERENCES mediaitems(id)
 );
 
-### Tag
-
-mix phx.gen.schema Tag tags uuid:uuid basename:string description:string
-
-CREATE TABLE tags (
-    id integer DEFAULT nextval('tag_id_seq'::regclass) PRIMARY KEY,
-    uuid uuid,
-    basename character varying(128),
-    description text
-);
 
 ### MusicTitle
 

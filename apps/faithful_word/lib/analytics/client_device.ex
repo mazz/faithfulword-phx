@@ -2,9 +2,6 @@ defmodule FaithfulWord.Analytics.ClientDevice do
   use Ecto.Schema
   import Ecto.Changeset
 
-
-  # @primary_key {:id, :binary_id, autogenerate: true}
-  # @foreign_key_type :binary_id
   schema "clientdevice" do
     field :apns_token, :string
     field :firebase_token, :string

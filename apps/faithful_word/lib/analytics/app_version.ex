@@ -2,9 +2,6 @@ defmodule FaithfulWord.Analytics.AppVersion do
   use Ecto.Schema
   import Ecto.Changeset
 
-
-  # @primary_key {:id, :binary_id, autogenerate: true}
-  # @foreign_key_type :binary_id
   schema "appversion" do
     field :android_supported, :boolean, default: false
     field :ios_supported, :boolean, default: false

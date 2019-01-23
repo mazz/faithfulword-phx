@@ -3,7 +3,7 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateClientdevice do
 
   def change do
     create table(:clientdevices) do
-      # add :id, :binary_id, primary_key: true
+
       add :uuid, :uuid
       add :firebase_token, :string
       add :apns_token, :string

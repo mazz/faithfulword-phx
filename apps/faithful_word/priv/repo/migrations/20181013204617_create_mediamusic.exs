@@ -3,7 +3,7 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateMediamusic do
 
   def change do
     create table(:mediamusic) do
-      # add :id, :binary_id, primary_key: true
+
       add :absolute_id, :integer
       add :uuid, :uuid
       add :track_number, :integer

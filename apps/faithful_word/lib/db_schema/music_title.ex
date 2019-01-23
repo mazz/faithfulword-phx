@@ -3,8 +3,6 @@ defmodule FaithfulWord.DB.Schema.MusicTitle do
   import Ecto.Changeset
 
 
-  # @primary_key {:id, :binary_id, autogenerate: true}
-  # @foreign_key_type :binary_id
   schema "musictitles" do
     field :language_id, :string
     field :localizedname, :string

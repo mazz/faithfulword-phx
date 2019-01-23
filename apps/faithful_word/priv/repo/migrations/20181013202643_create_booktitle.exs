@@ -3,7 +3,6 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateBooktitle do
 
   def change do
     create table(:booktitles) do
-      # add :id, :binary_id, primary_key: true
       add :uuid, :uuid
       add :localizedname, :string
       add :language_id, :string

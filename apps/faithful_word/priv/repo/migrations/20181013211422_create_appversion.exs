@@ -3,7 +3,7 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateAppversion do
 
   def change do
     create table(:appversions) do
-      # add :id, :binary_id, primary_key: true
+
       add :uuid, :uuid
       add :version_number, :string
       add :ios_supported, :boolean, default: false, null: false

@@ -2,9 +2,6 @@ defmodule FaithfulWord.DB.Schema.BookTitle do
   use Ecto.Schema
   import Ecto.Changeset
 
-
-  # @primary_key {:id, :binary_id, autogenerate: true}
-  # @foreign_key_type :binary_id
   schema "booktitles" do
     field :language_id, :string
     field :localizedname, :string

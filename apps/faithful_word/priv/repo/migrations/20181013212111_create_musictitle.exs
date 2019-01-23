@@ -3,7 +3,7 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateMusictitle do
 
   def change do
     create table(:musictitles) do
-      # add :id, :binary_id, primary_key: true
+
       add :uuid, :uuid
       add :localizedname, :string
       add :language_id, :string

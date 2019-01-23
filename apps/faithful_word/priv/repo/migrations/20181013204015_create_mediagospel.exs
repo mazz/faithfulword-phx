@@ -3,7 +3,6 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateMediagospel do
 
   def change do
     create table(:mediagospel) do
-      # add :id, :binary_id, primary_key: true
       add :absolute_id, :integer
       add :uuid, :uuid
       add :track_number, :integer

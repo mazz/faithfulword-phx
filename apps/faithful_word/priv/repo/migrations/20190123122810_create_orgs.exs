@@ -2,8 +2,8 @@ defmodule FaithfulWord.DB.Repo.Migrations.CreateOrgs do
   use Ecto.Migration
 
   def change do
-    create table(:orgs, primary_key: false) do
-      add :id, :binary_id, primary_key: true
+    create table(:orgs, primary_key: true) do
+
       add :uuid, :uuid
       add :basename, :string
 
