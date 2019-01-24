@@ -3,6 +3,7 @@ use Mix.Config
 # General application configuration
 config :db,
   env: Mix.env(),
+  adapter: Ecto.Adapters.Postgres,
   ecto_repos: [DB.Repo]
 
 # Database: use postgres
