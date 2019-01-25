@@ -26,4 +26,13 @@ defmodule FaithfulWord.Umbrella.MixProject do
       {:distillery, "~> 2.0"}
     ]
   end
+
+  defp aliases do
+    [
+      "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
+      "ecto.seed": ["run apps/db/priv/repo/seeds.exs"],
+      "ecto.reset": ["ecto.drop", "ecto.setup"],
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+    ]
+  end
 end

@@ -6,8 +6,8 @@ use Mix.Config
 
 # General application configuration
 config :faithful_word_api,
-  ecto_repos: [FaithfulWord.DB.Repo],
-  generators: [context_app: :faithful_word, binary_id: true]
+  ecto_repos: [DB.Repo],
+  generators: [context_app: :db, binary_id: true]
 
 config :faithful_word_api,
   cors_origins: "*"

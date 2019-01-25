@@ -18,7 +18,7 @@ defmodule FaithfulWordApi.VideoView do
       provider_id: video.youtube_id,
       youtube_id: video.youtube_id,
       youtube_offset: video.youtube_offset,
-      url: FaithfulWord.DB.Schema.Video.build_url(video),
+      url: DB.Schema.Video.build_url(video),
       posted_at: video.inserted_at,
       speakers: render_many(video.speakers, FaithfulWordApi.SpeakerView, "speaker.json"),
       language: video.language,

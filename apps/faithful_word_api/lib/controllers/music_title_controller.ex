@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.MusicTitleController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.Content
-  alias FaithfulWord.DB.Schema.MusicTitle
+  alias DB.Schema.MusicTitle
 
   action_fallback FaithfulWordApi.FallbackController
 

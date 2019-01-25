@@ -9,11 +9,11 @@ defmodule FaithfulWord.Videos do
   import FaithfulWord.Actions.ActionCreator, only: [action_update: 2]
 
   alias Ecto.Multi
-  alias FaithfulWord.DB.Repo
-  alias FaithfulWord.DB.Schema.Video
-  # alias FaithfulWord.DB.Schema.Speaker
-  # alias FaithfulWord.DB.Schema.VideoSpeaker
-  alias FaithfulWord.DB.Schema.VideoCaption
+  alias DB.Repo
+  alias DB.Schema.Video
+  # alias DB.Schema.Speaker
+  # alias DB.Schema.VideoSpeaker
+  alias DB.Schema.VideoCaption
 
   alias FaithfulWord.Actions.ActionCreator
   alias FaithfulWord.Accounts.UserPermissions
@@ -41,10 +41,10 @@ defmodule FaithfulWord.Videos do
   """
   def added_by_user(user, paginate_options \\ []) do
     Video
-    |> join(:inner, [v], a in FaithfulWord.DB.Schema.UserAction, a.video_id == v.id)
+    |> join(:inner, [v], a in DB.Schema.UserAction, a.video_id == v.id)
     |> where([_, a], a.user_id == ^user.id)
     |> where([_, a], a.type == ^:add and a.entity == ^:video)
-    |> FaithfulWord.DB.Query.order_by_last_inserted_desc()
+    |> DB.Query.order_by_last_inserted_desc()
     |> Repo.paginate(paginate_options)
   end
 

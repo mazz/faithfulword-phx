@@ -26,10 +26,10 @@ defmodule FaithfulWordApi.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(FaithfulWord.DB.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(DB.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(FaithfulWord.DB.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(DB.Repo, {:shared, self()})
     end
 
     :ok

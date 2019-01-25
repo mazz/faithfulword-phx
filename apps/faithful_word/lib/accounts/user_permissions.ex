@@ -6,8 +6,8 @@ defmodule FaithfulWord.Accounts.UserPermissions do
   require Logger
   import Ecto.Query
 
-  alias FaithfulWord.DB.Repo
-  alias FaithfulWord.DB.Schema.User
+  alias DB.Repo
+  alias DB.Schema.User
   alias FaithfulWord.Actions
 
   defmodule PermissionsError do

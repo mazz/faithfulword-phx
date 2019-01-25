@@ -7,7 +7,7 @@ use Mix.Config
 dev_secret = "8C6FsJwjV11d+1WPUIbkEH6gB/VavJrcXWoPLujgpclfxjkLkoNFSjVU9XfeNm6s"
 
 # Configure your database
-config :faithful_word, FaithfulWord.DB.Repo,
+config :faithful_word, DB.Repo,
   database: "faithful_word_dev",
   pool_size: 10
 

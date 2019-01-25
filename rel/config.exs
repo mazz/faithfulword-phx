@@ -56,6 +56,7 @@ release :faithful_word_umbrella do
   set version: current_version(:faithful_word)
   set applications: [
     :runtime_tools,
+    db: :permanent,
     faithful_word: :permanent,
     faithful_word_api: :permanent
   ]

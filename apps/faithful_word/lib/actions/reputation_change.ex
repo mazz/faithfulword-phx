@@ -3,8 +3,8 @@ defmodule FaithfulWord.Actions.ReputationChange do
   Calculate reputation changes.
   """
 
-  alias FaithfulWord.DB.Schema.{User, UserAction}
-  alias FaithfulWord.DB.Query.Actions
+  alias DB.Schema.{User, UserAction}
+  alias DB.Query.Actions
   alias FaithfulWord.Actions.ReputationChangeConfigLoader
 
   # Reputation changes definition
@@ -66,7 +66,7 @@ defmodule FaithfulWord.Actions.ReputationChange do
     |> Actions.about_user(user)
     |> Actions.matching_types(@actions_types)
     |> Actions.for_period(datetime_start, datetime_end)
-    |> FaithfulWord.DB.Repo.all()
+    |> DB.Repo.all()
     |> estimate_reputation_change(user)
   end
 

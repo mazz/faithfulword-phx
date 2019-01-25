@@ -1,7 +1,7 @@
 defmodule DB.Statistics do
   import Ecto.Query
 
-  # alias DB.Schema.User
+  alias DB.Schema.User
   alias DB.Repo
 
   @doc """
@@ -29,13 +29,13 @@ defmodule DB.Statistics do
   @doc """
   returns the 20 most active users
   """
-  # @spec leaderboard() :: list(%User{})
-  # def leaderboard do
-  #   from(
-  #     u in User,
-  #     order_by: [desc: u.reputation],
-  #     limit: 20
-  #   )
-  #   |> Repo.all()
-  # end
+  @spec leaderboard() :: list(%User{})
+  def leaderboard do
+    from(
+      u in User,
+      order_by: [desc: u.reputation],
+      limit: 20
+    )
+    |> Repo.all()
+  end
 end

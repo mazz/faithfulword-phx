@@ -15,7 +15,7 @@ frontend_url = String.trim_trailing("http://localhost:3000/") <> "/"
 
 config :faithful_word,
   env: Mix.env(),
-  ecto_repos: [FaithfulWord.DB.Repo],
+  ecto_repos: [DB.Repo],
   frontend_url: frontend_url,
   invitation_system: false,
   youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4", #fwsaved-web
@@ -62,7 +62,7 @@ config :faithful_word, FaithfulWord.Authenticator.GuardianImpl,
 config :faithful_word,
   captions_fetcher: FaithfulWord.Videos.CaptionsFetcherYoutube
 
-config :guardian, Guardian.DB, repo: FaithfulWord.DB.Repo
+config :guardian, Guardian.DB, repo: DB.Repo
 
 config :rollbax,
   enabled: true,

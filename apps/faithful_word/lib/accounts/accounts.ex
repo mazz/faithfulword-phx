@@ -7,10 +7,10 @@ defmodule FaithfulWord.Accounts do
   require Logger
 
   alias Ecto.Multi
-  alias FaithfulWord.DB.Repo
-  alias FaithfulWord.DB.Type.Achievement
-  alias FaithfulWord.DB.Schema.User
-  alias FaithfulWord.DB.Schema.ResetPasswordRequest
+  alias DB.Repo
+  alias DB.Type.Achievement
+  alias DB.Schema.User
+  alias DB.Schema.ResetPasswordRequest
 
   alias FaithfulWord.Mailer.Email
   alias FaithfulWord.Accounts.{UsernameGenerator, UserPermissions, Invitations}
@@ -96,7 +96,7 @@ defmodule FaithfulWord.Accounts do
 
     if fetch_default_picture?() && user.picture_url == nil do
       Task.start(fn ->
-        pic_url = FaithfulWord.DB.Type.UserPicture.default_url(:thumb, user)
+        pic_url = DB.Type.UserPicture.default_url(:thumb, user)
         fetch_picture(user, pic_url)
       end)
     end
@@ -200,7 +200,7 @@ defmodule FaithfulWord.Accounts do
   def fetch_picture(user, picture_url) do
     # TODO config instead of matching env
     if Application.get_env(:faithful_word, :env) != :test do
-      case FaithfulWord.DB.Type.UserPicture.store({picture_url, user}) do
+      case DB.Type.UserPicture.store({picture_url, user}) do
         {:ok, picture} ->
           Repo.update(User.changeset_picture(user, picture))
 

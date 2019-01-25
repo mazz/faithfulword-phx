@@ -3,5 +3,5 @@ defmodule FaithfulWord.Videos.CaptionsFetcher do
   Fetch captions for videos.
   """
 
-  @callback fetch(FaithfulWord.DB.Schema.Video.t()) :: {:ok, FaithfulWord.DB.Schema.VideoCaption.t()} | {:error, binary()}
+  @callback fetch(DB.Schema.Video.t()) :: {:ok, DB.Schema.VideoCaption.t()} | {:error, binary()}
 end

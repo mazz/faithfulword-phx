@@ -13,7 +13,7 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
   alias GoogleApi.YouTube.V3.Model.Video, as: YouTubeVideo
   alias GoogleApi.YouTube.V3.Model.VideoListResponse, as: YouTubeVideoList
 
-  alias FaithfulWord.DB.Schema.Video
+  alias DB.Schema.Video
   alias FaithfulWord.Videos.MetadataFetcher
 
   @doc """

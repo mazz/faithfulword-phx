@@ -4,7 +4,7 @@ defmodule FaithfulWord.PushNotifications do
   """
 
   import Ecto.Query, warn: false
-  alias FaithfulWord.DB.Repo
+  alias DB.Repo
 
   alias FaithfulWord.PushNotifications.PushMessage
 

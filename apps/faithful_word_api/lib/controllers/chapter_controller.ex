@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.ChapterController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.Content
-  alias FaithfulWord.DB.Schema.Chapter
+  alias DB.Schema.Chapter
 
   action_fallback FaithfulWordApi.FallbackController
 

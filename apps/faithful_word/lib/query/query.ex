@@ -1,4 +1,4 @@
-defmodule FaithfulWord.DB.Query do
+defmodule DB.Query do
   @moduledoc """
   General queries
   """

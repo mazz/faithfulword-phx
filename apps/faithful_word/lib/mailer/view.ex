@@ -6,6 +6,6 @@ defmodule FaithfulWord.Mailer.View do
   import FaithfulWord.Utils.FrontendRouter
 
   def user_appelation(user) do
-    FaithfulWord.DB.Schema.User.user_appelation(user)
+    DB.Schema.User.user_appelation(user)
   end
 end

@@ -1,11 +1,11 @@
-defmodule FaithfulWord.DB.Query.Actions do
+defmodule DB.Query.Actions do
   @moduledoc """
   Functions to query and handle `UserAction`
   """
 
   import Ecto.Query
 
-  alias FaithfulWord.DB.Schema.User
+  alias DB.Schema.User
 
   @doc """
   Return all action concerning user, which is actions he made + actions he was

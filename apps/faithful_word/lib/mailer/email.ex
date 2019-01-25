@@ -12,9 +12,9 @@ defmodule FaithfulWord.Mailer.Email do
   use Bamboo.Phoenix, view: FaithfulWord.Mailer.View
   import FaithfulWord.Gettext
 
-  alias FaithfulWord.DB.Schema.ResetPasswordRequest
-  alias FaithfulWord.DB.Schema.InvitationRequest
-  alias FaithfulWord.DB.Schema.User
+  alias DB.Schema.ResetPasswordRequest
+  alias DB.Schema.InvitationRequest
+  alias DB.Schema.User
 
   alias FaithfulWord.Actions.ReputationChange
 

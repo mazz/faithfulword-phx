@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.MediaGospelController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.Content
-  alias FaithfulWord.DB.Schema.MediaGospel
+  alias DB.Schema.MediaGospel
 
   action_fallback FaithfulWordApi.FallbackController
 
