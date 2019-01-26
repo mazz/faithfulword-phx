@@ -12,7 +12,7 @@ defmodule DB.Repo.Migrations.CreateUsersActionsReports do
       add :nb_entries_updated, :integer, null: true
       add :run_duration, :integer, null: true
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
   end
 end

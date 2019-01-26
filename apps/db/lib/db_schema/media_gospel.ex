@@ -16,7 +16,7 @@ defmodule DB.Schema.MediaGospel do
     field :uuid, Ecto.UUID
     field :gospel_id, :id
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

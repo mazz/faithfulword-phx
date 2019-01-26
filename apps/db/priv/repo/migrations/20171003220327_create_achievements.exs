@@ -6,7 +6,7 @@ defmodule DB.Repo.Migrations.CreateAchievements do
       add :slug, :string
       add :rarity, :integer
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create unique_index(:achievements, [:slug])

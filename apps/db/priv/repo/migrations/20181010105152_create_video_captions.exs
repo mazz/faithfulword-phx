@@ -6,7 +6,7 @@ defmodule DB.Repo.Migrations.CreateVideoCaptions do
       add(:video_id, references(:videos, on_delete: :delete_all))
       add(:content, :text, null: false)
       add(:format, :string, null: false)
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create(index(:videos_captions, [:video_id]))

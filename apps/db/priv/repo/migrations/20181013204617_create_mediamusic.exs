@@ -16,7 +16,7 @@ defmodule DB.Repo.Migrations.CreateMediamusic do
       add :source_material, :string
       add :music_id, references(:music, on_delete: :nothing)
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create index(:mediamusic, [:music_id])

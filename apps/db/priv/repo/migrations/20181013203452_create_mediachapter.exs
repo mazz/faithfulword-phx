@@ -15,7 +15,7 @@ defmodule DB.Repo.Migrations.CreateMediachapter do
       add :source_material, :string
       add :chapter_id, references(:chapters, on_delete: :nothing)
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create index(:mediachapters, [:chapter_id])

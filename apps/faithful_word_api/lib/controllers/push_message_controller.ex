@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.PushMessageController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.PushNotifications
-  alias FaithfulWord.PushNotifications.PushMessage
+  alias DB.Schema.PushMessage
 
   action_fallback FaithfulWordApi.FallbackController
 

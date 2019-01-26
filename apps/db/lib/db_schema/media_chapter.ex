@@ -15,7 +15,7 @@ defmodule DB.Schema.MediaChapter do
     field :uuid, Ecto.UUID
     field :chapter_id, :id
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

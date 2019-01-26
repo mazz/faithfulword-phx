@@ -16,7 +16,7 @@ defmodule DB.Schema.MediaMusic do
     field :uuid, Ecto.UUID
     field :music_id, :id
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

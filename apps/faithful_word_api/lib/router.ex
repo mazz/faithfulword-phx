@@ -16,6 +16,35 @@ defmodule FaithfulWordApi.Router do
   end
 
   # -------- Routes --------
+  scope "/", FaithfulWordApi do
+    pipe_through([:api])
+
+    scope "/v1.2" do
+      scope "/books" do
+        get "/", BookController, :index
+        get "/:bid/media", MediaChapterController, :index
+      end
+    end
+
+    scope "/v1.3" do
+      scope "/books" do
+        get "/", BookController, :index
+        get "/:bid/media", MediaChapterController, :index
+      end
+    end
+
+  end
+
+  # scope "/v1.3", FaithfulWordApi do
+  #   pipe_through(:api)
+
+  #   get "/books", BookController, :index
+  #   # post("/sessions", SessionController, :create)
+  #   # post("/users", UserController, :create)
+
+  #   # post("/sessions", SessionController, :create)
+  #   # post("/users", UserController, :create)
+  # end
 
   scope "/", FaithfulWordApi do
     pipe_through([:api])

@@ -18,7 +18,7 @@ defmodule DB.Repo.Migrations.CreateUsers do
       add :email_confirmed, :boolean, null: false, default: false
       add :email_confirmation_token, :string, null: true
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create unique_index(:users, [:email])

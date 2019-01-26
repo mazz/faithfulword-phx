@@ -15,7 +15,7 @@ defmodule DB.Repo.Migrations.CreateMediagospel do
       add :source_material, :string
       add :gospel_id, references(:gospel, on_delete: :nothing)
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create index(:mediagospel, [:gospel_id])

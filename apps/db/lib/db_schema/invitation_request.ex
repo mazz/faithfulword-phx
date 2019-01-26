@@ -13,7 +13,7 @@ defmodule DB.Schema.InvitationRequest do
 
     belongs_to(:invited_by, User)
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

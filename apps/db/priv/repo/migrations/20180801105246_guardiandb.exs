@@ -11,7 +11,7 @@ defmodule FaithfulWord.Repo.Migrations.Guardian.DB do
       add(:exp, :bigint)
       add(:jwt, :text)
       add(:claims, :map)
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
   end
 end

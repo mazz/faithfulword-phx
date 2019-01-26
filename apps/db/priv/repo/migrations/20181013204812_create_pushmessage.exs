@@ -11,7 +11,7 @@ defmodule DB.Repo.Migrations.CreatePushmessage do
       add :message, :string, size: 4096
       add :sent, :boolean, default: false, null: false
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
   end

@@ -19,7 +19,7 @@ defmodule DB.Repo.Migrations.CreateMediaitems do
       add :source_material, :string
       add :playlist_id, references(:playlists, on_delete: :delete_all)
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create index(:mediaitems, [:playlist_id])

@@ -9,7 +9,7 @@ defmodule DB.Schema.Flag do
     belongs_to(:source_user, User)
     belongs_to(:action, UserAction)
     field(:reason, DB.Type.FlagReason)
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @required_fields ~w(source_user_id action_id reason)a

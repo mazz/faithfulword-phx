@@ -60,6 +60,8 @@ defmodule FaithfulWord.MixProject do
       {:google_api_you_tube, "~> 0.2.0"},
       {:hashids, "~> 2.0"},
       {:rollbax, "~> 0.9.2"},
+      {:pigeon, "~> 1.2"},
+      {:kadabra, "~> 0.4"},
       # {:guardian, "~> 1.1"},
       # {:comeonin, "~> 4.1"},
       # {:bcrypt_elixir, "~> 1.1"},

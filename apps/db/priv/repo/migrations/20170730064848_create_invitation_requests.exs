@@ -8,7 +8,7 @@ defmodule DB.Repo.Migrations.CreateInvitationRequests do
       add :invitation_sent, :boolean, default: false, null: false
       add :invited_by_id, references(:users, on_delete: :nilify_all), null: true
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
 
     create unique_index(:invitation_requests, [:email])

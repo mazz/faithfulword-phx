@@ -1,4 +1,4 @@
-defmodule FaithfulWord.API.V13 do
+defmodule FaithfulWordApi.V13 do
 
   import Ecto.Query, warn: false
   alias DB.Repo
@@ -16,6 +16,8 @@ defmodule FaithfulWord.API.V13 do
       Logger.debug("lang #{inspect %{attributes: languages}}")
 
     if !Enum.empty?(languages) do
+      # python
+      # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
 
       if Enum.find(languages, fn(_element) -> String.starts_with?(language, languages) end) do
         Ecto.Query.from(title in DB.Schema.BookTitle,
@@ -38,3 +40,26 @@ defmodule FaithfulWord.API.V13 do
     "1.3"
   end
 end
+
+
+  # def videos_speakers(videos_ids) do
+  #   query =
+  #     from(
+  #       s in Speaker,
+  #       join: vs in VideoSpeaker,
+  #       on: vs.speaker_id == s.id,
+  #       where: vs.video_id in ^videos_ids,
+  #       select: {vs.video_id, s}
+  #     )
+
+  #   Enum.group_by(Repo.all(query), &elem(&1, 0), &elem(&1, 1))
+  # end
+
+  # def added_by_user(user, paginate_options \\ []) do
+  #   Video
+  #   |> join(:inner, [v], a in DB.Schema.UserAction, a.video_id == v.id)
+  #   |> where([_, a], a.user_id == ^user.id)
+  #   |> where([_, a], a.type == ^:add and a.entity == ^:video)
+  #   |> DB.Query.order_by_last_inserted_desc()
+  #   |> Repo.paginate(paginate_options)
+  # end

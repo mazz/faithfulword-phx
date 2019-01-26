@@ -7,7 +7,7 @@ defmodule DB.Repo.Migrations.CreateVideo do
       add :provider_id, :string, null: false
       add :title, :string, null: false
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
     create unique_index(:videos, [:provider, :provider_id])
   end

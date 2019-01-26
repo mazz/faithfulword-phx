@@ -45,7 +45,7 @@ defmodule DB.Schema.User do
 
     # belongs_to(:speaker, Speaker)
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc """

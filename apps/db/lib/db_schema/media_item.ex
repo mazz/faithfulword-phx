@@ -19,7 +19,7 @@ defmodule DB.Schema.MediaItem do
     field :uuid, Ecto.UUID
     field :playlist_id, :integer
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

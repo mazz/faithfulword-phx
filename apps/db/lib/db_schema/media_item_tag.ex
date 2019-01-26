@@ -8,7 +8,7 @@ defmodule DB.Schema.MediaItemTag do
     field :tag_id, :integer
     field :mediaitem_id, :integer
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

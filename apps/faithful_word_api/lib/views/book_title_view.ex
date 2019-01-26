@@ -2,7 +2,9 @@ defmodule FaithfulWordApi.BookTitleView do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.BookTitleView
 
-  def render("index.json", %{booktitle: booktitle}) do
+  # def render("index.json", %{media: media, api_version: api_version}) do
+
+  def render("index.json", %{booktitle: booktitle, api_version: api_version}) do
     %{data: render_many(booktitle, BookTitleView, "book_title.json")}
   end
 

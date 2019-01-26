@@ -10,7 +10,7 @@ defmodule DB.Repo.Migrations.CreateFlag do
       add :source_user_id, references(:users, on_delete: :delete_all), null: false
       add :target_user_id, references(:users, on_delete: :delete_all), null: false
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
     create index(:flags, [:source_user_id])
     create index(:flags, [:target_user_id])

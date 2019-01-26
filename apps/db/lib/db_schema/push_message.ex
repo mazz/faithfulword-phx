@@ -1,4 +1,4 @@
-defmodule FaithfulWord.PushNotifications.PushMessage do
+defmodule DB.Schema.PushMessage do
   use Ecto.Schema
   import Ecto.Changeset
 

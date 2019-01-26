@@ -8,7 +8,7 @@ defmodule DB.Schema.VideoCaption do
     field(:content, :string)
     field(:format, :string)
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @required_fields ~w(video_id content format)a
