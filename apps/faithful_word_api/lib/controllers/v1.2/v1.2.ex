@@ -63,17 +63,26 @@ defmodule FaithfulWordApi.V12 do
 
     {:ok, bid_uuid} = Ecto.UUID.dump(bid_str)
     Logger.debug("bid_uuid: #{bid_uuid}")
-    query = from t in BookTitle,
-    join: b in Book,
-    # join: c in Chapter,
-    on: b.uuid == ^bid_uuid,
-    on: t.book_id == b.id,
+    query = from b in Book,
+    join: t in BookTitle,
+    join: c in Chapter,
+    join: mc in MediaChapter,
+    # on: b.uuid == ^bid_uuid,
+    # on: t.book_id == b.id,
+    # on: t.language_id  == ^language_id,
+    # on: mc.chapter_id == c.id,
+
+    # on: c.book_id == b.id,
     # on: c.uuid
+    where: b.uuid == ^bid_uuid,
+    where: t.book_id == b.id,
     where: t.language_id  == ^language_id,
-    select: %{id: t.id,
-    uuid: t.uuid,
-    localizedname: t.localizedname,
-    language_id: t.language_id}
+    where: c.book_id == b.id,
+    where: c.id == mc.chapter_id,
+    where: mc.language_id == ^language_id,
+    # where: t.language_id  == ^language_id,
+    # where: mc.chapter_id == c.id,
+    select: %{path: mc.path}
 
     Logger.debug("Repo.all(query):")
     IO.inspect(Repo.all(query))
