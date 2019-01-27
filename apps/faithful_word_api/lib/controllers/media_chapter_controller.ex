@@ -12,12 +12,12 @@ defmodule FaithfulWordApi.MediaChapterController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, params = %{"bid" => bid_str, "language-id" => language_id}) do
+  def index(conn, params = %{"bid" => bid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
     cond do
       Enum.member?(conn.path_info, "v1.2") ->
         V12.chapter_media_by_bid(bid_str, language_id)
       Enum.member?(conn.path_info, "v1.3") ->
-        V13.chapter_media_by_bid(bid_str, language_id)
+        V13.chapter_media_by_bid(bid_str, language_id, offset, limit)
       true ->
         nil
     end

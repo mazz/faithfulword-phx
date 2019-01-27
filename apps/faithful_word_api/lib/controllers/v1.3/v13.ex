@@ -40,7 +40,7 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def chapter_media_by_bid(bid_str, language_id) do
+  def chapter_media_by_bid(bid_str, language_id, offset \\ 0, limit \\ 0) do
     {:ok, bid_uuid} = Ecto.UUID.dump(bid_str)
     Logger.debug("bid_uuid: #{bid_uuid}")
     query = from b in Book,
@@ -59,9 +59,16 @@ defmodule FaithfulWordApi.V13 do
     # where: mc.chapter_id == c.id,
     select: %{localizedName: mc.localizedname, path: mc.path, presenterName: mc.presenter_name, sourceMaterial: mc.source_material, uuid: mc.uuid}
 
-    Logger.debug("Repo.all(query):")
-    IO.inspect(Repo.all(query))
-      Repo.all(query)
+    query
+    |> Repo.paginate(page: offset, page_size: limit)
+    # |> Repo.all
+    # Repo.all
+    # Repo.paginate(page: 1, page_size: 10)
+
+
+    # Logger.debug("Repo.all(query):")
+    # IO.inspect(Repo.all(query))
+    # Repo.all(query)
   end
 
   def gospel_by_language(language) do
@@ -132,10 +139,10 @@ defmodule FaithfulWordApi.V13 do
     # where: t.language_id  == ^language_id,
     select: %{localizedName: mg.localizedname, path: mg.path, presenterName: mg.presenter_name, sourceMaterial: mg.source_material, uuid: mg.uuid}
 
-    query |>
+    query
+    |> Repo.paginate(page: offset, page_size: limit)
       # Repo.all
       # Repo.paginate(page: 1, page_size: 10)
-      Repo.paginate(page: offset, page_size: limit)
 
     # Logger.debug("Repo.all(query):")
     # IO.inspect(Repo.all(query))

@@ -4,7 +4,11 @@ defmodule FaithfulWordApi.MediaChapterView do
 
   def render("index.json", %{mediachapter: mediachapter, api_version: api_version}) do
     %{result: render_many(mediachapter, MediaChapterView, "media_chapter.json"),
+    pageNumber: mediachapter.page_number,
+    pageSize: mediachapter.page_size,
     status: "success",
+    totalEntries: mediachapter.total_entries,
+    totalPages: mediachapter.total_pages,
     version: api_version}
 
     # %{data: render_many(mediachapter, MediaChapterView, "media_chapter.json")}
