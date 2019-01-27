@@ -90,9 +90,32 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def gospel_media_by_gid(gid_str, language_id) do
+  def gospel_media_by_gid(gid_str, language_id, offset \\ 0, limit \\ 0) do
+
+    # (Ecto.Query.from book in Allscripture.Book
+    #   |> join: title in Allscripture.BookTitle
+    #   |> on: title.book_id == book.id
+    #   |> where: title.language_id  == "pt"
+    #   |> select: %{ uuid: book.uuid, language_id: title.language_id, title: book.basename, localized_title: title.localizedname }
+    #   |> Allscripture.Repo.all)
+
+    # (Ecto.Query
+    # |> from g in Gospel
+    # |> join: t in GospelTitle
+    # |> join: mg in MediaGospel
+    # |> where: g.uuid == ^gid_uuid
+    # |> where: t.gospel_id == g.id
+    # |> where: t.language_id  == ^language_id
+    # |> where: mg.language_id == ^language_id
+    # |> where: mg.gospel_id == g.id
+    # |> order_by: [mg.absolute_id, mg.id]
+    # |> select: %{localizedName: mg.localizedname, path: mg.path, presenterName: mg.presenter_name, sourceMaterial: mg.source_material, uuid: mg.uuid}
+    # |> DB.Repo.all)
+
     {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
     Logger.debug("gid_uuid: #{gid_uuid}")
+
+
     query = from g in Gospel,
     join: t in GospelTitle,
     # join: c in Chapter,
@@ -104,13 +127,18 @@ defmodule FaithfulWordApi.V13 do
     # where: c.book_id == g.id,
     # where: c.id == mc.chapter_id,
     where: mg.language_id == ^language_id,
+    where: mg.gospel_id == g.id,
     order_by: [mg.absolute_id, mg.id],
     # where: t.language_id  == ^language_id,
-    where: mg.gospel_id == g.id,
     select: %{localizedName: mg.localizedname, path: mg.path, presenterName: mg.presenter_name, sourceMaterial: mg.source_material, uuid: mg.uuid}
 
-    Logger.debug("Repo.all(query):")
-    IO.inspect(Repo.all(query))
-      Repo.all(query)
+    query |>
+      # Repo.all
+      # Repo.paginate(page: 1, page_size: 10)
+      Repo.paginate(page: offset, page_size: limit)
+
+    # Logger.debug("Repo.all(query):")
+    # IO.inspect(Repo.all(query))
+    # Repo.paginate(page: offset, page_size: limit)
   end
 end

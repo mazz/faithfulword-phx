@@ -12,12 +12,12 @@ defmodule FaithfulWordApi.MediaGospelController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, params = %{"gid" => gid_str, "language-id" => language_id}) do
+  def index(conn, params = %{"gid" => gid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
     cond do
       Enum.member?(conn.path_info, "v1.2") ->
         V12.gospel_media_by_gid(gid_str, language_id)
       Enum.member?(conn.path_info, "v1.3") ->
-        V13.gospel_media_by_gid(gid_str, language_id)
+        V13.gospel_media_by_gid(gid_str, language_id, offset, limit)
       true ->
         nil
     end

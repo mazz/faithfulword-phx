@@ -32,23 +32,9 @@ defmodule FaithfulWordApi.GospelController do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      gospel ->
-        Logger.debug("gospel #{inspect %{attributes: gospel}}")
-        render(conn, GospelV12View, "indexv12.json", %{gospel: gospel})
-        # Enum.at(conn.path_info, 0)
-        # |> case do
-          # api_version ->
-            # cond do
-              # api_version == "v1.2" ->
-                # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
-
-              # api_version != "v1.2" ->
-                # render(conn, GospelView, "index.json", %{gospel: gospel, api_version: api_version})
-              # true ->
-                # nil
-            # end
-            # render(conn, "index.json", %{gospel: gospel, api_version: api_version})
-        # end
+      gospel_v12 ->
+        Logger.debug("gospel_v12 #{inspect %{attributes: gospel_v12}}")
+        render(conn, GospelV12View, "indexv12.json", %{gospel_v12: gospel_v12})
     end
   end
 
@@ -71,22 +57,15 @@ defmodule FaithfulWordApi.GospelController do
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
       gospel ->
-        Logger.debug("gospel #{inspect %{attributes: gospel}}")
-        # Enum.at(conn.path_info, 0)
-        render(conn, GospelView, "index.json", %{gospel: gospel})
-        # case do
-          # api_version ->
-            # cond do
-              # api_version == "v1.2" ->
-                # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
-                # render(conn, GospelV12View, "index.json", %{gospel: gospel})
-              # api_version != "v1.2" ->
+        # render(conn, GospelView, "index.json", %{gospel: gospel})
 
-              # true ->
-                # nil
-            # end
-            # render(conn, "index.json", %{gospel: gospel, api_version: api_version})
-        # end
+        Logger.debug("gospel #{inspect %{attributes: gospel}}")
+        Enum.at(conn.path_info, 0)
+        |>
+        case do
+          api_version ->
+                render(conn, "index.json", %{gospel: gospel, api_version: api_version})
+        end
     end
   end
 

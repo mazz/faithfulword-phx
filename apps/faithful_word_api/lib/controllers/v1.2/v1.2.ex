@@ -111,6 +111,7 @@ defmodule FaithfulWordApi.V12 do
 
     Logger.debug("Repo.all(query):")
     IO.inspect(Repo.all(query))
-      Repo.all(query)
+    # Repo.paginate(page: 1, page_size: 10)
+    Repo.all(query)
   end
 end
