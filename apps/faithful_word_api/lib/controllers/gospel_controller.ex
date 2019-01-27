@@ -4,6 +4,8 @@ defmodule FaithfulWordApi.GospelController do
   alias FaithfulWord.Content
   alias DB.Schema.Gospel
 
+  alias FaithfulWordApi.GospelV12View
+  alias FaithfulWordApi.GospelView
   alias FaithfulWordApi.ErrorView
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
@@ -12,30 +14,79 @@ defmodule FaithfulWordApi.GospelController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, %{"language-id" => lang}) do
+  def indexv12(conn, %{"language-id" => lang}) do
     Logger.debug("lang #{inspect %{attributes: lang}}")
     IO.inspect(conn)
     #  path_info: ["v1.2", "books"],
     # books =
-    cond do
-      Enum.member?(conn.path_info, "v1.2") ->
-        V12.gospel_by_language(lang)
-      Enum.member?(conn.path_info, "v1.3") ->
-        V13.gospel_by_language(lang)
-      true ->
-        nil
-    end
+    # cond do
+      # Enum.member?(conn.path_info, "v1.2") ->
+
+      # Enum.member?(conn.path_info, "v1.3") ->
+        # V13.gospel_by_language(lang)
+      # true ->
+        # nil
+    # end
+    V12.gospel_by_language(lang)
     |> case do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
       gospel ->
         Logger.debug("gospel #{inspect %{attributes: gospel}}")
-        Enum.at(conn.path_info, 0)
-        |> case do
-          api_version ->
-            render(conn, "index.json", %{gospel: gospel, api_version: api_version})
-        end
+        render(conn, GospelV12View, "indexv12.json", %{gospel: gospel})
+        # Enum.at(conn.path_info, 0)
+        # |> case do
+          # api_version ->
+            # cond do
+              # api_version == "v1.2" ->
+                # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+
+              # api_version != "v1.2" ->
+                # render(conn, GospelView, "index.json", %{gospel: gospel, api_version: api_version})
+              # true ->
+                # nil
+            # end
+            # render(conn, "index.json", %{gospel: gospel, api_version: api_version})
+        # end
+    end
+  end
+
+  def index(conn, %{"language-id" => lang}) do
+    Logger.debug("lang #{inspect %{attributes: lang}}")
+    IO.inspect(conn)
+    #  path_info: ["v1.2", "books"],
+    # books =
+    # cond do
+      # Enum.member?(conn.path_info, "v1.2") ->
+        # V12.gospel_by_language(lang)
+      # Enum.member?(conn.path_info, "v1.3") ->
+      # true ->
+        # nil
+    # end
+    V13.gospel_by_language(lang)
+    |>
+    case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      gospel ->
+        Logger.debug("gospel #{inspect %{attributes: gospel}}")
+        # Enum.at(conn.path_info, 0)
+        render(conn, GospelView, "index.json", %{gospel: gospel})
+        # case do
+          # api_version ->
+            # cond do
+              # api_version == "v1.2" ->
+                # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+                # render(conn, GospelV12View, "index.json", %{gospel: gospel})
+              # api_version != "v1.2" ->
+
+              # true ->
+                # nil
+            # end
+            # render(conn, "index.json", %{gospel: gospel, api_version: api_version})
+        # end
     end
   end
 

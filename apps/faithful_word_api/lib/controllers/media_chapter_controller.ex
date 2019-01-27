@@ -4,6 +4,7 @@ defmodule FaithfulWordApi.MediaChapterController do
   alias FaithfulWord.Content
   alias DB.Schema.MediaChapter
   alias FaithfulWordApi.V12
+  alias FaithfulWordApi.V13
 
   alias FaithfulWordApi.ErrorView
 
@@ -15,6 +16,8 @@ defmodule FaithfulWordApi.MediaChapterController do
     cond do
       Enum.member?(conn.path_info, "v1.2") ->
         V12.chapter_media_by_bid(bid_str, language_id)
+      Enum.member?(conn.path_info, "v1.3") ->
+        V13.chapter_media_by_bid(bid_str, language_id)
       true ->
         nil
     end
@@ -34,44 +37,6 @@ defmodule FaithfulWordApi.MediaChapterController do
         end
       end
   end
-
-
-
-
-
-    # mediachapter = Content.list_mediachapter()
-    # render(conn, "index.json", mediachapter: mediachapter)
-
-
-    # v1.3
-    # def media(conn, params = %{"uuid" => uuid_str}) do
-    #   cond do
-    #     Enum.member?(conn.path_info, "v1.3") ->
-    #       V13.chapter_media_by_uuid(uuid_str)
-    #     true ->
-    #       nil
-    #   end
-    # end
-
-    # def media(conn, params = %{"bid" => bid_str, "language-id" => language_id}) do
-    #   cond do
-    #     Enum.member?(conn.path_info, "v1.2") ->
-    #       V12.chapter_media_by_bid(bid_str, language_id)
-    #     true ->
-    #       nil
-    #   end |> case do
-    #     nil ->
-    #       put_status(conn, 403)
-    #       |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-    #     media ->
-    #       Logger.debug("media #{inspect %{attributes: media}}")
-    #       Enum.at(conn.path_info, 0)
-    #       |> case do
-    #         api_version ->
-    #           render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
-    #           # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
-    #       end
-    #   end
 
 
   def create(conn, %{"media_chapter" => media_chapter_params}) do

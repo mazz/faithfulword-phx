@@ -2,8 +2,11 @@ defmodule FaithfulWordApi.MediaGospelView do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.MediaGospelView
 
-  def render("index.json", %{mediagospel: mediagospel}) do
-    %{data: render_many(mediagospel, MediaGospelView, "media_gospel.json")}
+  def render("index.json",%{mediagospel: mediagospel, api_version: api_version}) do
+    %{result: render_many(mediagospel, MediaGospelView, "media_gospel.json"),
+    status: "success",
+    version: api_version}
+    # %{data: render_many(mediagospel, MediaGospelView, "media_gospel.json")}
   end
 
   def render("show.json", %{media_gospel: media_gospel}) do
@@ -11,14 +14,6 @@ defmodule FaithfulWordApi.MediaGospelView do
   end
 
   def render("media_gospel.json", %{media_gospel: media_gospel}) do
-    %{id: media_gospel.id,
-      absolute_id: media_gospel.absolute_id,
-      uuid: media_gospel.uuid,
-      track_number: media_gospel.track_number,
-      localizedname: media_gospel.localizedname,
-      path: media_gospel.path,
-      language_id: media_gospel.language_id,
-      presenter_name: media_gospel.presenter_name,
-      source_material: media_gospel.source_material}
+    %{localizedName: media_gospel.localizedName, path: media_gospel.path, presenterName: media_gospel.presenterName, sourceMaterial: media_gospel.sourceMaterial, uuid: media_gospel.uuid}
   end
 end

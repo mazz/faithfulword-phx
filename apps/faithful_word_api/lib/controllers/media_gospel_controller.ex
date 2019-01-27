@@ -3,21 +3,39 @@ defmodule FaithfulWordApi.MediaGospelController do
 
   alias FaithfulWord.Content
   alias DB.Schema.MediaGospel
+  alias FaithfulWordApi.V12
+  alias FaithfulWordApi.V13
+
+  alias FaithfulWordApi.ErrorView
+
+  require Logger
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, _params) do
-    mediagospel = Content.list_mediagospel()
-    render(conn, "index.json", mediagospel: mediagospel)
-  end
-
-  def create(conn, %{"media_gospel" => media_gospel_params}) do
-    with {:ok, %MediaGospel{} = media_gospel} <- Content.create_media_gospel(media_gospel_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.media_gospel_path(conn, :show, media_gospel))
-      |> render("show.json", media_gospel: media_gospel)
+  def index(conn, params = %{"gid" => gid_str, "language-id" => language_id}) do
+    cond do
+      Enum.member?(conn.path_info, "v1.2") ->
+        V12.gospel_media_by_gid(gid_str, language_id)
+      Enum.member?(conn.path_info, "v1.3") ->
+        V13.gospel_media_by_gid(gid_str, language_id)
+      true ->
+        nil
     end
+    |>
+    case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      mediagospel ->
+        Logger.debug("mediagospel #{inspect %{attributes: mediagospel}}")
+        Enum.at(conn.path_info, 0)
+        |> case do
+          api_version ->
+            render(conn, "index.json", %{mediagospel: mediagospel, api_version: api_version})
+            # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
+            # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+        end
+      end
   end
 
   def show(conn, %{"id" => id}) do

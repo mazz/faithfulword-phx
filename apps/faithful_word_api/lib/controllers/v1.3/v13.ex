@@ -76,7 +76,7 @@ defmodule FaithfulWordApi.V13 do
       if Enum.find(languages, fn(_element) -> String.starts_with?(language, languages) end) do
         Ecto.Query.from(title in GospelTitle,
           join: g in Gospel,
-          on: title.book_id == g.id,
+          on: title.gospel_id == g.id,
           where: title.language_id  == ^language,
           order_by: g.absolute_id,
           select: %{title: g.basename, localizedTitle: title.localizedname, uuid: g.uuid, languageId: title.language_id})
@@ -88,5 +88,29 @@ defmodule FaithfulWordApi.V13 do
       Logger.debug("lang empty #{inspect %{attributes: languages}}")
       nil
     end
+  end
+
+  def gospel_media_by_gid(gid_str, language_id) do
+    {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
+    Logger.debug("gid_uuid: #{gid_uuid}")
+    query = from g in Gospel,
+    join: t in GospelTitle,
+    # join: c in Chapter,
+    join: mg in MediaGospel,
+
+    where: g.uuid == ^gid_uuid,
+    where: t.gospel_id == g.id,
+    where: t.language_id  == ^language_id,
+    # where: c.book_id == g.id,
+    # where: c.id == mc.chapter_id,
+    where: mg.language_id == ^language_id,
+    order_by: [mg.absolute_id, mg.id],
+    # where: t.language_id  == ^language_id,
+    where: mg.gospel_id == g.id,
+    select: %{localizedName: mg.localizedname, path: mg.path, presenterName: mg.presenter_name, sourceMaterial: mg.source_material, uuid: mg.uuid}
+
+    Logger.debug("Repo.all(query):")
+    IO.inspect(Repo.all(query))
+      Repo.all(query)
   end
 end

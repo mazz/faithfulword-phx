@@ -4,8 +4,8 @@ defmodule FaithfulWordApi.BookView do
 
   require Logger
 
-  def render("index.json", %{books: books, api_version: api_version}) do
-    %{result: render_many(books, BookView, "book.json"),
+  def render("index.json", %{book: book, api_version: api_version}) do
+    %{result: render_many(book, BookView, "book.json"),
       status: "success",
       version: api_version}
   end
@@ -21,7 +21,7 @@ defmodule FaithfulWordApi.BookView do
 
     %{title: book.title,
     localizedTitle: book.localizedTitle,
-    bid: book.uuid,
+    uuid: book.uuid,
     languageId: book.languageId}
   end
 end
