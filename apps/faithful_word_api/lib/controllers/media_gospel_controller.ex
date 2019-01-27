@@ -7,31 +7,47 @@ defmodule FaithfulWordApi.MediaGospelController do
   alias FaithfulWordApi.V13
 
   alias FaithfulWordApi.ErrorView
+  alias FaithfulWordApi.MediaGospelV12View
+  alias FaithfulWordApi.MediaGospelView
 
   require Logger
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, params = %{"gid" => gid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
-    cond do
-      Enum.member?(conn.path_info, "v1.2") ->
-        V12.gospel_media_by_gid(gid_str, language_id)
-      Enum.member?(conn.path_info, "v1.3") ->
-        V13.gospel_media_by_gid(gid_str, language_id, offset, limit)
-      true ->
-        nil
-    end
+  def indexv12(conn, params = %{"gid" => gid_str, "language-id" => language_id}) do
+    V12.gospel_media_by_gid(gid_str, language_id)
     |>
     case do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      mediagospel ->
-        Logger.debug("mediagospel #{inspect %{attributes: mediagospel}}")
+      media_gospel_v12 ->
+        Logger.debug("media_gospel_v12 #{inspect %{attributes: media_gospel_v12}}")
+        render(conn, MediaGospelV12View, "index.json", %{media_gospel_v12: media_gospel_v12})
+
+        # Enum.at(conn.path_info, 0)
+        # |> case do
+          # api_version ->
+            # render(conn, "index.json", %{media_gospel: media_gospel})
+            # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
+            # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+        # end
+      end
+  end
+
+  def index(conn, params = %{"gid" => gid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+    V13.gospel_media_by_gid(gid_str, language_id, offset, limit)
+    |>
+    case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      media_gospel ->
+        Logger.debug("media_gospel #{inspect %{attributes: media_gospel}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
-            render(conn, "index.json", %{mediagospel: mediagospel, api_version: api_version})
+            render(conn, MediaGospelView, "index.json", %{media_gospel: media_gospel, api_version: api_version})
             # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
             # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
         end

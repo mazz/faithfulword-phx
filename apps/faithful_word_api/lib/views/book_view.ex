@@ -6,8 +6,12 @@ defmodule FaithfulWordApi.BookView do
 
   def render("index.json", %{book: book, api_version: api_version}) do
     %{result: render_many(book, BookView, "book.json"),
-      status: "success",
-      version: api_version}
+    pageNumber: book.page_number,
+    pageSize: book.page_size,
+    status: "success",
+    totalEntries: book.total_entries,
+    totalPages: book.total_pages,
+    version: api_version}
   end
 
   def render("show.json", %{book: book}) do

@@ -41,7 +41,7 @@ defmodule FaithfulWordApi.BookController do
     end
   end
 
-  def index(conn, %{"language-id" => lang}) do
+  def index(conn, %{"language-id" => lang, "offset" => offset, "limit" => limit}) do
     # Logger.debug("lang #{inspect %{attributes: lang}}")
     # IO.inspect(conn)
     #  path_info: ["v1.2", "books"],
@@ -54,7 +54,7 @@ defmodule FaithfulWordApi.BookController do
     #   true ->
     #     nil
     # end
-    V13.books_by_language(lang)
+    V13.books_by_language(lang, offset, limit)
     |> case do
       nil ->
         put_status(conn, 403)

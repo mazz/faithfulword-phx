@@ -7,31 +7,48 @@ defmodule FaithfulWordApi.MediaChapterController do
   alias FaithfulWordApi.V13
 
   alias FaithfulWordApi.ErrorView
+  alias FaithfulWordApi.MediaChapterV12View
+  alias FaithfulWordApi.MediaChapterView
 
   require Logger
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, params = %{"bid" => bid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
-    cond do
-      Enum.member?(conn.path_info, "v1.2") ->
-        V12.chapter_media_by_bid(bid_str, language_id)
-      Enum.member?(conn.path_info, "v1.3") ->
-        V13.chapter_media_by_bid(bid_str, language_id, offset, limit)
-      true ->
-        nil
-    end
+  def indexv12(conn, params = %{"bid" => bid_str, "language-id" => language_id}) do
+    V12.chapter_media_by_bid(bid_str, language_id)
     |>
     case do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      mediachapter ->
-        Logger.debug("mediachapter #{inspect %{attributes: mediachapter}}")
+      media_chapter_v12 ->
+        Logger.debug("media_chapter_v12 #{inspect %{attributes: media_chapter_v12}}")
+        render(conn, MediaChapterV12View, "indexv12.json", %{media_chapter_v12: media_chapter_v12})
+
+        # Enum.at(conn.path_info, 0)
+        # |> case do
+          # api_version ->
+            # render(conn, "index.json", %{mediachapter: mediachapter})
+
+            # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
+            # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+        # end
+      end
+  end
+
+  def index(conn, params = %{"bid" => bid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+    V13.chapter_media_by_bid(bid_str, language_id, offset, limit)
+    |>
+    case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      media_chapter ->
+        Logger.debug("media_chapter #{inspect %{attributes: media_chapter}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
-            render(conn, "index.json", %{mediachapter: mediachapter, api_version: api_version})
+            render(conn, MediaChapterView, "index.json", %{media_chapter: media_chapter, api_version: api_version})
             # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
             # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
         end

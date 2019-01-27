@@ -2,15 +2,15 @@ defmodule FaithfulWordApi.MediaGospelView do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.MediaGospelView
 
-  def render("index.json",%{mediagospel: mediagospel, api_version: api_version}) do
-    %{result: render_many(mediagospel, MediaGospelView, "media_gospel.json"),
-    pageNumber: mediagospel.page_number,
-    pageSize: mediagospel.page_size,
+  def render("index.json",%{media_gospel: media_gospel, api_version: api_version}) do
+    %{result: render_many(media_gospel, MediaGospelView, "media_gospel.json"),
+    pageNumber: media_gospel.page_number,
+    pageSize: media_gospel.page_size,
     status: "success",
-    totalEntries: mediagospel.total_entries,
-    totalPages: mediagospel.total_pages,
+    totalEntries: media_gospel.total_entries,
+    totalPages: media_gospel.total_pages,
     version: api_version}
-    # %{data: render_many(mediagospel, MediaGospelView, "media_gospel.json")}
+    # %{data: render_many(media_gospel, MediaGospelView, "media_gospel.json")}
   end
 
   def render("show.json", %{media_gospel: media_gospel}) do

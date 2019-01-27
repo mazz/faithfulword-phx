@@ -12,7 +12,7 @@ defmodule FaithfulWordApi.V13 do
   require Ecto.Query
   require Logger
 
-  def books_by_language(language) do
+  def books_by_language(language, offset \\ 0, limit \\ 0) do
     languages = Ecto.Query.from(language in LanguageIdentifier,
       select: language.identifier)
       |> Repo.all
@@ -30,7 +30,8 @@ defmodule FaithfulWordApi.V13 do
           where: title.language_id  == ^language,
           order_by: b.absolute_id,
           select: %{title: b.basename, localizedTitle: title.localizedname, uuid: b.uuid, languageId: title.language_id})
-          |> DB.Repo.all
+          |> Repo.paginate(page: offset, page_size: limit)
+          # |> DB.Repo.all
       else
         nil
       end
@@ -71,7 +72,7 @@ defmodule FaithfulWordApi.V13 do
     # Repo.all(query)
   end
 
-  def gospel_by_language(language) do
+  def gospel_by_language(language, offset \\ 0, limit \\ 0) do
     languages = Ecto.Query.from(language in LanguageIdentifier,
       select: language.identifier)
       |> Repo.all
@@ -87,7 +88,8 @@ defmodule FaithfulWordApi.V13 do
           where: title.language_id  == ^language,
           order_by: g.absolute_id,
           select: %{title: g.basename, localizedTitle: title.localizedname, uuid: g.uuid, languageId: title.language_id})
-          |> Repo.all
+          |> Repo.paginate(page: offset, page_size: limit)
+          # |> Repo.all
       else
         nil
       end
