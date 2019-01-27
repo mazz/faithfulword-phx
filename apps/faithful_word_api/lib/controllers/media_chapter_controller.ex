@@ -7,6 +7,8 @@ defmodule FaithfulWordApi.MediaChapterController do
 
   alias FaithfulWordApi.ErrorView
 
+  require Logger
+
   action_fallback FaithfulWordApi.FallbackController
 
   def index(conn, params = %{"bid" => bid_str, "language-id" => language_id}) do
@@ -16,20 +18,21 @@ defmodule FaithfulWordApi.MediaChapterController do
       true ->
         nil
     end
-    # |>
-    # case do
-    #   nil ->
+    |>
+    case do
+      nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      # media ->
-      #   Logger.debug("media #{inspect %{attributes: media}}")
-      #   Enum.at(conn.path_info, 0)
-      #   |> case do
-      #     api_version ->
-      #       # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
-      #       # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
-      #   end
-      # end
+      mediachapter ->
+        Logger.debug("mediachapter #{inspect %{attributes: mediachapter}}")
+        Enum.at(conn.path_info, 0)
+        |> case do
+          api_version ->
+            render(conn, "index.json", %{mediachapter: mediachapter, api_version: api_version})
+            # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
+            # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+        end
+      end
   end
 
 

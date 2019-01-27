@@ -60,7 +60,6 @@ defmodule FaithfulWordApi.V12 do
   """
 
   def chapter_media_by_bid(bid_str, language_id) do
-
     {:ok, bid_uuid} = Ecto.UUID.dump(bid_str)
     Logger.debug("bid_uuid: #{bid_uuid}")
     query = from b in Book,
@@ -80,9 +79,10 @@ defmodule FaithfulWordApi.V12 do
     where: c.book_id == b.id,
     where: c.id == mc.chapter_id,
     where: mc.language_id == ^language_id,
+    order_by: [mc.absolute_id, mc.id],
     # where: t.language_id  == ^language_id,
     # where: mc.chapter_id == c.id,
-    select: %{path: mc.path}
+    select: %{localizedName: mc.localizedname, path: mc.path, presenterName: mc.presenter_name, sourceMaterial: mc.source_material, uuid: mc.uuid}
 
     Logger.debug("Repo.all(query):")
     IO.inspect(Repo.all(query))
