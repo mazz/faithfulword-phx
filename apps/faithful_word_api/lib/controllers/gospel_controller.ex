@@ -4,11 +4,39 @@ defmodule FaithfulWordApi.GospelController do
   alias FaithfulWord.Content
   alias DB.Schema.Gospel
 
+  alias FaithfulWordApi.ErrorView
+  alias FaithfulWordApi.V12
+  alias FaithfulWordApi.V13
+
+  require Logger
+
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, _params) do
-    gospel = Content.list_gospel()
-    render(conn, "index.json", gospel: gospel)
+  def index(conn, %{"language-id" => lang}) do
+    Logger.debug("lang #{inspect %{attributes: lang}}")
+    IO.inspect(conn)
+    #  path_info: ["v1.2", "books"],
+    # books =
+    cond do
+      Enum.member?(conn.path_info, "v1.2") ->
+        V12.gospel_by_language(lang)
+      Enum.member?(conn.path_info, "v1.3") ->
+        V13.gospel_by_language(lang)
+      true ->
+        nil
+    end
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      gospel ->
+        Logger.debug("gospel #{inspect %{attributes: gospel}}")
+        Enum.at(conn.path_info, 0)
+        |> case do
+          api_version ->
+            render(conn, "index.json", %{gospel: gospel, api_version: api_version})
+        end
+    end
   end
 
   def create(conn, %{"gospel" => gospel_params}) do

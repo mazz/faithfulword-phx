@@ -2,8 +2,11 @@ defmodule FaithfulWordApi.GospelView do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.GospelView
 
-  def render("index.json", %{gospel: gospel}) do
-    %{data: render_many(gospel, GospelView, "gospel.json")}
+
+  def render("index.json", %{gospel: gospel, api_version: api_version}) do
+    %{result: render_many(gospel, GospelView, "gospel.json"),
+      status: "success",
+      version: api_version}
   end
 
   def render("show.json", %{gospel: gospel}) do
@@ -11,9 +14,9 @@ defmodule FaithfulWordApi.GospelView do
   end
 
   def render("gospel.json", %{gospel: gospel}) do
-    %{id: gospel.id,
-      absolute_id: gospel.absolute_id,
-      uuid: gospel.uuid,
-      basename: gospel.basename}
+    %{title: gospel.title,
+    localizedTitle: gospel.localizedTitle,
+    gid: gospel.uuid,
+    languageId: gospel.languageId}
   end
 end

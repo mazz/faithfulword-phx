@@ -24,6 +24,10 @@ defmodule FaithfulWordApi.Router do
         get "/", BookController, :index
         get "/:bid/media", MediaChapterController, :index
       end
+      scope "/gospels" do
+        get "/", GospelController, :index
+        get "/:gid/media", MediaGospelController, :index
+      end
     end
 
     scope "/v1.3" do
