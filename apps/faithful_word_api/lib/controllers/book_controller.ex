@@ -14,7 +14,7 @@ defmodule FaithfulWordApi.BookController do
 
   def indexv12(conn, %{"language-id" => lang}) do
     Logger.debug("lang #{inspect %{attributes: lang}}")
-    IO.inspect(conn)
+    # IO.inspect(conn)
     #  path_info: ["v1.2", "books"],
     # books =
     # cond do

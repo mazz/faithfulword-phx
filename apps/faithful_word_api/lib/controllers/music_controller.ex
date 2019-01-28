@@ -27,7 +27,7 @@ defmodule FaithfulWordApi.MusicController do
   # def index(conn, %{"language-id" => lang}) do
   def index(conn,  %{"language-id" => lang, "offset" => offset, "limit" => limit}) do
       Logger.debug("lang #{inspect %{attributes: lang}}")
-    IO.inspect(conn)
+    # IO.inspect(conn)
     V13.music_by_language(lang, offset, limit)
     |>
     case do
