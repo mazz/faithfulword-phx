@@ -13,18 +13,6 @@ defmodule FaithfulWordApi.MusicController do
   action_fallback FaithfulWordApi.FallbackController
 
   def indexv12(conn, _params) do
-    # Logger.debug("lang #{inspect %{attributes: lang}}")
-    # IO.inspect(conn)
-    #  path_info: ["v1.2", "books"],
-    # books =
-    # cond do
-      # Enum.member?(conn.path_info, "v1.2") ->
-
-      # Enum.member?(conn.path_info, "v1.3") ->
-        # V13.gospel_by_language(lang)
-      # true ->
-        # nil
-    # end
     V12.music()
     |> case do
       nil ->
@@ -40,15 +28,6 @@ defmodule FaithfulWordApi.MusicController do
   def index(conn,  %{"language-id" => lang, "offset" => offset, "limit" => limit}) do
       Logger.debug("lang #{inspect %{attributes: lang}}")
     IO.inspect(conn)
-    #  path_info: ["v1.2", "books"],
-    # books =
-    # cond do
-      # Enum.member?(conn.path_info, "v1.2") ->
-        # V12.gospel_by_language(lang)
-      # Enum.member?(conn.path_info, "v1.3") ->
-      # true ->
-        # nil
-    # end
     V13.music_by_language(lang, offset, limit)
     |>
     case do

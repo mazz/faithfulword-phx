@@ -36,6 +36,9 @@ defmodule FaithfulWordApi.Router do
         get "/", MusicController, :indexv12
         get "/:mid/media", MediaMusicController, :indexv12
       end
+      scope "/languages" do
+        get "/supported", LanguageIdentifierController, :indexv12
+      end
     end
 
     scope "/v1.3" do
@@ -50,6 +53,9 @@ defmodule FaithfulWordApi.Router do
       scope "/music" do
         get "/", MusicController, :index
         get "/:uuid/media", MediaMusicController, :index
+      end
+      scope "/languages" do
+        get "/supported", LanguageIdentifierController, :index
       end
     end
 

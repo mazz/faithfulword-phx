@@ -179,4 +179,11 @@ defmodule FaithfulWordApi.V13 do
     query
     |> Repo.paginate(page: offset, page_size: limit)
   end
+
+  def language_identifiers(offset \\ 0, limit \\ 0) do
+    Ecto.Query.from(lid in LanguageIdentifier,
+      order_by: lid.identifier,
+      select: %{identifier: lid.identifier, source_material: lid.source_material, supported: lid.supported, uuid: lid.uuid})
+      |> Repo.paginate(page: offset, page_size: limit)
+  end
 end
