@@ -3,12 +3,69 @@ defmodule FaithfulWordApi.MusicController do
 
   alias FaithfulWord.Content
   alias DB.Schema.Music
+  alias FaithfulWordApi.MusicView
+  alias FaithfulWordApi.MusicV12View
+  alias FaithfulWordApi.V12
+  alias FaithfulWordApi.V13
+
+  require Logger
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, _params) do
-    music = Content.list_music()
-    render(conn, "index.json", music: music)
+  def indexv12(conn, _params) do
+    # Logger.debug("lang #{inspect %{attributes: lang}}")
+    # IO.inspect(conn)
+    #  path_info: ["v1.2", "books"],
+    # books =
+    # cond do
+      # Enum.member?(conn.path_info, "v1.2") ->
+
+      # Enum.member?(conn.path_info, "v1.3") ->
+        # V13.gospel_by_language(lang)
+      # true ->
+        # nil
+    # end
+    V12.music()
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      music_v12 ->
+        Logger.debug("music_v12 #{inspect %{attributes: music_v12}}")
+        render(conn, MusicV12View, "indexv12.json", %{music_v12: music_v12})
+    end
+  end
+
+  # def index(conn, %{"language-id" => lang}) do
+  def index(conn,  %{"language-id" => lang, "offset" => offset, "limit" => limit}) do
+      Logger.debug("lang #{inspect %{attributes: lang}}")
+    IO.inspect(conn)
+    #  path_info: ["v1.2", "books"],
+    # books =
+    # cond do
+      # Enum.member?(conn.path_info, "v1.2") ->
+        # V12.gospel_by_language(lang)
+      # Enum.member?(conn.path_info, "v1.3") ->
+      # true ->
+        # nil
+    # end
+    V13.music_by_language(lang, offset, limit)
+    |>
+    case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      music ->
+        # render(conn, GospelView, "index.json", %{music: music})
+
+        Logger.debug("music #{inspect %{attributes: music}}")
+        Enum.at(conn.path_info, 0)
+        |>
+        case do
+          api_version ->
+                render(conn, "index.json", %{music: music, api_version: api_version})
+        end
+    end
   end
 
   def create(conn, %{"music" => music_params}) do

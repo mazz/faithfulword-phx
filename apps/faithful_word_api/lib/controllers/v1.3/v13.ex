@@ -8,6 +8,7 @@ defmodule FaithfulWordApi.V13 do
 
   alias DB.Schema.{MediaGospel, Gospel}
   alias DB.Schema.{GospelTitle, LanguageIdentifier}
+  alias DB.Schema.{MusicTitle, Music}
 
   require Ecto.Query
   require Logger
@@ -150,4 +151,36 @@ defmodule FaithfulWordApi.V13 do
     # IO.inspect(Repo.all(query))
     # Repo.paginate(page: offset, page_size: limit)
   end
+
+  def music_by_language(language \\ "en", offset \\ 0, limit \\ 0) do
+    # Ecto.Query.from(m in Music,
+    # order_by: m.absolute_id,
+    # select: %{mid: m.uuid, title: m.title})
+    # |> Repo.paginate(page: offset, page_size: limit)
+
+    languages = Ecto.Query.from(language in LanguageIdentifier,
+    select: language.identifier)
+    |> Repo.all
+
+    Logger.debug("lang #{inspect %{attributes: languages}}")
+
+    if !Enum.empty?(languages) do
+      if Enum.find(languages, fn(_element) -> String.starts_with?(language, languages) end) do
+        Ecto.Query.from(title in MusicTitle,
+          join: m in Music,
+          on: title.music_id == m.id,
+          where: title.language_id  == ^language,
+          order_by: m.absolute_id,
+          select: %{title: m.basename, localizedTitle: title.localizedname, uuid: m.uuid, languageId: title.language_id})
+          |> Repo.paginate(page: offset, page_size: limit)
+          # |> Repo.all
+      else
+        nil
+      end
+    else
+      Logger.debug("lang empty #{inspect %{attributes: languages}}")
+      nil
+    end
+  end
+
 end

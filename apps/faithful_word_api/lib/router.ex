@@ -19,6 +19,10 @@ defmodule FaithfulWordApi.Router do
   scope "/", FaithfulWordApi do
     pipe_through([:api])
 
+    # return "/music/\(uuid)/media"
+    # case .music(_):
+    #     return "/music"
+
     scope "/v1.2" do
       scope "/books" do
         get "/", BookController, :indexv12
@@ -27,6 +31,10 @@ defmodule FaithfulWordApi.Router do
       scope "/gospels" do
         get "/", GospelController, :indexv12
         get "/:gid/media", MediaGospelController, :indexv12
+      end
+      scope "/music" do
+        get "/", MusicController, :indexv12
+        get "/:mid/media", MediaMusicController, :indexv12
       end
     end
 
@@ -38,6 +46,10 @@ defmodule FaithfulWordApi.Router do
       scope "/gospels" do
         get "/", GospelController, :index
         get "/:gid/media", MediaGospelController, :index
+      end
+      scope "/music" do
+        get "/", MusicController, :index
+        get "/:mid/media", MediaMusicController, :index
       end
     end
 

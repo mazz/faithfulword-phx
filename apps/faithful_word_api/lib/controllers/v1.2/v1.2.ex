@@ -9,6 +9,8 @@ defmodule FaithfulWordApi.V12 do
   alias DB.Schema.{MediaGospel, Gospel}
   alias DB.Schema.{GospelTitle, LanguageIdentifier}
 
+  alias DB.Schema.{Music}
+
   require Ecto.Query
   require Logger
 
@@ -113,5 +115,12 @@ defmodule FaithfulWordApi.V12 do
     IO.inspect(Repo.all(query))
     # Repo.paginate(page: 1, page_size: 10)
     Repo.all(query)
+  end
+
+  def music() do
+    Ecto.Query.from(m in Music,
+      order_by: m.absolute_id,
+      select: %{mid: m.uuid, title: m.basename})
+      |> Repo.all
   end
 end
