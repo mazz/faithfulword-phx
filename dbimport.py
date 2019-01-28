@@ -11,7 +11,7 @@ class Dbimport(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
             description='stream a file to a streaming service',
-            usage='''dbimport <pgsql file>
+            usage='''dev|prod <pgsql file>
 
 ''')
         parser.add_argument('command', help='Subcommand to run')
@@ -25,7 +25,7 @@ class Dbimport(object):
         # use dispatch pattern to invoke method with same name
         getattr(self, args.command)()
 
-    def dbimport(self):
+    def dev(self):
         parser = argparse.ArgumentParser(
             description='dbimport v1.3 pgsql file')
         # prefixing the argument with -- means it's optional
