@@ -8,7 +8,7 @@ defmodule FaithfulWordApi.V13 do
 
   alias DB.Schema.{MediaGospel, Gospel}
   alias DB.Schema.{GospelTitle, LanguageIdentifier}
-  alias DB.Schema.{MusicTitle, Music}
+  alias DB.Schema.{MusicTitle, Music, MediaMusic}
 
   require Ecto.Query
   require Logger
@@ -42,7 +42,7 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def chapter_media_by_bid(bid_str, language_id, offset \\ 0, limit \\ 0) do
+  def chapter_media_by_uuid(bid_str, language_id, offset \\ 0, limit \\ 0) do
     {:ok, bid_uuid} = Ecto.UUID.dump(bid_str)
     Logger.debug("bid_uuid: #{bid_uuid}")
     query = from b in Book,
@@ -100,28 +100,7 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def gospel_media_by_gid(gid_str, language_id, offset \\ 0, limit \\ 0) do
-
-    # (Ecto.Query.from book in Allscripture.Book
-    #   |> join: title in Allscripture.BookTitle
-    #   |> on: title.book_id == book.id
-    #   |> where: title.language_id  == "pt"
-    #   |> select: %{ uuid: book.uuid, language_id: title.language_id, title: book.basename, localized_title: title.localizedname }
-    #   |> Allscripture.Repo.all)
-
-    # (Ecto.Query
-    # |> from g in Gospel
-    # |> join: t in GospelTitle
-    # |> join: mg in MediaGospel
-    # |> where: g.uuid == ^gid_uuid
-    # |> where: t.gospel_id == g.id
-    # |> where: t.language_id  == ^language_id
-    # |> where: mg.language_id == ^language_id
-    # |> where: mg.gospel_id == g.id
-    # |> order_by: [mg.absolute_id, mg.id]
-    # |> select: %{localizedName: mg.localizedname, path: mg.path, presenterName: mg.presenter_name, sourceMaterial: mg.source_material, uuid: mg.uuid}
-    # |> DB.Repo.all)
-
+  def gospel_media_by_uuid(gid_str, language_id, offset \\ 0, limit \\ 0) do
     {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
     Logger.debug("gid_uuid: #{gid_uuid}")
 
@@ -136,7 +115,7 @@ defmodule FaithfulWordApi.V13 do
     where: t.language_id  == ^language_id,
     # where: c.book_id == g.id,
     # where: c.id == mc.chapter_id,
-    where: mg.language_id == ^language_id,
+    # where: mg.language_id == ^language_id,
     where: mg.gospel_id == g.id,
     order_by: [mg.absolute_id, mg.id],
     # where: t.language_id  == ^language_id,
@@ -144,12 +123,6 @@ defmodule FaithfulWordApi.V13 do
 
     query
     |> Repo.paginate(page: offset, page_size: limit)
-      # Repo.all
-      # Repo.paginate(page: 1, page_size: 10)
-
-    # Logger.debug("Repo.all(query):")
-    # IO.inspect(Repo.all(query))
-    # Repo.paginate(page: offset, page_size: limit)
   end
 
   def music_by_language(language \\ "en", offset \\ 0, limit \\ 0) do
@@ -183,4 +156,27 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
+  def music_media_by_uuid(gid_str, language_id, offset \\ 0, limit \\ 0) do
+    {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
+    Logger.debug("gid_uuid: #{gid_uuid}")
+
+    query = from m in Music,
+    join: t in MusicTitle,
+    # join: c in Chapter,
+    join: mm in MediaMusic,
+
+    where: m.uuid == ^gid_uuid,
+    where: t.music_id == m.id,
+    where: t.language_id  == ^language_id,
+    # where: c.book_id == g.id,
+    # where: c.id == mc.chapter_id,
+    # where: mm.language_id == ^language_id,
+    where: mm.music_id == m.id,
+    order_by: [mm.absolute_id, mm.id],
+    # where: t.language_id  == ^language_id,
+    select: %{localizedName: mm.localizedname, path: mm.path, presenterName: mm.presenter_name, sourceMaterial: mm.source_material, uuid: mm.uuid}
+
+    query
+    |> Repo.paginate(page: offset, page_size: limit)
+  end
 end

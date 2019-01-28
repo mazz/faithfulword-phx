@@ -9,7 +9,7 @@ defmodule FaithfulWordApi.V12 do
   alias DB.Schema.{MediaGospel, Gospel}
   alias DB.Schema.{GospelTitle, LanguageIdentifier}
 
-  alias DB.Schema.{Music}
+  alias DB.Schema.{Music, MediaMusic}
 
   require Ecto.Query
   require Logger
@@ -105,10 +105,10 @@ defmodule FaithfulWordApi.V12 do
     where: t.language_id  == ^language_id,
     # where: c.book_id == g.id,
     # where: c.id == mc.chapter_id,
-    where: mg.language_id == ^language_id,
+    where: mg.gospel_id == g.id,
+    # where: mg.language_id == ^language_id,
     order_by: [mg.absolute_id, mg.id],
     # where: t.language_id  == ^language_id,
-    where: mg.gospel_id == g.id,
     select: %{localizedName: mg.localizedname, path: mg.path, presenterName: mg.presenter_name, sourceMaterial: mg.source_material, uuid: mg.uuid}
 
     Logger.debug("Repo.all(query):")
@@ -122,5 +122,30 @@ defmodule FaithfulWordApi.V12 do
       order_by: m.absolute_id,
       select: %{mid: m.uuid, title: m.basename})
       |> Repo.all
+  end
+
+  def music_media_by_mid(mid_str) do
+    {:ok, mid_uuid} = Ecto.UUID.dump(mid_str)
+    Logger.debug("mid_uuid: #{mid_uuid}")
+    query = from m in Music,
+    # join: t in GospelTitle,
+    # join: c in Chapter,
+    join: mm in MediaMusic,
+
+    where: m.uuid == ^mid_uuid,
+    where: mm.music_id == m.id,
+    # where: t.gospel_id == g.id,
+    # where: t.language_id  == ^language_id,
+    # where: c.book_id == g.id,
+    # where: c.id == mc.chapter_id,
+    # where: mm.language_id == ^language_id,
+    order_by: [mm.absolute_id, mm.id],
+    # where: t.language_id  == ^language_id,
+    select: %{localizedName: mm.localizedname, path: mm.path, presenterName: mm.presenter_name, sourceMaterial: mm.source_material, uuid: mm.uuid}
+
+    Logger.debug("Repo.all(query):")
+    IO.inspect(Repo.all(query))
+    # Repo.paginate(page: 1, page_size: 10)
+    Repo.all(query)
   end
 end

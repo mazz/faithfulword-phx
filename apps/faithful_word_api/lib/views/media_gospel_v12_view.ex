@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.MediaGospelV12View do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.MediaGospelV12View
 
-  def render("index.json",%{media_gospel_v12: media_gospel_v12}) do
+  def render("indexv12.json",%{media_gospel_v12: media_gospel_v12}) do
     %{result: render_many(media_gospel_v12, MediaGospelV12View, "media_gospel_v12.json"),
     status: "success",
     version: "v1.2"}

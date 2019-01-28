@@ -2,8 +2,15 @@ defmodule FaithfulWordApi.MediaMusicView do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.MediaMusicView
 
-  def render("index.json", %{mediamusic: mediamusic}) do
-    %{data: render_many(mediamusic, MediaMusicView, "media_music.json")}
+  def render("index.json",%{media_music: media_music, api_version: api_version}) do
+    %{result: render_many(media_music, MediaMusicView, "media_music.json"),
+    pageNumber: media_music.page_number,
+    pageSize: media_music.page_size,
+    status: "success",
+    totalEntries: media_music.total_entries,
+    totalPages: media_music.total_pages,
+    version: api_version}
+    # %{data: render_many(media_music, MediaMusicView, "media_music.json")}
   end
 
   def render("show.json", %{media_music: media_music}) do
@@ -11,14 +18,6 @@ defmodule FaithfulWordApi.MediaMusicView do
   end
 
   def render("media_music.json", %{media_music: media_music}) do
-    %{id: media_music.id,
-      absolute_id: media_music.absolute_id,
-      uuid: media_music.uuid,
-      track_number: media_music.track_number,
-      localizedname: media_music.localizedname,
-      path: media_music.path,
-      language_id: media_music.language_id,
-      presenter_name: media_music.presenter_name,
-      source_material: media_music.source_material}
+    %{localizedName: media_music.localizedName, path: media_music.path, presenterName: media_music.presenterName, sourceMaterial: media_music.sourceMaterial, uuid: media_music.uuid}
   end
 end

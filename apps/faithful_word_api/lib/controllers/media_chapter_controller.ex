@@ -36,8 +36,8 @@ defmodule FaithfulWordApi.MediaChapterController do
       end
   end
 
-  def index(conn, params = %{"bid" => bid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
-    V13.chapter_media_by_bid(bid_str, language_id, offset, limit)
+  def index(conn, params = %{"uuid" => bid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+    V13.chapter_media_by_uuid(bid_str, language_id, offset, limit)
     |>
     case do
       nil ->

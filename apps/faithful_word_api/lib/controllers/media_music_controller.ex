@@ -3,12 +3,55 @@ defmodule FaithfulWordApi.MediaMusicController do
 
   alias FaithfulWord.Content
   alias DB.Schema.MediaMusic
+  alias FaithfulWordApi.V12
+  alias FaithfulWordApi.V13
+
+  alias FaithfulWordApi.ErrorView
+  alias FaithfulWordApi.MediaMusicV12View
+  alias FaithfulWordApi.MediaMusicView
+
+  require Logger
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, _params) do
-    mediamusic = Content.list_mediamusic()
-    render(conn, "index.json", mediamusic: mediamusic)
+  def indexv12(conn, params = %{"mid" => mid_str}) do
+    V12.music_media_by_mid(mid_str)
+    |>
+    case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      media_music_v12 ->
+        Logger.debug("media_music_v12 #{inspect %{attributes: media_music_v12}}")
+        render(conn, MediaMusicV12View, "indexv12.json", %{media_music_v12: media_music_v12})
+
+        # Enum.at(conn.path_info, 0)
+        # |> case do
+          # api_version ->
+            # render(conn, "index.json", %{media_gospel: media_gospel})
+            # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
+            # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+        # end
+      end
+  end
+
+  def index(conn, params = %{"uuid" => gid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+    V13.music_media_by_uuid(gid_str, language_id, offset, limit)
+    |>
+    case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+      media_music ->
+        Logger.debug("media_music #{inspect %{attributes: media_music}}")
+        Enum.at(conn.path_info, 0)
+        |> case do
+          api_version ->
+            render(conn, MediaMusicView, "index.json", %{media_music: media_music, api_version: api_version})
+            # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
+            # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+        end
+      end
   end
 
   def create(conn, %{"media_music" => media_music_params}) do

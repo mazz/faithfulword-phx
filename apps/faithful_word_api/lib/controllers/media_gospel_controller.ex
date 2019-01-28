@@ -23,7 +23,7 @@ defmodule FaithfulWordApi.MediaGospelController do
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
       media_gospel_v12 ->
         Logger.debug("media_gospel_v12 #{inspect %{attributes: media_gospel_v12}}")
-        render(conn, MediaGospelV12View, "index.json", %{media_gospel_v12: media_gospel_v12})
+        render(conn, MediaGospelV12View, "indexv12.json", %{media_gospel_v12: media_gospel_v12})
 
         # Enum.at(conn.path_info, 0)
         # |> case do
@@ -35,8 +35,8 @@ defmodule FaithfulWordApi.MediaGospelController do
       end
   end
 
-  def index(conn, params = %{"gid" => gid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
-    V13.gospel_media_by_gid(gid_str, language_id, offset, limit)
+  def index(conn, params = %{"uuid" => gid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+    V13.gospel_media_by_uuid(gid_str, language_id, offset, limit)
     |>
     case do
       nil ->

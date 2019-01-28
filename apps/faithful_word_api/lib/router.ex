@@ -41,15 +41,15 @@ defmodule FaithfulWordApi.Router do
     scope "/v1.3" do
       scope "/books" do
         get "/", BookController, :index
-        get "/:bid/media", MediaChapterController, :index
+        get "/:uuid/media", MediaChapterController, :index
       end
       scope "/gospels" do
         get "/", GospelController, :index
-        get "/:gid/media", MediaGospelController, :index
+        get "/:uuid/media", MediaGospelController, :index
       end
       scope "/music" do
         get "/", MusicController, :index
-        get "/:mid/media", MediaMusicController, :index
+        get "/:uuid/media", MediaMusicController, :index
       end
     end
 
