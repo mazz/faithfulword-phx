@@ -52,6 +52,22 @@ docker exec -i faithfulword-phx_postgres_1 psql -p 5432 -U faithful_word < 2018-
 docker exec -ti faithfulword-phx_postgres_1 psql -p 5432 -U faithful_word
 SET session_replication_role = DEFAULT;
 
+docker exec -ti add-12-api_postgres_1 psql -p 5432 -U faithful_word
+
+## docker migrate works:
+
+docker cp ./2019-01-27-plurals-10-bin.sql add-12-api_postgres_1:/2019-01-27-plurals-10-bin.sql
+docker exec -ti add-12-api_postgres_1 bash
+
+psql -U faithful_word
+drop database faithful_word;
+create database faithful_word;
+SET session_replication_role = replica;
+\q
+
+pg_restore -U faithful_word --clean --dbname=faithful_word 2019-01-27-plurals-10-bin.sql
+psql -U faithful_word
+SET session_replication_role = DEFAULT;
 
 
 ## loader.io
@@ -72,7 +88,7 @@ Upload the file to your server so it is accessible at one of the following URLs:
 
 mix deps.get ; mix deps.compile
 mix ecto.drop; mix ecto.create ; mix ecto.migrate
-mix run apps/faithful_word/priv/repo/seeds.exs
+mix run apps/db/priv/repo/seeds.exs
 
 https://github.com/FaithfulAudio/faithfulword-phx.git -b add-cf-authenticator-files
 

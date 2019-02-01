@@ -207,7 +207,7 @@ defmodule FaithfulWordApi.V13 do
           firebase_token: fcm_token,
           preferred_language: preferred_language,
           user_agent: user_agent,
-          user_version: nil,
+          user_version: user_version,
           uuid: Ecto.UUID.generate
         })
         |> Repo.insert()

@@ -11,15 +11,15 @@ defmodule FaithfulWordApi.ClientDeviceController do
   require Logger
   action_fallback FaithfulWordApi.FallbackController
 
-  def indexv12(conn, %{"fcmToken" => fcm_token, "apnsToken" => apns_token, "preferredLanguage" => preferred_language, "userAgent" => user_agent, "userVersion" => user_version}) do
-    # Logger.debug("lang #{inspect %{attributes: lang}}")
-    V12.add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version)
-
+  def indexv12(conn, %{"fcmToken" => fcm_token, "apnsToken" => apns_token, "preferredLanguage" => preferred_language, "userAgent" => user_agent}) do
+    Logger.debug("fcm_token #{inspect %{attributes: fcm_token}}")
+    V12.add_client_device(fcm_token, apns_token, preferred_language, user_agent)
     |> case do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "something happened."})
       client_device_v12 ->
+        Logger.debug("client_device_v12 #{inspect %{attributes: client_device_v12}}")
         render(conn, ClientDeviceV12View, "indexv12.json", %{client_device_v12: client_device_v12})
     end
   end
@@ -32,9 +32,11 @@ defmodule FaithfulWordApi.ClientDeviceController do
         |> render(ErrorView, "403.json", %{message: "something happened."})
       client_device ->
         # Logger.debug("client_devices #{inspect %{attributes: client_devices}}")
+        Logger.debug("client_device #{inspect %{attributes: client_device}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
+            Logger.debug("api_version #{inspect %{attributes: api_version}}")
             render(conn, ClientDeviceView, "index.json", %{client_device: client_device, api_version: api_version})
         end
     end

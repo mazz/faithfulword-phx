@@ -1,14 +1,12 @@
 defmodule FaithfulWordApi.ClientDeviceView do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.ClientDeviceView
+  require Logger
 
   def render("index.json", %{client_device: client_device, api_version: api_version}) do
-    %{result: render_many(client_device, ClientDeviceView, "client_device.json"),
-    pageNumber: client_device.page_number,
-    pageSize: client_device.page_size,
+    Logger.debug("render client_device #{inspect %{attributes: client_device}}")
+    %{result: [],
     status: "success",
-    totalEntries: client_device.total_entries,
-    totalPages: client_device.total_pages,
     version: api_version}
   end
 
@@ -17,6 +15,6 @@ defmodule FaithfulWordApi.ClientDeviceView do
   end
 
   def render("client_device.json", %{client_device: client_device}) do
-    %{}
+    %{client_device: client_device}
   end
 end
