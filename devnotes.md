@@ -15,6 +15,21 @@ docker-compose pull
 docker-compose build --pull faithful_word
 docker-compose up --build -d postgres
 docker-compose run --rm faithful_word migrate
+
+docker cp ./2019-01-27-plurals-10-bin.sql add-12-api_postgres_1:/2019-01-27-plurals-10-bin.sql
+docker exec -ti add-12-api_postgres_1 bash
+
+psql -U faithful_word
+<!-- drop database faithful_word;
+create database faithful_word; -->
+SET session_replication_role = replica;
+\q
+
+pg_restore -U faithful_word --clean --dbname=faithful_word 2019-01-27-plurals-10-bin.sql
+psql -U faithful_word
+SET session_replication_role = DEFAULT;
+exit
+
 docker-compose run --rm faithful_word seed
 
 Booting the application in Docker-Compose
