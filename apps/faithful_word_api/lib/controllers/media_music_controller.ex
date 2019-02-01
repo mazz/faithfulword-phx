@@ -35,8 +35,8 @@ defmodule FaithfulWordApi.MediaMusicController do
       end
   end
 
-  def index(conn, params = %{"uuid" => gid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
-    V13.music_media_by_uuid(gid_str, language_id, offset, limit)
+  def index(conn, params = %{"uuid" => gid_str, "offset" => offset, "limit" => limit}) do
+    V13.music_media_by_uuid(gid_str, offset, limit)
     |>
     case do
       nil ->

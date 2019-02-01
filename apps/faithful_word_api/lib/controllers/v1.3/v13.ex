@@ -102,19 +102,19 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def gospel_media_by_uuid(gid_str, language_id, offset \\ 0, limit \\ 0) do
+  def gospel_media_by_uuid(gid_str, offset \\ 0, limit \\ 0) do
     {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
     Logger.debug("gid_uuid: #{gid_uuid}")
 
 
     query = from g in Gospel,
-    join: t in GospelTitle,
+    # join: t in GospelTitle,
     # join: c in Chapter,
     join: mg in MediaGospel,
 
     where: g.uuid == ^gid_uuid,
-    where: t.gospel_id == g.id,
-    where: t.language_id  == ^language_id,
+    # where: t.gospel_id == g.id,
+    # where: t.language_id  == ^language_id,
     # where: c.book_id == g.id,
     # where: c.id == mc.chapter_id,
     # where: mg.language_id == ^language_id,
@@ -158,18 +158,18 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def music_media_by_uuid(gid_str, language_id, offset \\ 0, limit \\ 0) do
+  def music_media_by_uuid(gid_str, offset \\ 0, limit \\ 0) do
     {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
     Logger.debug("gid_uuid: #{gid_uuid}")
 
     query = from m in Music,
-    join: t in MusicTitle,
+    # join: t in MusicTitle,
     # join: c in Chapter,
     join: mm in MediaMusic,
 
     where: m.uuid == ^gid_uuid,
-    where: t.music_id == m.id,
-    where: t.language_id  == ^language_id,
+    # where: t.music_id == m.id,
+    # where: t.language_id  == ^language_id,
     # where: c.book_id == g.id,
     # where: c.id == mc.chapter_id,
     # where: mm.language_id == ^language_id,

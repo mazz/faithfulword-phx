@@ -14,6 +14,6 @@ defmodule FaithfulWordApi.LanguageIdentifierV12View do
   end
 
   def render("language_identifier_v12.json", %{language_identifier_v12: language_identifier_v12}) do
-    %{identifier: language_identifier_v12.identifier, source_material: language_identifier_v12.source_material, supported: language_identifier_v12.supported, uuid: language_identifier_v12.uuid}
+    %{languageIdentifier: language_identifier_v12.identifier, sourceMaterial: language_identifier_v12.source_material, supported: language_identifier_v12.supported}
   end
 end

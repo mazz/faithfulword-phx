@@ -14,8 +14,8 @@ defmodule FaithfulWordApi.MediaGospelController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def indexv12(conn, params = %{"gid" => gid_str, "language-id" => language_id}) do
-    V12.gospel_media_by_gid(gid_str, language_id)
+  def indexv12(conn, params = %{"gid" => gid_str}) do
+    V12.gospel_media_by_gid(gid_str)
     |>
     case do
       nil ->
@@ -35,8 +35,8 @@ defmodule FaithfulWordApi.MediaGospelController do
       end
   end
 
-  def index(conn, params = %{"uuid" => gid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
-    V13.gospel_media_by_uuid(gid_str, language_id, offset, limit)
+  def index(conn, params = %{"uuid" => gid_str, "offset" => offset, "limit" => limit}) do
+    V13.gospel_media_by_uuid(gid_str, offset, limit)
     |>
     case do
       nil ->
