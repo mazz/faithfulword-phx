@@ -11,7 +11,7 @@ defmodule FaithfulWordApi.BookV12View do
   end
 
   def render("show.json", %{book_v12: book_v12}) do
-    %{data: render_one(book_v12, BookView, "book.json")}
+    %{data: render_one(book_v12, BookView, "book_v12.json")}
   end
 
   def render("book_v12.json", %{book_v12: book_v12}) do

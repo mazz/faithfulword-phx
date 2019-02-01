@@ -14,15 +14,15 @@ alias DB.Repo
 alias DB.Schema.User
 require Logger
 
-book =
-  DB.Schema.Book.changeset(%DB.Schema.Book{}, %{
-    absolute_id: 100,
-    basename: "Genesis",
-    uuid: Ecto.UUID.generate,
-    chapter: %DB.Schema.Chapter{}
-  })
+# book =
+#   DB.Schema.Book.changeset(%DB.Schema.Book{}, %{
+#     absolute_id: 100,
+#     basename: "Genesis",
+#     uuid: Ecto.UUID.generate,
+#     chapter: %DB.Schema.Chapter{}
+#   })
 
-  Repo.insert!(book)
+#   Repo.insert!(book)
 
 Logger.debug("Application.get_env #{Application.get_env(:db, :env)}")
 # Create Admin in dev or if we're running image locally

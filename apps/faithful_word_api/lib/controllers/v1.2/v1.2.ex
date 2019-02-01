@@ -10,6 +10,7 @@ defmodule FaithfulWordApi.V12 do
   alias DB.Schema.{GospelTitle, LanguageIdentifier}
 
   alias DB.Schema.{Music, MediaMusic}
+  alias DB.Schema.{AppVersion, ClientDevice}
 
   require Ecto.Query
   require Logger
@@ -154,5 +155,42 @@ defmodule FaithfulWordApi.V12 do
       order_by: lid.identifier,
       select: %{identifier: lid.identifier, source_material: lid.source_material, supported: lid.supported, uuid: lid.uuid})
       |> Repo.all
+  end
+
+  def app_versions() do
+    Ecto.Query.from(av in AppVersion,
+      order_by: av.id,
+      select: %{version_number: av.version_number,
+      ios_supported: av.ios_supported,
+      android_supported: av.android_supported,
+      uuid: av.uuid})
+      |> Repo.all
+  end
+
+  # def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version) do
+    def add_client_device(fcm_token, apns_token, preferred_language, user_agent) do
+
+    case Repo.get_by(ClientDevice, firebase_token: fcm_token) do
+      nil ->
+        ClientDevice.changeset(%ClientDevice{}, %{
+          apns_token: apns_token,
+          firebase_token: fcm_token,
+          preferred_language: preferred_language,
+          user_agent: user_agent,
+          user_version: nil,
+          uuid: Ecto.UUID.generate
+        })
+        |> Repo.insert()
+      # client_device ->
+      #   |> ClientDevice.changeset(%{
+      #     apns_token: apns_token,
+      #     firebase_token: fcm_token,
+      #     preferred_language: preferred_language,
+      #     user_agent: user_agent,
+      #     user_version: user_version,
+      #     uuid: uuid
+      #   })
+      #   |> Repo.update()
+    end
   end
 end

@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Analytics do
+defmodule DB.Schema do
   @moduledoc """
   The Analytics context.
   """
@@ -6,7 +6,7 @@ defmodule FaithfulWord.Analytics do
   import Ecto.Query, warn: false
   alias DB.Repo
 
-  alias FaithfulWord.Analytics.ClientDevice
+  alias DB.Schema.ClientDevice
 
   @doc """
   Returns the list of clientdevice.
@@ -102,7 +102,7 @@ defmodule FaithfulWord.Analytics do
     ClientDevice.changeset(client_device, %{})
   end
 
-  alias FaithfulWord.Analytics.AppVersion
+  alias DB.Schema.AppVersion
 
   @doc """
   Returns the list of appversion.

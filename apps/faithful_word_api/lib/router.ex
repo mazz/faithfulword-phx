@@ -39,6 +39,12 @@ defmodule FaithfulWordApi.Router do
       scope "/languages" do
         get "/supported", LanguageIdentifierController, :indexv12
       end
+      scope "/app" do
+        get "/versions", AppVersionController, :indexv12
+      end
+      scope "/device" do
+        post "/pushtoken/update", ClientDeviceController, :indexv12
+      end
     end
 
     scope "/v1.3" do
@@ -57,8 +63,13 @@ defmodule FaithfulWordApi.Router do
       scope "/languages" do
         get "/supported", LanguageIdentifierController, :index
       end
+      scope "/app" do
+        get "/versions", AppVersionController, :index
+      end
+      scope "/device" do
+        post "/pushtoken/update", ClientDeviceController, :index
+      end
     end
-
   end
 
   # scope "/v1.3", FaithfulWordApi do

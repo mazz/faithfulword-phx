@@ -1,14 +1,43 @@
 defmodule FaithfulWordApi.ClientDeviceController do
   use FaithfulWordApi, :controller
 
-  alias FaithfulWord.Analytics
-  alias FaithfulWord.Analytics.ClientDevice
+  alias DB.Schema
+  alias DB.Schema.ClientDevice
+  alias FaithfulWordApi.ClientDeviceView
+  alias FaithfulWordApi.ClientDeviceV12View
+  alias FaithfulWordApi.V12
+  alias FaithfulWordApi.V13
 
+  require Logger
   action_fallback FaithfulWordApi.FallbackController
 
-  def index(conn, _params) do
-    clientdevice = Analytics.list_clientdevice()
-    render(conn, "index.json", clientdevice: clientdevice)
+  def indexv12(conn, %{"fcmToken" => fcm_token, "apnsToken" => apns_token, "preferredLanguage" => preferred_language, "userAgent" => user_agent, "userVersion" => user_version}) do
+    # Logger.debug("lang #{inspect %{attributes: lang}}")
+    V12.add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version)
+
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "something happened."})
+      client_device_v12 ->
+        render(conn, ClientDeviceV12View, "indexv12.json", %{client_device_v12: client_device_v12})
+    end
+  end
+
+  def index(conn, %{"fcmToken" => fcm_token, "apnsToken" => apns_token, "preferredLanguage" => preferred_language, "userAgent" => user_agent, "userVersion" => user_version}) do
+    V13.add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version)
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> render(ErrorView, "403.json", %{message: "something happened."})
+      client_device ->
+        # Logger.debug("client_devices #{inspect %{attributes: client_devices}}")
+        Enum.at(conn.path_info, 0)
+        |> case do
+          api_version ->
+            render(conn, ClientDeviceView, "index.json", %{client_device: client_device, api_version: api_version})
+        end
+    end
   end
 
   def create(conn, %{"client_device" => client_device_params}) do

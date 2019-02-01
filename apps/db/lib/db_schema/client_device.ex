@@ -1,8 +1,8 @@
-defmodule FaithfulWord.Analytics.ClientDevice do
+defmodule DB.Schema.ClientDevice do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "clientdevice" do
+  schema "clientdevices" do
     field :apns_token, :string
     field :firebase_token, :string
     field :preferred_language, :string
@@ -17,6 +17,6 @@ defmodule FaithfulWord.Analytics.ClientDevice do
   def changeset(client_device, attrs) do
     client_device
     |> cast(attrs, [:uuid, :firebase_token, :apns_token, :preferred_language, :user_agent, :user_version])
-    |> validate_required([:uuid, :firebase_token, :apns_token, :preferred_language, :user_agent, :user_version])
+    |> validate_required([:uuid, :firebase_token, :apns_token, :preferred_language, :user_agent])
   end
 end

@@ -100,6 +100,7 @@ defmodule FaithfulWord.Videos do
       |> case do
         {:ok, %{video: video}} ->
           # Return created video with empty speakers
+          download_captions(video)
           {:ok, Map.put(video, :speakers, [])}
 
         {:error, _, reason, _} ->

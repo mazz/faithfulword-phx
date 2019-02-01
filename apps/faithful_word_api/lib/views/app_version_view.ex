@@ -2,8 +2,14 @@ defmodule FaithfulWordApi.AppVersionView do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.AppVersionView
 
-  def render("index.json", %{appversion: appversion}) do
-    %{data: render_many(appversion, AppVersionView, "app_version.json")}
+  def render("index.json", %{app_version: app_version, api_version: api_version}) do
+    %{result: render_many(app_version, AppVersionView, "app_version.json"),
+    pageNumber: app_version.page_number,
+    pageSize: app_version.page_size,
+    status: "success",
+    totalEntries: app_version.total_entries,
+    totalPages: app_version.total_pages,
+    version: api_version}
   end
 
   def render("show.json", %{app_version: app_version}) do
@@ -11,10 +17,9 @@ defmodule FaithfulWordApi.AppVersionView do
   end
 
   def render("app_version.json", %{app_version: app_version}) do
-    %{id: app_version.id,
-      uuid: app_version.uuid,
-      version_number: app_version.version_number,
-      ios_supported: app_version.ios_supported,
-      android_supported: app_version.android_supported}
+    %{uuid: app_version.uuid,
+      versionNumber: app_version.version_number,
+      iosSupported: app_version.ios_supported,
+      androidSupported: app_version.android_supported}
   end
 end

@@ -1,13 +1,12 @@
-defmodule FaithfulWord.Analytics.AppVersion do
+defmodule DB.Schema.AppVersion do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "appversion" do
+  schema "appversions" do
     field :android_supported, :boolean, default: false
     field :ios_supported, :boolean, default: false
     field :uuid, Ecto.UUID
     field :version_number, :string
-    field :user_version, :string
 
     # timestamps()
   end
@@ -15,7 +14,7 @@ defmodule FaithfulWord.Analytics.AppVersion do
   @doc false
   def changeset(app_version, attrs) do
     app_version
-    |> cast(attrs, [:uuid, :version_number, :user_version, :ios_supported, :android_supported])
-    |> validate_required([:uuid, :version_number, :user_version, :ios_supported, :android_supported])
+    |> cast(attrs, [:uuid, :version_number, :ios_supported, :android_supported])
+    |> validate_required([:uuid, :version_number, :ios_supported, :android_supported])
   end
 end
