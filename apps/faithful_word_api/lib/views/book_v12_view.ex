@@ -7,7 +7,7 @@ defmodule FaithfulWordApi.BookV12View do
   def render("indexv12.json", %{book_v12: book_v12}) do
     %{result: render_many(book_v12, BookV12View, "book_v12.json"),
       status: "success",
-      version: "v1.2"}
+      version: "1.2"}
   end
 
   def render("show.json", %{book_v12: book_v12}) do

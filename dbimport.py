@@ -46,7 +46,7 @@ class Dbimport(object):
         # os.system("psql -U postgres -d {0} -f {1}".format('faithful_word_dev', args.pgfile) )
 
         #import db
-        os.system("pg_restore -U postgres --clean --dbname={0} {1}".format('faithful_word_dev', args.pgfile) )
+        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_restore\" -U postgres --clean --dbname={0} {1}'.format('faithful_word_dev', args.pgfile) )
 
         subprocess.call(['/Applications/Postgres.app/Contents/Versions/11/bin/psql', '-c', 'SET session_replication_role = DEFAULT;'])
 

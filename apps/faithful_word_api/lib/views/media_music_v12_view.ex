@@ -5,7 +5,7 @@ defmodule FaithfulWordApi.MediaMusicV12View do
   def render("indexv12.json",%{media_music_v12: media_music_v12}) do
     %{result: render_many(media_music_v12, MediaMusicV12View, "media_music_v12.json"),
     status: "success",
-    version: "v1.2"}
+    version: "1.2"}
     # %{data: render_many(media_music_v12, MediaMusicV12View, "media_music_v12.json")}
   end
 

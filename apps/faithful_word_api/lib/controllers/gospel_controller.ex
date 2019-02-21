@@ -64,7 +64,8 @@ defmodule FaithfulWordApi.GospelController do
         |>
         case do
           api_version ->
-                render(conn, "index.json", %{gospel: gospel, api_version: api_version})
+            api_version = String.trim_leading(api_version, "v")
+            render(conn, "index.json", %{gospel: gospel, api_version: api_version})
         end
     end
   end
