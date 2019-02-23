@@ -11,6 +11,7 @@ defmodule DB.Schema.Gospel do
     # timestamps()
     has_many :mediagospel, DB.Schema.MediaGospel
     has_many :gospeltitles, DB.Schema.GospelTitle
+    timestamps(type: :utc_datetime)
 
   end
 

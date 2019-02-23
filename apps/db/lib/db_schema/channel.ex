@@ -11,6 +11,7 @@ defmodule DB.Schema.Channel do
     field :banner_path, :string
     field :uuid, Ecto.UUID
     field :org_id, :integer
+    timestamps(type: :utc_datetime)
 
     # timestamps()
   end

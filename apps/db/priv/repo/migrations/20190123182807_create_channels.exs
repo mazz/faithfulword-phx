@@ -12,6 +12,7 @@ defmodule DB.Repo.Migrations.CreateChannels do
       add :large_thumbnail_path, :string
       add :banner_path, :string
       add :org_id, references(:orgs, on_delete: :delete_all)
+      timestamps(type: :utc_datetime)
 
       # timestamps()
     end

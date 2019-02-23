@@ -19,7 +19,7 @@ defmodule DB.Repo.Migrations.CreateMediaitems do
       add :presenter_name, :string
       add :source_material, :string
       add :tags, {:array, :string}
-      # add :media_category, DB.Type.MediaCategory.type()
+      add :media_category, DB.Type.MediaCategory.type()
 
       add :playlist_id, references(:playlists, on_delete: :delete_all)
 
@@ -27,6 +27,6 @@ defmodule DB.Repo.Migrations.CreateMediaitems do
     end
 
     create index(:mediaitems, [:playlist_id])
-    # create index(:mediaitems, ["updated_at DESC"])
+    create index(:mediaitems, ["updated_at DESC"])
   end
 end

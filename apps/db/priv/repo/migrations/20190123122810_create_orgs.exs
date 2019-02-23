@@ -10,6 +10,7 @@ defmodule DB.Repo.Migrations.CreateOrgs do
       add :large_thumbnail_path, :string
       add :banner_path, :string
       add :basename, :string
+      timestamps(type: :utc_datetime)
 
       # timestamps()
     end

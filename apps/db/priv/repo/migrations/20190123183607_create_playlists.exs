@@ -13,6 +13,7 @@ defmodule DB.Repo.Migrations.CreatePlaylists do
       add :large_thumbnail_path, :string
       add :banner_path, :string
       add :channel_id, references(:channels, on_delete: :delete_all)
+      timestamps(type: :utc_datetime)
 
       # timestamps()
     end

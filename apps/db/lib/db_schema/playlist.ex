@@ -13,6 +13,7 @@ defmodule DB.Schema.Playlist do
     field :banner_path, :string
     field :uuid, Ecto.UUID
     field :channel_id, :integer
+    timestamps(type: :utc_datetime)
 
     # timestamps()
   end

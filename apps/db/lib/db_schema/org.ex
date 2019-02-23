@@ -10,6 +10,7 @@ defmodule DB.Schema.Org do
     field :large_thumbnail_path, :string
     field :banner_path, :string
     field :uuid, Ecto.UUID
+    timestamps(type: :utc_datetime)
 
     # timestamps()
   end
