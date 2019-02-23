@@ -7,6 +7,10 @@ defmodule DB.Repo.Migrations.CreateChannels do
       add :uuid, :uuid
       add :ordinal, :integer
       add :basename, :string
+      add :small_thumbnail_path, :string
+      add :med_thumbnail_path, :string
+      add :large_thumbnail_path, :string
+      add :banner_path, :string
       add :org_id, references(:orgs, on_delete: :delete_all)
 
       # timestamps()

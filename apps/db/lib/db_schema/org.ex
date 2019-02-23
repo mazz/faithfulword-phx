@@ -5,6 +5,10 @@ defmodule DB.Schema.Org do
 
   schema "orgs" do
     field :basename, :string
+    field :small_thumbnail_path, :string
+    field :med_thumbnail_path, :string
+    field :large_thumbnail_path, :string
+    field :banner_path, :string
     field :uuid, Ecto.UUID
 
     # timestamps()
@@ -13,7 +17,7 @@ defmodule DB.Schema.Org do
   @doc false
   def changeset(org, attrs) do
     org
-    |> cast(attrs, [:uuid, :basename])
-    |> validate_required([:uuid, :basename])
+    |> cast(attrs, [:uuid, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
+    |> validate_required([:uuid, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
   end
 end

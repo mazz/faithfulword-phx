@@ -5,6 +5,10 @@ defmodule DB.Repo.Migrations.CreateOrgs do
     create table(:orgs, primary_key: true) do
 
       add :uuid, :uuid
+      add :small_thumbnail_path, :string
+      add :med_thumbnail_path, :string
+      add :large_thumbnail_path, :string
+      add :banner_path, :string
       add :basename, :string
 
       # timestamps()
