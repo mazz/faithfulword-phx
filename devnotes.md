@@ -69,6 +69,12 @@ SET session_replication_role = DEFAULT;
 
 docker exec -ti add-12-api_postgres_1 psql -p 5432 -U faithful_word
 
+## export normalized db
+
+/Applications/Postgres.app/Contents/Versions/11/bin/pg_dump -U postgres --no-owner --no-acl -W -Fc -C -d faithful_word_dev > 2019-02-22-add-v12-api-bin-export.sql
+
+tar -czvf 2019-02-22-add-v12-api-bin-export.sql.gz 2019-02-22-add-v12-api-bin-export.sql
+
 ## docker migrate works:
 
 docker cp ./2019-01-27-plurals-10-bin.sql add-12-api_postgres_1:/2019-01-27-plurals-10-bin.sql
