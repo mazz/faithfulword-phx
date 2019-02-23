@@ -35,7 +35,7 @@ defmodule DB.MixProject do
       {:ex_aws_s3, "~> 2.0"},
       {:arc, "~> 0.11.0"},
       {:arc_ecto, "~> 0.11.0"},
-      {:ecto_enum, "~> 1.1"},
+      {:ecto_enum, "~> 1.2"},
       {:xml_builder, "~> 2.0", override: true},
       {:slugger, "~> 0.3"},
       {:comeonin, "~> 4.1"},
