@@ -50,7 +50,7 @@ defmodule FaithfulWord.MixProject do
       {:not_qwerty123, "~> 2.2"},
       {:arc, "~> 0.11.0"},
       {:arc_ecto, "~> 0.11.0"},
-      {:ecto_enum, "~> 1.2"},
+      {:ecto_enum, "~> 1.1"},
       {:burnex, "~> 1.1"},
       {:guardian, "~> 1.1"},
       {:guardian_db, "~> 2.0"},
