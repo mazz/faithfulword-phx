@@ -1,5 +1,5 @@
 # docker build -t faithful_word:builder --target=builder .
-FROM elixir:1.7.4-alpine as builder
+FROM elixir:1.8.1-alpine as builder
 RUN apk add --no-cache \
     gcc \
     git \
