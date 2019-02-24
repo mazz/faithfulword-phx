@@ -62,7 +62,6 @@ defmodule FaithfulWord.MixProject do
       {:rollbax, "~> 0.9.2"},
       {:pigeon, "~> 1.2"},
       {:kadabra, "~> 0.4"},
-      {:db_connection, "== 2.0.3", override: true},
       # {:guardian, "~> 1.1"},
       # {:comeonin, "~> 4.1"},
       # {:bcrypt_elixir, "~> 1.1"},

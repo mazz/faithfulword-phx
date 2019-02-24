@@ -40,7 +40,7 @@ COPY --from=frontend /priv/static apps/faithful_word_api/priv/static
 RUN mix do phx.digest, release --env=prod --no-tar
 
 # docker run -it --rm elixir:1.7.3-alpine sh -c 'head -n1 /etc/issue'
-FROM alpine:3.8 as runner
+FROM alpine:3.9 as runner
 RUN addgroup -g 1000 faithful_word && \
     adduser -D -h /app \
       -G faithful_word \

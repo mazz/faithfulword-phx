@@ -45,7 +45,6 @@ defmodule DB.MixProject do
       {:kaur, "~> 1.1"},
       {:mime, "~> 1.2"},
       {:scrivener_ecto, "~> 2.0"},
-      {:db_connection, "== 2.0.3", override: true}
 
       # Dev only
       # {:exsync, "~> 0.2", only: :dev},
