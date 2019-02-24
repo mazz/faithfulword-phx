@@ -58,6 +58,7 @@ defmodule FaithfulWordApi.MixProject do
       {:bcrypt_elixir, "~> 1.1"},
       {:argon2_elixir, "~> 1.3"},
       {:corsica, "~> 1.1"},
+      {:db_connection, "== 2.0.3", override: true},
 
       # ---- Internal ----
       {:faithful_word, in_umbrella: true},
