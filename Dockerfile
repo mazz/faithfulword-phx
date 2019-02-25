@@ -17,9 +17,11 @@ COPY mix.* /app/
 RUN mkdir -p \
     /app/apps/db \
     /app/apps/faithful_word \
+    /app/apps/faithful_word_jobs \
     /app/apps/faithful_word_api
 COPY apps/db/mix.* /app/apps/db/
 COPY apps/faithful_word/mix.* /app/apps/faithful_word/
+COPY apps/faithful_word_jobs/mix.* /app/apps/faithful_word_jobs/
 COPY apps/faithful_word_api/mix.* /app/apps/faithful_word_api/
 RUN mix do deps.get --only prod, deps.compile
 

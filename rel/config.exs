@@ -58,6 +58,7 @@ release :faithful_word_umbrella do
     :runtime_tools,
     db: :permanent,
     faithful_word: :permanent,
+    faithful_word_jobs: :permanent,
     faithful_word_api: :permanent
   ]
   set commands: [
