@@ -6,6 +6,7 @@ defmodule DB.Repo.Migrations.CreateGospel do
       add :absolute_id, :integer
       add :uuid, :uuid
       add :basename, :string
+      timestamps(type: :utc_datetime)
 
       # timestamps()
     end

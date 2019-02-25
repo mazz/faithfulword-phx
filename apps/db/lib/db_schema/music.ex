@@ -11,6 +11,7 @@ defmodule DB.Schema.Music do
     # timestamps()
     has_many :mediamusic, DB.Schema.MediaMusic
     has_many :musictitle, DB.Schema.MusicTitle
+    timestamps(type: :utc_datetime)
 
   end
 

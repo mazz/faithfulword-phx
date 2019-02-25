@@ -1,5 +1,5 @@
 # docker build -t faithful_word:builder --target=builder .
-FROM elixir:1.7.4-alpine as builder
+FROM elixir:1.8.1-alpine as builder
 RUN apk add --no-cache \
     gcc \
     git \
@@ -40,13 +40,13 @@ COPY --from=frontend /priv/static apps/faithful_word_api/priv/static
 RUN mix do phx.digest, release --env=prod --no-tar
 
 # docker run -it --rm elixir:1.7.3-alpine sh -c 'head -n1 /etc/issue'
-FROM alpine:3.8 as runner
+FROM alpine:3.9 as runner
 RUN addgroup -g 1000 faithful_word && \
     adduser -D -h /app \
       -G faithful_word \
       -u 1000 \
       faithful_word
-RUN apk add -U bash libssl1.0
+RUN apk add -U bash libssl1.1
 USER root
 WORKDIR /app
 COPY --from=releaser /app/_build/prod/rel/faithful_word_umbrella /app

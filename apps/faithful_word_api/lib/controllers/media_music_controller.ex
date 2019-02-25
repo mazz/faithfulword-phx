@@ -47,6 +47,7 @@ defmodule FaithfulWordApi.MediaMusicController do
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
+            api_version = String.trim_leading(api_version, "v")
             render(conn, MediaMusicView, "index.json", %{media_music: media_music, api_version: api_version})
             # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
             # render(conn, UserView, "user_with_token.json", %{user: user, token: token})

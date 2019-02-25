@@ -119,11 +119,12 @@ defmodule FaithfulWordApi.V13 do
     # where: c.id == mc.chapter_id,
     # where: mg.language_id == ^language_id,
     where: mg.gospel_id == g.id,
-    order_by: [mg.absolute_id, mg.id],
+    # order_by: [mg.absolute_id, mg.id],
+    order_by: [desc: mg.updated_at],
     # where: t.language_id  == ^language_id,
     select: %{localizedName: mg.localizedname, path: mg.path, presenterName: mg.presenter_name, sourceMaterial: mg.source_material, uuid: mg.uuid}
-
     query
+    # |> DB.Query.order_by_last_updated_desc()
     |> Repo.paginate(page: offset, page_size: limit)
   end
 

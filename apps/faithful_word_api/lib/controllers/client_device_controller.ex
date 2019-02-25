@@ -37,6 +37,7 @@ defmodule FaithfulWordApi.ClientDeviceController do
         |> case do
           api_version ->
             Logger.debug("api_version #{inspect %{attributes: api_version}}")
+            api_version = String.trim_leading(api_version, "v")
             render(conn, ClientDeviceView, "index.json", %{client_device: client_device, api_version: api_version})
         end
     end

@@ -46,11 +46,11 @@ class Dbimport(object):
         # os.system("psql -U postgres -d {0} -f {1}".format('faithful_word_dev', args.pgfile) )
 
         #import db
-        os.system("pg_restore -U postgres --clean --dbname={0} {1}".format('faithful_word_dev', args.pgfile) )
+        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_restore\" -U postgres --clean --dbname={0} {1}'.format('faithful_word_dev', args.pgfile) )
 
         subprocess.call(['/Applications/Postgres.app/Contents/Versions/11/bin/psql', '-c', 'SET session_replication_role = DEFAULT;'])
 
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format('faithful_word_dev', '\"INSERT INTO musictitles (uuid, localizedname, language_id, music_id) SELECT md5(random()::text || clock_timestamp()::text)::uuid, basename, \'en\', id from music;\"'))
+        # os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format('faithful_word_dev', '\"INSERT INTO musictitles (uuid, localizedname, language_id, music_id) SELECT md5(random()::text || clock_timestamp()::text)::uuid, basename, \'en\', id from music;\"'))
 
 if __name__ == '__main__':
     Dbimport()

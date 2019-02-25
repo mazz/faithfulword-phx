@@ -42,7 +42,8 @@ defmodule FaithfulWordApi.MusicController do
         |>
         case do
           api_version ->
-                render(conn, "index.json", %{music: music, api_version: api_version})
+            api_version = String.trim_leading(api_version, "v")
+            render(conn, "index.json", %{music: music, api_version: api_version})
         end
     end
   end

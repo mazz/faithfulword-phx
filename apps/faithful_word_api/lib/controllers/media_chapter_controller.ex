@@ -48,6 +48,7 @@ defmodule FaithfulWordApi.MediaChapterController do
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
+            api_version = String.trim_leading(api_version, "v")
             render(conn, MediaChapterView, "index.json", %{media_chapter: media_chapter, api_version: api_version})
             # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
             # render(conn, UserView, "user_with_token.json", %{user: user, token: token})

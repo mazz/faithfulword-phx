@@ -5,7 +5,7 @@ defmodule FaithfulWordApi.MediaChapterV12View do
   def render("indexv12.json", %{media_chapter_v12: media_chapter_v12}) do
     %{result: render_many(media_chapter_v12, MediaChapterV12View, "media_chapter_v12.json"),
     status: "success",
-    version: "v1.2"}
+    version: "1.2"}
 
     # %{data: render_many(mediachapter, MediaChapterView, "media_chapter.json")}
   end

@@ -5,7 +5,7 @@ defmodule FaithfulWordApi.MusicV12View do
   def render("indexv12.json", %{music_v12: music_v12}) do
     %{result: render_many(music_v12, MusicV12View, "music_v12.json"),
     status: "success",
-    version: "v1.2"}  end
+    version: "1.2"}  end
 
   def render("show.json", %{music_v12: music_v12}) do
     %{data: render_one(music_v12, MusicV12View, "music_v12.json")}

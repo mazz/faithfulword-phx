@@ -9,7 +9,7 @@ defmodule DB.MixProject do
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
-      elixir: "~> 1.7",
+      elixir: "~> 1.8",
       compilers: Mix.compilers(),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -35,7 +35,7 @@ defmodule DB.MixProject do
       {:ex_aws_s3, "~> 2.0"},
       {:arc, "~> 0.11.0"},
       {:arc_ecto, "~> 0.11.0"},
-      {:ecto_enum, "~> 1.1"},
+      {:ecto_enum, "~> 1.2"},
       {:xml_builder, "~> 2.0", override: true},
       {:slugger, "~> 0.3"},
       {:comeonin, "~> 4.1"},
@@ -44,7 +44,7 @@ defmodule DB.MixProject do
       {:hashids, "~> 2.0"},
       {:kaur, "~> 1.1"},
       {:mime, "~> 1.2"},
-      {:scrivener_ecto, "~> 2.0"}
+      {:scrivener_ecto, "~> 2.0"},
 
       # Dev only
       # {:exsync, "~> 0.2", only: :dev},

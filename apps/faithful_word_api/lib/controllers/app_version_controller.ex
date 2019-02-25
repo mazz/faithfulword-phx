@@ -40,6 +40,7 @@ defmodule FaithfulWordApi.AppVersionController do
         |>
         case do
           api_version ->
+            api_version = String.trim_leading(api_version, "v")
             render(conn, AppVersionView, "index.json", %{app_version: app_version, api_version: api_version})
         end
     end

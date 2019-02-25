@@ -64,6 +64,7 @@ defmodule FaithfulWordApi.BookController do
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
+            api_version = String.trim_leading(api_version, "v")
             render(conn, BookView, "index.json", %{book: book, api_version: api_version})
         end
     end

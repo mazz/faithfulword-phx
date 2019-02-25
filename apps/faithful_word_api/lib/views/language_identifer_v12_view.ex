@@ -5,7 +5,7 @@ defmodule FaithfulWordApi.LanguageIdentifierV12View do
   def render("indexv12.json",%{language_identifier_v12: language_identifier_v12}) do
     %{result: render_many(language_identifier_v12, LanguageIdentifierV12View, "language_identifier_v12.json"),
     status: "success",
-    version: "v1.2"}
+    version: "1.2"}
     # %{data: render_many(language_identifier_v12, LanguageIdentifierV12View, "language_identifier_v12.json")}
   end
 

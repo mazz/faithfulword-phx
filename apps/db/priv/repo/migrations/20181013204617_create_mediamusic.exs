@@ -10,6 +10,7 @@ defmodule DB.Repo.Migrations.CreateMediamusic do
       add :localizedname, :string
       add :path, :string
       add :large_thumbnail_path, :string
+      add :med_thumbnail_path, :string
       add :small_thumbnail_path, :string
       add :language_id, :string
       add :presenter_name, :string
