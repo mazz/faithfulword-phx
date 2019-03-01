@@ -5,7 +5,7 @@
 use Mix.Config
 
 config :faithful_word, DB.Repo,
-  pool_size: 15
+  pool_size: 30
 
 
 # ---- [Global config keys] ----
