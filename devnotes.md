@@ -7,6 +7,13 @@ mv ./test/old_name ./test/new_name
 mv ./lib/old_name_web ./lib/new_name_web
 mv ./lib/old_name_web.ex ./lib/new_name_web.ex
 
+linux:
+
+grep -rli 'faithful_word' * | xargs -i@ sed -i 's/faithful_word/dynter/g' @
+grep -rli 'FaithfulWord' * | xargs -i@ sed -i 's/FaithfulWord/Dynter/g' @
+
+mv ./faithful_word ./dynter
+mv ./lib/faithful_word.ex ./lib/dynter.ex
 
 
 https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part-2/
