@@ -7,8 +7,50 @@ mv ./test/old_name ./test/new_name
 mv ./lib/old_name_web ./lib/new_name_web
 mv ./lib/old_name_web.ex ./lib/new_name_web.ex
 
+linux:
+
+grep -rli 'faithful_word' * | xargs -i@ sed -i 's/faithful_word/dynter/g' @
+grep -rli 'FaithfulWord' * | xargs -i@ sed -i 's/FaithfulWord/Dynter/g' @
+
+mv ./faithful_word ./dynter
+mv ./lib/faithful_word.ex ./lib/dynter.ex
 
 
+## asdf
+
+asdf plugin-add elixir
+asdf plugin-add erlang
+asdf plugin-add nodejs
+
+asdf install elixir 1.8.1-otp-21
+asdf install erlang 21.0
+NODEJS_CHECK_SIGNATURES=no asdf install nodejs 10.15.3
+
+asdf global elixir 1.8.1-otp-21
+asdf global erlang 21.0
+asdf global nodejs 10.15.3
+
+## dev build
+
+git clone https://github.com/FaithfulAudio/faithfulword-phx.git
+cd faithfulword-phx
+cd apps/faithful_word_api
+### compile dependencies
+mix deps.get && mix deps.compile
+### compile node dependencies
+cd assets && npm install
+cd ../../faithfulword-phx
+### prepare database file and import to postgresql
+tar xvzf 2019-02-22-add-v12-api-bin-export.sql.gz
+./dbimport.py dev 2019-02-22-add-v12-api-bin-export.sql
+### seed database with user data
+mix run apps/db/priv/repo/seeds.exs
+### run
+mix phx.server
+### open url in browser
+http://localhost:4000/v1.2/books?language-id=en
+
+## deployment guide
 https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part-2/
 
 docker-compose pull
