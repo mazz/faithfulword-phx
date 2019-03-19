@@ -8,6 +8,7 @@ defmodule FaithfulWord.Jobs.Moderation do
   use GenServer
   require Logger
   import Ecto.Query
+  alias FaithfulWord.Videos.MetadataFetcher.Youtube, as: YoutubeMetaDataFetcher
 
   alias DB.Repo
   # alias DB.Schema.ModerationUserFeedback
@@ -35,7 +36,9 @@ defmodule FaithfulWord.Jobs.Moderation do
   end
 
   # 1 minute
-  @timeout 60_000
+  # @timeout 60_000
+  @timeout 10_000
+
   def update() do
     GenServer.call(@name, :update, @timeout)
   end
@@ -75,7 +78,19 @@ defmodule FaithfulWord.Jobs.Moderation do
   # --- Internal API ---
 
   def handle_call(:update, _, _) do
-    Logger.debug("moderation handle_call :update")
+
+    # "https://www.youtube.com/channel/UCq7BdmVpQsay5XrwOgMhN5w" fwbc
+
+    YoutubeMetaDataFetcher.fetch_playlist_item_list_metadata("UUq7BdmVpQsay5XrwOgMhN5w")
+
+
+    # fetch_timeout = 10000
+    # Logger.debug("moderation handle_call :update")
+
+    # url = "http://localhost:4000/v1.3/books?language-id=en&offset=1&limit=50"
+    # %HTTPoison.Response{body: body} = HTTPoison.get!(url, %{}, hackney: [recv_timeout: fetch_timeout , timeout: fetch_timeout])
+    # Logger.info(body)
+
     # UserAction
     # |> join(:inner, [a], uf in ModerationUserFeedback, uf.action_id == a.id)
     # |> select([a, uf], %{

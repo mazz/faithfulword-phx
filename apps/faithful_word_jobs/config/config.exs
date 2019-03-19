@@ -16,7 +16,9 @@ config :faithful_word_jobs, FaithfulWord.Jobs.Scheduler,
     {"*/1 * * * *", {FaithfulWord.Jobs.Flags, :update, []}},
     # Various updaters
     # Every 5 minutes
-    {"*/5 * * * *", {FaithfulWord.Jobs.Moderation, :update, []}}
+    # {"*/5 * * * *", {FaithfulWord.Jobs.Moderation, :update, []}}
+    {"*/1 * * * *", {FaithfulWord.Jobs.Moderation, :update, []}},
+
   ]
 
 # Configure Postgres pool size
