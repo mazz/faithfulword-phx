@@ -1,4 +1,4 @@
   <div class="col-lg-6">
-  index
+      <div id="myvueapp"></div>
   </div>
 </div>

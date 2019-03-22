@@ -4,6 +4,30 @@ defmodule FaithfulWordApi.Router do
 
 
   # ---- Pipelines ----
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    # plug :put_layout, false
+    plug :put_layout, {FaithfulWordApi.LayoutView, :app}
+    plug(GuardianImpl.Pipeline)
+
+    # plug WordApi.Plugs.GuardianPipeline
+  end
+
+  scope "/", FaithfulWordApi do
+    pipe_through :browser # Use the default browser stack
+
+    get "/", PageController, :index
+    get "/about", PageController, :about
+    get "/login", LoginController, :new
+    post "/login", LoginController, :create
+    get "/signup", SignupController, :new
+    post "/signup", SignupController, :create
+    # get "/login/:magic_token", LoginController, :callback
+  end
 
   pipeline :api do
     plug(:accepts, ["json"])
@@ -140,6 +164,9 @@ defmodule FaithfulWordApi.Router do
 
 
 
+
+
+  # end
 
   defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
     conn =
