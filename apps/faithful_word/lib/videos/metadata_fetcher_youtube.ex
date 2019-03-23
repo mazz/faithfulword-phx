@@ -94,25 +94,24 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
     |> GoogleApi.YouTube.V3.Api.PlaylistItems.youtube_playlist_items_list("snippet", maxResults: 50, playlistId: playlist_id, key: api_key)
     |> Result.map_error(fn e -> "YouTube API Error: #{inspect(e)}" end)
     |> Result.keep_if(&(!Enum.empty?(&1.items)), "remote_video_404")
-    |> Result.map(fn %GoogleApi.YouTube.V3.Model.PlaylistItemListResponse{items: [video = %GoogleApi.YouTube.V3.Model.PlaylistItem{} | _]} ->
+    |> Result.map(fn %GoogleApi.YouTube.V3.Model.PlaylistItemListResponse{items: videos} ->
+      Enum.map(videos, fn video ->
       %{
         title: video.snippet.title,
+        description: video.snippet.description,
+        publishedAt: video.snippet.publishedAt,
+        thumbnails: video.snippet.thumbnails,
         language: "en",
         url: Video.build_url(%{youtube_id: video.snippet.resourceId.videoId})
       }
+      # |> IO.inspect("after video:")
+      end)
     end)
-
-    # YouTubePlaylistVideo
 
     IO.inspect(thing)
 
-
-      # %{
-      #   title: video.snippet.title,
-      #   language: video.snippet.defaultLanguage || video.snippet.defaultAudioLanguage,
-      #   url: Video.build_url(%{channel_id: channel_id})
-      # }
   end
+
 end
 
 """
