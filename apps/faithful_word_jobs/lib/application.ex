@@ -11,9 +11,9 @@ defmodule FaithfulWord.Jobs.Application do
       # Scheduler for all CRON jobs
       worker(FaithfulWord.Jobs.Scheduler, []),
       # Jobs
-      worker(FaithfulWord.Jobs.Reputation, []),
-      worker(FaithfulWord.Jobs.Flags, []),
-      worker(FaithfulWord.Jobs.Moderation, [])
+      # worker(FaithfulWord.Jobs.Reputation, []),
+      # worker(FaithfulWord.Jobs.Flags, []),
+      worker(FaithfulWord.Jobs.MetadataFetch, [])
     ]
 
     opts = [strategy: :one_for_one, name: FaithfulWord.Jobs.Supervisor]

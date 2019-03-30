@@ -52,5 +52,7 @@ class Dbimport(object):
 
         # os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format('faithful_word_dev', '\"INSERT INTO musictitles (uuid, localizedname, language_id, music_id) SELECT md5(random()::text || clock_timestamp()::text)::uuid, basename, \'en\', id from music;\"'))
 
+        subprocess.call(['mix', 'ecto.migrate'])
+
 if __name__ == '__main__':
     Dbimport()

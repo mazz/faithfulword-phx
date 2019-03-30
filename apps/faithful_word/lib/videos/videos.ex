@@ -83,7 +83,11 @@ defmodule FaithfulWord.Videos do
       # specified otherwise (false)
       base_video = %Video{
         is_partner: user.is_publisher && Keyword.get(params, :is_partner) != false,
-        unlisted: Keyword.get(params, :unlisted, false)
+        unlisted: Keyword.get(params, :unlisted, false),
+        description: metadata.description,
+        channelTitle: metadata.channelTitle,
+        publishedAt: DateTime.truncate(metadata.publishedAt, :second),
+        tags: metadata.tags
       }
 
       Multi.new()

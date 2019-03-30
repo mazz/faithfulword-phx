@@ -9,15 +9,15 @@ config :faithful_word_jobs, FaithfulWord.Jobs.Scheduler,
     # credo:disable-for-lines:10
     # Actions analysers
     # Every minute
-    {{:extended, "*/20"}, {FaithfulWord.Jobs.Reputation, :update, []}},
+    # {{:extended, "*/20"}, {FaithfulWord.Jobs.Reputation, :update, []}},
     # Every day
-    {"@daily", {FaithfulWord.Jobs.Reputation, :reset_daily_limits, []}},
+    # {"@daily", {FaithfulWord.Jobs.Reputation, :reset_daily_limits, []}},
     # Every minute
-    {"*/1 * * * *", {FaithfulWord.Jobs.Flags, :update, []}},
+    # {"*/1 * * * *", {FaithfulWord.Jobs.Flags, :update, []}},
     # Various updaters
     # Every 5 minutes
     # {"*/5 * * * *", {FaithfulWord.Jobs.Moderation, :update, []}}
-    {"*/1 * * * *", {FaithfulWord.Jobs.Moderation, :update, []}},
+    {"*/1 * * * *", {FaithfulWord.Jobs.MetadataFetch, :update, []}},
 
   ]
 

@@ -24,6 +24,11 @@ defmodule DB.Schema.Video do
     field(:youtube_id, :string)
     field(:youtube_offset, :integer, null: false, default: 0)
 
+    field(:description, :string)
+    field(:channelTitle, :string)
+    field(:publishedAt, :utc_datetime)
+    field(:tags, {:array, :string})
+
     # many_to_many(:speakers, Speaker, join_through: VideoSpeaker, on_delete: :delete_all)
     # has_many(:statements, Statement, on_delete: :delete_all)
 
