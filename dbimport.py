@@ -6,12 +6,14 @@ import sys
 import json
 import os
 import subprocess
+import psycopg2
+import psycopg2.extras
 
 class Dbimport(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
             description='stream a file to a streaming service',
-            usage='''dev|prod <pgsql file>
+            usage='''dev|prod <pgsql file> <dbname>
 
 ''')
         parser.add_argument('command', help='Subcommand to run')
@@ -25,11 +27,12 @@ class Dbimport(object):
         # use dispatch pattern to invoke method with same name
         getattr(self, args.command)()
 
-    def dev(self):
+    def migratefromwebsauna(self):
         parser = argparse.ArgumentParser(
             description='dbimport v1.3 pgsql file')
         # prefixing the argument with -- means it's optional
         parser.add_argument('pgfile')
+        parser.add_argument('dbname')
         # parser.add_argument('livestream_url')
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (git) and the subcommand (commit)
@@ -46,7 +49,7 @@ class Dbimport(object):
         # os.system("psql -U postgres -d {0} -f {1}".format('faithful_word_dev', args.pgfile) )
 
         #import db
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_restore\" -U postgres --clean --dbname={0} {1}'.format('faithful_word_dev', args.pgfile) )
+        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_restore\" -U postgres --clean --dbname={0} {1}'.format(args.dbname, args.pgfile) )
 
         subprocess.call(['/Applications/Postgres.app/Contents/Versions/11/bin/psql', '-c', 'SET session_replication_role = DEFAULT;'])
 
@@ -54,5 +57,48 @@ class Dbimport(object):
 
         subprocess.call(['mix', 'ecto.migrate'])
 
+        # add preaching to mediaitems
+        move_preaching = '\"INSERT INTO mediaitems (uuid, localizedname, path, language_id, presenter_name, source_material, track_number, small_thumbnail_path, med_thumbnail_path, large_thumbnail_path, updated_at, inserted_at, media_category) SELECT uuid, localizedname, path, language_id, presenter_name, source_material, track_number, small_thumbnail_path, med_thumbnail_path, large_thumbnail_path, updated_at, inserted_at, 4 FROM mediagospel WHERE path LIKE \'%preaching%\';\"'
+
+        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, move_preaching))
+
+    # normalizepreaching must be called AFTER migratefromwebsauna because the db has to migrated from the websauna/alembic schema and imported first
+    # 
+    # GETTING STARTED:
+    # get preaching file paths with:
+    # ./dbimport.py migratefromwebsauna ./2019-02-22-add-v12-api-bin-export.sql faithful_word_dev
+    # ./dbimport.py normalizepreaching faithful_word_dev mediaitems
+    
+    def normalizepreaching(self):
+        parser = argparse.ArgumentParser(
+            description='dbimport v1.3 pgsql file')
+        # prefixing the argument with -- means it's optional
+
+        parser.add_argument('dbname')
+        parser.add_argument('tablename')
+        # parser.add_argument('livestream_url')
+        # now that we're inside a subcommand, ignore the first
+        # TWO argvs, ie the command (git) and the subcommand (commit)
+        args = parser.parse_args(sys.argv[2:])
+        print('dbname: {}'.format(repr(args.dbname)))
+        print('tablename: {}'.format(repr(args.tablename)))
+
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+        # sourcecur = sourceconn.cursor()
+        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            sourcequery = 'SELECT * FROM {}'.format(args.tablename)
+            cur.execute(sourcequery)
+            # result = cur.fetchall()
+            # print("result: {}".format(result))
+            for row in cur:
+                # records.append(row)
+                print(row['path'])
+                # print('row: {}\n'.format(row))
+            cur.close()
+
+
 if __name__ == '__main__':
     Dbimport()
+
+
