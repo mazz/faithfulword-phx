@@ -2,8 +2,9 @@ import EctoEnum
 
 defenum(
   DB.Type.MediaCategory,
-  gospel: 1,
-  music: 2,
-  media_item: 3
+  chapter: 1,
+  gospel: 2,
+  music: 3,
+  preaching: 4
 )
 

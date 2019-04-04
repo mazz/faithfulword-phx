@@ -8,6 +8,16 @@ defmodule DB.Repo.Migrations.AddDescriptionToVideos do
       add :publishedAt, :utc_datetime
       add :tags, {:array, :string}
     end
+
+    alter table(:mediaitems) do
+      add :media_category, DB.Type.MediaCategory.type()
+      add :presented_at, :utc_datetime, null: true
+    end
+
+    alter table(:orgs) do
+      add :shortname, :string
+    end
+
     # create(unique_index(:videos, [:tags]))
   end
 end

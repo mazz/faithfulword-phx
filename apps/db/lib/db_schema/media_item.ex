@@ -12,6 +12,7 @@ defmodule DB.Schema.MediaItem do
     field :ordinal, :integer
     field :path, :string
     field :presenter_name, :string
+    field :presented_at, :utc_datetime
     field :small_thumbnail_path, :string
     field :med_thumbnail_path, :string
     field :large_thumbnail_path, :string
@@ -28,7 +29,7 @@ defmodule DB.Schema.MediaItem do
   @doc false
   def changeset(media_item, attrs) do
     media_item
-    |> cast(attrs, [:ordinal, :uuid, :track_number, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :source_material])
-    |> validate_required([:ordinal, :uuid, :track_number, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :source_material])
+    |> cast(attrs, [:ordinal, :uuid, :track_number, :tags, :media_category, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :presented_at, :source_material])
+    |> validate_required([:ordinal, :uuid, :track_number, :tags, :media_category, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :presented_at, :source_material])
   end
 end

@@ -19,7 +19,7 @@ defmodule FaithfulWord.Application do
   end
 
   def version() do
-    case :application.get_key(:cf, :vsn) do
+    case :application.get_key(:faithful_word, :vsn) do
       {:ok, version} -> to_string(version)
       _ -> "unknown"
     end
@@ -28,7 +28,7 @@ defmodule FaithfulWord.Application do
   @doc """
   If Mix is available, returns Mix.env(). If not available (in releases) return :prod
   """
-  @deprecated "use Application.get_env(:cf, :env)"
+  @deprecated "use Application.get_env(:faithful_word, :env)"
   def env() do
     (Kernel.function_exported?(Mix, :env, 0) && Mix.env()) || :prod
   end

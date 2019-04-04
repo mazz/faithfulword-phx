@@ -5,6 +5,7 @@ defmodule DB.Schema.Org do
 
   schema "orgs" do
     field :basename, :string
+    field :shortname, :string
     field :small_thumbnail_path, :string
     field :med_thumbnail_path, :string
     field :large_thumbnail_path, :string
@@ -18,7 +19,7 @@ defmodule DB.Schema.Org do
   @doc false
   def changeset(org, attrs) do
     org
-    |> cast(attrs, [:uuid, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
-    |> validate_required([:uuid, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
+    |> cast(attrs, [:uuid, :basename, :shortname, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
+    |> validate_required([:uuid, :basename, :shortname, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
   end
 end
