@@ -12,6 +12,7 @@ defmodule DB.Repo.Migrations.AddDescriptionToVideos do
     alter table(:mediaitems) do
       add :media_category, DB.Type.MediaCategory.type()
       add :presented_at, :utc_datetime, null: true
+      add :org_id, references(:orgs, on_delete: :delete_all)
     end
 
     alter table(:orgs) do

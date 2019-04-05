@@ -237,7 +237,8 @@ class Dbimport(object):
                             'tags': [],
                             'inserted_at': datetime.now(),
                             'media_category': 3,
-                            'presented_at': preaching_date
+                            'presented_at': preaching_date,
+                            'org_id': 1
                         }
                         preaching.append(rowdict)
                         # insertquery = 'INSERT INTO mediaitems(vendor_name) VALUES(%s)'
@@ -249,7 +250,7 @@ class Dbimport(object):
 
         with sourceconn.cursor() as cur:
             for row in preaching:
-                cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
+                cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at, org_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
                 [row['uuid'], 
                 row['track_number'], 
                 row['medium'],
@@ -268,7 +269,8 @@ class Dbimport(object):
                 row['tags'],
                 row['inserted_at'],
                 row['media_category'],
-                row['presented_at']
+                row['presented_at'],
+                row['org_id']
                 ])
                 # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
             sourceconn.commit()

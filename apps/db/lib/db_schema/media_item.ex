@@ -22,6 +22,7 @@ defmodule DB.Schema.MediaItem do
     field :media_category, DB.Type.MediaCategory
     field :uuid, Ecto.UUID
     field :playlist_id, :integer
+    field :org_id, :integer
 
     timestamps(type: :utc_datetime)
   end
@@ -29,7 +30,7 @@ defmodule DB.Schema.MediaItem do
   @doc false
   def changeset(media_item, attrs) do
     media_item
-    |> cast(attrs, [:ordinal, :uuid, :track_number, :tags, :media_category, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :presented_at, :source_material])
-    |> validate_required([:ordinal, :uuid, :track_number, :tags, :media_category, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :presented_at, :source_material])
+    |> cast(attrs, [:ordinal, :uuid, :playlist_id, :org_id, :track_number, :tags, :media_category, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :presented_at, :source_material])
+    |> validate_required([:ordinal, :uuid, :playlist_id, :org_id, :track_number, :tags, :media_category, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :presented_at, :source_material])
   end
 end
