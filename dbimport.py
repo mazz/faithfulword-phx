@@ -8,6 +8,8 @@ import os
 import subprocess
 import psycopg2
 import psycopg2.extras
+from psycopg2 import sql
+import uuid
 from datetime import datetime
 
 class Dbimport(object):
@@ -167,6 +169,8 @@ class Dbimport(object):
         print('dbname: {}'.format(repr(args.dbname)))
         print('tablename: {}'.format(repr(args.tablename)))
 
+        preaching = []
+
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
         # sourcecur = sourceconn.cursor()
         with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -189,26 +193,87 @@ class Dbimport(object):
             cur.execute(sourcequery)
             # result = cur.fetchall()
             # print("result: {}".format(result))
+
             for row in cur:
                 # records.append(row)
                 # print(row['path'])
+
+                ## get all preaching filenames and parse-out the date preached
+
                 path_split = row['path'].split('/')
                 if path_split[0] == 'preaching':
                     print('path_split: {}'.format(path_split))
                     
+                    ## [2] is the filename leaf node
                     filename = path_split[2]
                     filename_split = filename.split('-')
                     print('filename_split: {}'.format(filename_split))
+
+                    ## [0] is the org name, see if we have it already in the array
                     if filename_split[0].lower() in orgs:
                         print('found org: {}'.format(filename_split[0]))
+                    
                         # if AM -> 10:00, if PM -> 19:00
                         assigned_time = '10:00' if filename_split[4] == 'AM' else '19:00'
                         preaching_date = datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
                         print('preaching_date: {}'.format(preaching_date))
 
+                        rowdict = {
+                            'uuid': str(uuid.uuid4()),
+                            'track_number': row['track_number'],
+                            'medium': 'audio',
+                            'localizedname': row['localizedname'],
+                            'path': row['path'],
+                            'small_thumbnail_path': row['small_thumbnail_path'],
+                            'large_thumbnail_path': row['large_thumbnail_path'],
+                            'content_provider_link': None,
+                            'ipfs_link': None,
+                            'language_id': row['language_id'],
+                            'presenter_name': row['presenter_name'],
+                            'source_material': row['source_material'],
+                            'updated_at': datetime.now(),
+                            'playlist_id': None,
+                            'med_thumbnail_path': row['med_thumbnail_path'],
+                            'tags': [],
+                            'inserted_at': datetime.now(),
+                            'media_category': 3,
+                            'presented_at': preaching_date
+                        }
+                        preaching.append(rowdict)
                         # insertquery = 'INSERT INTO mediaitems(vendor_name) VALUES(%s)'
-                        cur.execute
+                        # cur.execute(insertquery)
             cur.close()
+        print('preaching: {}'.format(preaching))
+
+        # cur.execute("insert into mytable (jsondata) values (%s)", [Json({'a': 100})])
+
+        with sourceconn.cursor() as cur:
+            for row in preaching:
+                cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
+                [row['uuid'], 
+                row['track_number'], 
+                row['medium'],
+                row['localizedname'],
+                row['path'],
+                row['small_thumbnail_path'],
+                row['large_thumbnail_path'],
+                row['content_provider_link'],
+                row['ipfs_link'],
+                row['language_id'],
+                row['presenter_name'],
+                row['source_material'],
+                row['updated_at'],
+                row['playlist_id'],
+                row['med_thumbnail_path'],
+                row['tags'],
+                row['inserted_at'],
+                row['media_category'],
+                row['presented_at']
+                ])
+                # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
+            sourceconn.commit()
+
+
 
 
 if __name__ == '__main__':
