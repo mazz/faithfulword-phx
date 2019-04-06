@@ -137,6 +137,20 @@ class Dbimport(object):
 
                     sourceconn.commit()
 
+    def addpreachingplaylists(self):
+        parser = argparse.ArgumentParser(
+            description='add preaching playlists')
+        # prefixing the argument with -- means it's optional
+        parser.add_argument('dbname')
+        # parser.add_argument('livestream_url')
+        # now that we're inside a subcommand, ignore the first
+        # TWO argvs, ie the command (git) and the subcommand (commit)
+        args = parser.parse_args(sys.argv[2:])
+
+
+
+
+
     # normalizepreaching must be called AFTER addorgrows because orgs need to be present
     # 
     # GETTING STARTED:
@@ -151,13 +165,13 @@ class Dbimport(object):
         # prefixing the argument with -- means it's optional
 
         parser.add_argument('dbname')
-        parser.add_argument('tablename')
+        # parser.add_argument('tablename')
         # parser.add_argument('livestream_url')
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (git) and the subcommand (commit)
         args = parser.parse_args(sys.argv[2:])
         print('dbname: {}'.format(repr(args.dbname)))
-        print('tablename: {}'.format(repr(args.tablename)))
+        # print('tablename: {}'.format(repr(args.tablename)))
 
         preaching = []
 
@@ -167,7 +181,7 @@ class Dbimport(object):
         # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
 
             # delete items with null paths
-            deletequery = 'delete FROM mediagospel where path is NULL'.format(args.tablename)
+            deletequery = 'delete FROM mediagospel where path is NULL'
             cur.execute(deletequery)
 
             # get array of org shortnames
@@ -179,25 +193,25 @@ class Dbimport(object):
                 orgs.extend(row)
             print('orgs: {}'.format(orgs))
 
-            sourcequery = 'SELECT * FROM {}'.format(args.tablename)
+            sourcequery = 'SELECT * FROM mediagospel'
             cur.execute(sourcequery)
             # result = cur.fetchall()
             # print("result: {}".format(result))
 
             for row in cur:
                 # records.append(row)
-                # print(row['path'])
+                print('row: {}'.format(row))
 
                 ## get all preaching filenames and parse-out the date preached
 
                 path_split = row['path'].split('/')
                 if path_split[0] == 'preaching':
-                    print('path_split: {}'.format(path_split))
+                    # print('path_split: {}'.format(path_split))
                     
                     ## [2] is the filename leaf node
                     filename = path_split[2]
                     filename_split = filename.split('-')
-                    print('filename_split: {}'.format(filename_split))
+                    # print('filename_split: {}'.format(filename_split))
 
                     ## [0] is the org name, see if we have it already in the array
                     if filename_split[0].lower() in orgs:
@@ -212,7 +226,7 @@ class Dbimport(object):
                         preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
                         # preaching_date = datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
 
-                        print('path_split: {}'.format(path_split))
+                        # print('path_split: {}'.format(path_split))
 
                     rowdict = {
                         'uuid': str(uuid.uuid4()),
@@ -241,9 +255,7 @@ class Dbimport(object):
                         # cur.execute(insertquery)
 
             cur.close()
-        print('preaching: {}'.format(preaching))
-
-        # cur.execute("insert into mytable (jsondata) values (%s)", [Json({'a': 100})])
+        # print('preaching: {}'.format(preaching))
 
         with sourceconn.cursor() as cur:
             for row in preaching:
