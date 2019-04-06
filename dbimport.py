@@ -83,74 +83,59 @@ class Dbimport(object):
         # TWO argvs, ie the command (git) and the subcommand (commit)
         args = parser.parse_args(sys.argv[2:])
 
+        orgs = [{'basename': 'kjvrvg', 'shortname': 'kjvrvg'},
+        {'basename': 'Faithful Word Baptist Church, Tempe, AZ', 'shortname': 'fwbc'},
+        {'basename': 'Verity Baptist Church, Sacramento, CA', 'shortname': 'vbc'},
+        {'basename': 'Word of Truth Baptist Church', 'shortname': 'wotbc'},
+        {'basename': 'Faith Baptist Church', 'shortname': 'fbc'},
+        {'basename': 'Liberty Baptist Church', 'shortname': 'lbc'},
+        {'basename': 'Faithful Word Baptist Church LA', 'shortname': 'fwbcla'},
+        {'basename': 'Temple Baptist Church', 'shortname': 'tbc'},
+        {'basename': 'Verity Baptist Vancouver', 'shortname': 'vbcv'},
+        {'basename': 'Pillar Baptist Church', 'shortname': 'pbc'},
+        {'basename': 'Mountain Baptist Church, Fairmont, WV', 'shortname': 'mbc'},
+        {'basename': 'Old Paths Baptist Church, El Paso, TX', 'shortname': 'opbc'},
+        {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'},
+        {'basename': 'All Scripture Baptist Church, Knoxville, TN', 'shortname': 'asbc'},
+        {'basename': 'ibsa, USA', 'shortname': 'ibsa'},
+        {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'}
+        ]
         # generate ORGs and make a 'main' channel
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+        with sourceconn.cursor() as cur:
+            for org in orgs:
+                cur.execute(sql.SQL("insert into orgs(uuid, basename, shortname, updated_at, inserted_at) values (%s, %s, %s, %s, %s)"), 
+                [str(uuid.uuid4()), 
+                org['basename'], 
+                org['shortname'],
+                datetime.datetime.now(),
+                datetime.datetime.now()
+                ])
 
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'kjvrvg\', \'kjvrvg\', now(), now());\"'))
+                sourceconn.commit()
 
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Faithful Word Baptist Church, Tempe, AZ\', \'fwbc\', now(), now());\"'))
+        # add a 'Preaching', 'Music', 'Gospel' channel for each org
 
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Verity Baptist Church, Sacramento, CA\', \'vbc\', now(), now());\"'))
+        with sourceconn.cursor() as cur:
+            # get array of org ids
+            orgquery = 'select id from orgs'
+            cur.execute(orgquery)
+            org_ids = []
+            for row in cur:
+                org_ids.extend(row)
+            print('org_ids: {}'.format(org_ids))
 
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Word of Truth Baptist Church\', \'wotbc\', now(), now());\"'))
+            for org_id in org_ids:
+                for channel_name in ['Preaching', 'Music', 'Gospel']:
+                    cur.execute(sql.SQL("INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (%s, %s, %s, %s, %s)"), 
+                    [str(uuid.uuid4()), 
+                    channel_name, 
+                    datetime.datetime.now(),
+                    datetime.datetime.now(),
+                    org_id
+                    ])
 
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Faith Baptist Church\', \'fbc\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Liberty Baptist Church\', \'lbc\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Faithful Word Baptist Church LA\', \'fwbcla\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Temple Baptist Church\', \'tbc\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Verity Baptist Vancouver\', \'vbcv\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Pillar Baptist Church\', \'pbc\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Mountain Baptist Church, Fairmont, WV\', \'mbc\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Old Paths Baptist Church, El Paso, TX\', \'opbc\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Stedfast Baptist Church Houston, TX\', \'sbc\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'All Scripture Baptist Church, Knoxville, TN\', \'asbc\', now(), now());\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'ibsa, USA\', \'ibsa\', now(), now());\"'))
-
-        # add a 'main' channel for each org
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Preaching\', now(), now(), 1);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Music\', now(), now(), 1);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Gospel\', now(), now(), 1);\"'))
-
-
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 2);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 3);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 4);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 5);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 6);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 7);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 8);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 9);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 10);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 11);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 12);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 13);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 14);\"'))
-
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 15);\"'))
+                    sourceconn.commit()
 
     # normalizepreaching must be called AFTER addorgrows because orgs need to be present
     # 
