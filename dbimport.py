@@ -10,7 +10,7 @@ import psycopg2
 import psycopg2.extras
 from psycopg2 import sql
 import uuid
-from datetime import datetime
+import datetime
 
 class Dbimport(object):
     def __init__(self):
@@ -116,8 +116,13 @@ class Dbimport(object):
         os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO orgs (uuid, basename, shortname, updated_at, inserted_at) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'ibsa, USA\', \'ibsa\', now(), now());\"'))
 
         # add a 'main' channel for each org
+        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Preaching\', now(), now(), 1);\"'))
 
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 1);\"'))
+        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Music\', now(), now(), 1);\"'))
+
+        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Gospel\', now(), now(), 1);\"'))
+
+
 
         os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format(args.dbname, '\"INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (md5(random()::text || clock_timestamp()::text)::uuid, \'Main\', now(), now(), 2);\"'))
 
@@ -211,38 +216,45 @@ class Dbimport(object):
 
                     ## [0] is the org name, see if we have it already in the array
                     if filename_split[0].lower() in orgs:
-                        print('found org: {}'.format(filename_split[0]))
+                        # print('found org: {}'.format(filename_split[0]))
                     
                         # if AM -> 10:00, if PM -> 19:00
                         assigned_time = '10:00' if filename_split[4] == 'AM' else '19:00'
-                        preaching_date = datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
-                        print('preaching_date: {}'.format(preaching_date))
+                        preaching_date = datetime.datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+                        # print('preaching_date: {}'.format(preaching_date))
 
-                        rowdict = {
-                            'uuid': str(uuid.uuid4()),
-                            'track_number': row['track_number'],
-                            'medium': 'audio',
-                            'localizedname': row['localizedname'],
-                            'path': row['path'],
-                            'small_thumbnail_path': row['small_thumbnail_path'],
-                            'large_thumbnail_path': row['large_thumbnail_path'],
-                            'content_provider_link': None,
-                            'ipfs_link': None,
-                            'language_id': row['language_id'],
-                            'presenter_name': row['presenter_name'],
-                            'source_material': row['source_material'],
-                            'updated_at': datetime.now(),
-                            'playlist_id': None,
-                            'med_thumbnail_path': row['med_thumbnail_path'],
-                            'tags': [],
-                            'inserted_at': datetime.now(),
-                            'media_category': 3,
-                            'presented_at': preaching_date,
-                            'org_id': 1
-                        }
-                        preaching.append(rowdict)
+                    else:
+                        preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
+                        # preaching_date = datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+
+                        print('path_split: {}'.format(path_split))
+
+                    rowdict = {
+                        'uuid': str(uuid.uuid4()),
+                        'track_number': row['track_number'],
+                        'medium': 'audio',
+                        'localizedname': row['localizedname'],
+                        'path': row['path'],
+                        'small_thumbnail_path': row['small_thumbnail_path'],
+                        'large_thumbnail_path': row['large_thumbnail_path'],
+                        'content_provider_link': None,
+                        'ipfs_link': None,
+                        'language_id': row['language_id'],
+                        'presenter_name': row['presenter_name'],
+                        'source_material': row['source_material'],
+                        'updated_at': datetime.datetime.now(),
+                        'playlist_id': None,
+                        'med_thumbnail_path': row['med_thumbnail_path'],
+                        'tags': [],
+                        'inserted_at': datetime.datetime.now(),
+                        'media_category': 3,
+                        'presented_at': preaching_date,
+                        'org_id': 1
+                    }
+                    preaching.append(rowdict)
                         # insertquery = 'INSERT INTO mediaitems(vendor_name) VALUES(%s)'
                         # cur.execute(insertquery)
+
             cur.close()
         print('preaching: {}'.format(preaching))
 
@@ -276,6 +288,56 @@ class Dbimport(object):
             sourceconn.commit()
 
 
+    # normalizepreaching must be called AFTER addorgrows because orgs need to be present
+    # 
+    # GETTING STARTED:
+    # get preaching file paths with:
+    # ./dbimport.py migratefromwebsauna ./2019-04-02-media-item-bin.pgsql faithful_word_dev
+    # ./dbimport.py addorgrows faithful_word_dev
+    # ./dbimport.py normalizepreaching faithful_word_dev mediagospel
+
+    def normalizemusic(self):
+        parser = argparse.ArgumentParser(
+            description='dbimport v1.3 pgsql file')
+        # prefixing the argument with -- means it's optional
+
+        parser.add_argument('dbname')
+        parser.add_argument('tablename')
+        # parser.add_argument('livestream_url')
+        # now that we're inside a subcommand, ignore the first
+        # TWO argvs, ie the command (git) and the subcommand (commit)
+        args = parser.parse_args(sys.argv[2:])
+        print('dbname: {}'.format(repr(args.dbname)))
+        print('tablename: {}'.format(repr(args.tablename)))
+
+        preaching = []
+
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+        # sourcecur = sourceconn.cursor()
+        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
+
+            # delete items with null paths
+            deletequery = 'delete FROM mediagospel where path is NULL'.format(args.tablename)
+            cur.execute(deletequery)
+
+            # get array of org shortnames
+
+            orgquery = 'select shortname from orgs'
+            cur.execute(orgquery)
+            orgs = []
+            for row in cur:
+                orgs.extend(row)
+            print('orgs: {}'.format(orgs))
+
+            sourcequery = 'SELECT * FROM {}'.format(args.tablename)
+            cur.execute(sourcequery)
+            # result = cur.fetchall()
+            # print("result: {}".format(result))
+
+            for row in cur:
+                # records.append(row)
+                print(row['path'])
 
 
 if __name__ == '__main__':
