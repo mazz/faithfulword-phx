@@ -83,7 +83,7 @@ class Dbimport(object):
         # TWO argvs, ie the command (git) and the subcommand (commit)
         args = parser.parse_args(sys.argv[2:])
 
-        orgs = [{'basename': 'kjvrvg', 'shortname': 'kjvrvg'},
+        orgs = [{'basename': 'faithfulwordapp', 'shortname': 'faithfulwordapp'},
         {'basename': 'Faithful Word Baptist Church, Tempe, AZ', 'shortname': 'fwbc'},
         {'basename': 'Verity Baptist Church, Sacramento, CA', 'shortname': 'vbc'},
         {'basename': 'Word of Truth Baptist Church', 'shortname': 'wotbc'},
@@ -126,7 +126,7 @@ class Dbimport(object):
             print('org_ids: {}'.format(org_ids))
 
             for org_id in org_ids:
-                for channel_name in ['Preaching', 'Music', 'Gospel']:
+                for channel_name in ['Preaching', 'Music', 'Gospel', 'Documentaries']:
                     cur.execute(sql.SQL("INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (%s, %s, %s, %s, %s)"), 
                     [str(uuid.uuid4()), 
                     channel_name, 
@@ -137,9 +137,9 @@ class Dbimport(object):
 
                     sourceconn.commit()
 
-    def addpreachingplaylists(self):
+    def convertv12gospeltoplaylists(self):
         parser = argparse.ArgumentParser(
-            description='add preaching playlists')
+            description='add v1.2 playlists')
         # prefixing the argument with -- means it's optional
         parser.add_argument('dbname')
         # parser.add_argument('livestream_url')
@@ -147,6 +147,91 @@ class Dbimport(object):
         # TWO argvs, ie the command (git) and the subcommand (commit)
         args = parser.parse_args(sys.argv[2:])
 
+        playlists = []
+
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+
+        # get all the gospel categories because they contain the 
+        # preaching categories
+        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
+
+
+            joinedgospelquery = 'select * from gospeltitles inner join gospel on gospeltitles.gospel_id = gospel.id'
+            cur.execute(joinedgospelquery)
+            for row in cur:
+                # print('row: {}'.format(row))
+                print('basename: {}'.format(row['basename']))
+                
+                # set the channel id based on basename title
+
+                channel_id = 0
+                if row['basename'] == 'Plan of Salvation' or row['basename'] == 'Soul-winning Motivation' or row['basename'] == 'Soul-winning Tutorials' or row['basename'] == 'Soul-winning Sermons' or row['basename'] == 'आत्मिक जीत स्पष्टीकरण':
+                        channel_id = 3
+                if row['basename'] == 'Word of Truth Baptist Church Sermons' or row['basename'] == 'FWBC Sermons' or row['basename'] == 'Faith Baptist Church Louisiana Sermons' or row['basename'] == 'Verity Baptist Church Sermons' or row['basename'] == 'Old Path Baptist Church Sermons' or row['basename'] == 'Liberty Baptist Church Sermons' or row['basename'] == 'Faithful Word Baptist Church LA' or row['basename'] == 'Temple Baptist Church Sermons' or row['basename'] == 'Sean Jolley Spanish' or row['basename'] == 'ASBC' or row['basename'] == 'Entire Bible Preached Project' or row['basename'] == 'Pillar Baptist Church' or row['basename'] == 'Iglesia Bautista de Santa Ana' or row['basename'] == 'FWBC Espanol' or row['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or row['basename'] == 'Justice by Jack Hyles' or row['basename'] == 'Verity Baptist Vancouver (Preaching)' or row['basename'] == 'Stedfast Baptist Church':
+                        channel_id = 1
+                if row['basename'] == 'Documentaries':
+                    channel_id = 4
+
+                if channel_id != 0:
+                    rowdict = {
+                        'ordinal': row['absolute_id'],
+                        'uuid': str(uuid.uuid4()),
+                        'localizedname': row['localizedname'],
+                        'language_id': row['language_id'],
+                        'small_thumbnail_path': None,
+                        'med_thumbnail_path': None,
+                        'large_thumbnail_path': None,
+                        'banner_path': None,
+                        'channel_id': channel_id,
+                        'updated_at': datetime.datetime.now(),
+                        'inserted_at': datetime.datetime.now()
+                    }
+
+                    # add playlist to corresponding channel
+                    print('channel_id: {}'.format(channel_id))
+    
+                    # if channel_id == 1:
+                    #     preaching.append(rowdict)
+                    # if channel_id == 3:
+                    #     gospel.append(rowdict)
+                    # if channel_id == 4:
+                    #     documentaries.append(rowdict)
+
+                    playlists.append(rowdict)
+            # print("preaching: {}".format(preaching))
+            # print("gospel: {}".format(gospel))
+            # print("documentaries: {}".format(documentaries))
+
+
+
+            # result = cur.fetchall()
+            # print("preaching: {}".format(preaching))
+            # print("gospel: {}".format(preaching))
+            # print("documentaries: {}".format(preaching))
+
+        # generate playlists using the v1.2 categories and assign them
+        # to the faithfulwordapp org
+
+        # sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+
+        with sourceconn.cursor() as cur:
+            for playlist in playlists:
+                cur.execute(sql.SQL("insert into playlists(ordinal, uuid, localizedname, language_id, small_thumbnail_path, med_thumbnail_path, large_thumbnail_path, banner_path, channel_id, inserted_at, updated_at) values (%s, %s, %s, %s, %s, %s ,%s ,%s ,%s ,%s ,%s)"), 
+                [playlist['ordinal'],
+                str(uuid.uuid4()), 
+                playlist['localizedname'],
+                playlist['language_id'],
+                playlist['small_thumbnail_path'],
+                playlist['med_thumbnail_path'],
+                playlist['large_thumbnail_path'],
+                playlist['banner_path'],
+                playlist['channel_id'],
+                datetime.datetime.now(),
+                datetime.datetime.now()
+                ])
+
+                sourceconn.commit()
 
 
 
