@@ -6,8 +6,9 @@ defmodule DB.Repo.Migrations.CreatePlaylists do
 
       add :ordinal, :integer
       add :uuid, :uuid
-      add :localizedname, :string
-      add :language_id, :string
+      add :basename, :string
+      add :media_category, DB.Type.MediaCategory.type()
+      # add :language_id, :string
       add :small_thumbnail_path, :string
       add :med_thumbnail_path, :string
       add :large_thumbnail_path, :string

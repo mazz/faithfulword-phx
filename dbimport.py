@@ -156,29 +156,33 @@ class Dbimport(object):
         with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
         # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
 
-
-            joinedgospelquery = 'select * from gospeltitles inner join gospel on gospeltitles.gospel_id = gospel.id'
+            joinedgospelquery = 'select * from gospel'
             cur.execute(joinedgospelquery)
             for row in cur:
-                # print('row: {}'.format(row))
-                print('basename: {}'.format(row['basename']))
+                print('row: {}'.format(row))
+                # print('basename: {}'.format(row['basename']))
                 
                 # set the channel id based on basename title
 
-                channel_id = 0
+                channel_id = None
+                media_category = None
                 if row['basename'] == 'Plan of Salvation' or row['basename'] == 'Soul-winning Motivation' or row['basename'] == 'Soul-winning Tutorials' or row['basename'] == 'Soul-winning Sermons' or row['basename'] == 'आत्मिक जीत स्पष्टीकरण':
                         channel_id = 3
+                        media_category = 1
                 if row['basename'] == 'Word of Truth Baptist Church Sermons' or row['basename'] == 'FWBC Sermons' or row['basename'] == 'Faith Baptist Church Louisiana Sermons' or row['basename'] == 'Verity Baptist Church Sermons' or row['basename'] == 'Old Path Baptist Church Sermons' or row['basename'] == 'Liberty Baptist Church Sermons' or row['basename'] == 'Faithful Word Baptist Church LA' or row['basename'] == 'Temple Baptist Church Sermons' or row['basename'] == 'Sean Jolley Spanish' or row['basename'] == 'ASBC' or row['basename'] == 'Entire Bible Preached Project' or row['basename'] == 'Pillar Baptist Church' or row['basename'] == 'Iglesia Bautista de Santa Ana' or row['basename'] == 'FWBC Espanol' or row['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or row['basename'] == 'Justice by Jack Hyles' or row['basename'] == 'Verity Baptist Vancouver (Preaching)' or row['basename'] == 'Stedfast Baptist Church':
                         channel_id = 1
+                        media_category = 3
                 if row['basename'] == 'Documentaries':
                     channel_id = 4
+                    media_category = 4
 
-                if channel_id != 0:
+                if channel_id != None:
                     rowdict = {
                         'ordinal': row['absolute_id'],
                         'uuid': str(uuid.uuid4()),
-                        'localizedname': row['localizedname'],
-                        'language_id': row['language_id'],
+                        'basename': row['basename'],
+                        'media_category': media_category,
+                        # 'language_id': row['language_id'],
                         'small_thumbnail_path': None,
                         'med_thumbnail_path': None,
                         'large_thumbnail_path': None,
@@ -189,7 +193,7 @@ class Dbimport(object):
                     }
 
                     # add playlist to corresponding channel
-                    print('channel_id: {}'.format(channel_id))
+                    print('rowdict: {}'.format(rowdict))
     
                     # if channel_id == 1:
                     #     preaching.append(rowdict)
@@ -217,11 +221,12 @@ class Dbimport(object):
 
         with sourceconn.cursor() as cur:
             for playlist in playlists:
-                cur.execute(sql.SQL("insert into playlists(ordinal, uuid, localizedname, language_id, small_thumbnail_path, med_thumbnail_path, large_thumbnail_path, banner_path, channel_id, inserted_at, updated_at) values (%s, %s, %s, %s, %s, %s ,%s ,%s ,%s ,%s ,%s)"), 
+                cur.execute(sql.SQL("insert into playlists(ordinal, uuid, basename, media_category, small_thumbnail_path, med_thumbnail_path, large_thumbnail_path, banner_path, channel_id, inserted_at, updated_at) values (%s, %s, %s, %s, %s, %s, %s ,%s ,%s ,%s ,%s)"), 
                 [playlist['ordinal'],
                 str(uuid.uuid4()), 
-                playlist['localizedname'],
-                playlist['language_id'],
+                playlist['basename'],
+                playlist['media_category'],
+                # playlist['language_id'],
                 playlist['small_thumbnail_path'],
                 playlist['med_thumbnail_path'],
                 playlist['large_thumbnail_path'],
