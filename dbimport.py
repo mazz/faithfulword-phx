@@ -79,7 +79,6 @@ class Dbimport(object):
         {'basename': 'Pillar Baptist Church', 'shortname': 'pbc'},
         {'basename': 'Mountain Baptist Church, Fairmont, WV', 'shortname': 'mbc'},
         {'basename': 'Old Paths Baptist Church, El Paso, TX', 'shortname': 'opbc'},
-        {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'},
         {'basename': 'All Scripture Baptist Church, Knoxville, TN', 'shortname': 'asbc'},
         {'basename': 'ibsa, USA', 'shortname': 'ibsa'},
         {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'}
@@ -329,52 +328,103 @@ class Dbimport(object):
                 path_split = row['path'].split('/')
                 if path_split[0] == 'preaching':
                     # print('path_split: {}'.format(path_split))
-                    
-                    ## [2] is the filename leaf node
-                    filename = path_split[2]
-                    filename_split = filename.split('-')
-                    # print('filename_split: {}'.format(filename_split))
+                    with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+                        found_playlist_id = False
+                        playlist_id = None
 
-                    ## [0] is the org name, see if we have it already in the array
-                    if filename_split[0].lower() in orgs:
-                        # print('found org: {}'.format(filename_split[0]))
-                    
-                        # if AM -> 10:00, if PM -> 19:00
-                        assigned_time = '10:00' if filename_split[4] == 'AM' else '19:00'
-                        preaching_date = datetime.datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
-                        # print('preaching_date: {}'.format(preaching_date))
+                        ## [2] is the filename leaf node
+                        filename = path_split[2]
+                        filename_split = filename.split('-')
+                        # print('filename_split: {}'.format(filename_split))
 
-                    else:
-                        preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
-                        # preaching_date = datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+                        ## [0] is the org name, see if we have it already in the array
+                        org = filename_split[0].lower()
+                        ## [0] is the org name, see if we have it already in the array
+                        if org in orgs:
+                            # print('found org: {}'.format(filename_split[0]))
+                            if org == 'fwbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'FWBC Sermons\''
+                            elif org == 'vbcv':
+                                playlistquery = 'SELECT * from playlists where basename = \'Verity Baptist Vancouver (Preaching)\''
+                            elif org == 'asbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'ASBC\''
+                            elif org == 'fbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Faith Baptist Church Louisiana Sermons\''
+                            elif org == 'fwbcla':
+                                playlistquery = 'SELECT * from playlists where basename = \'Faithful Word Baptist Church LA\''
+                            elif org == 'ibsa':
+                                playlistquery = 'SELECT * from playlists where basename = \'Iglesia Bautista de Santa Ana\''
+                            elif org == 'lbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Liberty Baptist Church Sermons\''
+                            elif org == 'mbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Mountain Baptist Church\''
+                            elif org == 'opbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Old Path Baptist Church Sermons\''
+                            elif org == 'pbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Pillar Baptist Church\''
+                            elif org == 'sbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Stedfast Baptist Church\''
+                            elif org == 'tbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Temple Baptist Church Sermons\''
+                            elif org == 'vbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Verity Baptist Church Sermons\''
+                            elif org == 'wotbc':
+                                playlistquery = 'SELECT * from playlists where basename = \'Word of Truth Baptist Church Sermons\''
+                            else:
+                                playlistquery = None
 
-                        # print('path_split: {}'.format(path_split))
+                            if playlistquery != None: 
+                                playlistcur.execute(playlistquery)
+                                playlist = playlistcur.fetchone()
+                                if playlist is not None:
+                                    print('found org: {} basename: {} playlist: {}'.format(org, playlist['basename'], playlist))
+                                    playlist_id = playlist['id']
+                                    found_playlist_id = True
 
-                    rowdict = {
-                        'uuid': str(uuid.uuid4()),
-                        'track_number': row['track_number'],
-                        'medium': 'audio',
-                        'localizedname': row['localizedname'],
-                        'path': row['path'],
-                        'small_thumbnail_path': row['small_thumbnail_path'],
-                        'large_thumbnail_path': row['large_thumbnail_path'],
-                        'content_provider_link': None,
-                        'ipfs_link': None,
-                        'language_id': row['language_id'],
-                        'presenter_name': row['presenter_name'],
-                        'source_material': row['source_material'],
-                        'updated_at': datetime.datetime.now(),
-                        'playlist_id': None,
-                        'med_thumbnail_path': row['med_thumbnail_path'],
-                        'tags': [],
-                        'inserted_at': datetime.datetime.now(),
-                        'media_category': 3,
-                        'presented_at': preaching_date,
-                        'org_id': 1
-                    }
-                    preaching.append(rowdict)
-                        # insertquery = 'INSERT INTO mediaitems(vendor_name) VALUES(%s)'
-                        # cur.execute(insertquery)
+                            # if AM -> 10:00, if PM -> 19:00
+                            assigned_time = '10:00' if filename_split[4] == 'AM' else '19:00'
+                            preaching_date = datetime.datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+                            # print('preaching_date: {}'.format(preaching_date))
+
+                        else:
+                            preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
+                            
+                            if playlistquery != None: 
+                                playlistcur.execute(playlistquery)
+                                playlist = playlistcur.fetchone()
+                                if playlist is not None:
+                                    print('found org: {} basename: {} playlist: {}'.format(org, playlist['basename'], playlist))
+                                    playlist_id = playlist['id']
+                                    found_playlist_id = True
+                            # preaching_date = datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+
+                            # print('path_split: {}'.format(path_split))
+
+                        rowdict = {
+                            'uuid': str(uuid.uuid4()),
+                            'track_number': row['track_number'],
+                            'medium': 'audio',
+                            'localizedname': row['localizedname'],
+                            'path': row['path'],
+                            'small_thumbnail_path': row['small_thumbnail_path'],
+                            'large_thumbnail_path': row['large_thumbnail_path'],
+                            'content_provider_link': None,
+                            'ipfs_link': None,
+                            'language_id': row['language_id'],
+                            'presenter_name': row['presenter_name'],
+                            'source_material': row['source_material'],
+                            'updated_at': datetime.datetime.now(),
+                            'playlist_id': playlist_id if found_playlist_id else None,
+                            'med_thumbnail_path': row['med_thumbnail_path'],
+                            'tags': [],
+                            'inserted_at': datetime.datetime.now(),
+                            'media_category': 3,
+                            'presented_at': preaching_date,
+                            'org_id': 1
+                        }
+                        preaching.append(rowdict)
+                            # insertquery = 'INSERT INTO mediaitems(vendor_name) VALUES(%s)'
+                            # cur.execute(insertquery)
 
             cur.close()
         # print('preaching: {}'.format(preaching))
