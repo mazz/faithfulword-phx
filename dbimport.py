@@ -388,7 +388,7 @@ class Dbimport(object):
 
                         else:
                             preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
-                            
+
                             if playlistquery != None: 
                                 playlistcur.execute(playlistquery)
                                 playlist = playlistcur.fetchone()
@@ -455,6 +455,108 @@ class Dbimport(object):
                 ])
                 # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
             sourceconn.commit()
+
+    def normalizegospel(self):
+        parser = argparse.ArgumentParser(
+            description='dbimport v1.3 pgsql file')
+        # prefixing the argument with -- means it's optional
+
+        parser.add_argument('dbname')
+
+        args = parser.parse_args(sys.argv[2:])
+        print('dbname: {}'.format(repr(args.dbname)))
+
+        planofsalvation = []
+
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            # delete items with null paths
+            deletequery = 'delete FROM mediagospel where path is NULL'
+            cur.execute(deletequery)
+
+            sourcequery = 'SELECT * FROM mediagospel'
+            cur.execute(sourcequery)
+            # result = cur.fetchall()
+            # print("result: {}".format(result))
+
+            for row in cur:
+                # print('row: {}'.format(row))
+                path_split = row['path'].split('/')
+                if path_split[0] == 'gospel':
+                    print('path_split: {}'.format(path_split))
+                    with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+                        found_playlist_id = False
+                        playlist_id = None
+
+                        ## [2] is the filename leaf node
+                        filename = path_split[2]
+                        filename_split = filename.split('-')
+                        print('filename_split: {}'.format(filename_split))
+
+                        ## [0] is the org name, see if we have it already in the array
+                        if filename_split[0] == 'BibleWayToHeaven':
+
+                            playlistquery = 'SELECT * from playlists where basename = \'Plan of Salvation\''
+
+                            playlistcur.execute(playlistquery)
+                            playlist = playlistcur.fetchone()
+                            if playlist is not None:
+                                print('playlist: {}'.format(playlist))
+                                playlist_id = playlist['id']
+                                found_playlist_id = True
+
+                            rowdict = {
+                                'uuid': str(uuid.uuid4()),
+                                'track_number': row['track_number'],
+                                'medium': 'audio',
+                                'localizedname': row['localizedname'],
+                                'path': row['path'],
+                                'small_thumbnail_path': row['small_thumbnail_path'],
+                                'large_thumbnail_path': row['large_thumbnail_path'],
+                                'content_provider_link': None,
+                                'ipfs_link': None,
+                                'language_id': row['language_id'],
+                                'presenter_name': row['presenter_name'],
+                                'source_material': row['source_material'],
+                                'updated_at': datetime.datetime.now(),
+                                'playlist_id': playlist_id if found_playlist_id else None,
+                                'med_thumbnail_path': row['med_thumbnail_path'],
+                                'tags': [],
+                                'inserted_at': datetime.datetime.now(),
+                                'media_category': 1,
+                                'presented_at': None,
+                                'org_id': 1
+                            }
+                        planofsalvation.append(rowdict)
+            cur.close()
+
+        with sourceconn.cursor() as cur:
+            for row in planofsalvation:
+                cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at, org_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
+                [row['uuid'], 
+                row['track_number'], 
+                row['medium'],
+                row['localizedname'],
+                row['path'],
+                row['small_thumbnail_path'],
+                row['large_thumbnail_path'],
+                row['content_provider_link'],
+                row['ipfs_link'],
+                row['language_id'],
+                row['presenter_name'],
+                row['source_material'],
+                row['updated_at'],
+                row['playlist_id'],
+                row['med_thumbnail_path'],
+                row['tags'],
+                row['inserted_at'],
+                row['media_category'],
+                row['presented_at'],
+                row['org_id']
+                ])
+                # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
+            sourceconn.commit()     
+
 
 
     # normalizepreaching must be called AFTER addorgrows because orgs need to be present
