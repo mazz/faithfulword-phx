@@ -467,6 +467,7 @@ class Dbimport(object):
         print('dbname: {}'.format(repr(args.dbname)))
 
         planofsalvation = []
+        soulwinningmotivation = []
 
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
         with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -493,7 +494,6 @@ class Dbimport(object):
                         filename_split = filename.split('-')
                         print('filename_split: {}'.format(filename_split))
 
-                        ## [0] is the org name, see if we have it already in the array
                         if filename_split[0] == 'BibleWayToHeaven':
 
                             playlistquery = 'SELECT * from playlists where basename = \'Plan of Salvation\''
@@ -504,6 +504,45 @@ class Dbimport(object):
                                 print('playlist: {}'.format(playlist))
                                 playlist_id = playlist['id']
                                 found_playlist_id = True
+
+                                rowdict = {
+                                    'uuid': str(uuid.uuid4()),
+                                    'track_number': row['track_number'],
+                                    'medium': 'audio',
+                                    'localizedname': row['localizedname'],
+                                    'path': row['path'],
+                                    'small_thumbnail_path': row['small_thumbnail_path'],
+                                    'large_thumbnail_path': row['large_thumbnail_path'],
+                                    'content_provider_link': None,
+                                    'ipfs_link': None,
+                                    'language_id': row['language_id'],
+                                    'presenter_name': row['presenter_name'],
+                                    'source_material': row['source_material'],
+                                    'updated_at': datetime.datetime.now(),
+                                    'playlist_id': playlist_id if found_playlist_id else None,
+                                    'med_thumbnail_path': row['med_thumbnail_path'],
+                                    'tags': [],
+                                    'inserted_at': datetime.datetime.now(),
+                                    'media_category': 1,
+                                    'presented_at': None,
+                                    'org_id': 1
+                                }
+                                planofsalvation.append(rowdict)
+
+                elif path_split[0] == 'motivation':
+                    print('path_split: {}'.format(path_split))
+                    with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+                        found_playlist_id = False
+                        playlist_id = None
+
+                        playlistquery = 'SELECT * from playlists where basename = \'Soul-winning Motivation\''
+
+                        playlistcur.execute(playlistquery)
+                        playlist = playlistcur.fetchone()
+                        if playlist is not None:
+                            print('playlist: {}'.format(playlist))
+                            playlist_id = playlist['id']
+                            found_playlist_id = True
 
                             rowdict = {
                                 'uuid': str(uuid.uuid4()),
@@ -527,7 +566,8 @@ class Dbimport(object):
                                 'presented_at': None,
                                 'org_id': 1
                             }
-                        planofsalvation.append(rowdict)
+                            soulwinningmotivation.append(rowdict)
+
             cur.close()
 
         with sourceconn.cursor() as cur:
@@ -555,7 +595,34 @@ class Dbimport(object):
                 row['org_id']
                 ])
                 # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
-            sourceconn.commit()     
+            sourceconn.commit()
+        with sourceconn.cursor() as cur:
+            for row in soulwinningmotivation:
+                cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at, org_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
+                [row['uuid'], 
+                row['track_number'], 
+                row['medium'],
+                row['localizedname'],
+                row['path'],
+                row['small_thumbnail_path'],
+                row['large_thumbnail_path'],
+                row['content_provider_link'],
+                row['ipfs_link'],
+                row['language_id'],
+                row['presenter_name'],
+                row['source_material'],
+                row['updated_at'],
+                row['playlist_id'],
+                row['med_thumbnail_path'],
+                row['tags'],
+                row['inserted_at'],
+                row['media_category'],
+                row['presented_at'],
+                row['org_id']
+                ])
+                # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
+            sourceconn.commit()  
+
 
 
 
