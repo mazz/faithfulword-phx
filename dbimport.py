@@ -294,7 +294,7 @@ class Dbimport(object):
         print('dbname: {}'.format(repr(args.dbname)))
         # print('tablename: {}'.format(repr(args.tablename)))
 
-        preaching = []
+        soulwinningsermons = []
 
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
         # sourcecur = sourceconn.cursor()
@@ -313,93 +313,321 @@ class Dbimport(object):
             for row in cur:
                 orgs.extend(row)
             print('orgs: {}'.format(orgs))
+        
+        # print('soulwinningsermons: {}'.format(soulwinningsermons))
+        
+        
+        self._insertmediaitemrows(self._preachingrows(5, 'Soul-winning Sermons', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(6, 'FWBC Sermons', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(7, 'Verity Baptist Church Sermons', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(9, 'Word of Truth Baptist Church Sermons', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(10, 'Faith Baptist Church Louisiana Sermons', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(12, 'Old Path Baptist Church Sermons', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(14, 'Liberty Baptist Church Sermons', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(15, 'Faithful Word Baptist Church LA', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(17, 'Temple Baptist Church Sermons', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(19, 'Verity Baptist Vancouver (Preaching)', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(21, 'Sean Jolley Spanish', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(22, 'FWBC Espanol', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(24, 'Post Trib Bible Prophecy Conference', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(25, 'आत्मिक जीत स्पष्टीकरण', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(26, 'ASBC', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(27, 'Entire Bible Preached Project', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(28, 'Iglesia Bautista de Santa Ana', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(29, 'Pillar Baptist Church', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(30, 'Mountain Baptist Church', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(31, 'Win Your Wife\'s Heart by Jack Hyles', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(32, 'Justice by Jack Hyles', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(33, 'Stedfast Baptist Church', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
 
-            sourcequery = 'SELECT * FROM mediagospel'
-            cur.execute(sourcequery)
+            # sourcequery = 'SELECT * FROM mediagospel where gospel_id = 5'
+            # soulwinningsermonscur.execute(sourcequery)
+            # for row in soulwinningsermonscur:
+            #     # records.append(row)
+            #     print('row: {}'.format(row))
+
+            #     path_split = row['path'].split('/')
+            #     if path_split[0] == 'preaching':
+            #         # print('path_split: {}'.format(path_split))
+            #         with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+            #             found_playlist_id = False
+            #             playlist_id = None
+
+            #             ## [2] is the filename leaf node
+            #             filename = path_split[2]
+            #             filename_split = filename.split('-')
+            #             # print('filename_split: {}'.format(filename_split))
+
+            #             playlistquery = 'SELECT * from playlists where basename = \'Soul-winning Sermons\''
+            #             if playlistquery != None: 
+            #                 playlistcur.execute(playlistquery)
+            #                 playlist = playlistcur.fetchone()
+            #                 if playlist is not None:
+            #                     print('found basename: {} playlist: {}'.format(playlist['basename'], playlist))
+            #                     playlist_id = playlist['id']
+            #                     found_playlist_id = True
+
+            #         # if AM -> 10:00, if PM -> 19:00
+            #         assigned_time = '10:00' if filename_split[4] == 'AM' else '19:00'
+            #         preaching_date = datetime.datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+            #         # print('preaching_date: {}'.format(preaching_date))
+            #     else:
+            #         preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
+            #         if playlistquery != None: 
+            #             playlistcur.execute(playlistquery)
+            #             playlist = playlistcur.fetchone()
+            #             if playlist is not None:
+            #                 print('found basename: {} playlist: {}'.format(playlist['basename'], playlist))
+            #                 playlist_id = playlist['id']
+            #                 found_playlist_id = True
+            #     rowdict = {
+            #         'uuid': str(uuid.uuid4()),
+            #         'track_number': row['track_number'],
+            #         'medium': 'audio',
+            #         'localizedname': row['localizedname'],
+            #         'path': row['path'],
+            #         'small_thumbnail_path': row['small_thumbnail_path'],
+            #         'large_thumbnail_path': row['large_thumbnail_path'],
+            #         'content_provider_link': None,
+            #         'ipfs_link': None,
+            #         'language_id': row['language_id'],
+            #         'presenter_name': row['presenter_name'],
+            #         'source_material': row['source_material'],
+            #         'updated_at': datetime.datetime.now(),
+            #         'playlist_id': playlist_id if found_playlist_id else None,
+            #         'med_thumbnail_path': row['med_thumbnail_path'],
+            #         'tags': [],
+            #         'inserted_at': datetime.datetime.now(),
+            #         'media_category': 3,
+            #         'presented_at': preaching_date,
+            #         'org_id': 1
+            #     }
+            #     print("rowdict: {}".format(rowdict))
+                # soulwinningsermons.append(rowdict)
+
+
             # result = cur.fetchall()
             # print("result: {}".format(result))
 
+            # for row in cur:
+            #     # records.append(row)
+            #     print('row: {}'.format(row))
+
+            #     ## get all preaching filenames and parse-out the date preached
+
+            #     path_split = row['path'].split('/')
+            #     if path_split[0] == 'preaching':
+            #         # print('path_split: {}'.format(path_split))
+            #         with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+            #             found_playlist_id = False
+            #             playlist_id = None
+
+            #             ## [2] is the filename leaf node
+            #             filename = path_split[2]
+            #             filename_split = filename.split('-')
+            #             # print('filename_split: {}'.format(filename_split))
+
+            #             ## [0] is the org name, see if we have it already in the array
+            #             org = filename_split[0].lower()
+            #             ## [0] is the org name, see if we have it already in the array
+            #             if org in orgs:
+            #                 # print('found org: {}'.format(filename_split[0]))
+            #                 if org == 'fwbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'FWBC Sermons\''
+            #                 elif org == 'vbcv':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Verity Baptist Vancouver (Preaching)\''
+            #                 elif org == 'asbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'ASBC\''
+            #                 elif org == 'fbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Faith Baptist Church Louisiana Sermons\''
+            #                 elif org == 'fwbcla':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Faithful Word Baptist Church LA\''
+            #                 elif org == 'ibsa':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Iglesia Bautista de Santa Ana\''
+            #                 elif org == 'lbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Liberty Baptist Church Sermons\''
+            #                 elif org == 'mbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Mountain Baptist Church\''
+            #                 elif org == 'opbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Old Path Baptist Church Sermons\''
+            #                 elif org == 'pbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Pillar Baptist Church\''
+            #                 elif org == 'sbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Stedfast Baptist Church\''
+            #                 elif org == 'tbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Temple Baptist Church Sermons\''
+            #                 elif org == 'vbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Verity Baptist Church Sermons\''
+            #                 elif org == 'wotbc':
+            #                     playlistquery = 'SELECT * from playlists where basename = \'Word of Truth Baptist Church Sermons\''
+            #                 else:
+            #                     playlistquery = None
+
+            #                 if playlistquery != None: 
+            #                     playlistcur.execute(playlistquery)
+            #                     playlist = playlistcur.fetchone()
+            #                     if playlist is not None:
+            #                         print('found org: {} basename: {} playlist: {}'.format(org, playlist['basename'], playlist))
+            #                         playlist_id = playlist['id']
+            #                         found_playlist_id = True
+
+            #                 # if AM -> 10:00, if PM -> 19:00
+            #                 assigned_time = '10:00' if filename_split[4] == 'AM' else '19:00'
+            #                 preaching_date = datetime.datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+            #                 # print('preaching_date: {}'.format(preaching_date))
+
+            #             else:
+            #                 preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
+
+            #                 if playlistquery != None: 
+            #                     playlistcur.execute(playlistquery)
+            #                     playlist = playlistcur.fetchone()
+            #                     if playlist is not None:
+            #                         print('found org: {} basename: {} playlist: {}'.format(org, playlist['basename'], playlist))
+            #                         playlist_id = playlist['id']
+            #                         found_playlist_id = True
+            #                 # preaching_date = datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+
+            #                 # print('path_split: {}'.format(path_split))
+
+            #             rowdict = {
+            #                 'uuid': str(uuid.uuid4()),
+            #                 'track_number': row['track_number'],
+            #                 'medium': 'audio',
+            #                 'localizedname': row['localizedname'],
+            #                 'path': row['path'],
+            #                 'small_thumbnail_path': row['small_thumbnail_path'],
+            #                 'large_thumbnail_path': row['large_thumbnail_path'],
+            #                 'content_provider_link': None,
+            #                 'ipfs_link': None,
+            #                 'language_id': row['language_id'],
+            #                 'presenter_name': row['presenter_name'],
+            #                 'source_material': row['source_material'],
+            #                 'updated_at': datetime.datetime.now(),
+            #                 'playlist_id': playlist_id if found_playlist_id else None,
+            #                 'med_thumbnail_path': row['med_thumbnail_path'],
+            #                 'tags': [],
+            #                 'inserted_at': datetime.datetime.now(),
+            #                 'media_category': 3,
+            #                 'presented_at': preaching_date,
+            #                 'org_id': 1
+            #             }
+            #             preaching.append(rowdict)
+            #                 # insertquery = 'INSERT INTO mediaitems(vendor_name) VALUES(%s)'
+            #                 # cur.execute(insertquery)
+
+            # cur.close()
+        # print('preaching: {}'.format(preaching))
+
+        # with sourceconn.cursor() as cur:
+        #     for row in preaching:
+        #         cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at, org_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
+        #         [row['uuid'], 
+        #         row['track_number'], 
+        #         row['medium'],
+        #         row['localizedname'],
+        #         row['path'],
+        #         row['small_thumbnail_path'],
+        #         row['large_thumbnail_path'],
+        #         row['content_provider_link'],
+        #         row['ipfs_link'],
+        #         row['language_id'],
+        #         row['presenter_name'],
+        #         row['source_material'],
+        #         row['updated_at'],
+        #         row['playlist_id'],
+        #         row['med_thumbnail_path'],
+        #         row['tags'],
+        #         row['inserted_at'],
+        #         row['media_category'],
+        #         row['presented_at'],
+        #         row['org_id']
+        #         ])
+        #         # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
+        #     sourceconn.commit()
+
+    def _preachingrows(self, gospelid, playlistname, dbname):
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(dbname))
+        # sourcecur = sourceconn.cursor()
+
+        result = []
+        preaching_date = None
+        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
+
+            # delete items with null paths
+            # deletequery = 'delete FROM mediagospel where path is NULL'
+            # cur.execute(deletequery)
+
+            # # get array of org shortnames
+
+            orgquery = 'select shortname from orgs'
+            cur.execute(orgquery)
+            orgs = []
             for row in cur:
-                # records.append(row)
-                print('row: {}'.format(row))
+                orgs.extend(row)
+            print('orgs: {}'.format(orgs))
 
-                ## get all preaching filenames and parse-out the date preached
+            with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+                found_playlist_id = False
+                playlist_id = None
+                playlistcur.execute(sql.SQL('SELECT * from playlists where basename = %s'), [playlistname])
+                # playlistquery = 'SELECT * from playlists where basename = \'{}\''.format(playlistname)
+                # if playlistquery != None: 
 
-                path_split = row['path'].split('/')
-                if path_split[0] == 'preaching':
-                    # print('path_split: {}'.format(path_split))
-                    with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
-                        found_playlist_id = False
-                        playlist_id = None
+                # playlistcur.execute(playlistquery)
+                playlist = playlistcur.fetchone()
+                if playlist is not None:
+                    print('found basename: {} playlist: {}'.format(playlist['basename'], playlist))
+                    playlist_id = playlist['id']
+                    found_playlist_id = True
 
-                        ## [2] is the filename leaf node
-                        filename = path_split[2]
-                        filename_split = filename.split('-')
-                        # print('filename_split: {}'.format(filename_split))
+                    sourcequery = 'SELECT * FROM mediagospel where gospel_id = {}'.format(gospelid)
+                    cur.execute(sourcequery)
+                    for row in cur:
+                        # records.append(row)
+                        print('row: {}'.format(row))
 
-                        ## [0] is the org name, see if we have it already in the array
-                        org = filename_split[0].lower()
-                        ## [0] is the org name, see if we have it already in the array
-                        if org in orgs:
-                            # print('found org: {}'.format(filename_split[0]))
-                            if org == 'fwbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'FWBC Sermons\''
-                            elif org == 'vbcv':
-                                playlistquery = 'SELECT * from playlists where basename = \'Verity Baptist Vancouver (Preaching)\''
-                            elif org == 'asbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'ASBC\''
-                            elif org == 'fbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Faith Baptist Church Louisiana Sermons\''
-                            elif org == 'fwbcla':
-                                playlistquery = 'SELECT * from playlists where basename = \'Faithful Word Baptist Church LA\''
-                            elif org == 'ibsa':
-                                playlistquery = 'SELECT * from playlists where basename = \'Iglesia Bautista de Santa Ana\''
-                            elif org == 'lbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Liberty Baptist Church Sermons\''
-                            elif org == 'mbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Mountain Baptist Church\''
-                            elif org == 'opbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Old Path Baptist Church Sermons\''
-                            elif org == 'pbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Pillar Baptist Church\''
-                            elif org == 'sbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Stedfast Baptist Church\''
-                            elif org == 'tbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Temple Baptist Church Sermons\''
-                            elif org == 'vbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Verity Baptist Church Sermons\''
-                            elif org == 'wotbc':
-                                playlistquery = 'SELECT * from playlists where basename = \'Word of Truth Baptist Church Sermons\''
-                            else:
-                                playlistquery = None
-
-                            if playlistquery != None: 
-                                playlistcur.execute(playlistquery)
-                                playlist = playlistcur.fetchone()
-                                if playlist is not None:
-                                    print('found org: {} basename: {} playlist: {}'.format(org, playlist['basename'], playlist))
-                                    playlist_id = playlist['id']
-                                    found_playlist_id = True
-
-                            # if AM -> 10:00, if PM -> 19:00
-                            assigned_time = '10:00' if filename_split[4] == 'AM' else '19:00'
-                            preaching_date = datetime.datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
-                            # print('preaching_date: {}'.format(preaching_date))
-
-                        else:
-                            preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
-
-                            if playlistquery != None: 
-                                playlistcur.execute(playlistquery)
-                                playlist = playlistcur.fetchone()
-                                if playlist is not None:
-                                    print('found org: {} basename: {} playlist: {}'.format(org, playlist['basename'], playlist))
-                                    playlist_id = playlist['id']
-                                    found_playlist_id = True
-                            # preaching_date = datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
-
+                        path_split = row['path'].split('/')
+                        if path_split[0] == 'preaching':
                             # print('path_split: {}'.format(path_split))
+                            # with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+                                # found_playlist_id = False
+                                # playlist_id = None
 
+                                ## [2] is the filename leaf node
+                            filename = path_split[2]
+                            filename_split = filename.split('-')
+                                # print('filename_split: {}'.format(filename_split))
+
+                                # playlistquery = 'SELECT * from playlists where basename = \'{}\''.format(playlistname)
+                                # if playlistquery != None: 
+                                #     playlistcur.execute(playlistquery)
+                                #     playlist = playlistcur.fetchone()
+                                #     if playlist is not None:
+                                #         print('found basename: {} playlist: {}'.format(playlist['basename'], playlist))
+                                #         playlist_id = playlist['id']
+                                #         found_playlist_id = True
+                            org = filename_split[0].lower()
+                            if org in orgs:
+                                # if AM -> 10:00, if PM -> 19:00
+                                assigned_time = '10:00' if filename_split[4] == 'AM' else '19:00'
+                                preaching_date = datetime.datetime.strptime( '{}-{}-{} {}'.format(filename_split[1], filename_split[2], filename_split[3], assigned_time) , '%Y-%m-%d %H:%M')
+                            # print('preaching_date: {}'.format(preaching_date))
+                            else:
+                                preaching_date = datetime.datetime.now() - datetime.timedelta(days=3*365)
+                            # if playlistquery != None: 
+                            #     playlistcur.execute(playlistquery)
+                            #     playlist = playlistcur.fetchone()
+                            #     if playlist is not None:
+                            #         print('found basename: {} playlist: {}'.format(playlist['basename'], playlist))
+                            #         playlist_id = playlist['id']
+                            #         found_playlist_id = True
                         rowdict = {
                             'uuid': str(uuid.uuid4()),
                             'track_number': row['track_number'],
@@ -419,18 +647,18 @@ class Dbimport(object):
                             'tags': [],
                             'inserted_at': datetime.datetime.now(),
                             'media_category': 3,
-                            'presented_at': preaching_date,
+                            'presented_at': datetime.datetime.now() - datetime.timedelta(days=3*365) if preaching_date is None else preaching_date,
                             'org_id': 1
                         }
-                        preaching.append(rowdict)
-                            # insertquery = 'INSERT INTO mediaitems(vendor_name) VALUES(%s)'
-                            # cur.execute(insertquery)
+                        print("rowdict: {}".format(rowdict))
+                        result.append(rowdict)
+        return result
 
-            cur.close()
-        # print('preaching: {}'.format(preaching))
+    def _insertmediaitemrows(self, rows, dbname):
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(dbname))
 
         with sourceconn.cursor() as cur:
-            for row in preaching:
+            for row in rows:
                 cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at, org_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
                 [row['uuid'], 
                 row['track_number'], 
@@ -469,7 +697,7 @@ class Dbimport(object):
         planofsalvation = []
         soulwinningmotivation = []
         soulwinningtutorials = []
-        documentaries = []
+        # documentaries = []
 
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
         with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -608,44 +836,44 @@ class Dbimport(object):
                                 'org_id': 1
                             }
                             soulwinningtutorials.append(rowdict)
-                elif path_split[0] == 'movies':
-                    print('path_split: {}'.format(path_split))
-                    with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
-                        found_playlist_id = False
-                        playlist_id = None
+                # elif path_split[0] == 'movies':
+                #     print('path_split: {}'.format(path_split))
+                #     with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+                #         found_playlist_id = False
+                #         playlist_id = None
 
-                        playlistquery = 'SELECT * from playlists where basename = \'Documentaries\''
+                #         playlistquery = 'SELECT * from playlists where basename = \'Documentaries\''
 
-                        playlistcur.execute(playlistquery)
-                        playlist = playlistcur.fetchone()
-                        if playlist is not None:
-                            print('playlist: {}'.format(playlist))
-                            playlist_id = playlist['id']
-                            found_playlist_id = True
+                #         playlistcur.execute(playlistquery)
+                #         playlist = playlistcur.fetchone()
+                #         if playlist is not None:
+                #             print('playlist: {}'.format(playlist))
+                #             playlist_id = playlist['id']
+                #             found_playlist_id = True
 
-                            rowdict = {
-                                'uuid': str(uuid.uuid4()),
-                                'track_number': row['track_number'],
-                                'medium': 'audio',
-                                'localizedname': row['localizedname'],
-                                'path': row['path'],
-                                'small_thumbnail_path': row['small_thumbnail_path'],
-                                'large_thumbnail_path': row['large_thumbnail_path'],
-                                'content_provider_link': None,
-                                'ipfs_link': None,
-                                'language_id': row['language_id'],
-                                'presenter_name': row['presenter_name'],
-                                'source_material': row['source_material'],
-                                'updated_at': datetime.datetime.now(),
-                                'playlist_id': playlist_id if found_playlist_id else None,
-                                'med_thumbnail_path': row['med_thumbnail_path'],
-                                'tags': [],
-                                'inserted_at': datetime.datetime.now(),
-                                'media_category': 1,
-                                'presented_at': None,
-                                'org_id': 1
-                            }
-                            documentaries.append(rowdict)
+                #             rowdict = {
+                #                 'uuid': str(uuid.uuid4()),
+                #                 'track_number': row['track_number'],
+                #                 'medium': 'audio',
+                #                 'localizedname': row['localizedname'],
+                #                 'path': row['path'],
+                #                 'small_thumbnail_path': row['small_thumbnail_path'],
+                #                 'large_thumbnail_path': row['large_thumbnail_path'],
+                #                 'content_provider_link': None,
+                #                 'ipfs_link': None,
+                #                 'language_id': row['language_id'],
+                #                 'presenter_name': row['presenter_name'],
+                #                 'source_material': row['source_material'],
+                #                 'updated_at': datetime.datetime.now(),
+                #                 'playlist_id': playlist_id if found_playlist_id else None,
+                #                 'med_thumbnail_path': row['med_thumbnail_path'],
+                #                 'tags': [],
+                #                 'inserted_at': datetime.datetime.now(),
+                #                 'media_category': 1,
+                #                 'presented_at': None,
+                #                 'org_id': 1
+                #             }
+                #             documentaries.append(rowdict)
             cur.close()
 
         with sourceconn.cursor() as cur:
@@ -726,32 +954,32 @@ class Dbimport(object):
                 ])
                 # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
             sourceconn.commit()  
-        with sourceconn.cursor() as cur:
-            for row in documentaries:
-                cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at, org_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
-                [row['uuid'], 
-                row['track_number'], 
-                row['medium'],
-                row['localizedname'],
-                row['path'],
-                row['small_thumbnail_path'],
-                row['large_thumbnail_path'],
-                row['content_provider_link'],
-                row['ipfs_link'],
-                row['language_id'],
-                row['presenter_name'],
-                row['source_material'],
-                row['updated_at'],
-                row['playlist_id'],
-                row['med_thumbnail_path'],
-                row['tags'],
-                row['inserted_at'],
-                row['media_category'],
-                row['presented_at'],
-                row['org_id']
-                ])
-                # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
-            sourceconn.commit()  
+        # with sourceconn.cursor() as cur:
+        #     for row in documentaries:
+        #         cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at, org_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
+        #         [row['uuid'], 
+        #         row['track_number'], 
+        #         row['medium'],
+        #         row['localizedname'],
+        #         row['path'],
+        #         row['small_thumbnail_path'],
+        #         row['large_thumbnail_path'],
+        #         row['content_provider_link'],
+        #         row['ipfs_link'],
+        #         row['language_id'],
+        #         row['presenter_name'],
+        #         row['source_material'],
+        #         row['updated_at'],
+        #         row['playlist_id'],
+        #         row['med_thumbnail_path'],
+        #         row['tags'],
+        #         row['inserted_at'],
+        #         row['media_category'],
+        #         row['presented_at'],
+        #         row['org_id']
+        #         ])
+        #         # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
+        #     sourceconn.commit()  
 
 
     # normalizepreaching must be called AFTER addorgrows because orgs need to be present
