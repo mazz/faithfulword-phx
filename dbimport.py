@@ -713,44 +713,6 @@ class Dbimport(object):
                                 'org_id': 1
                             }
                             soulwinningtutorials.append(rowdict)
-                # elif path_split[0] == 'movies':
-                #     print('path_split: {}'.format(path_split))
-                #     with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
-                #         found_playlist_id = False
-                #         playlist_id = None
-
-                #         playlistquery = 'SELECT * from playlists where basename = \'Documentaries\''
-
-                #         playlistcur.execute(playlistquery)
-                #         playlist = playlistcur.fetchone()
-                #         if playlist is not None:
-                #             print('playlist: {}'.format(playlist))
-                #             playlist_id = playlist['id']
-                #             found_playlist_id = True
-
-                #             rowdict = {
-                #                 'uuid': str(uuid.uuid4()),
-                #                 'track_number': row['track_number'],
-                #                 'medium': 'audio',
-                #                 'localizedname': row['localizedname'],
-                #                 'path': row['path'],
-                #                 'small_thumbnail_path': row['small_thumbnail_path'],
-                #                 'large_thumbnail_path': row['large_thumbnail_path'],
-                #                 'content_provider_link': None,
-                #                 'ipfs_link': None,
-                #                 'language_id': row['language_id'],
-                #                 'presenter_name': row['presenter_name'],
-                #                 'source_material': row['source_material'],
-                #                 'updated_at': datetime.datetime.now(),
-                #                 'playlist_id': playlist_id if found_playlist_id else None,
-                #                 'med_thumbnail_path': row['med_thumbnail_path'],
-                #                 'tags': [],
-                #                 'inserted_at': datetime.datetime.now(),
-                #                 'media_category': 1,
-                #                 'presented_at': None,
-                #                 'org_id': 1
-                #             }
-                #             documentaries.append(rowdict)
             cur.close()
 
         with sourceconn.cursor() as cur:
