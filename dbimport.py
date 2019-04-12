@@ -67,21 +67,22 @@ class Dbimport(object):
         # parser.add_argument('dbname')
         # args = parser.parse_args(sys.argv[2:])
 
-        orgs = [{'basename': 'faithfulwordapp', 'shortname': 'faithfulwordapp'},
-        {'basename': 'Faithful Word Baptist Church, Tempe, AZ', 'shortname': 'fwbc'},
-        {'basename': 'Verity Baptist Church, Sacramento, CA', 'shortname': 'vbc'},
-        {'basename': 'Word of Truth Baptist Church', 'shortname': 'wotbc'},
-        {'basename': 'Faith Baptist Church', 'shortname': 'fbc'},
-        {'basename': 'Liberty Baptist Church', 'shortname': 'lbc'},
-        {'basename': 'Faithful Word Baptist Church LA', 'shortname': 'fwbcla'},
-        {'basename': 'Temple Baptist Church', 'shortname': 'tbc'},
-        {'basename': 'Verity Baptist Vancouver', 'shortname': 'vbcv'},
-        {'basename': 'Pillar Baptist Church', 'shortname': 'pbc'},
-        {'basename': 'Mountain Baptist Church, Fairmont, WV', 'shortname': 'mbc'},
-        {'basename': 'Old Paths Baptist Church, El Paso, TX', 'shortname': 'opbc'},
-        {'basename': 'All Scripture Baptist Church, Knoxville, TN', 'shortname': 'asbc'},
-        {'basename': 'ibsa, USA', 'shortname': 'ibsa'},
-        {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'}
+        orgs = [
+            {'basename': 'faithfulwordapp', 'shortname': 'faithfulwordapp'},
+            {'basename': 'Faithful Word Baptist Church, Tempe, AZ', 'shortname': 'fwbc'},
+            {'basename': 'Verity Baptist Church, Sacramento, CA', 'shortname': 'vbc'},
+            {'basename': 'Word of Truth Baptist Church', 'shortname': 'wotbc'},
+            {'basename': 'Faith Baptist Church', 'shortname': 'fbc'},
+            {'basename': 'Liberty Baptist Church', 'shortname': 'lbc'},
+            {'basename': 'Faithful Word Baptist Church LA', 'shortname': 'fwbcla'},
+            {'basename': 'Temple Baptist Church', 'shortname': 'tbc'},
+            {'basename': 'Verity Baptist Vancouver', 'shortname': 'vbcv'},
+            {'basename': 'Pillar Baptist Church', 'shortname': 'pbc'},
+            {'basename': 'Mountain Baptist Church, Fairmont, WV', 'shortname': 'mbc'},
+            {'basename': 'Old Paths Baptist Church, El Paso, TX', 'shortname': 'opbc'},
+            {'basename': 'All Scripture Baptist Church, Knoxville, TN', 'shortname': 'asbc'},
+            {'basename': 'ibsa, USA', 'shortname': 'ibsa'},
+            {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'}
         ]
         # generate ORGs and make a 'main' channel
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format('faithful_word_dev'))
@@ -96,9 +97,14 @@ class Dbimport(object):
                 ])
 
                 sourceconn.commit()
+        
+        # add faithfulwordapp to all pushmessages
+
+        with sourceconn.cursor() as cur:
+            cur.execute(sql.SQL("UPDATE pushmessages SET org_id = %s"), [1])
+
 
         # add a 'Preaching', 'Music', 'Gospel' channel for each org
-
         with sourceconn.cursor() as cur:
             # get array of org ids
             orgquery = 'select id from orgs'
