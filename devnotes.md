@@ -7,50 +7,8 @@ mv ./test/old_name ./test/new_name
 mv ./lib/old_name_web ./lib/new_name_web
 mv ./lib/old_name_web.ex ./lib/new_name_web.ex
 
-linux:
-
-grep -rli 'faithful_word' * | xargs -i@ sed -i 's/faithful_word/dynter/g' @
-grep -rli 'FaithfulWord' * | xargs -i@ sed -i 's/FaithfulWord/Dynter/g' @
-
-mv ./faithful_word ./dynter
-mv ./lib/faithful_word.ex ./lib/dynter.ex
 
 
-## asdf
-
-asdf plugin-add elixir
-asdf plugin-add erlang
-asdf plugin-add nodejs
-
-asdf install elixir 1.8.1-otp-21
-asdf install erlang 21.0
-NODEJS_CHECK_SIGNATURES=no asdf install nodejs 10.15.3
-
-asdf global elixir 1.8.1-otp-21
-asdf global erlang 21.0
-asdf global nodejs 10.15.3
-
-## dev build
-
-git clone https://github.com/FaithfulAudio/faithfulword-phx.git
-cd faithfulword-phx
-cd apps/faithful_word_api
-### compile dependencies
-mix deps.get && mix deps.compile
-### compile node dependencies
-cd assets && npm install
-cd ../../faithfulword-phx
-### prepare database file and import to postgresql
-tar xvzf 2019-02-22-add-v12-api-bin-export.sql.gz
-./dbimport.py dev 2019-02-22-add-v12-api-bin-export.sql
-### seed database with user data
-mix run apps/db/priv/repo/seeds.exs
-### run
-mix phx.server
-### open url in browser
-http://localhost:4000/v1.2/books?language-id=en
-
-## deployment guide
 https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part-2/
 
 docker-compose pull
@@ -121,7 +79,7 @@ tar -czvf 2019-02-22-add-v12-api-bin-export.sql.gz 2019-02-22-add-v12-api-bin-ex
 
 docker cp ./2019-01-27-plurals-10-bin.sql add-12-api_postgres_1:/2019-01-27-plurals-10-bin.sql
 docker exec -ti add-12-api_postgres_1 bash
-
+docker exec -ti add-12-api_faithful_word_1 bash
 psql -U faithful_word
 drop database faithful_word;
 create database faithful_word;
@@ -161,7 +119,6 @@ https://github.com/FaithfulAudio/faithfulword-phx.git -b add-cf-authenticator-fi
 
 # import 1.3 database
 
-"/Applications/Postgres.app/Contents/Versions/11/bin/pg_restore" -U postgres --clean --dbname=faithful_word_dev 2019-01-22-media-item-1.3-base-bin.sql"
+./dbimport.py migratefromwebsauna ./2019-04-02-media-item-bin.pgsql faithful_word_dev ; ./dbimport.py convertv12gospeltoplaylists faithful_word_dev ; ./dbimport.py convertv12musictoplaylists faithful_word_dev ; ./dbimport.py normalizemusic faithful_word_dev ; ./dbimport.py normalizegospel faithful_word_dev ; ./dbimport.py normalizepreaching faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs
 
-./dbimport.py dbimport 2019-01-20-media-item-1.3-base.pgsql 
 

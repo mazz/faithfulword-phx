@@ -1,6 +1,7 @@
 defmodule FaithfulWordApi.Endpoint do
   use Phoenix.Endpoint, otp_app: :faithful_word_api
 
+  socket "/live", Phoenix.LiveView.Socket
   socket "/socket", FaithfulWordApi.UserSocket,
     websocket: true,
     longpoll: false

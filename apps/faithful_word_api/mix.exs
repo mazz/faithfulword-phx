@@ -45,7 +45,7 @@ defmodule FaithfulWordApi.MixProject do
       # {:google_api_you_tube, "~> 0.2.0"},
       {:kaur, "~> 1.1"},
       {:oauth2, "~> 0.9"},
-      {:phoenix, "~> 1.4.0"},
+      {:phoenix, "~> 1.4"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.11"},
@@ -58,6 +58,7 @@ defmodule FaithfulWordApi.MixProject do
       {:bcrypt_elixir, "~> 1.1"},
       {:argon2_elixir, "~> 1.3"},
       {:corsica, "~> 1.1"},
+      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
 
       # ---- Internal ----
       {:faithful_word, in_umbrella: true},

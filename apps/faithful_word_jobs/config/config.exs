@@ -17,7 +17,10 @@ config :faithful_word_jobs, FaithfulWord.Jobs.Scheduler,
     # Various updaters
     # Every 5 minutes
     # {"*/5 * * * *", {FaithfulWord.Jobs.Moderation, :update, []}}
-    {"*/1 * * * *", {FaithfulWord.Jobs.MetadataFetch, :update, []}},
+
+
+
+    # {"*/1 * * * *", {FaithfulWord.Jobs.MetadataFetch, :update, []}},
 
   ]
 

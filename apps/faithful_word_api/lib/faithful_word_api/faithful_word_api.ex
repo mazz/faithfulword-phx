@@ -48,6 +48,7 @@ defmodule FaithfulWordApi do
 
       def user_logged_in?(conn), do: !is_nil(Map.get(conn.assigns, :current_user))
 
+      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end
   end
 
@@ -56,6 +57,7 @@ defmodule FaithfulWordApi do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 
