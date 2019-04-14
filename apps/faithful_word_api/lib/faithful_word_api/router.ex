@@ -23,6 +23,7 @@ defmodule FaithfulWordApi.Router do
     get "/", PageController, :index
     get "/about", PageController, :about
     get "/login", LoginController, :new
+    get "/logout", LoginController, :delete
     post "/login", LoginController, :create
     get "/signup", SignupController, :new
     post "/signup", SignupController, :create

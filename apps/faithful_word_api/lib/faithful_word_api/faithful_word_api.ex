@@ -17,6 +17,9 @@ defmodule FaithfulWordApi do
   and import those modules here.
   """
 
+  alias FaithfulWord.Authenticator.GuardianImpl
+
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: FaithfulWordApi
@@ -46,7 +49,10 @@ defmodule FaithfulWordApi do
         render(FaithfulWordApi.SharedView, template, assigns)
       end
 
-      def user_logged_in?(conn), do: !is_nil(Map.get(conn.assigns, :current_user))
+      def user_logged_in?(conn) do
+        # !is_nil(Map.get(conn.assigns, :current_user))
+        !is_nil(GuardianImpl.Plug.current_resource(conn))
+      end
 
       import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end

@@ -19,7 +19,7 @@
       </div>
       <div class="navbar-end">
         <%= if user_logged_in?(@conn) do %>
-        <%= link(gettext("Log out"), to: Routes.login_path(@conn, :destroy), class: "navbar-item") %>
+        <%= link(gettext("Log out"), to: Routes.login_path(@conn, :delete), class: "navbar-item") %>
         <% end %>
         <%= if !user_logged_in?(@conn) do %>
         <a class="navbar-item" href="/signup"><%= gettext "Sign Up" %></a>
