@@ -31,6 +31,7 @@ WORKDIR /app
 COPY apps/faithful_word_api/assets/package*.json /app/
 COPY --from=deps /app/deps/phoenix /deps/phoenix
 COPY --from=deps /app/deps/phoenix_html /deps/phoenix_html
+COPY --from=deps /app/deps/phoenix_live_view /deps/phoenix_live_view
 RUN npm ci
 COPY apps/faithful_word_api/assets /app
 RUN npm run deploy
