@@ -15,7 +15,7 @@ use Mix.Config
 # before starting your production server.
 config :faithful_word_api, FaithfulWordApi.Endpoint,
   http: [:inet6, port: System.get_env("PORT") || 4000, protocol_options: [max_keepalive: 5_000_000]],
-  url: [host: "localhost", port: 80],
+  url: [host: "api.faithfulword.app", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # config :faithful_word_api, FaithfulWordApi.Auth.Guardian,
@@ -74,4 +74,4 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
 config :phoenix, :serve_endpoints, true
 
 config :faithful_word_api, FaithfulWordApi.Endpoint,
-  secret_key_base: "CHANGEME"
+  secret_key_base: "RmhHuux9myaRcly21QEL0uNCwHuv+3U66HU43mMbIpY4Ud5D3ka2A5RDgDzwREv1"
