@@ -502,7 +502,161 @@ class Dbimport(object):
                                 sourceconn.commit()
 
 
+    def normalizebible(self):
+        parser = argparse.ArgumentParser(
+            description='dbimport v1.3 pgsql file')
+        # prefixing the argument with -- means it's optional
 
+        parser.add_argument('dbname')
+        args = parser.parse_args(sys.argv[2:])
+        print('dbname: {}'.format(repr(args.dbname)))
+        # print('tablename: {}'.format(repr(args.tablename)))
+
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+        # sourcecur = sourceconn.cursor()
+        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:     
+        
+        
+            self._insertmediaitemrows(self._biblerows(1, 'Matthew', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(2, 'Mark', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(3, 'Luke', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(4, 'John', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(5, 'Acts', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(6, 'Romans', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(7, '1 Corinthians', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(8, '2 Corinthians', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(9, 'Galatians', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(10, 'Ephesians', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(11, 'Philippians', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(12, 'Colossians', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(13, '1 Thessalonians', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(14, '2 Thessalonians', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(15, '1 Timothy', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(16, '2 Timothy', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(17, 'Titus', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(18, 'Philemon', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(19, 'Hebrews', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(20, 'James', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(21, '1 Peter', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(22, '2 Peter', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(23, '1 John', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(24, '2 John', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(25, '3 John', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(26, 'Jude', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(27, 'Revelation', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(28, 'Plan of Salvation', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(29, 'Psalms', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(30, 'Proverbs', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(31, 'Isaiah', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(32, 'Jeremiah', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(33, 'Genesis', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(34, 'New Testament', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(35, 'Obadiah', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(36, 'Old Testament', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(37, 'Exodus', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(38, 'Leviticus', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(39, 'Numbers', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(40, 'Deuteronomy', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(41, 'Joshua', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(42, 'Judges', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(43, 'Ruth', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(44, '1 Samuel', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(45, '2 Samuel', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(46, '1 Kings', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(47, '2 Kings', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(48, '1 Chronicles', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(49, '2 Chronicles', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(50, 'Ezra', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(51, 'Nehemiah', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(52, 'Esther', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(53, 'Job', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(55, 'Ecclesiastes', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(56, 'Song of Solomon', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(57, 'Lamentations', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(58, 'Ezekiel', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(59, 'Daniel', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(60, 'Hosea', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(61, 'Joel', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(62, 'Amos', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(63, 'Jonah', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(64, 'Micah', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(65, 'Nahum', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(66, 'Habakkuk', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(67, 'Zephaniah', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(68, 'Haggai', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(69, 'Zechariah', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(70, 'Malachi', args.dbname), args.dbname)
+
+
+    def _biblerows(self, bookid, playlistname, dbname):
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(dbname))
+        # sourcecur = sourceconn.cursor()
+
+        result = []
+        # presented_at = None
+        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+        # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
+
+            # delete items with null paths
+            # deletequery = 'delete FROM mediagospel where path is NULL'
+            # cur.execute(deletequery)
+
+            # # get array of org shortnames
+
+            with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
+                found_playlist_id = False
+                playlist_id = None
+                playlistcur.execute(sql.SQL('SELECT * from playlists where basename = %s'), [playlistname])
+                # playlistquery = 'SELECT * from playlists where basename = \'{}\''.format(playlistname)
+                # if playlistquery != None: 
+
+                # playlistcur.execute(playlistquery)
+                playlist = playlistcur.fetchone()
+                if playlist is not None:
+                    print('found basename: {} playlist: {}'.format(playlist['basename'], playlist))
+                    playlist_id = playlist['id']
+                    found_playlist_id = True
+
+                    
+                    # sourcequery = 'select * from mediachapters inner join chapters on mediachapters.chapter_id = chapters.id inner join books on chapters.book_id =  inner join playlists on books.basename = playlists.basename where books.basename = playlists.basename'
+                    # sourcequery = 'SELECT * FROM mediachapter where chapter_id = {}'.format(chapterid)
+                    # cur.execute(sourcequery)
+
+                    cur.execute(sql.SQL('select * from mediachapters inner join chapters on mediachapters.chapter_id = chapters.id inner join books on chapters.book_id = %s inner join playlists on books.basename = playlists.basename where books.basename = %s'), [bookid, playlist['basename']])
+
+                    for row in cur:
+                        # records.append(row)
+                        print('row: {}'.format(row))
+
+                        path_split = row['path'].split('/')
+                        if path_split[0] == 'bible':
+                            rowdict = {
+                                'uuid': str(uuid.uuid4()),
+                                'track_number': row['track_number'],
+                                'medium': 'audio',
+                                'localizedname': row['localizedname'],
+                                'path': row['path'],
+                                'small_thumbnail_path': row['small_thumbnail_path'],
+                                'large_thumbnail_path': row['large_thumbnail_path'],
+                                'content_provider_link': None,
+                                'ipfs_link': None,
+                                'language_id': row['language_id'],
+                                'presenter_name': row['presenter_name'],
+                                'source_material': row['source_material'],
+                                'updated_at': datetime.datetime.now(),
+                                'playlist_id': playlist_id if found_playlist_id else None,
+                                'med_thumbnail_path': row['med_thumbnail_path'],
+                                'tags': [],
+                                'inserted_at': datetime.datetime.now(),
+                                'media_category': 0,
+                                'presented_at': None,
+                                'org_id': 1
+                                # 'ordinal': row['absolute_id']
+                            }
+                            print("rowdict: {}".format(rowdict))
+                            result.append(rowdict)
+        return result
 
     # normalizepreaching must be called AFTER addorgrows because orgs need to be present
     # 
@@ -563,9 +717,6 @@ class Dbimport(object):
         self._insertmediaitemrows(self._preachingrows(31, 'Win Your Wife\'s Heart by Jack Hyles', args.dbname), args.dbname)
         self._insertmediaitemrows(self._preachingrows(32, 'Justice by Jack Hyles', args.dbname), args.dbname)
         self._insertmediaitemrows(self._preachingrows(33, 'Stedfast Baptist Church', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
         self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
 
     def _preachingrows(self, gospelid, playlistname, dbname):
