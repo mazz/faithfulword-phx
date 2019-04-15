@@ -126,6 +126,17 @@ class Dbimport(object):
 
                     sourceconn.commit()
 
+            # add Bible to faithfulwordapp
+            cur.execute(sql.SQL("INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (%s, %s, %s, %s, %s)"), 
+            [str(uuid.uuid4()), 
+            'Bible', 
+            datetime.datetime.now(),
+            datetime.datetime.now(),
+            1
+            ])
+
+            sourceconn.commit()
+
     def convertv12gospeltoplaylists(self):
         parser = argparse.ArgumentParser(
             description='add v1.2 playlists')
@@ -367,6 +378,129 @@ class Dbimport(object):
                         ])
 
                         sourceconn.commit()
+
+
+    def convertv12bibletoplaylists(self):
+        parser = argparse.ArgumentParser(
+            description='add v1.2 playlists')
+        # prefixing the argument with -- means it's optional
+        parser.add_argument('dbname')
+        # parser.add_argument('livestream_url')
+        # now that we're inside a subcommand, ignore the first
+        # TWO argvs, ie the command (git) and the subcommand (commit)
+        args = parser.parse_args(sys.argv[2:])
+
+        sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+
+
+        with sourceconn.cursor() as cur:
+            # get array of org ids
+            cur.execute(sql.SQL('SELECT id from channels where basename = %s'), ['Bible'])
+            biblechannelid = cur.fetchone()
+
+            if biblechannelid != None:
+                # get all the music categories because they contain the 
+                # preaching categories
+                with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+                # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
+
+                    booksquery = 'select * from books'
+                    cur.execute(booksquery)
+                    for book in cur:
+                        print('book: {}'.format(book))
+                        # print('basename: {}'.format(book['basename']))
+                        playlists = []
+                        playlisttitles = []
+
+                        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as booktitlecur:
+                        # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
+
+                            booktitlequery = 'select * from booktitles where booktitles.book_id = {}'.format(book['id'])
+                            booktitlecur.execute(booktitlequery)
+                            for booktitle in booktitlecur:
+                                print('booktitle; {}'.format(booktitle))
+                                playlisttitledict = {
+                                    'uuid': str(uuid.uuid4()),
+                                    # 'playlist_id': booktitle['']
+                                    'localizedname': booktitle['localizedname'],
+                                    'language_id': booktitle['language_id'],
+                                    'inserted_at': datetime.datetime.now(),
+                                    'updated_at': datetime.datetime.now()
+                                    }
+
+                                playlisttitles.append(playlisttitledict)
+
+                        channel_id = biblechannelid
+                        media_category = 0
+
+                        playlistdict = {
+                            'ordinal': book['absolute_id'] * 100,
+                            'uuid': str(uuid.uuid4()),
+                            'basename': book['basename'],
+                            'media_category': media_category,
+                            # 'language_id': book['language_id'],
+                            'small_thumbnail_path': None,
+                            'med_thumbnail_path': None,
+                            'large_thumbnail_path': None,
+                            'banner_path': None,
+                            'channel_id': channel_id,
+                            'updated_at': datetime.datetime.now(),
+                            'inserted_at': datetime.datetime.now()
+                        }
+
+                        # add playlist to corresponding channel
+                        print('playlistdict: {}'.format(playlistdict))
+
+                        playlists.append(playlistdict)
+
+                        # store this playlist along with all its titles
+
+                        # store the playlist
+                        playlistuuid = str(uuid.uuid4())
+                        with sourceconn.cursor() as storeplaylistcur:
+                            storeplaylistcur.execute(sql.SQL("insert into playlists(ordinal, uuid, basename, media_category, small_thumbnail_path, med_thumbnail_path, large_thumbnail_path, banner_path, channel_id, inserted_at, updated_at) values (%s, %s, %s, %s, %s, %s, %s ,%s ,%s ,%s ,%s)"), 
+                            [playlistdict['ordinal'],
+                            playlistuuid, 
+                            playlistdict['basename'],
+                            playlistdict['media_category'],
+                            # playlistdict['language_id'],
+                            playlistdict['small_thumbnail_path'],
+                            playlistdict['med_thumbnail_path'],
+                            playlistdict['large_thumbnail_path'],
+                            playlistdict['banner_path'],
+                            playlistdict['channel_id'],
+                            datetime.datetime.now(),
+                            datetime.datetime.now()
+                            ])
+
+                            sourceconn.commit()
+
+                        # find the playlist we just added and add the playlisttitles to it by uuid
+
+                        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as findplaylistcur:
+                            findplaylistquery = 'select * from playlists where uuid = \'{}\''.format(playlistuuid)
+                            findplaylistcur.execute(findplaylistquery)
+                            for playlist in findplaylistcur:
+                                print('playlist: {}'.format(playlist))
+                                for playlisttitle in playlisttitles:
+                                    playlisttitle['playlist_id'] = playlist['id']
+
+                        # store the playlisttitles with the playlist_id we found
+                        with sourceconn.cursor() as storeplaylisttitlecur:
+                            for playlisttitle in playlisttitles:
+                                print('playlisttitle: {}'.format(playlisttitle))
+                                storeplaylisttitlecur.execute(sql.SQL("insert into playlist_titles(uuid, localizedname, language_id, playlist_id, inserted_at, updated_at) values (%s, %s, %s, %s, %s, %s)"), 
+                                [playlisttitle['uuid'], 
+                                playlisttitle['localizedname'],
+                                playlisttitle['language_id'],
+                                # playlisttitle['language_id'],
+                                playlisttitle['playlist_id'],
+                                datetime.datetime.now(),
+                                datetime.datetime.now()
+                                ])
+
+                                sourceconn.commit()
+
 
 
 
