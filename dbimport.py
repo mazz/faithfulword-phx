@@ -594,16 +594,7 @@ class Dbimport(object):
         # sourcecur = sourceconn.cursor()
 
         result = []
-        # presented_at = None
         with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
-        # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:
-
-            # delete items with null paths
-            # deletequery = 'delete FROM mediagospel where path is NULL'
-            # cur.execute(deletequery)
-
-            # # get array of org shortnames
-
             with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as playlistcur:
                 found_playlist_id = False
                 playlist_id = None
@@ -618,44 +609,59 @@ class Dbimport(object):
                     playlist_id = playlist['id']
                     found_playlist_id = True
 
-                    
-                    # sourcequery = 'select * from mediachapters inner join chapters on mediachapters.chapter_id = chapters.id inner join books on chapters.book_id =  inner join playlists on books.basename = playlists.basename where books.basename = playlists.basename'
-                    # sourcequery = 'SELECT * FROM mediachapter where chapter_id = {}'.format(chapterid)
-                    # cur.execute(sourcequery)
+                    chapterquerystring = '''select mediachapters.uuid as mcuuid, 
+                        mediachapters.track_number as mctrack_number,
+                        mediachapters.localizedname as mclocalizedname,
+                        mediachapters.path as mcpath,
+                        mediachapters.small_thumbnail_path as mcsmall_thumbnail_path,
+                        mediachapters.large_thumbnail_path as mclarge_thumbnail_path,
+                        mediachapters.language_id as mclanguage_id,
+                        mediachapters.presenter_name as mcpresenter_name,
+                        mediachapters.source_material as mcsource_material,
+                        mediachapters.med_thumbnail_path as mcmed_thumbnail_path,
+                        mediachapters.absolute_id as mcabsolute_id
+                        from mediachapters inner join chapters on mediachapters.chapter_id = chapters.id inner join books on chapters.book_id = %s inner join playlists on books.basename = playlists.basename where books.basename = %s'''
 
-                    cur.execute(sql.SQL('select * from mediachapters inner join chapters on mediachapters.chapter_id = chapters.id inner join books on chapters.book_id = %s inner join playlists on books.basename = playlists.basename where books.basename = %s'), [bookid, playlist['basename']])
+                    cur.execute(sql.SQL(chapterquerystring), [bookid, playlist['basename']])
 
                     for row in cur:
                         # records.append(row)
                         print('row: {}'.format(row))
 
-                        path_split = row['path'].split('/')
+                        path_split = row['mcpath'].split('/')
                         if path_split[0] == 'bible':
                             rowdict = {
-                                'uuid': str(uuid.uuid4()),
-                                'track_number': row['track_number'],
+                                'uuid': row['mcuuid'],
+                                'track_number': row['mctrack_number'],
                                 'medium': 'audio',
-                                'localizedname': row['localizedname'],
-                                'path': row['path'],
-                                'small_thumbnail_path': row['small_thumbnail_path'],
-                                'large_thumbnail_path': row['large_thumbnail_path'],
+                                'localizedname': row['mclocalizedname'],
+                                'path': row['mcpath'],
+                                'small_thumbnail_path': row['mcsmall_thumbnail_path'],
+                                'large_thumbnail_path': row['mclarge_thumbnail_path'],
                                 'content_provider_link': None,
                                 'ipfs_link': None,
-                                'language_id': row['language_id'],
-                                'presenter_name': row['presenter_name'],
-                                'source_material': row['source_material'],
+                                'language_id': row['mclanguage_id'],
+                                'presenter_name': row['mcpresenter_name'],
+                                'source_material': row['mcsource_material'],
                                 'updated_at': datetime.datetime.now(),
                                 'playlist_id': playlist_id if found_playlist_id else None,
-                                'med_thumbnail_path': row['med_thumbnail_path'],
+                                'med_thumbnail_path': row['mcmed_thumbnail_path'],
                                 'tags': [],
                                 'inserted_at': datetime.datetime.now(),
                                 'media_category': 0,
                                 'presented_at': None,
-                                'org_id': 1
-                                # 'ordinal': row['absolute_id']
+                                'org_id': 1,
+                                'ordinal': row['mcabsolute_id']
                             }
                             print("rowdict: {}".format(rowdict))
                             result.append(rowdict)
+
+        with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute(sql.SQL('select * from mediachapters'), [bookid, playlist['basename']])
+
+            for row in cur:
+                # records.append(row)
+                print('row: {}'.format(row))
         return result
 
     # normalizepreaching must be called AFTER addorgrows because orgs need to be present
@@ -797,7 +803,7 @@ class Dbimport(object):
                             #         playlist_id = playlist['id']
                             #         found_playlist_id = True
                         rowdict = {
-                            'uuid': str(uuid.uuid4()),
+                            'uuid': row['uuid'],
                             'track_number': row['track_number'],
                             'medium': 'audio',
                             'localizedname': row['localizedname'],
@@ -1217,7 +1223,7 @@ class Dbimport(object):
                         path_split = row['path'].split('/')
                         if path_split[0] == 'music':
                             rowdict = {
-                                'uuid': str(uuid.uuid4()),
+                                'uuid': row['uuid'],
                                 'track_number': row['track_number'],
                                 'medium': 'audio',
                                 'localizedname': row['localizedname'],
