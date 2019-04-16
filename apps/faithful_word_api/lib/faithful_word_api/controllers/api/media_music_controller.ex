@@ -8,7 +8,7 @@ defmodule FaithfulWordApi.MediaMusicController do
 
   alias FaithfulWordApi.ErrorView
   alias FaithfulWordApi.MediaMusicV12View
-  alias FaithfulWordApi.MediaMusicView
+  alias FaithfulWordApi.MediaMusicV13View
 
   require Logger
 
@@ -35,20 +35,20 @@ defmodule FaithfulWordApi.MediaMusicController do
       end
   end
 
-  def index(conn, params = %{"uuid" => gid_str, "offset" => offset, "limit" => limit}) do
+  def indexv13(conn, params = %{"uuid" => gid_str, "offset" => offset, "limit" => limit}) do
     V13.music_media_by_uuid(gid_str, offset, limit)
     |>
     case do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      media_music ->
-        Logger.debug("media_music #{inspect %{attributes: media_music}}")
+      media_music_v13 ->
+        Logger.debug("media_music_v13 #{inspect %{attributes: media_music_v13}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
-            render(conn, MediaMusicView, "index.json", %{media_music: media_music, api_version: api_version})
+            render(conn, MediaMusicV13View, "indexv13.json", %{media_music_v13: media_music_v13, api_version: api_version})
             # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
             # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
         end

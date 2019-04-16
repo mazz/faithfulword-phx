@@ -8,7 +8,7 @@ defmodule FaithfulWordApi.LanguageIdentifierController do
 
   alias FaithfulWordApi.ErrorView
   alias FaithfulWordApi.LanguageIdentifierV12View
-  alias FaithfulWordApi.LanguageIdentifierView
+  alias FaithfulWordApi.LanguageIdentifierV13View
 
   require Logger
 
@@ -27,23 +27,23 @@ defmodule FaithfulWordApi.LanguageIdentifierController do
   end
 
   # def index(conn, %{"language-id" => lang}) do
-  def index(conn,  %{"offset" => offset, "limit" => limit}) do
+  def indexv13(conn,  %{"offset" => offset, "limit" => limit}) do
     V13.language_identifiers(offset, limit)
     |>
     case do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      language_identifier ->
-        # render(conn, GospelView, "index.json", %{language_identifier: language_identifier})
+      language_identifier_v13 ->
+        # render(conn, GospelView, "index.json", %{language_identifier_v13: language_identifier_v13})
 
-        Logger.debug("language_identifier #{inspect %{attributes: language_identifier}}")
+        Logger.debug("language_identifier_v13 #{inspect %{attributes: language_identifier_v13}}")
         Enum.at(conn.path_info, 0)
         |>
         case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
-            render(conn, LanguageIdentifierView, "index.json", %{language_identifier: language_identifier, api_version: api_version})
+            render(conn, LanguageIdentifierV13View, "indexv13.json", %{language_identifier_v13: language_identifier_v13, api_version: api_version})
         end
     end
   end

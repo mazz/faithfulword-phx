@@ -2,7 +2,7 @@ defmodule FaithfulWordApi.BookController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWordApi.ErrorView
-  alias FaithfulWordApi.BookView
+  alias FaithfulWordApi.BookV13View
   alias FaithfulWordApi.BookV12View
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
@@ -41,7 +41,7 @@ defmodule FaithfulWordApi.BookController do
     end
   end
 
-  def index(conn, %{"language-id" => lang, "offset" => offset, "limit" => limit}) do
+  def indexv13(conn, %{"language-id" => lang, "offset" => offset, "limit" => limit}) do
     # Logger.debug("lang #{inspect %{attributes: lang}}")
     # IO.inspect(conn)
     #  path_info: ["v1.2", "books"],
@@ -59,13 +59,13 @@ defmodule FaithfulWordApi.BookController do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      book ->
+      book_v13 ->
         # Logger.debug("books #{inspect %{attributes: books}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
-            render(conn, BookView, "index.json", %{book: book, api_version: api_version})
+            render(conn, BookV13View, "indexv13.json", %{book_v13: book_v13, api_version: api_version})
         end
     end
   end

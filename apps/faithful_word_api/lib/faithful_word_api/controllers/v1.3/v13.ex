@@ -212,16 +212,16 @@ defmodule FaithfulWordApi.V13 do
           uuid: Ecto.UUID.generate
         })
         |> Repo.insert()
-      # client_device ->
-      #   |> ClientDevice.changeset(%{
-      #     apns_token: apns_token,
-      #     firebase_token: fcm_token,
-      #     preferred_language: preferred_language,
-      #     user_agent: user_agent,
-      #     user_version: user_version,
-      #     uuid: uuid
-      #   })
-      #   |> Repo.update()
+      client_device ->
+        ClientDevice.changeset(%ClientDevice{}, %{
+          apns_token: apns_token,
+          firebase_token: fcm_token,
+          preferred_language: preferred_language,
+          user_agent: user_agent,
+          user_version: user_version
+          # uuid: uuid
+        })
+        |> Repo.update()
     end
   end
 end

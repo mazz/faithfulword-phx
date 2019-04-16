@@ -3,7 +3,7 @@ defmodule FaithfulWordApi.ClientDeviceController do
 
   alias DB.Schema
   alias DB.Schema.ClientDevice
-  alias FaithfulWordApi.ClientDeviceView
+  alias FaithfulWordApi.ClientDeviceV13View
   alias FaithfulWordApi.ClientDeviceV12View
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
@@ -24,21 +24,21 @@ defmodule FaithfulWordApi.ClientDeviceController do
     end
   end
 
-  def index(conn, %{"fcmToken" => fcm_token, "apnsToken" => apns_token, "preferredLanguage" => preferred_language, "userAgent" => user_agent, "userVersion" => user_version}) do
+  def indexv13(conn, %{"fcmToken" => fcm_token, "apnsToken" => apns_token, "preferredLanguage" => preferred_language, "userAgent" => user_agent, "userVersion" => user_version}) do
     V13.add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version)
     |> case do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "something happened."})
-      client_device ->
+      client_device_v13 ->
         # Logger.debug("client_devices #{inspect %{attributes: client_devices}}")
-        Logger.debug("client_device #{inspect %{attributes: client_device}}")
+        Logger.debug("client_device_v13 #{inspect %{attributes: client_device_v13}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
             Logger.debug("api_version #{inspect %{attributes: api_version}}")
             api_version = String.trim_leading(api_version, "v")
-            render(conn, ClientDeviceView, "index.json", %{client_device: client_device, api_version: api_version})
+            render(conn, ClientDeviceV13View, "indexv13.json", %{client_device_v13: client_device_v13, api_version: api_version})
         end
     end
   end

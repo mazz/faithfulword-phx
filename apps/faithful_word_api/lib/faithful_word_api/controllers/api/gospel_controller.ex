@@ -5,7 +5,7 @@ defmodule FaithfulWordApi.GospelController do
   alias DB.Schema.Gospel
 
   alias FaithfulWordApi.GospelV12View
-  alias FaithfulWordApi.GospelView
+  alias FaithfulWordApi.GospelV13View
   alias FaithfulWordApi.ErrorView
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
@@ -38,7 +38,7 @@ defmodule FaithfulWordApi.GospelController do
     end
   end
 
-  def index(conn, %{"language-id" => lang}) do
+  def indexv13(conn, %{"language-id" => lang}) do
     Logger.debug("lang #{inspect %{attributes: lang}}")
     # IO.inspect(conn)
     #  path_info: ["v1.2", "books"],
@@ -56,16 +56,16 @@ defmodule FaithfulWordApi.GospelController do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      gospel ->
+      gospel_v13 ->
         # render(conn, GospelView, "index.json", %{gospel: gospel})
 
-        Logger.debug("gospel #{inspect %{attributes: gospel}}")
+        Logger.debug("gospel_v13 #{inspect %{attributes: gospel_v13}}")
         Enum.at(conn.path_info, 0)
         |>
         case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
-            render(conn, "index.json", %{gospel: gospel, api_version: api_version})
+            render(conn, GospelV13View, "indexv13.json", %{gospel_v13: gospel_v13, api_version: api_version})
         end
     end
   end

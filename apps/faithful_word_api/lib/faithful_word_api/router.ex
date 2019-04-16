@@ -70,25 +70,25 @@ defmodule FaithfulWordApi.Router do
 
     scope "/v1.3" do
       scope "/books" do
-        get "/", BookController, :index
-        get "/:uuid/media", MediaChapterController, :index
+        get "/", BookController, :indexv13
+        get "/:uuid/media", MediaChapterController, :indexv13
       end
       scope "/gospels" do
-        get "/", GospelController, :index
-        get "/:uuid/media", MediaGospelController, :index
+        get "/", GospelController, :indexv13
+        get "/:uuid/media", MediaGospelController, :indexv13
       end
       scope "/music" do
-        get "/", MusicController, :index
-        get "/:uuid/media", MediaMusicController, :index
+        get "/", MusicController, :indexv13
+        get "/:uuid/media", MediaMusicController, :indexv13
       end
       scope "/languages" do
-        get "/supported", LanguageIdentifierController, :index
+        get "/supported", LanguageIdentifierController, :indexv13
       end
       scope "/app" do
-        get "/versions", AppVersionController, :index
+        get "/versions", AppVersionController, :indexv13
       end
       scope "/device" do
-        post "/pushtoken/update", ClientDeviceController, :index
+        post "/pushtoken/update", ClientDeviceController, :indexv13
       end
     end
   end

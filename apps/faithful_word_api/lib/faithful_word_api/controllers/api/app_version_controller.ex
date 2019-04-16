@@ -3,7 +3,7 @@ defmodule FaithfulWordApi.AppVersionController do
 
   alias DB.Schema
   alias DB.Schema.AppVersion
-  alias FaithfulWordApi.AppVersionView
+  alias FaithfulWordApi.AppVersionV13View
   alias FaithfulWordApi.AppVersionV12View
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
@@ -25,23 +25,23 @@ defmodule FaithfulWordApi.AppVersionController do
   end
 
   # def index(conn, %{"language-id" => lang}) do
-  def index(conn,  %{"offset" => offset, "limit" => limit}) do
+  def indexv13(conn,  %{"offset" => offset, "limit" => limit}) do
     V13.app_versions(offset, limit)
     |>
     case do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      app_version ->
+      app_version_v13 ->
         # render(conn, GospelView, "index.json", %{app_version: app_version})
 
-        Logger.debug("app_version #{inspect %{attributes: app_version}}")
+        Logger.debug("app_version #{inspect %{attributes: app_version_v13}}")
         Enum.at(conn.path_info, 0)
         |>
         case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
-            render(conn, AppVersionView, "index.json", %{app_version: app_version, api_version: api_version})
+            render(conn, AppVersionV13View, "indexv13.json", %{app_version_v13: app_version_v13, api_version: api_version})
         end
     end
   end

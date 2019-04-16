@@ -3,7 +3,7 @@ defmodule FaithfulWordApi.MusicController do
 
   alias FaithfulWord.Content
   alias DB.Schema.Music
-  alias FaithfulWordApi.MusicView
+  alias FaithfulWordApi.MusicV13View
   alias FaithfulWordApi.MusicV12View
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
@@ -25,7 +25,7 @@ defmodule FaithfulWordApi.MusicController do
   end
 
   # def index(conn, %{"language-id" => lang}) do
-  def index(conn,  %{"language-id" => lang, "offset" => offset, "limit" => limit}) do
+  def indexv13(conn,  %{"language-id" => lang, "offset" => offset, "limit" => limit}) do
       Logger.debug("lang #{inspect %{attributes: lang}}")
     # IO.inspect(conn)
     V13.music_by_language(lang, offset, limit)
@@ -34,16 +34,16 @@ defmodule FaithfulWordApi.MusicController do
       nil ->
         put_status(conn, 403)
         |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
-      music ->
-        # render(conn, GospelView, "index.json", %{music: music})
+      music_v13 ->
+        # render(conn, GospelView, "index.json", %{music_v13: music_v13})
 
-        Logger.debug("music #{inspect %{attributes: music}}")
+        Logger.debug("music_v13 #{inspect %{attributes: music_v13}}")
         Enum.at(conn.path_info, 0)
         |>
         case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
-            render(conn, "index.json", %{music: music, api_version: api_version})
+            render(conn, MusicV13View, "indexv13.json", %{music_v13: music_v13, api_version: api_version})
         end
     end
   end
