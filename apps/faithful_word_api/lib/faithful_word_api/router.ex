@@ -44,10 +44,6 @@ defmodule FaithfulWordApi.Router do
   scope "/", FaithfulWordApi do
     pipe_through([:api])
 
-    # return "/music/\(uuid)/media"
-    # case .music(_):
-    #     return "/music"
-
     scope "/v1.2" do
       scope "/books" do
         get "/", BookController, :indexv12
@@ -96,17 +92,6 @@ defmodule FaithfulWordApi.Router do
       end
     end
   end
-
-  # scope "/v1.3", FaithfulWordApi do
-  #   pipe_through(:api)
-
-  #   get "/books", BookController, :index
-  #   # post("/sessions", SessionController, :create)
-  #   # post("/users", UserController, :create)
-
-  #   # post("/sessions", SessionController, :create)
-  #   # post("/users", UserController, :create)
-  # end
 
   scope "/", FaithfulWordApi do
     pipe_through([:api])
@@ -162,10 +147,6 @@ defmodule FaithfulWordApi.Router do
       get("/moderation/random", ModerationController, :random)
       post("/moderation/feedback", ModerationController, :post_feedback)
     end
-
-
-
-
 
   # end
 
@@ -239,146 +220,5 @@ defmodule FaithfulWordApi.Router do
       forward("/mail", Bamboo.SentEmailViewerPlug)
     end
   end
-
-
   end
-
-  # ---- Pipelines ----
-
-  # pipeline :browser do
-  #   plug :accepts, ["html"]
-  #   plug :fetch_session
-  #   plug :fetch_flash
-  #   plug :protect_from_forgery
-  #   plug :put_secure_browser_headers
-
-  #   plug FaithfulWordApi.Auth.Web.GuardianPipeline
-  # end
-
-  # pipeline :api do
-  #   plug :accepts, ["json"]
-  # end
-
-  # pipeline :api_auth do
-  #   # plug(FaithfulWordApi.Auth.Pipeline)
-  #   plug(GuardianImpl.Pipeline)
-  #   plug(Guardian.Plug.VerifyHeader, realm: "Bearer")
-  #   plug(Guardian.Plug.LoadResource, allow_blank: true)
-  # end
-
-  # # -------- Routes --------
-
-  # scope "/", FaithfulWordApi do
-
-  #   # ---- Browser ----
-
-  #   pipe_through :browser # Use the default browser stack
-
-  #   get "/", PageController, :index
-  #   get "/about", PageController, :about
-  #   get "/login", LoginController, :new
-  #   post "/login", LoginController, :create
-  #   # get "/login", AuthController, :new
-  #   # post "/login", AuthController, :create
-
-  #   get "/signup", SignupController, :new
-  #   post "/signup", SignupController, :create
-  # end
-
-  # # -------- Routes --------
-
-  # scope "/", FaithfulWordApi do
-  #   pipe_through([:api])
-
-  #   # ---- Public endpoints ----
-  #   # get("/", ApiInfoController, :get)
-  #   get("/videos", VideoController, :index)
-  #   # get("/speakers/:slug_or_id", SpeakerController, :show)
-  #   # post("/search/video", VideoController, :search)
-  #   # get("/videos/:video_id/statements", StatementController, :get)
-  #   # get("/newsletter/unsubscribe/:token", UserController, :newsletter_unsubscribe)
-  # end
-
-  # # ---- Authenticathed endpoints ----
-  # scope "/", FaithfulWordApi do
-  #   pipe_through([:api_auth])
-
-  #   # Authentication
-  #   scope "/auth" do
-  #     delete("/", AuthController, :logout)
-  #     delete("/:provider/link", AuthController, :unlink_provider)
-  #     post("/:provider/callback", AuthController, :callback)
-  #   end
-
-  #   # # Users
-  #   scope "/users" do
-  #     post("/", UserController, :create)
-  #     post("/request_invitation", UserController, :request_invitation)
-  #     get("/username/:username", UserController, :show)
-
-  #     scope "/reset_password" do
-  #       post("/request", UserController, :reset_password_request)
-  #       get("/verify/:token", UserController, :reset_password_verify)
-  #       post("/confirm", UserController, :reset_password_confirm)
-  #     end
-
-  #     scope "/me" do
-  #       get("/", UserController, :show_me)
-  #       put("/", UserController, :update)
-  #       delete("/", UserController, :delete)
-  #       get("/available_flags", UserController, :available_flags)
-  #       put("/confirm_email/:token", UserController, :confirm_email)
-  #       put("/achievements/:achievement", UserController, :unlock_achievement)
-  #       post("/onboarding/complete_step", UserController, :complete_onboarding_step)
-  #       post("/onboarding/complete_steps", UserController, :complete_onboarding_steps)
-  #       delete("/onboarding", UserController, :delete_onboarding)
-  #     end
-  #   end
-
-  #   # # Videos
-  #   # post("/videos", VideoController, :get_or_create)
-
-  #   # # Moderation
-  #   # get("/moderation/random", ModerationController, :random)
-  #   # post("/moderation/feedback", ModerationController, :post_feedback)
-  # end
-
-  # pipeline :authentication_required do
-  #   plug Guardian.Plug.EnsureAuthenticated
-  # end
-
-  # scope "/", FaithfulWordApi do
-  #   # Use the default browser stack
-  #   pipe_through [:browser, :authentication_required]
-  #   get "/logout", LoginController, :destroy
-  # end
-
-  # # ---- Public endpoints ----
-
-  # scope "/v1.3", FaithfulWordApi do
-  #   pipe_through(:api)
-
-  #   get "/books", BookController, :index
-  #   # post("/sessions", SessionController, :create)
-  #   # post("/users", UserController, :create)
-
-  #   # post("/sessions", SessionController, :create)
-  #   # post("/users", UserController, :create)
-  # end
-
-  # ---- Authenticathed endpoints ----
-
-  # scope "/" do
-  #   pipe_through([:api_auth])
-
-  #   # Authentication
-  #   scope "/auth" do
-  #     delete("/", AuthController, :logout)
-  #     delete("/:provider/link", AuthController, :unlink_provider)
-  #     post("/:provider/callback", AuthController, :callback)
-  #   end
-  # end
-
-
-
 end
