@@ -59,25 +59,10 @@ defmodule FaithfulWordApi.LoginController do
     |> redirect(to: Routes.login_path(conn, :new))
   end
 
-  def auth_error(conn, {type, _reason}, _opts) do
-    %{error: "unauthorized", message: to_string(type)}
-    |> Poison.encode()
-    |> Result.and_then(fn body ->
-      conn
-      |> put_resp_content_type("application/json")
-      |> send_resp(401, body)
-    end)
+  def auth_error(conn, {_type, _reason}, _opts) do
+    conn
+    |> put_flash(:error, gettext("Authentication required"))
+    |> redirect(to: Routes.login_path(conn, :new))
   end
 
-  # def auth_error(conn, {_type, _reason}, _opts) do
-  #   conn
-  #   |> put_flash(:error, gettext("Authentication required"))
-  #   |> redirect(to: Routes.login_path(conn, :new))
-  # end
 end
-
-# def auth_error(conn, {type, _reason}, _opts) do
-#   %{error: "unauthorized", message: to_string(type)}
-#   |> Poison.encode()
-#   |> Result.and_then(fn body ->
-#     conn

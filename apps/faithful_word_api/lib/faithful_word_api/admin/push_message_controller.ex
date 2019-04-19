@@ -1,4 +1,4 @@
-defmodule FaithfulWordApi.PushMessageController do
+defmodule FaithfulWordApi.Admin.PushMessageController do
   use FaithfulWordApi, :controller
 
   alias FaithfulWord.PushNotifications

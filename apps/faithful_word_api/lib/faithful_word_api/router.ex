@@ -39,8 +39,10 @@ defmodule FaithfulWordApi.Router do
 
     get "/logout", LoginController, :delete
 
-    scope "/admin", Admin, as: :admin do
-      get "/notification/send", PushMessageController, :index
+    scope "/admin", Admin do
+    # scope "/admin", Admin, as: :admin do
+        get "/notification/send", PushMessageController, :index
+      get "/upload", UploadController, :index
     end
   end
 
