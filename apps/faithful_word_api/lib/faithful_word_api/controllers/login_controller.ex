@@ -11,6 +11,7 @@ defmodule FaithfulWordApi.LoginController do
 
   alias Phoenix.LiveView
 
+  alias Kaur.Result
   # require Ecto.Query
   # require Logger
 
@@ -40,9 +41,14 @@ defmodule FaithfulWordApi.LoginController do
         |> render("new.html")
       user ->
         conn
-        # |> Guardian.Plug.sign_in(user)
-        |> GuardianImpl.Plug.sign_in(user)
-        |> render("home.html")
+        |> Guardian.Plug.sign_in(user)
+        |> put_flash(:info, gettext("Welcome %{user_name}!", user_name: user.name))
+        # |> render("home.html")
+        |> redirect(to: Routes.page_path(conn, :index))
+
+        # # |> Guardian.Plug.sign_in(user)
+        # |> GuardianImpl.Plug.sign_in(user)
+        # |> render("home.html")
     end
   end
 
@@ -52,4 +58,26 @@ defmodule FaithfulWordApi.LoginController do
     |> put_flash(:info, gettext("Successfully logged out! See you!"))
     |> redirect(to: Routes.login_path(conn, :new))
   end
+
+  def auth_error(conn, {type, _reason}, _opts) do
+    %{error: "unauthorized", message: to_string(type)}
+    |> Poison.encode()
+    |> Result.and_then(fn body ->
+      conn
+      |> put_resp_content_type("application/json")
+      |> send_resp(401, body)
+    end)
+  end
+
+  # def auth_error(conn, {_type, _reason}, _opts) do
+  #   conn
+  #   |> put_flash(:error, gettext("Authentication required"))
+  #   |> redirect(to: Routes.login_path(conn, :new))
+  # end
 end
+
+# def auth_error(conn, {type, _reason}, _opts) do
+#   %{error: "unauthorized", message: to_string(type)}
+#   |> Poison.encode()
+#   |> Result.and_then(fn body ->
+#     conn

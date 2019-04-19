@@ -12,9 +12,13 @@ defmodule FaithfulWordApi.Router do
     plug :put_secure_browser_headers
     # plug :put_layout, false
     plug :put_layout, {FaithfulWordApi.LayoutView, :app}
-    plug(GuardianImpl.Pipeline)
+    plug FaithfulWordApi.Plugs.GuardianPipeline
 
     # plug WordApi.Plugs.GuardianPipeline
+  end
+
+  pipeline :authentication_required do
+    plug Guardian.Plug.EnsureAuthenticated
   end
 
   scope "/", FaithfulWordApi do
@@ -23,11 +27,21 @@ defmodule FaithfulWordApi.Router do
     get "/", PageController, :index
     get "/about", PageController, :about
     get "/login", LoginController, :new
-    get "/logout", LoginController, :delete
+    # get "/logout", LoginController, :delete
     post "/login", LoginController, :create
     get "/signup", SignupController, :new
     post "/signup", SignupController, :create
     # get "/login/:magic_token", LoginController, :callback
+  end
+
+  scope "/", FaithfulWordApi do
+    pipe_through [:browser, :authentication_required]
+
+    get "/logout", LoginController, :delete
+
+    scope "/admin", Admin, as: :admin do
+      get "/notification/send", PushMessageController, :index
+    end
   end
 
   pipeline :api do
