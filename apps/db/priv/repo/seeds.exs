@@ -29,15 +29,6 @@ Logger.debug("Application.get_env #{Application.get_env(:db, :env)}")
 # if Application.get_env(:db, :env) == :dev do
 # Logger.warn("API is running in dev mode. Inserting default user admin@faithfulword.app")
 
-admin =
-  User.registration_changeset(%User{reputation: 4200, username: "Jedediah"}, %{
-    email: "admin@faithfulword.app",
-    password: "password"
-  })
-
-Logger.debug("admin user inserted:")
-IO.inspect(admin)
-Repo.insert(admin)
 # No need to warn if already exists
 Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Amos"}, %{
   email: "amos@faithfulword.app",
@@ -55,9 +46,16 @@ Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Adam"
   email: "adam@faithfulword.app",
   password: "password"
 }))
-Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "John"}, %{
-  email: "john@faithfulword.app",
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Jonathan"}, %{
+  email: "jonathan@faithfulword.app",
   password: "password"
 }))
-# end
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Collin"}, %{
+  email: "collin@faithfulword.app",
+  password: "password"
+}))
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Michael"}, %{
+  email: "michael@faithfulword.app",
+  password: "password"
+}))
 

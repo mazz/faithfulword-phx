@@ -1,16 +1,14 @@
 defmodule FaithfulWordApi.Admin.UploadController do
   use FaithfulWordApi, :controller
-
-  alias FaithfulWord.PushNotifications
-  alias DB.Schema.PushMessage
+  alias Phoenix.LiveView
+  alias FaithfulWordApi.Admin.UploadView
 
   action_fallback FaithfulWordApi.FallbackController
 
   def index(conn, _params) do
-    conn
-    |> render("upload.html")
+    # LiveView.Controller.live_render(conn, FaithfulWordApi.Admin.UploadView, session: %{})
     # pushmessage = PushNotifications.list_pushmessage()
-    # render(conn, "index.json", pushmessage: pushmessage)
+    render(conn, "upload.html")
   end
 
   # def create(conn, %{"push_message" => push_message_params}) do
