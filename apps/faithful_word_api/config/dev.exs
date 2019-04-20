@@ -12,6 +12,10 @@ use Mix.Config
 # with webpack to recompile .js and .css sources.
 config :faithful_word_api, FaithfulWordApi.Endpoint,
   http: [port: 4000],
+  # https: [port: 4443,
+  #         otp_app: :phoenix_oauth2_mock_server,
+  #         keyfile: "priv/keys/localhost.key",
+  #         certfile: "priv/keys/localhost.cert"],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
