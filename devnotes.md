@@ -7,7 +7,8 @@ mv ./test/old_name ./test/new_name
 mv ./lib/old_name_web ./lib/new_name_web
 mv ./lib/old_name_web.ex ./lib/new_name_web.ex
 
-
+# docker logs
+docker logs docker_node_1
 
 https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part-2/
 
@@ -111,7 +112,7 @@ mix deps.get ; mix deps.compile
 mix ecto.drop; mix ecto.create ; mix ecto.migrate
 mix run apps/db/priv/repo/seeds.exs
 
-https://github.com/FaithfulAudio/faithfulword-phx.git -b add-cf-authenticator-files
+git clone https://github.com/FaithfulAudio/faithfulword-phx.git -b upload-ui upload-ui
 
 # export binary db file
 
@@ -120,5 +121,3 @@ https://github.com/FaithfulAudio/faithfulword-phx.git -b add-cf-authenticator-fi
 # import 1.3 database
 
 ./dbimport.py migratefromwebsauna ./2019-04-02-media-item-bin.pgsql faithful_word_dev ; ./dbimport.py convertv12bibletoplaylists faithful_word_dev ; ./dbimport.py convertv12gospeltoplaylists faithful_word_dev ; ./dbimport.py convertv12musictoplaylists faithful_word_dev ; ./dbimport.py normalizemusic faithful_word_dev ; ./dbimport.py normalizegospel faithful_word_dev ; ./dbimport.py normalizepreaching faithful_word_dev ; ./dbimport.py normalizebible faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs
-
-
