@@ -115,7 +115,7 @@ class Dbimport(object):
             print('org_ids: {}'.format(org_ids))
 
             for org_id in org_ids:
-                for channel_name in ['Preaching', 'Music', 'Gospel', 'Documentaries']: # 1-based index, not 0
+                for channel_name in ['Preaching', 'Music', 'Gospel', 'Movies']: # 1-based index, not 0
                     cur.execute(sql.SQL("INSERT INTO channels (uuid, basename, updated_at, inserted_at, org_id) VALUES (%s, %s, %s, %s, %s)"), 
                     [str(uuid.uuid4()), 
                     channel_name, 
@@ -184,12 +184,18 @@ class Dbimport(object):
 
                 channel_id = None
                 media_category = None
-                if gospel['basename'] == 'Plan of Salvation' or gospel['basename'] == 'Soul-winning Motivation' or gospel['basename'] == 'Soul-winning Tutorials' or gospel['basename'] == 'Soul-winning Sermons' or gospel['basename'] == 'आत्मिक जीत स्पष्टीकरण':
-                        channel_id = 3
-                        media_category = 1
+                if gospel['basename'] == 'Soul-winning Motivation':
+                    channel_id = 3
+                    media_category = 3
+                if gospel['basename'] == 'Soul-winning Tutorials':
+                    channel_id = 3
+                    media_category = 9
+                if gospel['basename'] == 'Plan of Salvation' or gospel['basename'] == 'Soul-winning Sermons' or gospel['basename'] == 'आत्मिक जीत स्पष्टीकरण':
+                    channel_id = 3
+                    media_category = 1
                 if gospel['basename'] == 'Word of Truth Baptist Church Sermons' or gospel['basename'] == 'FWBC Sermons' or gospel['basename'] == 'Faith Baptist Church Louisiana Sermons' or gospel['basename'] == 'Verity Baptist Church Sermons' or gospel['basename'] == 'Old Path Baptist Church Sermons' or gospel['basename'] == 'Liberty Baptist Church Sermons' or gospel['basename'] == 'Faithful Word Baptist Church LA' or gospel['basename'] == 'Temple Baptist Church Sermons' or gospel['basename'] == 'Sean Jolley Spanish' or gospel['basename'] == 'ASBC' or gospel['basename'] == 'Entire Bible Preached Project' or gospel['basename'] == 'Pillar Baptist Church' or gospel['basename'] == 'Iglesia Bautista de Santa Ana' or gospel['basename'] == 'FWBC Espanol' or gospel['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or gospel['basename'] == 'Justice by Jack Hyles' or gospel['basename'] == 'Verity Baptist Vancouver (Preaching)' or gospel['basename'] == 'Stedfast Baptist Church' or gospel['basename'] == 'Post Trib Bible Prophecy Conference' or gospel['basename'] == 'Mountain Baptist Church':
                         channel_id = 1
-                        media_category = 3
+                        media_category = 7
                 if gospel['basename'] == 'Documentaries':
                     channel_id = 4
                     media_category = 4
@@ -309,7 +315,7 @@ class Dbimport(object):
                 # set the channel id based on basename title
 
                 channel_id = 2
-                media_category = 2
+                media_category = 5
 
                 playlistdict = {
                     'ordinal': music['absolute_id'],
