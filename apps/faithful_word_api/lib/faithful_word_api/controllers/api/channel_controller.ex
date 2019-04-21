@@ -12,7 +12,7 @@ defmodule FaithfulWordApi.ChannelController do
 
   def indexv13(conn, %{"org-uuid" => orguuid, "offset" => offset, "limit" => limit}) do
     Logger.debug("orguuid #{inspect %{attributes: orguuid}}")
-    V13.channels_by_org(orguuid, offset, limit)
+    V13.channels_by_org_uuid(orguuid, offset, limit)
     |> case do
       nil ->
         put_status(conn, 403)

@@ -9,7 +9,7 @@ defmodule FaithfulWordApi.V13 do
   alias DB.Schema.{MediaGospel, Gospel}
   alias DB.Schema.{GospelTitle, LanguageIdentifier}
   alias DB.Schema.{MusicTitle, Music, MediaMusic}
-  alias DB.Schema.{Org, Channel, Playlist, PlaylistTitle}
+  alias DB.Schema.{Org, Channel, Playlist, PlaylistTitle, MediaItem}
   alias DB.Schema.AppVersion
   alias DB.Schema.ClientDevice
 
@@ -129,6 +129,7 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
+  @spec music_by_language(any(), any(), any()) :: nil | Scrivener.Page.t()
   def music_by_language(language \\ "en", offset \\ 0, limit \\ 0) do
     # Ecto.Query.from(m in Music,
     # order_by: m.absolute_id,
@@ -178,7 +179,12 @@ defmodule FaithfulWordApi.V13 do
     where: mm.music_id == m.id,
     order_by: [mm.absolute_id, mm.id],
     # where: t.language_id  == ^language_id,
-    select: %{localizedName: mm.localizedname, path: mm.path, presenterName: mm.presenter_name, sourceMaterial: mm.source_material, uuid: mm.uuid}
+    select:
+    %{localizedName: mm.localizedname,
+      path: mm.path,
+      presenterName: mm.presenter_name,
+      sourceMaterial: mm.source_material,
+      uuid: mm.uuid}
 
     query
     |> Repo.paginate(page: offset, page_size: limit)
@@ -226,7 +232,7 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def channels_by_org(orguuid, offset, limit) do
+  def channels_by_org_uuid(orguuid, offset, limit) do
       # python
       # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
       {:ok, org_uuid} = Ecto.UUID.dump(orguuid)
@@ -243,7 +249,8 @@ defmodule FaithfulWordApi.V13 do
         Ecto.Query.from(channel in Channel,
         order_by: channel.ordinal,
         where: channel.org_id  == ^found_org_id,
-        select: %{basename: channel.basename,
+        select:
+        %{basename: channel.basename,
           uuid: channel.uuid,
           ordinal: channel.ordinal,
           basename: channel.basename,
@@ -262,7 +269,7 @@ defmodule FaithfulWordApi.V13 do
 
   def playlists_by_channel_uuid(uuid_str, language_id, offset, limit) do
     {:ok, channel_uuid} = Ecto.UUID.dump(uuid_str)
-    Logger.debug("channel_uuid: #{channel_uuid}")
+    Logger.debug("channel_uuid: #{uuid_str}")
     query = from pl in Playlist,
 
     join: ch in Channel,
@@ -275,8 +282,8 @@ defmodule FaithfulWordApi.V13 do
 
     order_by: [pl.ordinal],
 
-    select: %{
-      localizedname: pt.localizedname,
+    select:
+    %{localizedname: pt.localizedname,
       ordinal: pl.ordinal,
       small_thumbnail_path: pl.small_thumbnail_path,
       med_thumbnail_path: pl.med_thumbnail_path,
@@ -290,6 +297,42 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
+  def media_items_by_playlist_uuid(playlist_uuid, offset \\ 0, limit \\ 0) do
+    {:ok, pid_uuid} = Ecto.UUID.dump(playlist_uuid)
+    Logger.debug("pid_uuid: #{pid_uuid}")
+
+    query = from pl in Playlist,
+    # join: t in MusicTitle,
+    # join: c in Chapter,
+    join: mi in MediaItem,
+
+    where: pl.uuid == ^pid_uuid,
+    where: mi.playlist_id == pl.id,
+    order_by: [mi.track_number, mi.ordinal],
+    select:
+    %{ordinal: mi.ordinal,
+      uuid: mi.uuid,
+      track_number: mi.track_number,
+      medium: mi.medium,
+      localizedname: mi.localizedname,
+      path: mi.path,
+      content_provider_link: mi.content_provider_link,
+      ipfs_link: mi.ipfs_link,
+      language_id: mi.language_id,
+      presenter_name: mi.presenter_name,
+      source_material: mi.source_material,
+      playlist_id: mi.playlist_id,
+      tags: mi.tags,
+      small_thumbnail_path: mi.small_thumbnail_path,
+      med_thumbnail_path: mi.med_thumbnail_path,
+      large_thumbnail_path: mi.large_thumbnail_path,
+      inserted_at: mi.inserted_at,
+      updated_at: mi.updated_at}
+
+    query
+    |> Repo.paginate(page: offset, page_size: limit)
+  end
+
   def orgs_default_org(offset, limit) do
     # python
     # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
@@ -297,7 +340,8 @@ defmodule FaithfulWordApi.V13 do
   Ecto.Query.from(org in Org,
     where: org.shortname == "faithfulwordapp",
     order_by: org.id,
-    select: %{basename: org.basename,
+    select:
+    %{basename: org.basename,
       uuid: org.uuid,
       small_thumbnail_path: org.small_thumbnail_path,
       med_thumbnail_path: org.med_thumbnail_path,

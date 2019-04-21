@@ -639,6 +639,7 @@ class Dbimport(object):
                             rowdict = {
                                 'uuid': row['mcuuid'],
                                 'track_number': row['mctrack_number'],
+                                'ordinal': row['mctrack_number'],
                                 'medium': 'audio',
                                 'localizedname': row['mclocalizedname'],
                                 'path': row['mcpath'],
@@ -1231,6 +1232,7 @@ class Dbimport(object):
                             rowdict = {
                                 'uuid': row['uuid'],
                                 'track_number': row['track_number'],
+                                'ordinal': row['track_number'],
                                 'medium': 'audio',
                                 'localizedname': row['localizedname'],
                                 'path': row['path'],

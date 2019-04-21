@@ -97,6 +97,10 @@ defmodule FaithfulWordApi.Router do
         get "/", ChannelController, :indexv13
         get "/:uuid/playlists", PlaylistController, :indexv13
       end
+      scope "/playlists" do
+        # get "/", MusicController, :indexv13
+        get "/:uuid/media", MediaItemController, :indexv13
+      end
       scope "/gospels" do
         get "/", GospelController, :indexv13
         get "/:uuid/media", MediaGospelController, :indexv13
