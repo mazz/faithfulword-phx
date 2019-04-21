@@ -45,7 +45,7 @@ defmodule FaithfulWord.Jobs.MetadataFetch do
 
     {:ok, youtube_items} = YoutubeMetaDataFetcher.fetch_playlist_item_list_metadata("UUq7BdmVpQsay5XrwOgMhN5w")
 
-    user = Repo.get_by(User, email: "admin@faithfulword.app")
+    user = Repo.get_by(User, email: "michael@faithfulword.app")
 
     Enum.each(youtube_items, fn item ->
       case get_video_by_url(item.url) do
