@@ -297,7 +297,7 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def media_items_by_playlist_uuid(playlist_uuid, offset \\ 0, limit \\ 0) do
+  def media_items_by_playlist_uuid(playlist_uuid, language_id \\ "en", offset \\ 0, limit \\ 0) do
     {:ok, pid_uuid} = Ecto.UUID.dump(playlist_uuid)
     Logger.debug("pid_uuid: #{pid_uuid}")
 
@@ -305,9 +305,12 @@ defmodule FaithfulWordApi.V13 do
     # join: t in MusicTitle,
     # join: c in Chapter,
     join: mi in MediaItem,
+    # join: pt in PlaylistTitle,
 
     where: pl.uuid == ^pid_uuid,
     where: mi.playlist_id == pl.id,
+    # where: pl.id == pt.playlist_id,
+    where: mi.language_id == ^language_id,
     order_by: [mi.track_number, mi.ordinal],
     select:
     %{ordinal: mi.ordinal,
