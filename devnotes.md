@@ -1,3 +1,5 @@
+# rename elixir project
+
 git grep -l 'old_name' | xargs sed -i '' -e 's/old_name/new_name/g'
 git grep -l 'OldName' | xargs sed -i '' -e 's/OldName/NewName/g'
 mv ./lib/old_name ./lib/new_name
@@ -8,12 +10,15 @@ mv ./lib/old_name_web ./lib/new_name_web
 mv ./lib/old_name_web.ex ./lib/new_name_web.ex
 
 # docker logs
-docker logs docker_node_1
+docker logs <container-id>
 
 https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part-2/
 
 docker-compose pull
-docker-compose build --pull faithful_word
+docker-compose build --pull faithful_word 
+## OR build and restart faithful_word only -- use IFF there was no db schema change!
+docker-compose up --detach --build faithful_word 
+
 docker-compose up --build -d postgres
 docker-compose run --rm faithful_word migrate
 

@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddDescriptionToVideos do
+defmodule DB.Repo.Migrations.PostDbImportTweaks do
   use Ecto.Migration
 
   def change do
@@ -12,6 +12,8 @@ defmodule DB.Repo.Migrations.AddDescriptionToVideos do
     alter table(:mediaitems) do
       add :media_category, DB.Type.MediaCategory.type()
       add :presented_at, :utc_datetime, null: true
+      # null published_at means never published
+      add :published_at, :utc_datetime, null: true
       add :org_id, references(:orgs, on_delete: :delete_all)
     end
 

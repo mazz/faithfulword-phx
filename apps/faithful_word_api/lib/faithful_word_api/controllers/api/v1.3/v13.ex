@@ -9,6 +9,7 @@ defmodule FaithfulWordApi.V13 do
   alias DB.Schema.{MediaGospel, Gospel}
   alias DB.Schema.{GospelTitle, LanguageIdentifier}
   alias DB.Schema.{MusicTitle, Music, MediaMusic}
+  alias DB.Schema.Channel
   alias DB.Schema.AppVersion
   alias DB.Schema.ClientDevice
 
@@ -223,5 +224,25 @@ defmodule FaithfulWordApi.V13 do
         })
         |> Repo.update()
     end
+  end
+
+  def channels_by_org(orgid, offset, limit) do
+      # python
+      # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
+
+    Ecto.Query.from(channel in DB.Schema.Channel,
+      order_by: channel.ordinal,
+      where: channel.org_id  == ^orgid,
+      select: %{basename: channel.basename,
+        uuid: channel.uuid,
+        ordinal: channel.ordinal,
+        basename: channel.basename,
+        small_thumbnail_path: channel.small_thumbnail_path,
+        med_thumbnail_path: channel.med_thumbnail_path,
+        large_thumbnail_path: channel.large_thumbnail_path,
+        banner_path: channel.banner_path,
+        insertedAt: channel.inserted_at,
+        updatedAt: channel.updated_at})
+      |> Repo.paginate(page: offset, page_size: limit)
   end
 end

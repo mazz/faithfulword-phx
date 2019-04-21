@@ -19,6 +19,10 @@ defmodule FaithfulWordApi.MediaChapterV13View do
   end
 
   def render("media_chapter_v13.json", %{media_chapter_v13: media_chapter_v13}) do
-    %{localizedName: media_chapter_v13.localizedName, path: media_chapter_v13.path, presenterName: media_chapter_v13.presenterName, sourceMaterial: media_chapter_v13.sourceMaterial, uuid: media_chapter_v13.uuid}
+    %{localizedName: media_chapter_v13.localizedName,
+    path: media_chapter_v13.path,
+    presenterName: media_chapter_v13.presenterName,
+    sourceMaterial: media_chapter_v13.sourceMaterial,
+    uuid: media_chapter_v13.uuid}
   end
 end
