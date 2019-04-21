@@ -29,7 +29,7 @@ defmodule FaithfulWordApi.MediaItemV13View do
       languageId: media_item_v13.language_id,
       presenterName: media_item_v13.presenter_name,
       sourceMaterial: media_item_v13.source_material,
-      playlistId: media_item_v13.playlist_id,
+      playlistUuid: media_item_v13.playlist_uuid,
       tags: media_item_v13.tags,
       smallThumbnailPath: media_item_v13.small_thumbnail_path,
       medThumbnailPath: media_item_v13.med_thumbnail_path,
@@ -38,7 +38,6 @@ defmodule FaithfulWordApi.MediaItemV13View do
       updatedAt: media_item_v13.updated_at,
       mediaCategory: media_item_v13.media_category,
       presentedAt: media_item_v13.presented_at,
-      publishedAt: media_item_v13.published_at,
-      orgId: media_item_v13.org_id}
+      publishedAt: media_item_v13.published_at}
   end
 end

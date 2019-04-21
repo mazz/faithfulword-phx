@@ -324,7 +324,7 @@ defmodule FaithfulWordApi.V13 do
       language_id: mi.language_id,
       presenter_name: mi.presenter_name,
       source_material: mi.source_material,
-      playlist_id: mi.playlist_id,
+      playlist_uuid: pl.uuid,
       tags: mi.tags,
       small_thumbnail_path: mi.small_thumbnail_path,
       med_thumbnail_path: mi.med_thumbnail_path,
@@ -333,8 +333,7 @@ defmodule FaithfulWordApi.V13 do
       updated_at: mi.updated_at,
       media_category: mi.media_category,
       presented_at: mi.presented_at,
-      published_at: mi.published_at,
-      org_id: mi.org_id
+      published_at: mi.published_at
     }
 
     query

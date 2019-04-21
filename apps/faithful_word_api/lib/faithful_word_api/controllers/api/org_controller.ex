@@ -46,5 +46,4 @@ defmodule FaithfulWordApi.OrgController do
         end
     end
   end
-
 end
