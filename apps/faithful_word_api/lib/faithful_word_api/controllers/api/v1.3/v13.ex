@@ -226,24 +226,38 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def channels_by_org(orgid, offset, limit) do
+  def channels_by_org(orguuid, offset, limit) do
       # python
       # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
+      {:ok, org_uuid} = Ecto.UUID.dump(orguuid)
+      Logger.debug("org_uuid: #{org_uuid}")
 
-    Ecto.Query.from(channel in DB.Schema.Channel,
-      order_by: channel.ordinal,
-      where: channel.org_id  == ^orgid,
-      select: %{basename: channel.basename,
-        uuid: channel.uuid,
-        ordinal: channel.ordinal,
-        basename: channel.basename,
-        small_thumbnail_path: channel.small_thumbnail_path,
-        med_thumbnail_path: channel.med_thumbnail_path,
-        large_thumbnail_path: channel.large_thumbnail_path,
-        banner_path: channel.banner_path,
-        insertedAt: channel.inserted_at,
-        updatedAt: channel.updated_at})
-      |> Repo.paginate(page: offset, page_size: limit)
+      found_org_id = Ecto.Query.from(org in Org,
+      where: org.uuid == ^orguuid,
+      select: org.id)
+      |> Repo.one
+
+      Logger.debug("found_org_id #{inspect %{attributes: found_org_id}}")
+
+      if found_org_id do
+        Ecto.Query.from(channel in Channel,
+        order_by: channel.ordinal,
+        where: channel.org_id  == ^found_org_id,
+        select: %{basename: channel.basename,
+          uuid: channel.uuid,
+          ordinal: channel.ordinal,
+          basename: channel.basename,
+          small_thumbnail_path: channel.small_thumbnail_path,
+          med_thumbnail_path: channel.med_thumbnail_path,
+          large_thumbnail_path: channel.large_thumbnail_path,
+          banner_path: channel.banner_path,
+          insertedAt: channel.inserted_at,
+          updatedAt: channel.updated_at})
+        |> Repo.paginate(page: offset, page_size: limit)
+      else
+        nil
+      end
+
   end
 
   def playlists_by_channel_uuid(uuid_str, language_id, offset, limit) do

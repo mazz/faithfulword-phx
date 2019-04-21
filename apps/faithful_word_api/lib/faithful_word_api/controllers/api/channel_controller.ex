@@ -10,9 +10,9 @@ defmodule FaithfulWordApi.ChannelController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def indexv13(conn, %{"org-id" => orgid, "offset" => offset, "limit" => limit}) do
-    Logger.debug("orgid #{inspect %{attributes: orgid}}")
-    V13.channels_by_org(orgid, offset, limit)
+  def indexv13(conn, %{"org-uuid" => orguuid, "offset" => offset, "limit" => limit}) do
+    Logger.debug("orguuid #{inspect %{attributes: orguuid}}")
+    V13.channels_by_org(orguuid, offset, limit)
     |> case do
       nil ->
         put_status(conn, 403)
