@@ -9,7 +9,7 @@ defmodule FaithfulWordApi.V13 do
   alias DB.Schema.{MediaGospel, Gospel}
   alias DB.Schema.{GospelTitle, LanguageIdentifier}
   alias DB.Schema.{MusicTitle, Music, MediaMusic}
-  alias DB.Schema.Channel
+  alias DB.Schema.{Channel, Playlist, PlaylistTitle}
   alias DB.Schema.AppVersion
   alias DB.Schema.ClientDevice
 
@@ -244,5 +244,35 @@ defmodule FaithfulWordApi.V13 do
         insertedAt: channel.inserted_at,
         updatedAt: channel.updated_at})
       |> Repo.paginate(page: offset, page_size: limit)
+  end
+
+  def playlists_by_channel_uuid(uuid_str, language_id, offset, limit) do
+    {:ok, channel_uuid} = Ecto.UUID.dump(uuid_str)
+    Logger.debug("channel_uuid: #{channel_uuid}")
+    query = from pl in Playlist,
+
+    join: ch in Channel,
+    join: pt in PlaylistTitle,
+
+    where: ch.uuid == ^channel_uuid,
+    where: ch.id == pl.channel_id,
+    where: pl.id == pt.playlist_id,
+    where: pt.language_id == ^language_id,
+
+    order_by: [pl.ordinal],
+
+    select: %{
+      localizedname: pt.localizedname,
+      ordinal: pl.ordinal,
+      small_thumbnail_path: pl.small_thumbnail_path,
+      med_thumbnail_path: pl.med_thumbnail_path,
+      large_thumbnail_path: pl.large_thumbnail_path,
+      banner_path: pl.banner_path,
+      uuid: pl.uuid,
+      inserted_at: pl.inserted_at,
+      updated_at: pl.updated_at}
+    query
+    |> IO.inspect
+    |> Repo.paginate(page: offset, page_size: limit)
   end
 end

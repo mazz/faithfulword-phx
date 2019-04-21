@@ -21,7 +21,7 @@ defmodule FaithfulWordApi.ChannelV13View do
   def render("channel_v13.json", %{channel_v13: channel_v13}) do
     # {"Revelation", "Apocalipse", "2c22a08a-80ee-4ec1-be94-f018892fe8ba", "pt"}
     # {b.basename, title.localizedname, b.uuid, title.language_id}
-    Logger.debug("book #{inspect %{attributes: channel_v13}}")
+    Logger.debug("channel #{inspect %{attributes: channel_v13}}")
 
     %{basename: channel_v13.basename,
       uuid: channel_v13.uuid,

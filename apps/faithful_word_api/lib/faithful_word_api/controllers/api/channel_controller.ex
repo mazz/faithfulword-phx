@@ -12,17 +12,6 @@ defmodule FaithfulWordApi.ChannelController do
 
   def indexv13(conn, %{"org-id" => orgid, "offset" => offset, "limit" => limit}) do
     Logger.debug("orgid #{inspect %{attributes: orgid}}")
-    # IO.inspect(conn)
-    #  path_info: ["v1.2", "books"],
-    # books =
-    # cond do
-      # Enum.member?(conn.path_info, "v1.2") ->
-      #   V12.books_by_language(lang)
-      # Enum.member?(conn.path_info, "v1.3") ->
-
-    #   true ->
-    #     nil
-    # end
     V13.channels_by_org(orgid, offset, limit)
     |> case do
       nil ->
@@ -38,4 +27,6 @@ defmodule FaithfulWordApi.ChannelController do
         end
     end
   end
+
+
 end
