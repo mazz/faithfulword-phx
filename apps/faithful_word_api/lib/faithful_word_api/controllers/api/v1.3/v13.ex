@@ -330,7 +330,12 @@ defmodule FaithfulWordApi.V13 do
       med_thumbnail_path: mi.med_thumbnail_path,
       large_thumbnail_path: mi.large_thumbnail_path,
       inserted_at: mi.inserted_at,
-      updated_at: mi.updated_at}
+      updated_at: mi.updated_at,
+      media_category: mi.media_category,
+      presented_at: mi.presented_at,
+      published_at: mi.published_at,
+      org_id: mi.org_id
+    }
 
     query
     |> Repo.paginate(page: offset, page_size: limit)

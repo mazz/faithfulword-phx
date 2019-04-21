@@ -23,6 +23,7 @@ defmodule DB.Schema.MediaItem do
     field :uuid, Ecto.UUID
     field :playlist_id, :integer
     field :org_id, :integer
+    field :published_at, :utc_datetime, null: true
 
     timestamps(type: :utc_datetime)
   end

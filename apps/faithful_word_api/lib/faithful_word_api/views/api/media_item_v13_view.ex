@@ -18,11 +18,6 @@ defmodule FaithfulWordApi.MediaItemV13View do
   end
 
   def render("media_item_v13.json", %{media_item_v13: media_item_v13}) do
-    # %{localizedName: media_item_v13.localizedName,
-    # path: media_item_v13.path,
-    # presenterName: media_item_v13.presenterName,
-    # sourceMaterial: media_item_v13.sourceMaterial,
-    # uuid: media_item_v13.uuid}
     %{ordinal: media_item_v13.ordinal,
       uuid: media_item_v13.uuid,
       trackNumber: media_item_v13.track_number,
@@ -40,28 +35,10 @@ defmodule FaithfulWordApi.MediaItemV13View do
       medThumbnailPath: media_item_v13.med_thumbnail_path,
       largeThumbnailPath: media_item_v13.large_thumbnail_path,
       insertedAt: media_item_v13.inserted_at,
-      updatedAt: media_item_v13.updated_at}
+      updatedAt: media_item_v13.updated_at,
+      mediaCategory: media_item_v13.media_category,
+      presentedAt: media_item_v13.presented_at,
+      publishedAt: media_item_v13.published_at,
+      orgId: media_item_v13.org_id}
   end
 end
-
-"""
-%{ordinal: mm.ordinal,
-      uuid: mm.uuid,
-      track_number: mm.track_number,
-      medium: mm.medium,
-      localizedname: mm.localizedname,
-      path: mm.path,
-      content_provider_link: mm.content_provider_link,
-      ipfs_link: mm.ipfs_link,
-      language_id: mm.language_id,
-      presenter_name: mm.presenter_name,
-      source_material: mm.source_material,
-      playlist_id: mm.playlist_id,
-      tags: mm.tags,
-      small_thumbnail_path: mm.small_thumbnail_path,
-      med_thumbnail_path: mm.med_thumbnail_path,
-      large_thumbnail_path: mm.large_thumbnail_path,
-      banner_path: mm.banner_path,
-      inserted_at: mm.inserted_at,
-      updated_at: mm.updated_at}
-      """
