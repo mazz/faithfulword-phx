@@ -90,11 +90,11 @@ defmodule FaithfulWordApi.Router do
         get "/:uuid/media", MediaChapterController, :indexv13
       end
       scope "/orgs" do
-        get "/default", OrgController, :indexv13
-        # get "/:uuid/playlists", PlaylistController, :indexv13
+        get "/default", OrgController, :defaultv13
+        get "/:uuid/channels", OrgController, :channelsv13
       end
       scope "/channels" do
-        get "/", ChannelController, :indexv13
+        # get "/", ChannelController, :indexv13
         get "/:uuid/playlists", PlaylistController, :indexv13
       end
       scope "/playlists" do

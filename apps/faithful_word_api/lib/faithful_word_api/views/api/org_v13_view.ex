@@ -4,7 +4,7 @@ defmodule FaithfulWordApi.OrgV13View do
 
   require Logger
 
-  def render("indexv13.json", %{org_v13: org_v13, api_version: api_version}) do
+  def render("defaultv13.json", %{org_v13: org_v13, api_version: api_version}) do
     %{result: render_many(org_v13, OrgV13View, "org_v13.json"),
     pageNumber: org_v13.page_number,
     pageSize: org_v13.page_size,

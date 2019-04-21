@@ -4,7 +4,7 @@ defmodule FaithfulWordApi.ChannelV13View do
 
   require Logger
 
-  def render("indexv13.json", %{channel_v13: channel_v13, api_version: api_version}) do
+  def render("channelsv13.json", %{channel_v13: channel_v13, api_version: api_version}) do
     %{result: render_many(channel_v13, ChannelV13View, "channel_v13.json"),
     pageNumber: channel_v13.page_number,
     pageSize: channel_v13.page_size,
