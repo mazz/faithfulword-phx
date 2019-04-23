@@ -313,10 +313,10 @@ preaching: 7,
 testimony: 8,
 tutorial: 9
 """
-    direction = :asc
-    sorting = :track_number
-    # direction = :desc
-    # sorting = :presented_at
+    # direction = :asc
+    # sorting = :track_number
+    # # direction = :desc
+    # # sorting = :presented_at
 
     media_category = Ecto.Query.from(playlist in Playlist,
     where: playlist.uuid == ^playlist_uuid,
@@ -324,19 +324,25 @@ tutorial: 9
     |> Repo.one
     |> IO.inspect
 
-    if media_category == :livestream ||
-    media_category == :motivation ||
-    media_category == :movie ||
-    media_category == :podcast ||
-    media_category == :testimony do
-      Logger.info("direction: #{direction} sorting: #{sorting}")
-      direction = :desc
-      sorting = :presented_at
-    else
-      direction = :asc
-      sorting = :track_number
-    end
+    # if media_category == :livestream ||
+    # media_category == :motivation ||
+    # media_category == :movie ||
+    # media_category == :podcast ||
+    # media_category == :testimony do
+    #   Logger.info("direction: #{direction} sorting: #{sorting}")
+    #   direction = :desc
+    #   sorting = :presented_at
+    # else
+    #   direction = :asc
+    #   sorting = :track_number
+    # end
 
+    special_categories = [:livestream, :motivation, :movie, :podcast, :testimony, :preaching]
+    {direction, sorting} = if media_category in special_categories do
+      {:desc, :presented_at}
+    else
+      {:asc, :track_number}
+    end
     Logger.info("direction: #{direction} sorting: #{sorting}")
 
     query = from pl in Playlist,
