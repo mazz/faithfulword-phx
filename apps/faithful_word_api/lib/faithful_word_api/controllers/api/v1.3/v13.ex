@@ -313,29 +313,12 @@ preaching: 7,
 testimony: 8,
 tutorial: 9
 """
-    # direction = :asc
-    # sorting = :track_number
-    # # direction = :desc
-    # # sorting = :presented_at
 
     media_category = Ecto.Query.from(playlist in Playlist,
     where: playlist.uuid == ^playlist_uuid,
     select: playlist.media_category)
     |> Repo.one
     |> IO.inspect
-
-    # if media_category == :livestream ||
-    # media_category == :motivation ||
-    # media_category == :movie ||
-    # media_category == :podcast ||
-    # media_category == :testimony do
-    #   Logger.info("direction: #{direction} sorting: #{sorting}")
-    #   direction = :desc
-    #   sorting = :presented_at
-    # else
-    #   direction = :asc
-    #   sorting = :track_number
-    # end
 
     special_categories = [:livestream, :motivation, :movie, :podcast, :testimony, :preaching]
     {direction, sorting} = if media_category in special_categories do
@@ -385,23 +368,27 @@ tutorial: 9
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def orgs_default_org(offset, limit) do
+  def orgs_default_org(offset \\ 0, limit \\ 0) do
     # python
     # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
 
-  Ecto.Query.from(org in Org,
-    where: org.shortname == "faithfulwordapp",
-    order_by: org.id,
-    select:
-    %{basename: org.basename,
-      uuid: org.uuid,
-      small_thumbnail_path: org.small_thumbnail_path,
-      med_thumbnail_path: org.med_thumbnail_path,
-      large_thumbnail_path: org.large_thumbnail_path,
-      banner_path: org.banner_path,
-      insertedAt: org.inserted_at,
-      updatedAt: org.updated_at,
-      shortname: org.shortname,})
-    |> Repo.paginate(page: offset, page_size: limit)
-end
+    Ecto.Query.from(org in Org,
+      where: org.shortname == "faithfulwordapp",
+      order_by: org.id,
+      select:
+      %{basename: org.basename,
+        uuid: org.uuid,
+        small_thumbnail_path: org.small_thumbnail_path,
+        med_thumbnail_path: org.med_thumbnail_path,
+        large_thumbnail_path: org.large_thumbnail_path,
+        banner_path: org.banner_path,
+        insertedAt: org.inserted_at,
+        updatedAt: org.updated_at,
+        shortname: org.shortname,})
+      |> Repo.paginate(page: offset, page_size: limit)
+  end
+
+  def search(query_string, offset \\ 0, limit \\ 0) do
+
+  end
 end

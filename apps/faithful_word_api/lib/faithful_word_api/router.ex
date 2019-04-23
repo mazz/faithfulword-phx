@@ -101,6 +101,30 @@ defmodule FaithfulWordApi.Router do
         # get "/", MusicController, :indexv13
         get "/:uuid/media", MediaItemController, :indexv13
       end
+      scope "/search" do
+        get "/", SearchController, :indexv13
+      end
+
+      """
+      part
+      *digest
+      full
+    order
+      date
+      rating
+      relevance
+      title
+    publishedAfter
+      unixtime
+    mediaCat
+    medium
+    q
+      string
+    channelUuid
+    playlistUuid
+      """
+
+      ### DEPRECATED ###
       scope "/gospels" do
         get "/", GospelController, :indexv13
         get "/:uuid/media", MediaGospelController, :indexv13
@@ -120,6 +144,8 @@ defmodule FaithfulWordApi.Router do
       end
     end
   end
+
+
 
   scope "/", FaithfulWordApi do
     pipe_through([:api])
