@@ -827,7 +827,7 @@ class Dbimport(object):
                             'med_thumbnail_path': row['med_thumbnail_path'],
                             'tags': [],
                             'inserted_at': datetime.datetime.now(),
-                            'media_category': 3,
+                            'media_category': 7,
                             'presented_at': datetime.datetime.now() - datetime.timedelta(days=3*365) if preaching_date is None else preaching_date,
                             'org_id': 1
                         }

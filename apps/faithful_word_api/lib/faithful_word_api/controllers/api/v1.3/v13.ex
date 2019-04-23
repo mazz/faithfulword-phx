@@ -289,6 +289,7 @@ defmodule FaithfulWordApi.V13 do
       med_thumbnail_path: pl.med_thumbnail_path,
       large_thumbnail_path: pl.large_thumbnail_path,
       banner_path: pl.banner_path,
+      media_category: pl.media_category,
       uuid: pl.uuid,
       inserted_at: pl.inserted_at,
       updated_at: pl.updated_at}
@@ -300,6 +301,43 @@ defmodule FaithfulWordApi.V13 do
   def media_items_by_playlist_uuid(playlist_uuid, language_id \\ "en", offset \\ 0, limit \\ 0) do
     {:ok, pid_uuid} = Ecto.UUID.dump(playlist_uuid)
     Logger.debug("pid_uuid: #{pid_uuid}")
+"""
+bible: 0,
+gospel: 1,
+livestream: 2,
+motivation: 3,
+movie: 4,
+music: 5,
+podcast: 6,
+preaching: 7,
+testimony: 8,
+tutorial: 9
+"""
+    direction = :asc
+    sorting = :track_number
+    # direction = :desc
+    # sorting = :presented_at
+
+    media_category = Ecto.Query.from(playlist in Playlist,
+    where: playlist.uuid == ^playlist_uuid,
+    select: playlist.media_category)
+    |> Repo.one
+    |> IO.inspect
+
+    if media_category == :livestream ||
+    media_category == :motivation ||
+    media_category == :movie ||
+    media_category == :podcast ||
+    media_category == :testimony do
+      Logger.info("direction: #{direction} sorting: #{sorting}")
+      direction = :desc
+      sorting = :presented_at
+    else
+      direction = :asc
+      sorting = :track_number
+    end
+
+    Logger.info("direction: #{direction} sorting: #{sorting}")
 
     query = from pl in Playlist,
     # join: t in MusicTitle,
@@ -311,7 +349,8 @@ defmodule FaithfulWordApi.V13 do
     where: mi.playlist_id == pl.id,
     # where: pl.id == pt.playlist_id,
     where: mi.language_id == ^language_id,
-    order_by: [mi.track_number, mi.ordinal],
+    order_by: [{^direction, field(mi, ^sorting)}],
+    # order_by: [{:desc, field(mi, :presented_at)}],
     select:
     %{ordinal: mi.ordinal,
       uuid: mi.uuid,

@@ -26,6 +26,7 @@ defmodule FaithfulWordApi.PlaylistV13View do
       medThumbnailPath: playlist_v13.med_thumbnail_path,
       largeThumbnailPath: playlist_v13.large_thumbnail_path,
       bannerPath: playlist_v13.banner_path,
+      mediaCategory: playlist_v13.media_category,
       insertedAt: playlist_v13.inserted_at,
       updatedAt: playlist_v13.updated_at
     }
