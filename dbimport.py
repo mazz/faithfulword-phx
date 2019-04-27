@@ -1278,61 +1278,7 @@ class Dbimport(object):
             # delete items with null paths
             query1 = 'delete FROM mediagospel where path is NULL'
             cur.execute(query1)
-            sourceconn.commit()  
-
-
-            # query2 = "UPDATE mediaitems SET source_material = \'Plan of Salvation\' WHERE path LIKE \'gospel/%\'"
-            # cur.execute(query2)
-            # query3 = "UPDATE mediaitems SET source_material = \'Faithful Word Baptist Church\' WHERE path LIKE \'preaching/fwbc%\'"
-            # cur.execute(query3)
-            # query4 = "UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE path LIKE \'preaching/vbc%\'"
-            # cur.execute(query4)
-            # query5 = "UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE presenter_name = \'Brother Joe Jones\'"
-            # cur.execute(query5)
-            # query6 = "UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE presenter_name = \'Brother Jared Pozarnsky\'"
-            # cur.execute(query6)
-            # query7 = "UPDATE mediaitems SET source_material = \'Old Path Baptist Church\' WHERE presenter_name = \'Pastor Manly Perry\'"
-            # cur.execute(query7)
-            # query8 = "UPDATE mediaitems SET source_material = \'Faithful Word Baptist Church\' WHERE presenter_name = \'Brother Jonathan Shelley\'"
-            # cur.execute(query8)
-            # query9 = "UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE presenter_name = \'Brother Matthew Stucky\'"
-            # cur.execute(query9)
-            # query10 = "UPDATE mediaitems SET source_material = \'Mountain Baptist Church\' WHERE presenter_name = \'Pastor Jason Robinson\'"
-            # cur.execute(query10)
-            # query11 = "UPDATE mediaitems SET source_material = \'Liberty Baptist Church\' WHERE presenter_name = \'Pastor Tommy McMurtry\'"
-            # cur.execute(query11)
-            # query12 = "UPDATE mediaitems SET source_material = \'All Scripture Baptist Church\' WHERE presenter_name = \'Pastor Grayson Fritts\'"
-            # cur.execute(query12)
-            # query13 = "UPDATE mediaitems SET source_material = \'Faith Baptist Church\' WHERE presenter_name = \'Pastor Joe Major\'"
-            # cur.execute(query13)
-            # query14 = "UPDATE mediaitems SET presenter_name = \'Pastor Tommy McMurtry\' WHERE  presenter_name = \'Pastor McMurtry\'"
-            # cur.execute(query14)
-            # query15 = "UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE presenter_name = \'Brother Matthew Stucky\'"
-            # cur.execute(query15)
-            # query16 = "UPDATE mediaitems SET source_material = \'Word of Truth Baptist Church\' WHERE presenter_name = \'Pastor David Berzins\'"
-            # cur.execute(query16)
-            # query17 = "UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE presenter_name = \'Pastor Roger Jimenez\'"
-            # cur.execute(query17)
-            # query18 = "UPDATE mediaitems SET source_material = \'Faithful Word Baptist Church\' WHERE presenter_name = \'Pastor Steven Anderson\'"
-            # cur.execute(query18)
-            # query19 = "UPDATE mediaitems SET presenter_name = \'Brother Aaron Thompson\' WHERE uuid = \'87c66fa7-c695-4f51-aa30-b0d5334ed652\'"
-            # cur.execute(query19)
-            # query20 = "UPDATE mediaitems SET presenter_name = \'Brother Aaron Thompson\' WHERE uuid = \'07a3b451-9ca3-42ea-bf86-f4e5fb2e0135\'"
-            # cur.execute(query20)
-            # query21 = "UPDATE mediaitems SET source_material = \'Hindi Plan of Salvation\' WHERE uuid = \'72239e97-9c03-4130-8207-e3d54e2ab5fb\'"
-            # cur.execute(query21)
-            # query22 = "UPDATE mediaitems SET presenter_name = \'Unknown\' WHERE uuid = \'72239e97-9c03-4130-8207-e3d54e2ab5fb\'"
-            # cur.execute(query22)
-            # query23 = "UPDATE mediaitems SET presenter_name = \'Pastor Steven Anderson\' WHERE localizedname = \'Jeremiah 30\'"
-            # cur.execute(query23)
-            # query24 = "UPDATE mediaitems SET presenter_name = \'Pastor Steven Anderson\' WHERE localizedname = \'Singles, Dating, and Marriage\'"
-            # cur.execute(query24)
-            # query25 = "UPDATE mediaitems SET presenter_name = \'Pastor Steven Anderson\' WHERE localizedname = \'Generation Snowflake\'"
-            # cur.execute(query25)
-            # query26 = "UPDATE mediaitems SET presenter_name = \'Pastor Steven Anderson\' WHERE localizedname = \'I Praise You Not\'"
-            # cur.execute(query26)
-
-
+            sourceconn.commit()
 
             miscquery = """
             UPDATE mediaitems SET source_material = \'Plan of Salvation\' WHERE path LIKE \'gospel/%\';
