@@ -13,6 +13,8 @@ defmodule FaithfulWordApi.V13 do
   alias DB.Schema.AppVersion
   alias DB.Schema.ClientDevice
 
+  alias FaithfulWordApi.MediaItemsSearch
+
   require Ecto.Query
   require Logger
 
@@ -388,7 +390,18 @@ tutorial: 9
       |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def search(query_string, offset \\ 0, limit \\ 0) do
+  def search(query_string, mediaCategory, offset \\ 0, limit \\ 0) do
+    Logger.info("query_string: #{query_string} mediaCategory: #{mediaCategory}")
 
+    query = Ecto.Query.from(mi in MediaItem,
+      where: mi.media_category == ^mediaCategory
+    )
+    # query = from mi in MediaItem,
+    #   where mi.media_category == ^mediaCategory
+
+    MediaItemsSearch.run(query, query_string)
+      |> Repo.paginate(page: offset, page_size: limit)
+
+    # MediaItemsSearch.run(query, "thai chicken")
   end
 end

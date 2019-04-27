@@ -102,7 +102,7 @@ defmodule FaithfulWordApi.Router do
         get "/:uuid/media", MediaItemController, :indexv13
       end
       scope "/search" do
-        get "/", SearchController, :indexv13
+        post "/", SearchController, :searchv13
       end
 
       """
