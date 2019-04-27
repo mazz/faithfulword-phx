@@ -10,16 +10,17 @@ defmodule FaithfulWordApi.MediaItemsSearch do
     quote do
       fragment(
         """
-        SELECT id, presented_at, localizedname, presenter_name, source_material, ts_rank(
-          weighted_tsv, plainto_tsquery(unaccent(?))
+        SELECT media_items_search.id AS id,
+        ts_rank(
+          media_items_search.document, plainto_tsquery(unaccent(?))
         ) AS score
-        FROM mediaitems
-        WHERE weighted_tsv @@ plainto_tsquery(unaccent(?))
-        ORDER BY ts_rank(weighted_tsv, plainto_tsquery(unaccent(?))) DESC
+        FROM media_items_search
+        WHERE media_items_search.document @@ plainto_tsquery(unaccent(?))
+        OR media_items_search.localizedname ILIKE ?
         """,
         ^unquote(search_string),
         ^unquote(search_string),
-        ^unquote(search_string)
+        ^"%#{unquote(search_string)}%"
       )
     end
   end
