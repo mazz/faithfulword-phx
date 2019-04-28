@@ -11,11 +11,15 @@ defmodule FaithfulWordApi.SearchController do
 
 
   def searchv13(conn,
-  %{"query" => query_string,
+  params = %{"query" => query_string,
     "mediaCategory" => mediaCategory,
     "offset" => offset,
     "limit" => limit
   }) do
+
+    # optional params
+    playlist_uuid = Map.get(params, "playlist_uuid", nil)
+
     V13.search(query_string, mediaCategory, offset, limit)
     |>
     case do

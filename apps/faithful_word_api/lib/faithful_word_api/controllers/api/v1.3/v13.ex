@@ -399,7 +399,7 @@ tutorial: 9
     # query = from mi in MediaItem,
     #   where mi.media_category == ^mediaCategory
 
-    MediaItemsSearch.run(query, query_string)
+    MediaItemsSearch.run(query, query_string, mediaCategory)
       |> Repo.paginate(page: offset, page_size: limit)
 
     # MediaItemsSearch.run(query, "thai chicken")
