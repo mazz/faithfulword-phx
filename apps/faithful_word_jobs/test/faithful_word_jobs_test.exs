@@ -1,4 +1,4 @@
-defmodule FaithfulWordJobsTest do
+defmodule FaithfulWordJobs.Test do
   use ExUnit.Case
   doctest FaithfulWordJobs
 
