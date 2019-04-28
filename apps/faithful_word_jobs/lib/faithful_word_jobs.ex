@@ -1,4 +1,4 @@
-defmodule FaithfulWord.Jobs do
+defmodule FaithfulWordJobs do
   @moduledoc """
   Documentation for FaithfulWordJobs.
   """
