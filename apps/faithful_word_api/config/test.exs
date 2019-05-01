@@ -10,6 +10,11 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   http: [port: 4002],
   server: false
 
+config :logger,
+  level: :debug,
+  backends: [:console],
+  compile_time_purge_level: :debug
+
 
 # config :faithful_word_api, FaithfulWordApi.Auth.Guardian,
 #   issuer: "FaithfulWordApi",

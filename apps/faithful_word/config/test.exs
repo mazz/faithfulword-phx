@@ -14,6 +14,11 @@ config :faithful_word, FaithfulWord.Mailer,
   api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
   domain: "sandbox30725.mailgun.org"
 
+config :logger,
+  level: :debug,
+  backends: [:console],
+  compile_time_purge_level: :debug
+
 # config :faithful_word, FaithfulWordApi.Auth.Guardian,
 #   secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
 #   issuer: "FaithfulWordApi"
