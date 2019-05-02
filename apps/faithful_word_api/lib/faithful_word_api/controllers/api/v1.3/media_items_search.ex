@@ -3,7 +3,7 @@ defmodule FaithfulWordApi.MediaItemsSearch do
 
   require Logger
 
-  def run(query, search_string, mediaCategory) do
+  def run(query, search_string) do
     _run(query, normalize(search_string))
   end
 
@@ -35,9 +35,6 @@ defmodule FaithfulWordApi.MediaItemsSearch do
   end
 
   def normalize(search_string) do
-    search_string
-    |> String.downcase
-
     search_string
     |> String.downcase
     |> String.replace(~r/\n/, " ")

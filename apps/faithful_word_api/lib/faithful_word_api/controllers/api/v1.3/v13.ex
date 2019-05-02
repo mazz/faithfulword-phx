@@ -390,16 +390,49 @@ tutorial: 9
       |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def search(query_string, mediaCategory, offset \\ 0, limit \\ 0) do
-    Logger.info("query_string: #{query_string} mediaCategory: #{mediaCategory}")
+  def search(query_string, offset \\ 0, limit \\ 0,
+    media_category,
+    playlist_uuid,
+    channel_uuid,
+    published_after
+      ) do
 
-    query = Ecto.Query.from(mi in MediaItem,
-      where: mi.media_category == ^mediaCategory
-    )
-    # query = from mi in MediaItem,
-    #   where mi.media_category == ^mediaCategory
+    # query = Ecto.Query.from(mi in MediaItem)
 
-    MediaItemsSearch.run(query, query_string, mediaCategory)
+    conditions = false
+
+    conditions =
+      if media_category do
+        dynamic([mi], mi.media_category == ^media_category or ^conditions)
+      else
+        conditions
+      end
+
+    # conditions =
+    #   if params["allow_reviewers"] do
+    #     dynamic([p, a], a.reviewer == true or ^conditions)
+    #   else
+    #     conditions
+    #   end
+
+    # query = from query, where: ^conditions
+    Logger.info("media_category: #{media_category}")
+    # Logger.info("conditions: #{conditions}")
+
+    # ignore conditions if no options are applied
+    query = if !conditions do
+      Ecto.Query.from(mi in MediaItem)
+    else
+      Ecto.Query.from(mi in MediaItem,
+      where: ^conditions # mi.media_category == ^media_category
+      )
+    end
+    # query = Ecto.Query.from(mi in MediaItem,
+    #   where: ^conditions # mi.media_category == ^media_category
+    # )
+
+
+    MediaItemsSearch.run(query, query_string)
       |> Repo.paginate(page: offset, page_size: limit)
 
     # MediaItemsSearch.run(query, "thai chicken")
