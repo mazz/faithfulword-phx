@@ -420,16 +420,13 @@ tutorial: 9
     # Logger.info("conditions: #{conditions}")
 
     # ignore conditions if no options are applied
-    query = if !conditions do
-      Ecto.Query.from(mi in MediaItem)
-    else
+    query = if conditions do
       Ecto.Query.from(mi in MediaItem,
-      where: ^conditions # mi.media_category == ^media_category
+        where: ^conditions # mi.media_category == ^media_category
       )
+    else
+      Ecto.Query.from(mi in MediaItem)
     end
-    # query = Ecto.Query.from(mi in MediaItem,
-    #   where: ^conditions # mi.media_category == ^media_category
-    # )
 
 
     MediaItemsSearch.run(query, query_string)
