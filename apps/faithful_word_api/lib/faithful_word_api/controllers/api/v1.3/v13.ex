@@ -17,6 +17,7 @@ defmodule FaithfulWordApi.V13 do
 
   require Ecto.Query
   require Logger
+  require DateTime
 
   def books_by_language(language, offset \\ 0, limit \\ 0) do
     languages = Ecto.Query.from(language in LanguageIdentifier,
@@ -394,44 +395,55 @@ tutorial: 9
     media_category,
     playlist_uuid,
     channel_uuid,
-    published_after
+    published_after,
+    updated_after,
+    presented_after
       ) do
 
-    # query = Ecto.Query.from(mi in MediaItem)
-
-    conditions = false
+    conditions = true
 
     conditions =
       if media_category do
-        dynamic([mi], mi.media_category == ^media_category or ^conditions)
+        dynamic([mi], mi.media_category == ^media_category and ^conditions)
       else
         conditions
       end
 
-    # conditions =
-    #   if params["allow_reviewers"] do
-    #     dynamic([p, a], a.reviewer == true or ^conditions)
-    #   else
-    #     conditions
-    #   end
+    # jan 2019: 1546527751
+    # jan 2020: 1578063751
+    # apr 29 2019: 1556550151
+    # April 26, 2013 3:02:31 PM: 1366988551
 
-    # query = from query, where: ^conditions
-    Logger.info("media_category: #{media_category}")
-    # Logger.info("conditions: #{conditions}")
+    conditions =
+      if published_after do
+        {:ok, datetime} = DateTime.from_unix(published_after, :second)
+        naive = DateTime.to_naive(datetime)
+        dynamic([mi], mi.published_at >= ^naive and ^conditions)
+      else
+        conditions
+      end
 
-    # ignore conditions if no options are applied
-    query = if conditions do
-      Ecto.Query.from(mi in MediaItem,
-        where: ^conditions # mi.media_category == ^media_category
-      )
-    else
-      Ecto.Query.from(mi in MediaItem)
-    end
+      conditions =
+      if updated_after do
+        {:ok, datetime} = DateTime.from_unix(updated_after, :second)
+        naive = DateTime.to_naive(datetime)
+        dynamic([mi], mi.updated_at >= ^naive and ^conditions)
+      else
+        conditions
+      end
 
+      conditions =
+      if presented_after do
+        {:ok, datetime} = DateTime.from_unix(presented_after, :second)
+        naive = DateTime.to_naive(datetime)
+        dynamic([mi], mi.presented_at >= ^naive and ^conditions)
+      else
+        conditions
+      end
+
+      query = Ecto.Query.from(mi in MediaItem, where: ^conditions)
 
     MediaItemsSearch.run(query, query_string)
       |> Repo.paginate(page: offset, page_size: limit)
-
-    # MediaItemsSearch.run(query, "thai chicken")
   end
 end
