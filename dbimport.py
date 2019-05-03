@@ -12,6 +12,25 @@ from psycopg2 import sql
 import uuid
 import datetime
 
+k_media_category = {"bible": 0,
+    "gospel": 1,
+    "livestream": 2,
+    "motivation": 3,
+    "movie": 4,
+    "music": 5,
+    "podcast": 6,
+    "preaching": 7,
+    "testimony": 8,
+    "tutorial": 9,
+    "conference": 10
+    }
+
+k_channel_id = {"preaching": 1,
+    "music": 2,
+    "gospel": 3,
+    "movies": 4
+    }
+
 class Dbimport(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
@@ -186,21 +205,22 @@ class Dbimport(object):
                 channel_id = None
                 media_category = None
                 if gospel['basename'] == 'Soul-winning Motivation':
-                    channel_id = 3
-                    media_category = 3
-                if gospel['basename'] == 'Soul-winning Tutorials':
-                    channel_id = 3
-                    media_category = 9
-                if gospel['basename'] == 'Plan of Salvation' or gospel['basename'] == 'Soul-winning Sermons' or gospel['basename'] == 'आत्मिक जीत स्पष्टीकरण':
-                    channel_id = 3
-                    media_category = 1
-                if gospel['basename'] == 'Word of Truth Baptist Church Sermons' or gospel['basename'] == 'FWBC Sermons' or gospel['basename'] == 'Faith Baptist Church Louisiana Sermons' or gospel['basename'] == 'Verity Baptist Church Sermons' or gospel['basename'] == 'Old Path Baptist Church Sermons' or gospel['basename'] == 'Liberty Baptist Church Sermons' or gospel['basename'] == 'Faithful Word Baptist Church LA' or gospel['basename'] == 'Temple Baptist Church Sermons' or gospel['basename'] == 'Sean Jolley Spanish' or gospel['basename'] == 'ASBC' or gospel['basename'] == 'Entire Bible Preached Project' or gospel['basename'] == 'Pillar Baptist Church' or gospel['basename'] == 'Iglesia Bautista de Santa Ana' or gospel['basename'] == 'FWBC Espanol' or gospel['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or gospel['basename'] == 'Justice by Jack Hyles' or gospel['basename'] == 'Verity Baptist Vancouver (Preaching)' or gospel['basename'] == 'Stedfast Baptist Church' or gospel['basename'] == 'Post Trib Bible Prophecy Conference' or gospel['basename'] == 'Mountain Baptist Church':
-                        channel_id = 1
-                        media_category = 7
-                if gospel['basename'] == 'Documentaries':
-                    channel_id = 4
-                    media_category = 4
+                    channel_id = k_channel_id["gospel"]
+                    media_category = k_media_category["motivation"]
+                elif gospel['basename'] == 'Soul-winning Tutorials':
+                    channel_id = k_channel_id["gospel"]
+                    media_category = k_media_category["tutorial"]
+                elif gospel['basename'] == 'Plan of Salvation' or gospel['basename'] == 'Soul-winning Sermons' or gospel['basename'] == 'आत्मिक जीत स्पष्टीकरण':
+                    channel_id = k_channel_id["gospel"]
+                    media_category = k_media_category["gospel"]
+                elif gospel['basename'] == 'Word of Truth Baptist Church Sermons' or gospel['basename'] == 'FWBC Sermons' or gospel['basename'] == 'Faith Baptist Church Louisiana Sermons' or gospel['basename'] == 'Verity Baptist Church Sermons' or gospel['basename'] == 'Old Path Baptist Church Sermons' or gospel['basename'] == 'Liberty Baptist Church Sermons' or gospel['basename'] == 'Faithful Word Baptist Church LA' or gospel['basename'] == 'Temple Baptist Church Sermons' or gospel['basename'] == 'Sean Jolley Spanish' or gospel['basename'] == 'ASBC' or gospel['basename'] == 'Entire Bible Preached Project' or gospel['basename'] == 'Pillar Baptist Church' or gospel['basename'] == 'Iglesia Bautista de Santa Ana' or gospel['basename'] == 'FWBC Espanol' or gospel['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or gospel['basename'] == 'Justice by Jack Hyles' or gospel['basename'] == 'Verity Baptist Vancouver (Preaching)' or gospel['basename'] == 'Stedfast Baptist Church' or gospel['basename'] == 'Post Trib Bible Prophecy Conference' or gospel['basename'] == 'Mountain Baptist Church':
+                        channel_id = k_channel_id["preaching"]
+                        media_category = k_media_category["preaching"]
+                elif gospel['basename'] == 'Documentaries':
+                    channel_id = k_channel_id["movies"]
+                    media_category = k_media_category["movie"]
 
+                    
                 if channel_id != None:
                     playlistdict = {
                         'ordinal': gospel['absolute_id'],
@@ -316,7 +336,7 @@ class Dbimport(object):
                 # set the channel id based on basename title
 
                 channel_id = 2
-                media_category = 5
+                media_category = k_media_category["music"]
 
                 playlistdict = {
                     'ordinal': music['absolute_id'],
@@ -334,7 +354,7 @@ class Dbimport(object):
                 }
 
                 # add playlist to corresponding channel
-                print('playlistdict: {}'.format(playlistdict))
+                print('music playlistdict: {}'.format(playlistdict))
 
                 playlists.append(playlistdict)
 
@@ -438,7 +458,7 @@ class Dbimport(object):
                                 playlisttitles.append(playlisttitledict)
 
                         channel_id = biblechannelid
-                        media_category = 0
+                        media_category = k_media_category["bible"]
 
                         playlistdict = {
                             'ordinal': book['absolute_id'] * 100,
@@ -525,75 +545,75 @@ class Dbimport(object):
         # with sourceconn(cursor_factory=psycopg2.extras.DictCursor) as cur:     
         
         
-            self._insertmediaitemrows(self._biblerows(1, 'Matthew', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(2, 'Mark', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(3, 'Luke', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(4, 'John', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(5, 'Acts', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(6, 'Romans', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(7, '1 Corinthians', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(8, '2 Corinthians', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(9, 'Galatians', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(10, 'Ephesians', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(11, 'Philippians', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(12, 'Colossians', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(13, '1 Thessalonians', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(14, '2 Thessalonians', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(15, '1 Timothy', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(16, '2 Timothy', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(17, 'Titus', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(18, 'Philemon', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(19, 'Hebrews', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(20, 'James', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(21, '1 Peter', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(22, '2 Peter', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(23, '1 John', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(24, '2 John', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(25, '3 John', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(26, 'Jude', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(27, 'Revelation', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(28, 'Plan of Salvation', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(29, 'Psalms', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(30, 'Proverbs', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(31, 'Isaiah', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(32, 'Jeremiah', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(33, 'Genesis', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(34, 'New Testament', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(35, 'Obadiah', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(36, 'Old Testament', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(37, 'Exodus', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(38, 'Leviticus', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(39, 'Numbers', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(40, 'Deuteronomy', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(41, 'Joshua', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(42, 'Judges', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(43, 'Ruth', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(44, '1 Samuel', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(45, '2 Samuel', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(46, '1 Kings', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(47, '2 Kings', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(48, '1 Chronicles', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(49, '2 Chronicles', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(50, 'Ezra', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(51, 'Nehemiah', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(52, 'Esther', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(53, 'Job', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(55, 'Ecclesiastes', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(56, 'Song of Solomon', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(57, 'Lamentations', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(58, 'Ezekiel', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(59, 'Daniel', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(60, 'Hosea', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(61, 'Joel', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(62, 'Amos', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(63, 'Jonah', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(64, 'Micah', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(65, 'Nahum', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(66, 'Habakkuk', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(67, 'Zephaniah', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(68, 'Haggai', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(69, 'Zechariah', args.dbname), args.dbname)
-            self._insertmediaitemrows(self._biblerows(70, 'Malachi', args.dbname), args.dbname)
+            self._insertmediaitemrows(self._biblerows(1, 'Matthew', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(2, 'Mark', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(3, 'Luke', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(4, 'John', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(5, 'Acts', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(6, 'Romans', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(7, '1 Corinthians', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(8, '2 Corinthians', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(9, 'Galatians', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(10, 'Ephesians', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(11, 'Philippians', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(12, 'Colossians', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(13, '1 Thessalonians', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(14, '2 Thessalonians', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(15, '1 Timothy', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(16, '2 Timothy', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(17, 'Titus', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(18, 'Philemon', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(19, 'Hebrews', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(20, 'James', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(21, '1 Peter', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(22, '2 Peter', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(23, '1 John', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(24, '2 John', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(25, '3 John', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(26, 'Jude', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(27, 'Revelation', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(28, 'Plan of Salvation', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(29, 'Psalms', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(30, 'Proverbs', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(31, 'Isaiah', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(32, 'Jeremiah', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(33, 'Genesis', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(34, 'New Testament', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(35, 'Obadiah', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(36, 'Old Testament', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(37, 'Exodus', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(38, 'Leviticus', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(39, 'Numbers', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(40, 'Deuteronomy', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(41, 'Joshua', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(42, 'Judges', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(43, 'Ruth', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(44, '1 Samuel', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(45, '2 Samuel', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(46, '1 Kings', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(47, '2 Kings', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(48, '1 Chronicles', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(49, '2 Chronicles', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(50, 'Ezra', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(51, 'Nehemiah', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(52, 'Esther', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(53, 'Job', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(55, 'Ecclesiastes', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(56, 'Song of Solomon', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(57, 'Lamentations', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(58, 'Ezekiel', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(59, 'Daniel', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(60, 'Hosea', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(61, 'Joel', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(62, 'Amos', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(63, 'Jonah', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(64, 'Micah', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(65, 'Nahum', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(66, 'Habakkuk', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(67, 'Zephaniah', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(68, 'Haggai', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(69, 'Zechariah', args.dbname), k_media_category["bible"], args.dbname)
+            self._insertmediaitemrows(self._biblerows(70, 'Malachi', args.dbname), k_media_category["bible"], args.dbname)
 
 
     def _biblerows(self, bookid, playlistname, dbname):
@@ -707,31 +727,31 @@ class Dbimport(object):
             for row in cur:
                 orgs.extend(row)
             print('orgs: {}'.format(orgs))        
-        
-        self._insertmediaitemrows(self._preachingrows(5, 'Soul-winning Sermons', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(6, 'FWBC Sermons', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(7, 'Verity Baptist Church Sermons', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(9, 'Word of Truth Baptist Church Sermons', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(10, 'Faith Baptist Church Louisiana Sermons', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(12, 'Old Path Baptist Church Sermons', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(14, 'Liberty Baptist Church Sermons', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(15, 'Faithful Word Baptist Church LA', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(17, 'Temple Baptist Church Sermons', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(19, 'Verity Baptist Vancouver (Preaching)', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(21, 'Sean Jolley Spanish', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(22, 'FWBC Espanol', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(24, 'Post Trib Bible Prophecy Conference', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(25, 'आत्मिक जीत स्पष्टीकरण', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(26, 'ASBC', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(27, 'Entire Bible Preached Project', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(28, 'Iglesia Bautista de Santa Ana', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(29, 'Pillar Baptist Church', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(30, 'Mountain Baptist Church', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(31, 'Win Your Wife\'s Heart by Jack Hyles', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(32, 'Justice by Jack Hyles', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(33, 'Stedfast Baptist Church', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), args.dbname)
+
+        self._insertmediaitemrows(self._preachingrows(5, 'Soul-winning Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(6, 'FWBC Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(7, 'Verity Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(9, 'Word of Truth Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(10, 'Faith Baptist Church Louisiana Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(12, 'Old Path Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(14, 'Liberty Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(15, 'Faithful Word Baptist Church LA', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(17, 'Temple Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(19, 'Verity Baptist Vancouver (Preaching)', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(21, 'Sean Jolley Spanish', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(22, 'FWBC Espanol', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), k_media_category["movie"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(24, 'Post Trib Bible Prophecy Conference', args.dbname), k_media_category["conference"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(25, 'आत्मिक जीत स्पष्टीकरण', args.dbname), k_media_category["gospel"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(26, 'ASBC', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(27, 'Entire Bible Preached Project', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(28, 'Iglesia Bautista de Santa Ana', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(29, 'Pillar Baptist Church', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(30, 'Mountain Baptist Church', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(31, 'Win Your Wife\'s Heart by Jack Hyles', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(32, 'Justice by Jack Hyles', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(33, 'Stedfast Baptist Church', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), k_media_category["movie"], args.dbname)
 
     def _preachingrows(self, gospelid, playlistname, dbname):
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(dbname))
@@ -836,7 +856,7 @@ class Dbimport(object):
                         result.append(rowdict)
         return result
 
-    def _insertmediaitemrows(self, rows, dbname):
+    def _insertmediaitemrows(self, rows, media_category, dbname):
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(dbname))
 
         with sourceconn.cursor() as cur:
@@ -859,7 +879,7 @@ class Dbimport(object):
                 row['med_thumbnail_path'],
                 row['tags'],
                 row['inserted_at'],
-                row['media_category'],
+                media_category,
                 row['presented_at'],
                 row['org_id']
                 ])
@@ -1098,34 +1118,7 @@ class Dbimport(object):
                 ])
                 # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
             sourceconn.commit()  
-        # with sourceconn.cursor() as cur:
-        #     for row in documentaries:
-        #         cur.execute(sql.SQL("insert into mediaitems(uuid, track_number, medium, localizedname, path, small_thumbnail_path, large_thumbnail_path, content_provider_link, ipfs_link, language_id, presenter_name, source_material, updated_at, playlist_id, med_thumbnail_path, tags, inserted_at, media_category, presented_at, org_id) values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"), 
-        #         [row['uuid'], 
-        #         row['track_number'], 
-        #         row['medium'],
-        #         row['localizedname'],
-        #         row['path'],
-        #         row['small_thumbnail_path'],
-        #         row['large_thumbnail_path'],
-        #         row['content_provider_link'],
-        #         row['ipfs_link'],
-        #         row['language_id'],
-        #         row['presenter_name'],
-        #         row['source_material'],
-        #         row['updated_at'],
-        #         row['playlist_id'],
-        #         row['med_thumbnail_path'],
-        #         row['tags'],
-        #         row['inserted_at'],
-        #         row['media_category'],
-        #         row['presented_at'],
-        #         row['org_id']
-        #         ])
-        #         # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
-        #     sourceconn.commit()  
-
-
+ 
     # normalizepreaching must be called AFTER addorgrows because orgs need to be present
     # 
     # GETTING STARTED:
@@ -1162,29 +1155,29 @@ class Dbimport(object):
                 orgs.extend(row)
             print('orgs: {}'.format(orgs))        
         
-        self._insertmediaitemrows(self._musicrows(8, 'FWBC Hymns Volume 5 - Peace & Security', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(7, 'FWBC Hymns Volume 4 - Comfort and Encouragement', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(3, 'FWBC Navajo Hymns', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(6, 'FWBC Hymns Volume 3 - The Second Coming', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(5, 'FWBC Hymns Volume 2 - The Resurrection', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(4, 'FWBC Hymns Volume 1 - The Cross', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(12, 'FWBC Christmas Hymns 2016', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(10, 'VBC Spanish Hymns', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(16, 'FWBC Hymns Christmas 2017', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(20, 'Collin Schneide', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(21, 'Sing the KJV', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(22, 'Clint Anderson', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(23, 'Stedfast Baptist Music', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(24, 'FWBC Hymns Volume 6 - The Storm and Seas', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(25, 'Mr. and Mrs. Ventura', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(26, 'Entire Psalter Sung', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(27, 'FWBC Hymns Volume 7 - Love and Praises', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(29, 'FWBC Hymns Volume 8 - Joy and Singing', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(30, 'Pastor Joe Major', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(31, 'VBC Instrumental Hymns', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(32, 'FWBC Spanish Christmas Hymns 2018', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(28, 'FWBC Psalms', args.dbname), args.dbname)
-        self._insertmediaitemrows(self._musicrows(33, 'FWBC Hymns Volume 9 - Testimony', args.dbname), args.dbname)
+        self._insertmediaitemrows(self._musicrows(8, 'FWBC Hymns Volume 5 - Peace & Security', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(7, 'FWBC Hymns Volume 4 - Comfort and Encouragement', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(3, 'FWBC Navajo Hymns', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(6, 'FWBC Hymns Volume 3 - The Second Coming', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(5, 'FWBC Hymns Volume 2 - The Resurrection', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(4, 'FWBC Hymns Volume 1 - The Cross', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(12, 'FWBC Christmas Hymns 2016', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(10, 'VBC Spanish Hymns', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(16, 'FWBC Hymns Christmas 2017', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(20, 'Collin Schneide', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(21, 'Sing the KJV', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(22, 'Clint Anderson', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(23, 'Stedfast Baptist Music', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(24, 'FWBC Hymns Volume 6 - The Storm and Seas', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(25, 'Mr. and Mrs. Ventura', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(26, 'Entire Psalter Sung', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(27, 'FWBC Hymns Volume 7 - Love and Praises', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(29, 'FWBC Hymns Volume 8 - Joy and Singing', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(30, 'Pastor Joe Major', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(31, 'VBC Instrumental Hymns', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(32, 'FWBC Spanish Christmas Hymns 2018', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(28, 'FWBC Psalms', args.dbname), k_media_category["music"], args.dbname)
+        self._insertmediaitemrows(self._musicrows(33, 'FWBC Hymns Volume 9 - Testimony', args.dbname), k_media_category["music"], args.dbname)
 
     def _musicrows(self, musicid, playlistname, dbname):
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(dbname))
