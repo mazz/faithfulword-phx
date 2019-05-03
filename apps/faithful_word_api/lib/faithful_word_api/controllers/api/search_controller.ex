@@ -18,8 +18,8 @@ defmodule FaithfulWordApi.SearchController do
 
     # optional params
     media_category = Map.get(params, "mediaCategory", nil)
-    playlist_uuid = Map.get(params, "playlist_uuid", nil)
-    channel_uuid = Map.get(params, "channel_uuid", nil)
+    playlist_uuid = Map.get(params, "playlistUuid", nil)
+    channel_uuid = Map.get(params, "channelUuid", nil)
     published_after = Map.get(params, "publishedAfter", nil)
     updated_after = Map.get(params, "updatedAfter", nil)
     presented_after = Map.get(params, "presentedAfter", nil)

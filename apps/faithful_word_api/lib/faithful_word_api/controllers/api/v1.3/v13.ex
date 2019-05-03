@@ -413,7 +413,8 @@ tutorial: 9
     # jan 2020: 1578063751
     # apr 29 2019: 1556550151
     # April 26, 2013 3:02:31 PM: 1366988551
-
+    # preaching channel uuid f467f75c-937a-46a3-a21f-880bb9777408
+    # music channel uuid 52f758d2-ce64-4ffd-8d3c-77f598003ee1
     conditions =
       if published_after do
         {:ok, datetime} = DateTime.from_unix(published_after, :second)
@@ -441,9 +442,79 @@ tutorial: 9
         conditions
       end
 
-      query = Ecto.Query.from(mi in MediaItem, where: ^conditions)
+      Logger.info("channel_uuid: #{channel_uuid}")
+      Logger.info("playlist_uuid: #{playlist_uuid}")
 
+      query = if playlist_uuid do
+        search_by_playlist_query(playlist_uuid, conditions)
+      else
+        query = search_by_channel_query(channel_uuid, conditions)
+      end
+      # query = if channel_uuid do
+      #   """
+      #     -- all the mediaitems in a channel
+      #     select *
+      #     from mediaitems
+      #     inner join playlists on mediaitems.playlist_id = playlists.id
+      #     inner join channels on playlists.channel_id = channels.id
+      #     where channels.id = 2
+      #   """
+      #   Logger.info("channel_uuid: #{channel_uuid}")
+      #   from mi in MediaItem,
+      #   join: pl in Playlist,
+      #   join: ch in Channel,
+
+      #   where: mi.playlist_id == pl.id,
+      #   where: pl.channel_id == ch.id,
+      #   where: ch.uuid == ^channel_uuid
+      # else
+      # Ecto.Query.from(mi in MediaItem, where: ^conditions)
+      # end
+
+    # query = Repo.all()
     MediaItemsSearch.run(query, query_string)
       |> Repo.paginate(page: offset, page_size: limit)
+  end
+
+  def search_by_playlist_query(playlist_uuid = nil, conditions) do
+    Ecto.Query.from(mi in MediaItem, where: ^conditions)
+  end
+
+  def search_by_playlist_query(playlist_uuid, conditions) do
+    """
+      -- all the mediaitems in a playlist
+      select *
+      from mediaitems
+      inner join playlists on mediaitems.playlist_id = playlists.id
+      where playlists.id = 118
+    """
+
+    from mi in MediaItem,
+    join: pl in Playlist,
+    where: mi.playlist_id == pl.id,
+    where: pl.uuid == ^playlist_uuid
+  end
+
+  def search_by_channel_query(channel_uuid = nil, conditions) do
+    Ecto.Query.from(mi in MediaItem, where: ^conditions)
+  end
+
+  def search_by_channel_query(channel_uuid, conditions) do
+    """
+      -- all the mediaitems in a channel
+      select *
+      from mediaitems
+      inner join playlists on mediaitems.playlist_id = playlists.id
+      inner join channels on playlists.channel_id = channels.id
+      where channels.id = 2
+    """
+    Logger.info("channel_uuid: #{channel_uuid}")
+    from mi in MediaItem,
+    join: pl in Playlist,
+    join: ch in Channel,
+
+    where: mi.playlist_id == pl.id,
+    where: pl.channel_id == ch.id,
+    where: ch.uuid == ^channel_uuid
   end
 end
