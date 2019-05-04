@@ -36,14 +36,17 @@ defmodule FaithfulWordApi.SearchController do
     case do
       nil ->
         put_status(conn, 403)
-        |> render(ErrorView, "403.json", %{message: "something bad happened"})
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something bad happened"})
       search_v13 ->
         Logger.debug("search_v13 #{inspect %{attributes: search_v13}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
-            render(conn, SearchV13View, "searchv13.json", %{search_v13: search_v13, api_version: api_version})
+            conn
+            |> put_view(SearchV13View)
+            |> render("searchv13.json", %{search_v13: search_v13, api_version: api_version})
         end
       end
   end

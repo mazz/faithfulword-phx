@@ -17,10 +17,13 @@ defmodule FaithfulWordApi.ClientDeviceController do
     |> case do
       nil ->
         put_status(conn, 403)
-        |> render(ErrorView, "403.json", %{message: "something happened."})
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
       client_device_v12 ->
         Logger.debug("client_device_v12 #{inspect %{attributes: client_device_v12}}")
-        render(conn, ClientDeviceV12View, "indexv12.json", %{client_device_v12: client_device_v12})
+        conn
+        |> put_view(ClientDeviceV12View)
+        |> render("indexv12.json", %{client_device_v12: client_device_v12})
     end
   end
 
@@ -29,7 +32,8 @@ defmodule FaithfulWordApi.ClientDeviceController do
     |> case do
       nil ->
         put_status(conn, 403)
-        |> render(ErrorView, "403.json", %{message: "something happened."})
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
       client_device_v13 ->
         # Logger.debug("client_devices #{inspect %{attributes: client_devices}}")
         Logger.debug("client_device_v13 #{inspect %{attributes: client_device_v13}}")
@@ -38,38 +42,11 @@ defmodule FaithfulWordApi.ClientDeviceController do
           api_version ->
             Logger.debug("api_version #{inspect %{attributes: api_version}}")
             api_version = String.trim_leading(api_version, "v")
-            render(conn, ClientDeviceV13View, "indexv13.json", %{client_device_v13: client_device_v13, api_version: api_version})
+            conn
+            |> put_view(ClientDeviceV13View)
+            |> render("indexv13.json", %{client_device_v13: client_device_v13, api_version: api_version})
         end
     end
   end
 
-  def create(conn, %{"client_device" => client_device_params}) do
-    with {:ok, %ClientDevice{} = client_device} <- Analytics.create_client_device(client_device_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.client_device_path(conn, :show, client_device))
-      |> render("show.json", client_device: client_device)
-    end
-  end
-
-  def show(conn, %{"id" => id}) do
-    client_device = Analytics.get_client_device!(id)
-    render(conn, "show.json", client_device: client_device)
-  end
-
-  def update(conn, %{"id" => id, "client_device" => client_device_params}) do
-    client_device = Analytics.get_client_device!(id)
-
-    with {:ok, %ClientDevice{} = client_device} <- Analytics.update_client_device(client_device, client_device_params) do
-      render(conn, "show.json", client_device: client_device)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    client_device = Analytics.get_client_device!(id)
-
-    with {:ok, %ClientDevice{}} <- Analytics.delete_client_device(client_device) do
-      send_resp(conn, :no_content, "")
-    end
-  end
 end

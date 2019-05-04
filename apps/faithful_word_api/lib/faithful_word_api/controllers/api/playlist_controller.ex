@@ -15,16 +15,17 @@ defmodule FaithfulWordApi.PlaylistController do
     case do
       nil ->
         put_status(conn, 403)
-        |> render(ErrorView, "403.json", %{message: "language not found in supported list."})
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "language not found in supported list."})
       playlist_v13 ->
         Logger.debug("playlist_v13 #{inspect %{attributes: playlist_v13}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
-            render(conn, PlaylistV13View, "indexv13.json", %{playlist_v13: playlist_v13, api_version: api_version})
-            # render(conn, BookTitleView, "index.json", %{booktitle: booktitle, api_version: api_version})
-            # render(conn, UserView, "user_with_token.json", %{user: user, token: token})
+            conn
+            |> put_view(PlaylistV13View)
+            |> render("indexv13.json", %{playlist_v13: playlist_v13, api_version: api_version})
         end
       end
   end
