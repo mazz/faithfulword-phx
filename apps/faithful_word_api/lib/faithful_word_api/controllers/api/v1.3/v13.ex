@@ -457,7 +457,7 @@ tutorial: 9
       |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def search_by_playlist_query(playlist_uuid = nil, conditions) do
+  def search_by_playlist_query(nil, conditions) do
     Ecto.Query.from(mi in MediaItem, where: ^conditions)
   end
 
@@ -477,7 +477,7 @@ tutorial: 9
     where: ^conditions
   end
 
-  def search_by_channel_query(channel_uuid = nil, conditions) do
+  def search_by_channel_query(nil, conditions) do
     Ecto.Query.from(mi in MediaItem, where: ^conditions)
   end
 
