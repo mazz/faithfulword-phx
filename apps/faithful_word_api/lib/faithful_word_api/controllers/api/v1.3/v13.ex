@@ -224,7 +224,7 @@ defmodule FaithfulWordApi.V13 do
         })
         |> Repo.insert()
       client_device ->
-        ClientDevice.changeset(%ClientDevice{}, %{
+        ClientDevice.changeset(%ClientDevice{id: client_device.id}, %{
           apns_token: apns_token,
           firebase_token: fcm_token,
           preferred_language: preferred_language,
