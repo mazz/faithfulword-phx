@@ -104,6 +104,9 @@ defmodule FaithfulWordApi.Router do
       scope "/search" do
         post "/", SearchController, :searchv13
       end
+      scope "/device" do
+        post "/pushtoken/update", ClientDeviceController, :indexv13
+      end
 
       """
       part
@@ -138,9 +141,6 @@ defmodule FaithfulWordApi.Router do
       end
       scope "/app" do
         get "/versions", AppVersionController, :indexv13
-      end
-      scope "/device" do
-        post "/pushtoken/update", ClientDeviceController, :indexv13
       end
     end
   end

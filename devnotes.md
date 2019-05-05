@@ -127,3 +127,44 @@ git clone https://github.com/FaithfulAudio/faithfulword-phx.git -b upload-ui upl
 
 ./dbimport.py migratefromwebsauna ./2019-05-04-media-item-bin.pgsql faithful_word_dev ; ./dbimport.py convertv12bibletoplaylists faithful_word_dev ; ./dbimport.py convertv12gospeltoplaylists faithful_word_dev ; ./dbimport.py convertv12musictoplaylists faithful_word_dev ; ./dbimport.py normalizemusic faithful_word_dev ; ./dbimport.py normalizegospel faithful_word_dev ; ./dbimport.py normalizepreaching faithful_word_dev ; ./dbimport.py normalizebible faithful_word_dev ; ./dbimport.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs
 
+
+## design notes
+
+channels can contain playlists and channels
+playlists can only contain mediaitems
+
+
+## rich notifications
+{
+  "to" : "devicekey OR /topics/sometopic",
+  "mutable_content": true,
+  "data": {
+    "mymediavideo": "https://myserver.com/myvideo.mp4"
+  },
+  "notification": {
+    "title": "my title",
+    "subtitle": "my subtitle",
+    "body": "some body"
+  }
+}
+
+ msg = %{ "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_content" => true, "data" => %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}, "notification" => %{ "title" => "push note title", "subtitle" => "push note subtitle", "body" => "push note body" } }
+
+  msg = %{ "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_content" => true }
+
+msg = %{ "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_content" => true, "data" => %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"} }
+
+ msg = %{ "data" => %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}, "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_content" => true, "title" => "push note title", "subtitle" => "push note subtitle", "body" => "push note body" }
+
+
+  notification = %{"body" => "your message"}
+  data = %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}
+  Pigeon.FCM.Notification.new("registration ID", notification, data)
+
+
+
+  n = Pigeon.FCM.Notification.new("dcu92ujVPf4:APA91bEaZOL75G1-zWWFGjkNM_l5QW17lmi27veyILTLz7eNeU2hwLNv_17_9Hx_GU8FUWtC82IAGNT8ibqsPGbPH9zOD7N7oRg8seaeDOY3v23pMuuo5wyvuApdEaBFIV3rek4L3c8t", notification, data)
+
+notification = %{"body" => "your message"}
+data = %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}
+n = Pigeon.FCM.Notification.new("dcu92ujVPf4:APA91bEaZOL75G1-zWWFGjkNM_l5QW17lmi27veyILTLz7eNeU2hwLNv_17_9Hx_GU8FUWtC82IAGNT8ibqsPGbPH9zOD7N7oRg8seaeDOY3v23pMuuo5wyvuApdEaBFIV3rek4L3c8t", notification, data)
