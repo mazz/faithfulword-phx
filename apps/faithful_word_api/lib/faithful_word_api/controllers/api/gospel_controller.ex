@@ -1,9 +1,6 @@
 defmodule FaithfulWordApi.GospelController do
   use FaithfulWordApi, :controller
 
-  alias FaithfulWord.Content
-  alias DB.Schema.Gospel
-
   alias FaithfulWordApi.GospelV12View
   alias FaithfulWordApi.GospelV13View
   alias FaithfulWordApi.ErrorView

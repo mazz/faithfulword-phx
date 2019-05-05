@@ -1,8 +1,6 @@
 defmodule FaithfulWordApi.AppVersionController do
   use FaithfulWordApi, :controller
 
-  alias DB.Schema
-  alias DB.Schema.AppVersion
   alias FaithfulWordApi.AppVersionV13View
   alias FaithfulWordApi.AppVersionV12View
   alias FaithfulWordApi.V12

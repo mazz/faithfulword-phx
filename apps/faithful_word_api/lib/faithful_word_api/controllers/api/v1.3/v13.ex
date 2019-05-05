@@ -106,9 +106,10 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
+  @spec gospel_media_by_uuid(any(), any(), any()) :: Scrivener.Page.t()
   def gospel_media_by_uuid(gid_str, offset \\ 0, limit \\ 0) do
     {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
-    Logger.debug("gid_uuid: #{gid_uuid}")
+    Logger.debug("gid_str: #{gid_str}")
 
 
     query = from g in Gospel,
@@ -166,7 +167,7 @@ defmodule FaithfulWordApi.V13 do
 
   def music_media_by_uuid(gid_str, offset \\ 0, limit \\ 0) do
     {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
-    Logger.debug("gid_uuid: #{gid_uuid}")
+    Logger.debug("gid_str: #{gid_str}")
 
     query = from m in Music,
     # join: t in MusicTitle,
@@ -304,18 +305,6 @@ defmodule FaithfulWordApi.V13 do
   def media_items_by_playlist_uuid(playlist_uuid, language_id \\ "en", offset \\ 0, limit \\ 0) do
     {:ok, pid_uuid} = Ecto.UUID.dump(playlist_uuid)
     Logger.debug("pid_uuid: #{pid_uuid}")
-"""
-bible: 0,
-gospel: 1,
-livestream: 2,
-motivation: 3,
-movie: 4,
-music: 5,
-podcast: 6,
-preaching: 7,
-testimony: 8,
-tutorial: 9
-"""
 
     media_category = Ecto.Query.from(playlist in Playlist,
     where: playlist.uuid == ^playlist_uuid,
@@ -450,7 +439,7 @@ tutorial: 9
       query = if playlist_uuid do
         search_by_playlist_query(playlist_uuid, conditions)
       else
-        query = search_by_channel_query(channel_uuid, conditions)
+        search_by_channel_query(channel_uuid, conditions)
       end
 
     MediaItemsSearch.run(query, query_string)
@@ -462,13 +451,13 @@ tutorial: 9
   end
 
   def search_by_playlist_query(playlist_uuid, conditions) do
-    """
-      -- all the mediaitems in a playlist
-      select *
-      from mediaitems
-      inner join playlists on mediaitems.playlist_id = playlists.id
-      where playlists.id = 118
-    """
+    # """
+    #   -- all the mediaitems in a playlist
+    #   select *
+    #   from mediaitems
+    #   inner join playlists on mediaitems.playlist_id = playlists.id
+    #   where playlists.id = 118
+    # """
 
     from mi in MediaItem,
     join: pl in Playlist,
@@ -482,14 +471,14 @@ tutorial: 9
   end
 
   def search_by_channel_query(channel_uuid, conditions) do
-    """
-      -- all the mediaitems in a channel
-      select *
-      from mediaitems
-      inner join playlists on mediaitems.playlist_id = playlists.id
-      inner join channels on playlists.channel_id = channels.id
-      where channels.id = 2
-    """
+    # """
+    #   -- all the mediaitems in a channel
+    #   select *
+    #   from mediaitems
+    #   inner join playlists on mediaitems.playlist_id = playlists.id
+    #   inner join channels on playlists.channel_id = channels.id
+    #   where channels.id = 2
+    # """
     Logger.info("channel_uuid: #{channel_uuid}")
     from mi in MediaItem,
     join: pl in Playlist,

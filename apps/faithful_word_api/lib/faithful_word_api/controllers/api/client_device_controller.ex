@@ -1,8 +1,6 @@
 defmodule FaithfulWordApi.ClientDeviceController do
   use FaithfulWordApi, :controller
 
-  alias DB.Schema
-  alias DB.Schema.ClientDevice
   alias FaithfulWordApi.ClientDeviceV13View
   alias FaithfulWordApi.ClientDeviceV12View
   alias FaithfulWordApi.V12

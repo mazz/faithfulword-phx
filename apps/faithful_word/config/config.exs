@@ -44,6 +44,11 @@ config :faithful_word, FaithfulWord.Mailer,
   api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
   domain: "sandbox30725.mailgun.org"
 
+config :pigeon, :fcm,
+  fcm_default: %{
+    key: "AAAA7hc7NSo:APA91bFIP2n9IHrcBxitXcV8BWfdY_bb8BDEljEAh8o4EqUZZZWUNhEzi360upRcySV9gRVyL9kEoXSCUtCm9DZEyvE4JQbTSsN1n1ocCZ-lMOjD2e4M_J_u-ij05UI0o1pTh_dfzVd3"
+  }
+
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]

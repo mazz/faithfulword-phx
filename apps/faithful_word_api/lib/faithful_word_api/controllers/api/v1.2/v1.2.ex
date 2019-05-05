@@ -95,7 +95,7 @@ defmodule FaithfulWordApi.V12 do
 
   def gospel_media_by_gid(gid_str) do
     {:ok, gid_uuid} = Ecto.UUID.dump(gid_str)
-    Logger.debug("gid_uuid: #{gid_uuid}")
+    Logger.debug("gid_str: #{gid_str}")
     query = from g in Gospel,
     # join: t in GospelTitle,
     # join: c in Chapter,
@@ -127,7 +127,7 @@ defmodule FaithfulWordApi.V12 do
 
   def music_media_by_mid(mid_str) do
     {:ok, mid_uuid} = Ecto.UUID.dump(mid_str)
-    Logger.debug("mid_uuid: #{mid_uuid}")
+    Logger.debug("mid_str: #{mid_str}")
     query = from m in Music,
     # join: t in GospelTitle,
     # join: c in Chapter,

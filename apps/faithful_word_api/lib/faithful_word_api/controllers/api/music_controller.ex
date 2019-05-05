@@ -1,8 +1,6 @@
 defmodule FaithfulWordApi.MusicController do
   use FaithfulWordApi, :controller
 
-  alias FaithfulWord.Content
-  alias DB.Schema.Music
   alias FaithfulWordApi.MusicV13View
   alias FaithfulWordApi.MusicV12View
   alias FaithfulWordApi.V12

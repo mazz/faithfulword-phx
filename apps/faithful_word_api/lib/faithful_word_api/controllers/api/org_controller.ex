@@ -41,7 +41,6 @@ defmodule FaithfulWordApi.OrgController do
         |> put_view(ErrorView)
         |> render("403.json", %{message: "language not found in supported list."})
       channel_v13 ->
-        # Logger.debug("books #{inspect %{attributes: books}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->

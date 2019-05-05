@@ -125,5 +125,5 @@ git clone https://github.com/FaithfulAudio/faithfulword-phx.git -b upload-ui upl
 
 # import 1.3 database
 
-./dbimport.py migratefromwebsauna ./2019-04-21-media-items-v1.3-bin.pgsql faithful_word_dev ; ./dbimport.py convertv12bibletoplaylists faithful_word_dev ; ./dbimport.py convertv12gospeltoplaylists faithful_word_dev ; ./dbimport.py convertv12musictoplaylists faithful_word_dev ; ./dbimport.py normalizemusic faithful_word_dev ; ./dbimport.py normalizegospel faithful_word_dev ; ./dbimport.py normalizepreaching faithful_word_dev ; ./dbimport.py normalizebible faithful_word_dev ; ./dbimport.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs
+./dbimport.py migratefromwebsauna ./2019-05-04-media-item-bin.pgsql faithful_word_dev ; ./dbimport.py convertv12bibletoplaylists faithful_word_dev ; ./dbimport.py convertv12gospeltoplaylists faithful_word_dev ; ./dbimport.py convertv12musictoplaylists faithful_word_dev ; ./dbimport.py normalizemusic faithful_word_dev ; ./dbimport.py normalizegospel faithful_word_dev ; ./dbimport.py normalizepreaching faithful_word_dev ; ./dbimport.py normalizebible faithful_word_dev ; ./dbimport.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs
 

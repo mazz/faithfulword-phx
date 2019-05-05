@@ -1,7 +1,6 @@
 defmodule FaithfulWordApi.MediaItemController do
   use FaithfulWordApi, :controller
 
-  alias DB.Schema.MediaItem
   alias FaithfulWordApi.V13
 
   alias FaithfulWordApi.ErrorView
@@ -11,7 +10,7 @@ defmodule FaithfulWordApi.MediaItemController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def indexv13(conn, params = %{"uuid" => playlist_uuid, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+  def indexv13(conn, _params = %{"uuid" => playlist_uuid, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
     V13.media_items_by_playlist_uuid(playlist_uuid, language_id, offset, limit)
     |>
     case do

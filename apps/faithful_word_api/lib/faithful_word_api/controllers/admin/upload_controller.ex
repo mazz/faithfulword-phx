@@ -1,7 +1,7 @@
 defmodule FaithfulWordApi.Admin.UploadController do
   use FaithfulWordApi, :controller
-  alias Phoenix.LiveView
-  alias FaithfulWordApi.Admin.UploadView
+  # alias Phoenix.LiveView
+  # alias FaithfulWordApi.Admin.UploadView
 
   action_fallback FaithfulWordApi.FallbackController
 

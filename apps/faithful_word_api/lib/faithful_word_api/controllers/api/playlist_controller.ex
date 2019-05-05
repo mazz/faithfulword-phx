@@ -9,7 +9,7 @@ defmodule FaithfulWordApi.PlaylistController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def indexv13(conn, params = %{"uuid" => uuid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+  def indexv13(conn, _params = %{"uuid" => uuid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
     V13.playlists_by_channel_uuid(uuid_str, language_id, offset, limit)
     |>
     case do

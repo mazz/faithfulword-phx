@@ -1,8 +1,6 @@
 defmodule FaithfulWordApi.MediaMusicController do
   use FaithfulWordApi, :controller
 
-  alias FaithfulWord.Content
-  alias DB.Schema.MediaMusic
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
 
@@ -14,7 +12,7 @@ defmodule FaithfulWordApi.MediaMusicController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def indexv12(conn, params = %{"mid" => mid_str}) do
+  def indexv12(conn, _params = %{"mid" => mid_str}) do
     V12.music_media_by_mid(mid_str)
     |>
     case do
@@ -30,7 +28,7 @@ defmodule FaithfulWordApi.MediaMusicController do
       end
   end
 
-  def indexv13(conn, params = %{"uuid" => gid_str, "offset" => offset, "limit" => limit}) do
+  def indexv13(conn, _params = %{"uuid" => gid_str, "offset" => offset, "limit" => limit}) do
     V13.music_media_by_uuid(gid_str, offset, limit)
     |>
     case do

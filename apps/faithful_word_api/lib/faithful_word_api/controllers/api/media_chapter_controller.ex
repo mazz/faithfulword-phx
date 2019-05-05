@@ -1,8 +1,6 @@
 defmodule FaithfulWordApi.MediaChapterController do
   use FaithfulWordApi, :controller
 
-  alias FaithfulWord.Content
-  alias DB.Schema.MediaChapter
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
 
@@ -14,7 +12,7 @@ defmodule FaithfulWordApi.MediaChapterController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def indexv12(conn, params = %{"bid" => bid_str, "language-id" => language_id}) do
+  def indexv12(conn, _params = %{"bid" => bid_str, "language-id" => language_id}) do
     V12.chapter_media_by_bid(bid_str, language_id)
     |>
     case do
@@ -30,7 +28,7 @@ defmodule FaithfulWordApi.MediaChapterController do
       end
   end
 
-  def indexv13(conn, params = %{"uuid" => bid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+  def indexv13(conn, _params = %{"uuid" => bid_str, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
     V13.chapter_media_by_uuid(bid_str, language_id, offset, limit)
     |>
     case do
