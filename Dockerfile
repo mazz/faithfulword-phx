@@ -49,7 +49,7 @@ RUN addgroup -g 1000 faithful_word && \
       -G faithful_word \
       -u 1000 \
       faithful_word
-RUN apk add -U bash libssl1.1
+RUN apk add -U --no-cache bash coreutils grep sed libssl1.1
 USER root
 WORKDIR /app
 COPY --from=releaser /app/_build/prod/rel/faithful_word_umbrella /app
