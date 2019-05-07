@@ -4,47 +4,44 @@ defmodule FaithfulWordApi.Router do
 
 
   # ---- Pipelines ----
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-    # plug :put_layout, false
-    plug :put_layout, {FaithfulWordApi.LayoutView, :app}
-    plug FaithfulWordApi.Plugs.GuardianPipeline
+  # pipeline :browser do
+  #   plug :accepts, ["html"]
+  #   plug :fetch_session
+  #   plug :fetch_flash
+  #   plug :protect_from_forgery
+  #   plug :put_secure_browser_headers
+  #   plug :put_layout, {FaithfulWordApi.LayoutView, :app}
+  #   plug FaithfulWordApi.Plugs.GuardianPipeline
+  # end
 
-    # plug WordApi.Plugs.GuardianPipeline
-  end
+  # pipeline :authentication_required do
+  #   plug Guardian.Plug.EnsureAuthenticated
+  # end
 
-  pipeline :authentication_required do
-    plug Guardian.Plug.EnsureAuthenticated
-  end
+  # scope "/", FaithfulWordApi do
+  #   pipe_through :browser # Use the default browser stack
 
-  scope "/", FaithfulWordApi do
-    pipe_through :browser # Use the default browser stack
+  #   get "/", PageController, :index
+  #   get "/about", PageController, :about
+  #   get "/login", LoginController, :new
+  #   # get "/logout", LoginController, :delete
+  #   post "/login", LoginController, :create
+  #   get "/signup", SignupController, :new
+  #   post "/signup", SignupController, :create
+  #   # get "/login/:magic_token", LoginController, :callback
+  # end
 
-    get "/", PageController, :index
-    get "/about", PageController, :about
-    get "/login", LoginController, :new
-    # get "/logout", LoginController, :delete
-    post "/login", LoginController, :create
-    get "/signup", SignupController, :new
-    post "/signup", SignupController, :create
-    # get "/login/:magic_token", LoginController, :callback
-  end
+  # scope "/", FaithfulWordApi do
+  #   pipe_through [:browser, :authentication_required]
 
-  scope "/", FaithfulWordApi do
-    pipe_through [:browser, :authentication_required]
+  #   get "/logout", LoginController, :delete
 
-    get "/logout", LoginController, :delete
-
-    scope "/admin", Admin do
-    # scope "/admin", Admin, as: :admin do
-        get "/notification/send", PushMessageController, :index
-      get "/upload", UploadController, :index
-    end
-  end
+  #   scope "/admin", Admin do
+  #   # scope "/admin", Admin, as: :admin do
+  #       get "/notification/send", PushMessageController, :index
+  #     get "/upload", UploadController, :index
+  #   end
+  # end
 
   pipeline :api do
     plug(:accepts, ["json"])
@@ -108,25 +105,6 @@ defmodule FaithfulWordApi.Router do
         post "/pushtoken/update", ClientDeviceController, :indexv13
       end
 
-      """
-      part
-      *digest
-      full
-    order
-      date
-      rating
-      relevance
-      title
-    publishedAfter
-      unixtime
-    mediaCat
-    medium
-    q
-      string
-    channelUuid
-    playlistUuid
-      """
-
       ### DEPRECATED ###
       scope "/gospels" do
         get "/", GospelController, :indexv13
@@ -151,7 +129,7 @@ defmodule FaithfulWordApi.Router do
     pipe_through([:api])
 
     # ---- Public endpoints ----
-    # get("/", ApiInfoController, :get)
+    get("/", ApiInfoController, :get)
     # get("/videos", VideoController, :index)
     # get("/speakers/:slug_or_id", SpeakerController, :show)
     # post("/search/video", VideoController, :search)
