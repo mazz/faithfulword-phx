@@ -57,6 +57,11 @@ docker rmi
 docker image ls
 docker rm 
 
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
+
 ## use psql
 
 docker exec -ti faithfulword-phx_postgres_1 psql -p 5432 -U faithful_word
