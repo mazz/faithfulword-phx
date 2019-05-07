@@ -15,7 +15,8 @@ config :faithful_word_api,
 
 # Configures the endpoint
 config :faithful_word_api, FaithfulWordApi.Endpoint,
-  url: [host: "api.faithfulword.app"],
+  # url: [host: "api.faithfulword.app"],
+  check_origin: ["//localhost", "//api.faithfulword.app"],
   secret_key_base: "QI+125cFBB5Z+vR6D3ULCuhDalvbkd7Gse5zkpLrjhSK7sdm8XeNeB/Gq1zO5Gt8",
   render_errors: [view: FaithfulWordApi.ErrorView, accepts: ~w(html json)],
   pubsub: [name: FaithfulWordApi.PubSub, adapter: Phoenix.PubSub.PG2],
