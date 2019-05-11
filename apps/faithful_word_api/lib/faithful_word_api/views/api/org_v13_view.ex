@@ -30,20 +30,13 @@ defmodule FaithfulWordApi.OrgV13View do
       medThumbnailPath: org_v13.med_thumbnail_path,
       largeThumbnailPath: org_v13.large_thumbnail_path,
       bannerPath: org_v13.banner_path,
-      insertedAt: org_v13.insertedAt,
-      updatedAt: org_v13.updatedAt
+      insertedAt: org_v13.insertedAt |> render_unix_timestamp(),
+      updatedAt: org_v13.updatedAt |> render_unix_timestamp()
     }
   end
+
+  defp render_unix_timestamp(nil), do: nil
+  defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
+
 end
 
-"""
-select: %{basename: org.basename,
-uuid: org.uuid,
-small_thumbnail_path: org.small_thumbnail_path,
-med_thumbnail_path: org.med_thumbnail_path,
-large_thumbnail_path: org.large_thumbnail_path,
-banner_path: org.banner_path,
-insertedAt: org.inserted_at,
-updatedAt: org.updated_at,
-shortname: org.shortname,})
-"""

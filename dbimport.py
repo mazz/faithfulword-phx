@@ -1315,6 +1315,14 @@ class Dbimport(object):
             cur.execute(miscquery)
             sourceconn.commit()  
 
+            cur.execute(sql.SQL("insert into appversions(uuid, version_number, android_supported, ios_supported, web_supported) values (%s, %s, %s, %s, %s)"), 
+                [str(uuid.uuid4()), 
+                '1.3', 
+                True,
+                True,
+                True
+                ])
+            sourceconn.commit()
 
 if __name__ == '__main__':
     Dbimport()

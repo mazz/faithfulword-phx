@@ -34,10 +34,15 @@ defmodule FaithfulWordApi.MediaItemV13View do
       smallThumbnailPath: media_item_v13.small_thumbnail_path,
       medThumbnailPath: media_item_v13.med_thumbnail_path,
       largeThumbnailPath: media_item_v13.large_thumbnail_path,
-      insertedAt: media_item_v13.inserted_at,
-      updatedAt: media_item_v13.updated_at,
+      insertedAt: media_item_v13.inserted_at |> render_unix_timestamp(),
+      updatedAt: media_item_v13.updated_at |> render_unix_timestamp(),
       mediaCategory: media_item_v13.media_category,
-      presentedAt: media_item_v13.presented_at,
-      publishedAt: media_item_v13.published_at}
+      presentedAt: media_item_v13.presented_at |> render_unix_timestamp(),
+      publishedAt: media_item_v13.published_at |> render_unix_timestamp()
+    }
   end
+
+  defp render_unix_timestamp(nil), do: nil
+  defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
+
 end
