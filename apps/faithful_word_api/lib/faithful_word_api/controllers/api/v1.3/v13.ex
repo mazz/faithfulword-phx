@@ -207,6 +207,7 @@ defmodule FaithfulWordApi.V13 do
       select: %{version_number: av.version_number,
       ios_supported: av.ios_supported,
       android_supported: av.android_supported,
+      web_supported: av.web_supported,
       uuid: av.uuid})
       |> Repo.paginate(page: offset, page_size: limit)
   end

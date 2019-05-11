@@ -20,6 +20,8 @@ defmodule FaithfulWordApi. AppVersionV13View do
     %{uuid: app_version_v13.uuid,
       versionNumber: app_version_v13.version_number,
       iosSupported: app_version_v13.ios_supported,
-      androidSupported: app_version_v13.android_supported}
+      androidSupported: app_version_v13.android_supported,
+      webSupported: app_version_v13.web_supported,
+    }
   end
 end
