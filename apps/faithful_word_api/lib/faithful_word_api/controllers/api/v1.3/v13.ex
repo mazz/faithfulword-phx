@@ -241,22 +241,18 @@ defmodule FaithfulWordApi.V13 do
       # python
       # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
       {:ok, org_uuid} = Ecto.UUID.dump(orguuid)
-      Logger.debug("org_uuid: #{org_uuid}")
 
-      found_org_id = Ecto.Query.from(org in Org,
-      where: org.uuid == ^orguuid,
-      select: org.id)
-      |> Repo.one
+        query = from channel in Channel,
+        join: org in Org,
 
-      Logger.debug("found_org_id #{inspect %{attributes: found_org_id}}")
-
-      if found_org_id do
-        Ecto.Query.from(channel in Channel,
+        where: org.uuid == ^org_uuid,
+        where: org.id == channel.org_id,
         order_by: channel.ordinal,
-        where: channel.org_id  == ^found_org_id,
+
         select:
         %{basename: channel.basename,
           uuid: channel.uuid,
+          org_uuid: org.uuid,
           ordinal: channel.ordinal,
           basename: channel.basename,
           small_thumbnail_path: channel.small_thumbnail_path,
@@ -264,11 +260,11 @@ defmodule FaithfulWordApi.V13 do
           large_thumbnail_path: channel.large_thumbnail_path,
           banner_path: channel.banner_path,
           insertedAt: channel.inserted_at,
-          updatedAt: channel.updated_at})
+          updatedAt: channel.updated_at
+        }
+
+        query
         |> Repo.paginate(page: offset, page_size: limit)
-      else
-        nil
-      end
 
   end
 
@@ -296,6 +292,7 @@ defmodule FaithfulWordApi.V13 do
       banner_path: pl.banner_path,
       media_category: pl.media_category,
       uuid: pl.uuid,
+      channel_uuid: ch.uuid,
       inserted_at: pl.inserted_at,
       updated_at: pl.updated_at}
     query

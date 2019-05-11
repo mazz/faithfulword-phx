@@ -21,6 +21,7 @@ defmodule FaithfulWordApi.PlaylistV13View do
   def render("playlist_v13.json", %{playlist_v13: playlist_v13}) do
     %{localizedname: playlist_v13.localizedname,
       uuid: playlist_v13.uuid,
+      channelUuid: playlist_v13.channel_uuid,
       ordinal: playlist_v13.ordinal,
       smallThumbnailPath: playlist_v13.small_thumbnail_path,
       medThumbnailPath: playlist_v13.med_thumbnail_path,

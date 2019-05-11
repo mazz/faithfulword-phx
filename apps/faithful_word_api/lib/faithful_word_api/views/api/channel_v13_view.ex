@@ -23,6 +23,7 @@ defmodule FaithfulWordApi.ChannelV13View do
 
     %{basename: channel_v13.basename,
       uuid: channel_v13.uuid,
+      orgUuid: channel_v13.org_uuid,
       ordinal: channel_v13.ordinal,
       smallThumbnailPath: channel_v13.small_thumbnail_path,
       medThumbnailPath: channel_v13.med_thumbnail_path,
