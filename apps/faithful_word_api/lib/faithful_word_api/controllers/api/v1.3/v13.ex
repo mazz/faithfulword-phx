@@ -271,6 +271,7 @@ defmodule FaithfulWordApi.V13 do
   def playlists_by_channel_uuid(uuid_str, language_id, offset, limit) do
     {:ok, channel_uuid} = Ecto.UUID.dump(uuid_str)
     Logger.debug("channel_uuid: #{uuid_str}")
+
     query = from pl in Playlist,
 
     join: ch in Channel,
@@ -285,6 +286,7 @@ defmodule FaithfulWordApi.V13 do
 
     select:
     %{localizedname: pt.localizedname,
+      language_id: pl.language_id,
       ordinal: pl.ordinal,
       small_thumbnail_path: pl.small_thumbnail_path,
       med_thumbnail_path: pl.med_thumbnail_path,
