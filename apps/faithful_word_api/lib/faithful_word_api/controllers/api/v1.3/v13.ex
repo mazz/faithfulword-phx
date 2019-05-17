@@ -286,7 +286,7 @@ defmodule FaithfulWordApi.V13 do
 
     select:
     %{localizedname: pt.localizedname,
-      language_id: pl.language_id,
+      language_id: pt.language_id,
       ordinal: pl.ordinal,
       small_thumbnail_path: pl.small_thumbnail_path,
       med_thumbnail_path: pl.med_thumbnail_path,
