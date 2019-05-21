@@ -49,6 +49,20 @@ class Dbimport(object):
         # use dispatch pattern to invoke method with same name
         getattr(self, args.command)()
 
+    def export_db(self):
+        parser = argparse.ArgumentParser(description='binary pg_dump export', usage='''dbimport.py export_db <dbname> <sqlfileout> 
+''')
+        # prefixing the argument with -- means it's optional
+        parser.add_argument('dbname')
+        parser.add_argument('sqlfileout')
+        # parser.add_argument('livestream_url')
+        # now that we're inside a subcommand, ignore the first
+        # TWO argvs, ie the command (git) and the subcommand (commit)
+        args = parser.parse_args(sys.argv[2:])
+        print('sqlfileout: {}'.format(repr(args.sqlfileout)))
+
+        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_dump\" -U postgres --no-owner --no-acl -W -Fc -C -d {0} > {1}'.format(args.dbname, args.sqlfileout))
+            
     def migratefromwebsauna(self):
         parser = argparse.ArgumentParser(
             description='dbimport v1.3 pgsql file')

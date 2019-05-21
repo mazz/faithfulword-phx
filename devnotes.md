@@ -15,7 +15,7 @@ docker logs <container-id>
 https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part-2/
 
 docker-compose pull
-docker-compose build --pull faithful_word 
+docker-compose build --pull faithful_word
 ## OR build and restart faithful_word only -- use IFF there was no db schema change!
 docker-compose up --detach --build faithful_word 
 
