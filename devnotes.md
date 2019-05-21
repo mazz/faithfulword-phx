@@ -20,7 +20,6 @@ docker-compose build --pull faithful_word
 docker-compose up --detach --build faithful_word 
 
 docker-compose up --build -d postgres
-docker-compose run --rm faithful_word migrate
 
 docker cp ./2019-05-04-media-item-seeded-not-materialized.pgsql faithfulword-phx_postgres_1:/2019-05-04-media-item-seeded-not-materialized.pgsql
 
@@ -32,12 +31,13 @@ create database faithful_word; -->
 SET session_replication_role = replica;
 \q
 
-pg_restore -U faithful_word --clean --dbname=faithful_word 2019-01-27-plurals-10-bin.sql
+pg_restore -U faithful_word --clean --dbname=faithful_word 2019-05-04-media-item-seeded-not-materialized.pgsql
 psql -U faithful_word
 SET session_replication_role = DEFAULT;
 exit
 
 docker-compose run --rm faithful_word seed
+docker-compose run --rm faithful_word generate_hash_ids
 
 refresh materialized view media_items_search;
 

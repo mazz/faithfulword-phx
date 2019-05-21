@@ -62,6 +62,7 @@ release :faithful_word_umbrella do
     faithful_word_api: :permanent
   ]
   set commands: [
+    generate_hash_ids: "rel/commands/generate_hash_ids.sh",
     migrate: "rel/commands/migrate.sh",
     seed: "rel/commands/seed.sh"
   ]
