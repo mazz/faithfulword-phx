@@ -22,8 +22,9 @@ docker-compose up --detach --build faithful_word
 docker-compose up --build -d postgres
 docker-compose run --rm faithful_word migrate
 
-docker cp ./2019-01-27-plurals-10-bin.sql add-12-api_postgres_1:/2019-01-27-plurals-10-bin.sql
-docker exec -ti add-12-api_postgres_1 bash
+docker cp ./2019-05-04-media-item-seeded-not-materialized.pgsql faithfulword-phx_postgres_1:/2019-05-04-media-item-seeded-not-materialized.pgsql
+
+docker exec -ti faithfulword-phx_postgres_1 bash
 
 psql -U faithful_word
 <!-- drop database faithful_word;
@@ -37,6 +38,8 @@ SET session_replication_role = DEFAULT;
 exit
 
 docker-compose run --rm faithful_word seed
+
+refresh materialized view media_items_search;
 
 Booting the application in Docker-Compose
 
