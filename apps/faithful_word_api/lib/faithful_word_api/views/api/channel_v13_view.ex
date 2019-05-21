@@ -29,8 +29,9 @@ defmodule FaithfulWordApi.ChannelV13View do
       medThumbnailPath: channel_v13.med_thumbnail_path,
       largeThumbnailPath: channel_v13.large_thumbnail_path,
       bannerPath: channel_v13.banner_path,
-      insertedAt: channel_v13.insertedAt |> render_unix_timestamp(),
-      updatedAt: channel_v13.updatedAt |> render_unix_timestamp()
+      hashId: channel_v13.hash_id,
+      insertedAt: channel_v13.inserted_at |> render_unix_timestamp(),
+      updatedAt: channel_v13.updated_at |> render_unix_timestamp()
     }
   end
 

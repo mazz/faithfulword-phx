@@ -34,6 +34,7 @@ defmodule FaithfulWordApi.MediaItemV13View do
       smallThumbnailPath: media_item_v13.small_thumbnail_path,
       medThumbnailPath: media_item_v13.med_thumbnail_path,
       largeThumbnailPath: media_item_v13.large_thumbnail_path,
+      hashId: media_item_v13.hash_id,
       insertedAt: media_item_v13.inserted_at |> render_unix_timestamp(),
       updatedAt: media_item_v13.updated_at |> render_unix_timestamp(),
       mediaCategory: media_item_v13.media_category,

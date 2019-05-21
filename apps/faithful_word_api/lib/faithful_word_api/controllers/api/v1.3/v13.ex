@@ -259,8 +259,9 @@ defmodule FaithfulWordApi.V13 do
           med_thumbnail_path: channel.med_thumbnail_path,
           large_thumbnail_path: channel.large_thumbnail_path,
           banner_path: channel.banner_path,
-          insertedAt: channel.inserted_at,
-          updatedAt: channel.updated_at
+          inserted_at: channel.inserted_at,
+          updated_at: channel.updated_at,
+          hash_id: channel.hash_id
         }
 
         query
@@ -296,7 +297,9 @@ defmodule FaithfulWordApi.V13 do
       uuid: pl.uuid,
       channel_uuid: ch.uuid,
       inserted_at: pl.inserted_at,
-      updated_at: pl.updated_at}
+      updated_at: pl.updated_at,
+      hash_id: pl.hash_id
+    }
     query
     |> IO.inspect
     |> Repo.paginate(page: offset, page_size: limit)
@@ -353,7 +356,8 @@ defmodule FaithfulWordApi.V13 do
       updated_at: mi.updated_at,
       media_category: mi.media_category,
       presented_at: mi.presented_at,
-      published_at: mi.published_at
+      published_at: mi.published_at,
+      hash_id: mi.hash_id
     }
 
     query
@@ -374,9 +378,11 @@ defmodule FaithfulWordApi.V13 do
         med_thumbnail_path: org.med_thumbnail_path,
         large_thumbnail_path: org.large_thumbnail_path,
         banner_path: org.banner_path,
-        insertedAt: org.inserted_at,
-        updatedAt: org.updated_at,
-        shortname: org.shortname,})
+        inserted_at: org.inserted_at,
+        updated_at: org.updated_at,
+        shortname: org.shortname,
+        hash_id: org.hash_id
+        })
       |> Repo.paginate(page: offset, page_size: limit)
   end
 
