@@ -38,5 +38,6 @@ defmodule DB.Repo.Migrations.CreateMediaItemsSearch do
     # to support updating CONCURRENTLY
     create unique_index("media_items_search", [:id])
 
+    flush()
   end
 end

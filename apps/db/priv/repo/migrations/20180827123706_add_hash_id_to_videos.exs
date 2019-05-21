@@ -6,7 +6,7 @@ defmodule DB.Repo.Migrations.AddHashIdToVideos do
   def up do
     alter table(:videos) do
       # A size of 10 allows us to go up to 100_000_000_000_000 videos
-      add(:hash_id, :string, size: 10)
+      add(:hash_id, :string, size: 12)
     end
 
     # Create unique index on hash_id
@@ -16,11 +16,10 @@ defmodule DB.Repo.Migrations.AddHashIdToVideos do
     flush()
 
     # Update all existing videos with their hashIds
-    Video
-    |> select([v], v.id)
-    |> DB.Repo.all()
-    |> Enum.map(&Video.changeset_generate_hash_id/1)
-    |> Enum.map(&DB.Repo.update/1)
+
+    # DB.Repo.all(from v in Video)
+    # |> Enum.map(&Video.changeset_generate_hash_id/1)
+    # |> Enum.map(&DB.Repo.update/1)
   end
 
   def down do

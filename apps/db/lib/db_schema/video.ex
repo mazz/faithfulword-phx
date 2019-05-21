@@ -154,8 +154,8 @@ defmodule DB.Schema.Video do
       iex> DB.Schema.Video.changeset_generate_hash_id(%DB.Schema.Video{id: 42, hash_id: nil})
       #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #DB.Schema.Video<>, valid?: true>
   """
-  def changeset_generate_hash_id(video = %{id: id}) do
-    change(video, hash_id: VideoHashId.encode(id))
+  def changeset_generate_hash_id(video) do
+    change(video, hash_id: VideoHashId.encode(video.id))
   end
 
   @doc """

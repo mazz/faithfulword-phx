@@ -22,5 +22,7 @@ defmodule DB.Repo.Migrations.PostDbImportTweaks do
     end
 
     # create(unique_index(:videos, [:tags]))
+
+    flush()
   end
 end

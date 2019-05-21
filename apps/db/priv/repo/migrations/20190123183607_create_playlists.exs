@@ -9,6 +9,7 @@ defmodule DB.Repo.Migrations.CreatePlaylists do
       add :basename, :string
       add :media_category, DB.Type.MediaCategory.type()
       # add :language_id, :string
+      # add :localizedname, :string
       add :small_thumbnail_path, :string
       add :med_thumbnail_path, :string
       add :large_thumbnail_path, :string
@@ -20,5 +21,7 @@ defmodule DB.Repo.Migrations.CreatePlaylists do
     end
 
     create index(:playlists, [:channel_id])
+
+    flush()
   end
 end

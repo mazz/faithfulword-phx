@@ -1,8 +1,6 @@
 defmodule FaithfulWordApi.MediaGospelController do
   use FaithfulWordApi, :controller
 
-  alias FaithfulWord.Content
-  alias DB.Schema.MediaGospel
   alias FaithfulWordApi.V12
   alias FaithfulWordApi.V13
 

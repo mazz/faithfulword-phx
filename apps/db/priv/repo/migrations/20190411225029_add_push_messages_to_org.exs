@@ -7,5 +7,7 @@ defmodule DB.Repo.Migrations.AddPushMessagesToOrg do
       add :sound, :string, null: true
       add :org_id, references(:orgs, on_delete: :delete_all)
     end
+
+    flush()
   end
 end

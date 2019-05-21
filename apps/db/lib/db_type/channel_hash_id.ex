@@ -1,9 +1,9 @@
-defmodule DB.Type.VideoHashId do
+defmodule DB.Type.ChannelHashId do
   @moduledoc """
-  Convert a video integer id to hash
+  Convert a media item integer id to hash
   """
 
-  defmodule InvalidVideoHashError do
+  defmodule InvalidChannelHashError do
     @moduledoc """
     Exception throwed when hash is not valid
     """
@@ -13,13 +13,13 @@ defmodule DB.Type.VideoHashId do
   @coder Hashids.new(
            min_len: 4,
            alphabet: "23456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKMNOPQRSTUVWXYZ",
-           salt: "F41thfu1W0rDV1d€0"
+           salt: "F41thfu1W0rDCh4Nn€L"
          )
 
   @doc """
   Encode a given id
   ## Examples
-      iex> DB.Type.VideoHashId.encode(42)
+      iex> DB.Type.ChannelHashId.encode(42)
       "4VyJ"
   """
   @spec encode(Integer.t()) :: String.t()
@@ -30,9 +30,9 @@ defmodule DB.Type.VideoHashId do
   @doc """
   Decode a given hash
   ## Examples
-      iex> DB.Type.VideoHashId.decode("JbOz")
+      iex> DB.Type.ChannelHashId.decode("JbOz")
       {:ok, 1337}
-      iex> DB.Type.VideoHashId.decode("€€€€€€€€€€€€€€€€€")
+      iex> DB.Type.ChannelHashId.decode("€€€€€€€€€€€€€€€€€")
       {:error, :invalid_input_data}
   """
   @spec decode(String.t()) :: Integer.t()
@@ -46,16 +46,16 @@ defmodule DB.Type.VideoHashId do
   @doc """
   Decode a given hash. Raise if hash is invalid
   ## Examples
-      iex> DB.Type.VideoHashId.decode!("JbOz")
+      iex> DB.Type.ChannelHashId.decode!("JbOz")
       1337
-      iex> catch_throw(DB.Type.VideoHashId.decode!("€€€"))
-      DB.Type.VideoHashId.InvalidVideoHashError
+      iex> catch_throw(DB.Type.ChannelHashId.decode!("€€€"))
+      DB.Type.ChannelHashId.InvalidChannelHashError
   """
   @spec decode!(String.t()) :: Integer.t()
   def decode!(hash) do
     case do_decode(hash) do
       {:ok, [id]} -> id
-      _error -> throw(InvalidVideoHashError)
+      _error -> throw(InvalidChannelHashError)
     end
   end
 
