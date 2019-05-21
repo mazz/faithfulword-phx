@@ -5,5 +5,7 @@ defmodule DB.Repo.Migrations.AddIsPartnerToVideo do
     alter table(:videos) do
       add :is_partner, :boolean, default: false, null: false
     end
+
+    flush()
   end
 end
