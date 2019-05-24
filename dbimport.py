@@ -1338,6 +1338,9 @@ class Dbimport(object):
                 ])
             sourceconn.commit()
 
+            # move ordinal of New Testament
+            cur.execute(sql.SQL("UPDATE playlists SET ordinal = %s WHERE basename = \'New Testament\'"), [50])
+            sourceconn.commit()
 if __name__ == '__main__':
     Dbimport()
 

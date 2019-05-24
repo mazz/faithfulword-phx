@@ -21,6 +21,10 @@ defmodule DB.Repo.Migrations.PostDbImportTweaks do
       add :shortname, :string
     end
 
+    alter table(:clientdevices) do
+      add :user_uuid, :uuid
+    end
+
     # create(unique_index(:videos, [:tags]))
 
     flush()

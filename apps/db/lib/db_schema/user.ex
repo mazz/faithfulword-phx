@@ -17,6 +17,7 @@ defmodule DB.Schema.User do
     field(:email, :string)
     field(:encrypted_password, :string)
     field(:name, :string)
+    field :uuid, Ecto.UUID
     field(:picture_url, UserPicture.Type)
     field(:reputation, :integer, default: 0)
     field(:today_reputation_gain, :integer, default: 0)
