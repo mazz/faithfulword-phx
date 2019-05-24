@@ -32,3 +32,13 @@ apps/**/priv/static
 .dockerignore
 Dockerfile
 docker-compose.yml
+
+# Secrets
+apps/*/priv/secrets/*
+!apps/*/priv/secrets/.keep
+
+# File types
+tmp
+erl_crash.dump
+*.ez
+
