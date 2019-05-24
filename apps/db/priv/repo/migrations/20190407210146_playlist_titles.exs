@@ -10,6 +10,7 @@ defmodule DB.Repo.Migrations.PlaylistTitles do
       timestamps(type: :utc_datetime)
     end
     create index(:playlist_titles, [:playlist_id])
+    create index(:playlist_titles, [:uuid])
 
     flush()
   end

@@ -12,5 +12,6 @@ defmodule DB.Repo.Migrations.CreateGospeltitle do
     end
 
     create index(:gospeltitles, [:gospel_id])
+    create index(:gospeltitles, [:uuid])
   end
 end

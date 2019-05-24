@@ -12,5 +12,6 @@ defmodule DB.Repo.Migrations.CreateBooktitle do
     end
 
     create index(:booktitles, [:book_id])
+    create index(:booktitles, [:uuid])
   end
 end

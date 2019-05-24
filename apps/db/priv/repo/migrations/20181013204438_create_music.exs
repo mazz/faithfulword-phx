@@ -11,6 +11,6 @@ defmodule DB.Repo.Migrations.CreateMusic do
 
       # timestamps()
     end
-
+    create index(:music, [:uuid])
   end
 end

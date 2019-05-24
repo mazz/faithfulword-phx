@@ -14,5 +14,6 @@ defmodule DB.Repo.Migrations.CreatePushmessage do
       timestamps(type: :utc_datetime)
     end
 
+    create index(:pushmessages, [:uuid])
   end
 end

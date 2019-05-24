@@ -12,5 +12,6 @@ defmodule DB.Repo.Migrations.CreateChapter do
     end
 
     create index(:chapters, [:book_id])
+    create index(:chapters, [:uuid])
   end
 end

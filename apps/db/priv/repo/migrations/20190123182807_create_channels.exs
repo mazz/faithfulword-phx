@@ -18,6 +18,7 @@ defmodule DB.Repo.Migrations.CreateChannels do
     end
 
     create index(:channels, [:org_id])
+    create index(:channels, [:uuid])
 
     flush()
   end

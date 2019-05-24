@@ -12,5 +12,6 @@ defmodule DB.Repo.Migrations.CreateLanguageidentifier do
       # timestamps()
     end
 
+    create index(:languageidentifiers, [:uuid])
   end
 end

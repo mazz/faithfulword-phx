@@ -28,6 +28,7 @@ defmodule DB.Repo.Migrations.CreateMediaitems do
 
     create index(:mediaitems, [:playlist_id])
     create index(:mediaitems, ["updated_at DESC"])
+    create index(:mediaitems, [:uuid])
 
     flush()
   end

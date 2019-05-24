@@ -21,6 +21,7 @@ defmodule DB.Repo.Migrations.CreatePlaylists do
     end
 
     create index(:playlists, [:channel_id])
+    create index(:playlists, [:uuid])
 
     flush()
   end

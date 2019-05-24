@@ -12,6 +12,7 @@ defmodule DB.Repo.Migrations.CreateClientdevice do
       add :user_version, :string
       # timestamps()
     end
+    create index(:clientdevices, [:uuid])
 
   end
 end

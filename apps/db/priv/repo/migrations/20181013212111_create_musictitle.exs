@@ -13,5 +13,6 @@ defmodule DB.Repo.Migrations.CreateMusictitle do
     end
 
     create index(:musictitles, [:music_id])
+    create index(:musictitles, [:uuid])
   end
 end

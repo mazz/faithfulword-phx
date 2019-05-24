@@ -11,6 +11,7 @@ defmodule DB.Repo.Migrations.CreateAppversion do
 
       # timestamps()
     end
+    create index(:appversions, [:uuid])
 
   end
 end

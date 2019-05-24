@@ -21,5 +21,6 @@ defmodule DB.Repo.Migrations.CreateMediamusic do
     end
 
     create index(:mediamusic, [:music_id])
+    create index(:mediamusic, [:uuid])
   end
 end
