@@ -113,23 +113,13 @@ defmodule FaithfulWordApi.V13 do
 
 
     query = from g in Gospel,
-    # join: t in GospelTitle,
-    # join: c in Chapter,
     join: mg in MediaGospel,
 
     where: g.uuid == ^gid_uuid,
-    # where: t.gospel_id == g.id,
-    # where: t.language_id  == ^language_id,
-    # where: c.book_id == g.id,
-    # where: c.id == mc.chapter_id,
-    # where: mg.language_id == ^language_id,
     where: mg.gospel_id == g.id,
-    # order_by: [mg.absolute_id, mg.id],
     order_by: [desc: mg.updated_at],
-    # where: t.language_id  == ^language_id,
     select: %{localizedName: mg.localizedname, path: mg.path, presenterName: mg.presenter_name, sourceMaterial: mg.source_material, uuid: mg.uuid}
     query
-    # |> DB.Query.order_by_last_updated_desc()
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
@@ -170,19 +160,11 @@ defmodule FaithfulWordApi.V13 do
     Logger.debug("gid_str: #{gid_str}")
 
     query = from m in Music,
-    # join: t in MusicTitle,
-    # join: c in Chapter,
     join: mm in MediaMusic,
 
     where: m.uuid == ^gid_uuid,
-    # where: t.music_id == m.id,
-    # where: t.language_id  == ^language_id,
-    # where: c.book_id == g.id,
-    # where: c.id == mc.chapter_id,
-    # where: mm.language_id == ^language_id,
     where: mm.music_id == m.id,
     order_by: [mm.absolute_id, mm.id],
-    # where: t.language_id  == ^language_id,
     select:
     %{localizedName: mm.localizedname,
       path: mm.path,
@@ -305,7 +287,7 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def media_items_by_playlist_uuid(playlist_uuid, language_id \\ "en", offset \\ 0, limit \\ 0) do
+  def media_items_by_playlist_uuid(playlist_uuid, language_id, offset \\ 0, limit \\ 0) do
     {:ok, pid_uuid} = Ecto.UUID.dump(playlist_uuid)
     Logger.debug("pid_uuid: #{pid_uuid}")
 
@@ -323,18 +305,23 @@ defmodule FaithfulWordApi.V13 do
     end
     Logger.info("direction: #{direction} sorting: #{sorting}")
 
-    query = from pl in Playlist,
-    # join: t in MusicTitle,
-    # join: c in Chapter,
-    join: mi in MediaItem,
-    # join: pt in PlaylistTitle,
+    conditions = true
+    conditions =
+      if language_id do
+        dynamic([pl, mi], mi.language_id == ^language_id and ^conditions)
+        # dynamic([mi], mi.language_id == ^language_id and ^conditions)
+      else
+        conditions
+      end
 
+
+    query = from pl in Playlist,
+    join: mi in MediaItem,
     where: pl.uuid == ^pid_uuid,
     where: mi.playlist_id == pl.id,
-    # where: pl.id == pt.playlist_id,
-    where: mi.language_id == ^language_id,
+    where: ^conditions,
+    # where: mi.language_id == ^language_id,
     order_by: [{^direction, field(mi, ^sorting)}],
-    # order_by: [{:desc, field(mi, :presented_at)}],
     select:
     %{ordinal: mi.ordinal,
       uuid: mi.uuid,

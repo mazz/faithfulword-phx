@@ -10,7 +10,12 @@ defmodule FaithfulWordApi.MediaItemController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def indexv13(conn, _params = %{"uuid" => playlist_uuid, "language-id" => language_id, "offset" => offset, "limit" => limit}) do
+  def indexv13(conn, params = %{"uuid" => playlist_uuid, "offset" => offset, "limit" => limit}) do
+
+    # language_id is optional because plan of salvation is many languages
+    language_id = Map.get(params, "language-id", nil)
+
+
     V13.media_items_by_playlist_uuid(playlist_uuid, language_id, offset, limit)
     |>
     case do
