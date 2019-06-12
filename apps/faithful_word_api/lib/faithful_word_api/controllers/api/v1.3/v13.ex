@@ -301,7 +301,7 @@ defmodule FaithfulWordApi.V13 do
     {direction, sorting} = if media_category in special_categories do
       {:desc, :presented_at}
     else
-      {:asc, :track_number}
+      {:asc, :ordinal}
     end
     Logger.info("direction: #{direction} sorting: #{sorting}")
 
