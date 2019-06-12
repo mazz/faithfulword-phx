@@ -586,7 +586,7 @@ class Dbimport(object):
             self._insertmediaitemrows(self._biblerows(25, '3 John', args.dbname), k_media_category["bible"], args.dbname)
             self._insertmediaitemrows(self._biblerows(26, 'Jude', args.dbname), k_media_category["bible"], args.dbname)
             self._insertmediaitemrows(self._biblerows(27, 'Revelation', args.dbname), k_media_category["bible"], args.dbname)
-            self._insertmediaitemrows(self._biblerows(28, 'Plan of Salvation', args.dbname), k_media_category["bible"], args.dbname)
+            # self._insertmediaitemrows(self._biblerows(28, 'Plan of Salvation', args.dbname), k_media_category["bible"], args.dbname)
             self._insertmediaitemrows(self._biblerows(29, 'Psalms', args.dbname), k_media_category["bible"], args.dbname)
             self._insertmediaitemrows(self._biblerows(30, 'Proverbs', args.dbname), k_media_category["bible"], args.dbname)
             self._insertmediaitemrows(self._biblerows(31, 'Isaiah', args.dbname), k_media_category["bible"], args.dbname)
