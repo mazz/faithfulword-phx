@@ -22,7 +22,7 @@ defmodule FaithfulWordApi.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    get "/mediaitem/:hash_id", ShareMediaItemController, :show
+    get "/m/:hash_id", ShareMediaItemController, :show
 
     # get "/about", PageController, :about
     # get "/login", LoginController, :new
