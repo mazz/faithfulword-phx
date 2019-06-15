@@ -344,7 +344,8 @@ defmodule FaithfulWordApi.V13 do
       media_category: mi.media_category,
       presented_at: mi.presented_at,
       published_at: mi.published_at,
-      hash_id: mi.hash_id
+      hash_id: mi.hash_id,
+      duration: mi.duration
     }
 
     query

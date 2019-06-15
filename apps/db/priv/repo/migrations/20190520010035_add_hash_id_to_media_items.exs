@@ -7,6 +7,7 @@ defmodule DB.Repo.Migrations.AddHashIdToMediaItems do
     alter table(:mediaitems) do
       # A size of 10 allows us to go up to 100_000_000_000_000 media items
       add(:hash_id, :string, size: 12)
+      add(:duration, :float, default: 0)
     end
 
     # Create unique index on hash_id
@@ -19,6 +20,7 @@ defmodule DB.Repo.Migrations.AddHashIdToMediaItems do
   def down do
     alter table(:mediaitems) do
       remove(:hash_id)
+      remove(:duration)
     end
   end
 end
