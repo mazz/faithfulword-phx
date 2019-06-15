@@ -1333,6 +1333,8 @@ class Dbimport(object):
             UPDATE mediaitems SET presenter_name = \'Pastor Steven Anderson\' WHERE localizedname = \'Singles, Dating, and Marriage\';
             UPDATE mediaitems SET presenter_name = \'Pastor Steven Anderson\' WHERE localizedname = \'Generation Snowflake\';
             UPDATE mediaitems SET presenter_name = \'Pastor Steven Anderson\' WHERE localizedname = \'I Praise You Not\';
+
+            UPDATE playlists SET multilanguage = \'1\' WHERE basename = \'Plan of Salvation\';
             """
             cur.execute(miscquery)
             sourceconn.commit()  

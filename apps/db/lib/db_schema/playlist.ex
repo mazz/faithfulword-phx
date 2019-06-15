@@ -15,6 +15,7 @@ defmodule DB.Schema.Playlist do
     field :channel_id, :integer
     field :media_category, DB.Type.MediaCategory
     field :hash_id, :string
+    field :multilanguage, :boolean, default: false
 
     timestamps(type: :utc_datetime)
 

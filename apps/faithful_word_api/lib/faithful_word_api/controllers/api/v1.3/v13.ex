@@ -291,14 +291,14 @@ defmodule FaithfulWordApi.V13 do
     {:ok, pid_uuid} = Ecto.UUID.dump(playlist_uuid)
     Logger.debug("pid_uuid: #{pid_uuid}")
 
-    media_category = Ecto.Query.from(playlist in Playlist,
+    category_and_multilanguage = Ecto.Query.from(playlist in Playlist,
     where: playlist.uuid == ^playlist_uuid,
-    select: playlist.media_category)
+    select: %{media_category: playlist.media_category, multilanguage: playlist.multilanguage})
     |> Repo.one
     |> IO.inspect
 
     special_categories = [:livestream, :motivation, :movie, :podcast, :testimony, :preaching]
-    {direction, sorting} = if media_category in special_categories do
+    {direction, sorting} = if category_and_multilanguage.media_category in special_categories do
       {:desc, :presented_at}
     else
       {:asc, :ordinal}
@@ -307,13 +307,12 @@ defmodule FaithfulWordApi.V13 do
 
     conditions = true
     conditions =
-      if language_id do
+      if !category_and_multilanguage.multilanguage do
         dynamic([pl, mi], mi.language_id == ^language_id and ^conditions)
         # dynamic([mi], mi.language_id == ^language_id and ^conditions)
       else
         conditions
       end
-
 
     query = from pl in Playlist,
     join: mi in MediaItem,
@@ -328,6 +327,7 @@ defmodule FaithfulWordApi.V13 do
       track_number: mi.track_number,
       medium: mi.medium,
       localizedname: mi.localizedname,
+      multilanguage: pl.multilanguage,
       path: mi.path,
       content_provider_link: mi.content_provider_link,
       ipfs_link: mi.ipfs_link,
