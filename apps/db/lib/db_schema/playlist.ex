@@ -12,10 +12,13 @@ defmodule DB.Schema.Playlist do
     field :large_thumbnail_path, :string
     field :banner_path, :string
     field :uuid, Ecto.UUID
-    field :channel_id, :integer
+    field :channel_id, :id
     field :media_category, DB.Type.MediaCategory
     field :hash_id, :string
     field :multilanguage, :boolean, default: false
+
+    has_many :mediaitems, DB.Schema.MediaItem
+    has_many :playlist_titles, DB.Schema.PlaylistTitle
 
     timestamps(type: :utc_datetime)
 
@@ -26,8 +29,8 @@ defmodule DB.Schema.Playlist do
   @doc false
   def changeset(playlist, attrs) do
     playlist
-    |> cast(attrs, [:ordinal, :uuid, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
-    |> validate_required([:ordinal, :uuid, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
+    |> cast(attrs, [:ordinal, :uuid, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :channel_id, :hash_id])
+    |> validate_required([:ordinal, :uuid, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :channel_id, :hash_id])
   end
 
 

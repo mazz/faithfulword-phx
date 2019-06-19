@@ -28,6 +28,8 @@ defmodule DB.Schema.User do
     field(:is_publisher, :boolean, default: false)
     field(:completed_onboarding_steps, {:array, :integer}, default: [])
 
+    field :org_id, :id
+
     # Social networks profiles
     field(:fb_user_id, :string)
 

@@ -11,8 +11,10 @@ defmodule DB.Schema.Channel do
     field :large_thumbnail_path, :string
     field :banner_path, :string
     field :uuid, Ecto.UUID
-    field :org_id, :integer
+    field :org_id, :id
     field :hash_id, :string
+
+    has_many :playlists, DB.Schema.Playlist
 
     timestamps(type: :utc_datetime)
 
@@ -22,8 +24,8 @@ defmodule DB.Schema.Channel do
   @doc false
   def changeset(channel, attrs) do
     channel
-    |> cast(attrs, [:uuid, :ordinal, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
-    |> validate_required([:uuid, :ordinal, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
+    |> cast(attrs, [:uuid, :ordinal, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :org_id, :hash_id])
+    |> validate_required([:uuid, :ordinal, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :org_id, :hash_id])
   end
 
 

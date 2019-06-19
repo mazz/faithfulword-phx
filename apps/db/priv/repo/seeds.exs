@@ -30,31 +30,31 @@ Logger.debug("Application.get_env #{Application.get_env(:db, :env)}")
 # Logger.warn("API is running in dev mode. Inserting default user admin@faithfulword.app")
 
 # No need to warn if already exists
-Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Amos", is_publisher: true, uuid: Ecto.UUID.generate}, %{
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Amos", is_publisher: true, uuid: Ecto.UUID.generate, org_id: 1}, %{
   email: "amos@faithfulword.app",
   password: "password"
 }))
-Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Peter", is_publisher: true, uuid: Ecto.UUID.generate}, %{
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Peter", is_publisher: true, uuid: Ecto.UUID.generate, org_id: 1}, %{
   email: "peter@faithfulword.app",
   password: "password"
 }))
-Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Joseph", is_publisher: true, uuid: Ecto.UUID.generate}, %{
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Joseph", is_publisher: true, uuid: Ecto.UUID.generate, org_id: 1}, %{
   email: "joseph@faithfulword.app",
   password: "password"
 }))
-Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Adam", is_publisher: true, uuid: Ecto.UUID.generate}, %{
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Adam", is_publisher: true, uuid: Ecto.UUID.generate, org_id: 1}, %{
   email: "adam@faithfulword.app",
   password: "password"
 }))
-Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Jonathan", is_publisher: true, uuid: Ecto.UUID.generate}, %{
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Jonathan", is_publisher: true, uuid: Ecto.UUID.generate, org_id: 1}, %{
   email: "jonathan@faithfulword.app",
   password: "password"
 }))
-Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Collin", is_publisher: true, uuid: Ecto.UUID.generate}, %{
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Collin", is_publisher: true, uuid: Ecto.UUID.generate, org_id: 1}, %{
   email: "collin@faithfulword.app",
   password: "password"
 }))
-Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Michael", is_publisher: true, uuid: Ecto.UUID.generate}, %{
+Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "Michael", is_publisher: true, uuid: Ecto.UUID.generate, org_id: 1}, %{
   email: "michael@faithfulword.app",
   password: "password"
 }))

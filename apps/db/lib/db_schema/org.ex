@@ -14,6 +14,9 @@ defmodule DB.Schema.Org do
     field :uuid, Ecto.UUID
     field :hash_id, :string
 
+    has_many :channels, DB.Schema.Channel
+    has_many :users, DB.Schema.User
+
     timestamps(type: :utc_datetime)
 
     # timestamps()
@@ -34,7 +37,7 @@ defmodule DB.Schema.Org do
   @doc false
   def changeset(org, attrs) do
     org
-    |> cast(attrs, [:uuid, :basename, :shortname, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
-    |> validate_required([:uuid, :basename, :shortname, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path])
+    |> cast(attrs, [:uuid, :basename, :shortname, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :hash_id])
+    |> validate_required([:uuid, :basename, :shortname, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :hash_id])
   end
 end
