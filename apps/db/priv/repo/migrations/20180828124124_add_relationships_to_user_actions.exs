@@ -91,7 +91,7 @@ defmodule DB.Repo.Migrations.AddRelationshipsToUserActions do
         :left,
         [a],
         v in Video,
-        v.id == fragment("CAST(substring(u0.context from 4) AS INTEGER)")
+        on: v.id == fragment("CAST(substring(u0.context from 4) AS INTEGER)")
       )
       |> where([a, v], is_nil(v.id))
       |> select([:id])
@@ -102,7 +102,7 @@ defmodule DB.Repo.Migrations.AddRelationshipsToUserActions do
     nb_actions_videos_direct =
       UserAction
       |> where([a], a.entity == ^:video)
-      |> join(:left, [a], v in Video, fragment("u0.entity_id") == v.id)
+      |> join(:left, [a], v in Video, on: fragment("u0.entity_id") == v.id)
       |> where([a, v], is_nil(v.id))
       |> select([:id])
       |> Repo.all()
