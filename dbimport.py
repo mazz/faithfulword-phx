@@ -227,7 +227,7 @@ class Dbimport(object):
                 elif gospel['basename'] == 'Plan of Salvation' or gospel['basename'] == 'Soul-winning Sermons' or gospel['basename'] == 'आत्मिक जीत स्पष्टीकरण':
                     channel_id = k_channel_id["gospel"]
                     media_category = k_media_category["gospel"]
-                elif gospel['basename'] == 'Word of Truth Baptist Church Sermons' or gospel['basename'] == 'FWBC Sermons' or gospel['basename'] == 'Faith Baptist Church Louisiana Sermons' or gospel['basename'] == 'Verity Baptist Church Sermons' or gospel['basename'] == 'Old Path Baptist Church Sermons' or gospel['basename'] == 'Liberty Baptist Church Sermons' or gospel['basename'] == 'Faithful Word Baptist Church LA' or gospel['basename'] == 'Temple Baptist Church Sermons' or gospel['basename'] == 'Sean Jolley Spanish' or gospel['basename'] == 'ASBC' or gospel['basename'] == 'Entire Bible Preached Project' or gospel['basename'] == 'Pillar Baptist Church' or gospel['basename'] == 'Iglesia Bautista de Santa Ana' or gospel['basename'] == 'FWBC Espanol' or gospel['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or gospel['basename'] == 'Justice by Jack Hyles' or gospel['basename'] == 'Verity Baptist Vancouver (Preaching)' or gospel['basename'] == 'Stedfast Baptist Church' or gospel['basename'] == 'Post Trib Bible Prophecy Conference' or gospel['basename'] == 'Mountain Baptist Church':
+                elif gospel['basename'] == 'Word of Truth Baptist Church Sermons' or gospel['basename'] == 'FWBC Sermons' or gospel['basename'] == 'Faith Baptist Church Louisiana Sermons' or gospel['basename'] == 'Verity Baptist Church Sermons' or gospel['basename'] == 'Old Path Baptist Church Sermons' or gospel['basename'] == 'Liberty Baptist Church Sermons' or gospel['basename'] == 'Faithful Word Baptist Church LA' or gospel['basename'] == 'Temple Baptist Church Sermons' or gospel['basename'] == 'Sean Jolley Spanish' or gospel['basename'] == 'ASBC' or gospel['basename'] == 'Entire Bible Preached Project' or gospel['basename'] == 'Pillar Baptist Church' or gospel['basename'] == 'Iglesia Bautista de Santa Ana' or gospel['basename'] == 'FWBC Espanol' or gospel['basename'] == 'Make America Straight Again Conference' or gospel['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or gospel['basename'] == 'Justice by Jack Hyles' or gospel['basename'] == 'Verity Baptist Vancouver (Preaching)' or gospel['basename'] == 'Stedfast Baptist Church' or gospel['basename'] == 'Post Trib Bible Prophecy Conference' or gospel['basename'] == 'Mountain Baptist Church':
                         channel_id = k_channel_id["preaching"]
                         media_category = k_media_category["preaching"]
                 elif gospel['basename'] == 'Documentaries':
@@ -755,7 +755,7 @@ class Dbimport(object):
         self._insertmediaitemrows(self._preachingrows(21, 'Sean Jolley Spanish', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(22, 'FWBC Espanol', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), k_media_category["movie"], args.dbname)
-        self._insertmediaitemrows(self._preachingrows(24, 'Post Trib Bible Prophecy Conference', args.dbname), k_media_category["conference"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(24, 'Post Trib Bible Prophecy Conference', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(25, 'आत्मिक जीत स्पष्टीकरण', args.dbname), k_media_category["gospel"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(26, 'ASBC', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(27, 'Entire Bible Preached Project', args.dbname), k_media_category["preaching"], args.dbname)
@@ -766,6 +766,7 @@ class Dbimport(object):
         self._insertmediaitemrows(self._preachingrows(32, 'Justice by Jack Hyles', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(33, 'Stedfast Baptist Church', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), k_media_category["movie"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(34, 'Make America Straight Again Conference', args.dbname), k_media_category["preaching"], args.dbname)
 
     def _preachingrows(self, gospelid, playlistname, dbname):
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(dbname))
