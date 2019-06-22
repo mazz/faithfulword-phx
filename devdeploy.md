@@ -1,0 +1,49 @@
+# deploy dev to prod
+
+## dev environment:
+
+./dbtool.py migratefromwebsauna ./2019-06-22-media-item-v1.3-bin.pgsql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs ; mix run apps/db/priv/repo/hash_ids.exs
+
+./dbtool.py exportdb faithful_word_dev 2019-06-22-media-item-seeded-not-materialized.pgsql
+
+<commit 2019-06-22-media-item-seeded-not-materialized.pgsql>
+<commit 2019-06-22-media-item-v1.3-bin.pgsql>
+<push to origin/develop>
+
+## prod environment:
+
+ssh root@157.230.171.172 (api.faithfulword.app)
+
+cd faithfulword-phx
+
+git checkout develop
+git pull
+
+docker-compose pull
+docker-compose build --pull faithful_word
+
+docker-compose up --build -d postgres
+
+docker cp ./2019-06-22-media-item-seeded-not-materialized.pgsql faithfulword-phx_postgres_1:/2019-06-22-media-item-seeded-not-materialized.pgsql
+
+docker exec -ti faithfulword-phx_postgres_1 bash
+docker exec -ti faithfulword-phx_faithful_word_1 bash
+
+psql -U faithful_word
+<!-- drop database faithful_word;
+create database faithful_word; -->
+SET session_replication_role = replica;
+\q
+
+pg_restore -U faithful_word --clean --dbname=faithful_word 2019-06-12-media-item-seeded-not-materialized.pgsql
+psql -U faithful_word
+SET session_replication_role = DEFAULT;
+refresh materialized view media_items_search;
+exit
+
+docker-compose run --rm faithful_word seed
+docker-compose run --rm faithful_word generate_hash_ids
+
+# Booting the application in Docker-Compose
+
+docker-compose up --build faithful_word

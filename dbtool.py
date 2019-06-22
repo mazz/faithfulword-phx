@@ -31,7 +31,7 @@ k_channel_id = {"preaching": 1,
     "movies": 4
     }
 
-class Dbimport(object):
+class Dbtool(object):
     def __init__(self):
         parser = argparse.ArgumentParser(
             description='stream a file to a streaming service',
@@ -49,8 +49,8 @@ class Dbimport(object):
         # use dispatch pattern to invoke method with same name
         getattr(self, args.command)()
 
-    def export_db(self):
-        parser = argparse.ArgumentParser(description='binary pg_dump export', usage='''dbimport.py export_db <dbname> <sqlfileout> 
+    def exportdb(self):
+        parser = argparse.ArgumentParser(description='binary pg_dump export', usage='''dbtool.py export_db <dbname> <sqlfileout> 
 ''')
         # prefixing the argument with -- means it's optional
         parser.add_argument('dbname')
@@ -65,7 +65,7 @@ class Dbimport(object):
             
     def migratefromwebsauna(self):
         parser = argparse.ArgumentParser(
-            description='dbimport v1.3 pgsql file')
+            description='dbtool v1.3 pgsql file')
         # prefixing the argument with -- means it's optional
         parser.add_argument('pgfile')
         parser.add_argument('dbname')
@@ -545,7 +545,7 @@ class Dbimport(object):
 
     def normalizebible(self):
         parser = argparse.ArgumentParser(
-            description='dbimport v1.3 pgsql file')
+            description='dbtool v1.3 pgsql file')
         # prefixing the argument with -- means it's optional
 
         parser.add_argument('dbname')
@@ -706,17 +706,9 @@ class Dbimport(object):
                 print('row: {}'.format(row))
         return result
 
-    # normalizepreaching must be called AFTER addorgrows because orgs need to be present
-    # 
-    # GETTING STARTED:
-    # get preaching file paths with:
-    # ./dbimport.py migratefromwebsauna ./2019-04-02-media-item-bin.pgsql faithful_word_dev
-    # ./dbimport.py addorgrows faithful_word_dev
-    # ./dbimport.py normalizepreaching faithful_word_dev mediagospel
-
     def normalizepreaching(self):
         parser = argparse.ArgumentParser(
-            description='dbimport v1.3 pgsql file')
+            description='dbtool v1.3 pgsql file')
         # prefixing the argument with -- means it's optional
 
         parser.add_argument('dbname')
@@ -905,7 +897,7 @@ class Dbimport(object):
 
     def normalizegospel(self):
         parser = argparse.ArgumentParser(
-            description='dbimport v1.3 pgsql file')
+            description='dbtool v1.3 pgsql file')
         # prefixing the argument with -- means it's optional
 
         parser.add_argument('dbname')
@@ -1142,17 +1134,9 @@ class Dbimport(object):
                 # cur.execute("insert into mediaitems(uuid, track_number, medium) values ({}, {}, {})".format(row['uuid'], row['track_number'], row['medium']))
             sourceconn.commit()  
  
-    # normalizepreaching must be called AFTER addorgrows because orgs need to be present
-    # 
-    # GETTING STARTED:
-    # get preaching file paths with:
-    # ./dbimport.py migratefromwebsauna ./2019-04-02-media-item-bin.pgsql faithful_word_dev
-    # ./dbimport.py addorgrows faithful_word_dev
-    # ./dbimport.py normalizepreaching faithful_word_dev mediagospel
-
     def normalizemusic(self):
         parser = argparse.ArgumentParser(
-            description='dbimport v1.3 pgsql file')
+            description='dbtool v1.3 pgsql file')
         # prefixing the argument with -- means it's optional
 
         parser.add_argument('dbname')
@@ -1353,6 +1337,6 @@ class Dbimport(object):
             cur.execute(sql.SQL("UPDATE playlists SET ordinal = %s WHERE basename = \'New Testament\'"), [50])
             sourceconn.commit()
 if __name__ == '__main__':
-    Dbimport()
+    Dbtool()
 
 
