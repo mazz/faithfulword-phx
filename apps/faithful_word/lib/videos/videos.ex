@@ -41,7 +41,7 @@ defmodule FaithfulWord.Videos do
   """
   def added_by_user(user, paginate_options \\ []) do
     Video
-    |> join(:inner, [v], a in DB.Schema.UserAction, a.video_id == v.id)
+    |> join(:inner, [v], a in DB.Schema.UserAction, on: a.video_id == v.id)
     |> where([_, a], a.user_id == ^user.id)
     |> where([_, a], a.type == ^:add and a.entity == ^:video)
     |> DB.Query.order_by_last_inserted_desc()

@@ -374,7 +374,7 @@ defmodule FaithfulWord.Accounts do
       |> NaiveDateTime.add(-@request_validity, :second)
 
     User
-    |> join(:inner, [u], r in ResetPasswordRequest, r.user_id == u.id)
+    |> join(:inner, [u], r in ResetPasswordRequest, on: r.user_id == u.id)
     |> where([u, r], r.token == ^token)
     |> where([u, r], r.inserted_at >= ^date_limit)
     |> Repo.one!()
