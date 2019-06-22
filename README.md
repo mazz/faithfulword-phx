@@ -47,3 +47,13 @@ mix phx.server
 
 ### open url in browser
 http://localhost:4000/v1.2/books?language-id=en
+
+### refresh materialzed view media_items_search
+```
+currently we manually refresh the ts_vector index because the PG triggers slow down the dbtool.py import script.
+If you want /v1.3/search to return results you must run this SQL statement:
+
+refresh materialized view media_items_search
+
+```
+
