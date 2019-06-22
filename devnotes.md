@@ -63,6 +63,8 @@ docker-compose run --rm faithful_word generate_hash_ids
 # Booting the application in Docker-Compose
 
 docker-compose up --build faithful_word
+OR
+docker-compose down && docker-compose up -d --force-recreate --build faithful_word
 
 You can then browse the application by visiting http://localhost:4000 as normal, and should see the typical (production-style) log output in the shell session that’s running the above docker-compose command.
 

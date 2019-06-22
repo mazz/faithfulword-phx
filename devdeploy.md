@@ -35,7 +35,7 @@ create database faithful_word; -->
 SET session_replication_role = replica;
 \q
 
-pg_restore -U faithful_word --clean --dbname=faithful_word 2019-06-12-media-item-seeded-not-materialized.pgsql
+pg_restore -U faithful_word --clean --dbname=faithful_word 2019-06-22-media-item-seeded-not-materialized.pgsql
 psql -U faithful_word
 SET session_replication_role = DEFAULT;
 refresh materialized view media_items_search;
@@ -47,3 +47,5 @@ docker-compose run --rm faithful_word generate_hash_ids
 # Booting the application in Docker-Compose
 
 docker-compose up --build faithful_word
+OR
+docker-compose down && docker-compose up -d --force-recreate --build faithful_word
