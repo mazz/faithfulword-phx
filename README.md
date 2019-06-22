@@ -29,7 +29,7 @@ linux ubuntu: install psql
 ```
 cd ~/faithfulword-phx
 git fetch
-git checkout add-hash-id # latest working branch
+git checkout develop # latest working branch
 mix deps.get && mix deps.compile
 cd apps/faithful_word_api
 cd assets && npm install
