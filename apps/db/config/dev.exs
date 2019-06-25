@@ -2,8 +2,8 @@ use Mix.Config
 
 # Configure your database
 config :db, DB.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: System.get_env("FW_DB_USERNAME") || "postgres",
+  password: System.get_env("FW_DB_PASSWORD") || "postgres",
   database: "faithful_word_dev",
   hostname: "localhost"
 

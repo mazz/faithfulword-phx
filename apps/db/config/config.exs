@@ -15,4 +15,3 @@ config :db, DB.Repo,
 
 # Import environment specific config
 import_config "#{Mix.env()}.exs"
-

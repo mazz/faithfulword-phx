@@ -9,14 +9,9 @@ config :logger,
 config :arc, storage: Arc.Storage.Local
 
 # Configure your database
-# config :db, DB.Repo,
-#   hostname:
-#     if(
-#       is_nil(System.get_env("CF_DB_HOSTNAME")),
-#       do: "localhost",
-#       else: System.get_env("CF_DB_HOSTNAME")
-#     ),
-#   username: "postgres",
-#   password: "postgres",
-#   database: "captain_fact_test",
-#   pool: Ecto.Adapters.SQL.Sandbox
+config :db, DB.Repo,
+  hostname: "localhost",
+  username: System.get_env("FW_DB_USERNAME") || "postgres",
+  password: System.get_env("FW_DB_PASSWORD") || "postgres",
+  database: "faithful_word_test",
+  pool: Ecto.Adapters.SQL.Sandbox
