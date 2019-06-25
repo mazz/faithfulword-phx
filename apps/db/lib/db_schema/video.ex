@@ -73,16 +73,16 @@ defmodule DB.Schema.Video do
   defp limit_video_query_list(query, limit),
     do: limit(query, ^limit)
 
-  @doc """
-  Preload speakers for given video query
-  """
+  # @doc """
+  # Preload speakers for given video query
+  # """
   # def with_speakers(query) do
   #   from(v in query, preload: [:speakers])
   # end
 
-  @doc """
-  Preload statements for given video query
-  """
+  # @doc """
+  # Preload statements for given video query
+  # """
   # def with_statements(query) do
   #   from(v in query, preload: [:statements])
   # end

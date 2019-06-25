@@ -144,9 +144,9 @@ defmodule DB.Schema.User do
     Ecto.Changeset.change(model, achievements: updated_achievements)
   end
 
-  @doc """
-  Generate a changeset to link given `speaker` to user
-  """
+  # @doc """
+  # Generate a changeset to link given `speaker` to user
+  # """
   # def changeset_link_speaker(model, %Speaker{id: id}) do
   #   change(model, speaker_id: id)
   # end
