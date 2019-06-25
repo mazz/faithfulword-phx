@@ -3,7 +3,6 @@ defmodule DB.Schema.MediaItem do
   import Ecto.Changeset
   alias DB.Type.MediaItemHashId
 
-
   schema "mediaitems" do
     field :content_provider_link, :string
     field :ipfs_link, :string
@@ -34,11 +33,55 @@ defmodule DB.Schema.MediaItem do
   @doc false
   def changeset(media_item, attrs) do
     media_item
-    |> cast(attrs, [:ordinal, :uuid, :playlist_id, :org_id, :track_number, :tags, :media_category, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :presented_at, :source_material, :hash_id, :duration])
-    |> validate_required([:ordinal, :uuid, :playlist_id, :org_id, :track_number, :tags, :media_category, :medium, :localizedname, :path, :small_thumbnail_path, :med_thumbnail_path, :large_thumbnail_path, :content_provider_link, :ipfs_link, :language_id, :presenter_name, :presented_at, :source_material, :hash_id, :duration])
+    |> cast(attrs, [
+      :ordinal,
+      :uuid,
+      :playlist_id,
+      :org_id,
+      :track_number,
+      :tags,
+      :media_category,
+      :medium,
+      :localizedname,
+      :path,
+      :small_thumbnail_path,
+      :med_thumbnail_path,
+      :large_thumbnail_path,
+      :content_provider_link,
+      :ipfs_link,
+      :language_id,
+      :presenter_name,
+      :presented_at,
+      :source_material,
+      :hash_id,
+      :duration
+    ])
+    |> validate_required([
+      :ordinal,
+      :uuid,
+      :playlist_id,
+      :org_id,
+      :track_number,
+      :tags,
+      :media_category,
+      :medium,
+      :localizedname,
+      :path,
+      :small_thumbnail_path,
+      :med_thumbnail_path,
+      :large_thumbnail_path,
+      :content_provider_link,
+      :ipfs_link,
+      :language_id,
+      :presenter_name,
+      :presented_at,
+      :source_material,
+      :hash_id,
+      :duration
+    ])
   end
 
-    @doc """
+  @doc """
   Generate hash ID for media items
 
   ## Examples
@@ -49,5 +92,4 @@ defmodule DB.Schema.MediaItem do
   def changeset_generate_hash_id(media_item) do
     change(media_item, hash_id: MediaItemHashId.encode(media_item.id))
   end
-
 end

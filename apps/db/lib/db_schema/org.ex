@@ -3,7 +3,6 @@ defmodule DB.Schema.Org do
   import Ecto.Changeset
   alias DB.Type.OrgHashId
 
-
   schema "orgs" do
     field :basename, :string
     field :shortname, :string
@@ -22,7 +21,7 @@ defmodule DB.Schema.Org do
     # timestamps()
   end
 
-    @doc """
+  @doc """
   Generate hash ID for media items
 
   ## Examples
@@ -37,7 +36,25 @@ defmodule DB.Schema.Org do
   @doc false
   def changeset(org, attrs) do
     org
-    |> cast(attrs, [:uuid, :basename, :shortname, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :hash_id])
-    |> validate_required([:uuid, :basename, :shortname, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :hash_id])
+    |> cast(attrs, [
+      :uuid,
+      :basename,
+      :shortname,
+      :large_thumbnail_path,
+      :med_thumbnail_path,
+      :small_thumbnail_path,
+      :banner_path,
+      :hash_id
+    ])
+    |> validate_required([
+      :uuid,
+      :basename,
+      :shortname,
+      :large_thumbnail_path,
+      :med_thumbnail_path,
+      :small_thumbnail_path,
+      :banner_path,
+      :hash_id
+    ])
   end
 end

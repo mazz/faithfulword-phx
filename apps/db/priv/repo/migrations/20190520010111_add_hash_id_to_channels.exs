@@ -14,7 +14,6 @@ defmodule DB.Repo.Migrations.AddHashIdToChannels do
 
     # Flush pending migrations to ensure column is created
     flush()
-
   end
 
   def down do

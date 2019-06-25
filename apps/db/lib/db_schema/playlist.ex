@@ -22,19 +22,35 @@ defmodule DB.Schema.Playlist do
 
     timestamps(type: :utc_datetime)
 
-
     # timestamps()
   end
 
   @doc false
   def changeset(playlist, attrs) do
     playlist
-    |> cast(attrs, [:ordinal, :uuid, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :channel_id, :hash_id])
-    |> validate_required([:ordinal, :uuid, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :channel_id, :hash_id])
+    |> cast(attrs, [
+      :ordinal,
+      :uuid,
+      :large_thumbnail_path,
+      :med_thumbnail_path,
+      :small_thumbnail_path,
+      :banner_path,
+      :channel_id,
+      :hash_id
+    ])
+    |> validate_required([
+      :ordinal,
+      :uuid,
+      :large_thumbnail_path,
+      :med_thumbnail_path,
+      :small_thumbnail_path,
+      :banner_path,
+      :channel_id,
+      :hash_id
+    ])
   end
 
-
-    @doc """
+  @doc """
   Generate hash ID for media items
 
   ## Examples
@@ -45,6 +61,4 @@ defmodule DB.Schema.Playlist do
   def changeset_generate_hash_id(playlist) do
     change(playlist, hash_id: PlaylistHashId.encode(playlist.id))
   end
-
 end
-

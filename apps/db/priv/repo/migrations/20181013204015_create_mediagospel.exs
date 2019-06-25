@@ -21,6 +21,5 @@ defmodule DB.Repo.Migrations.CreateMediagospel do
     create index(:mediagospel, [:gospel_id])
     create index(:mediagospel, ["updated_at DESC"])
     create index(:mediagospel, [:uuid])
-
   end
 end

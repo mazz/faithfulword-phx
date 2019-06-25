@@ -2,7 +2,6 @@ defmodule DB.Schema.MusicTitle do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "musictitles" do
     field :language_id, :string
     field :localizedname, :string

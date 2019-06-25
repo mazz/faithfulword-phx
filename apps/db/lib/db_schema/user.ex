@@ -9,7 +9,8 @@ defmodule DB.Schema.User do
   import Ecto.Changeset
 
   alias DB.Type.{Achievement, UserPicture}
-  alias DB.Schema.{UserAction}#, Comment, Vote, Flag, Speaker}
+  # , Comment, Vote, Flag, Speaker}
+  alias DB.Schema.{UserAction}
   require Logger
 
   schema "users" do

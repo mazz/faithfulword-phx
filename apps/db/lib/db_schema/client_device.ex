@@ -17,7 +17,14 @@ defmodule DB.Schema.ClientDevice do
   @doc false
   def changeset(client_device, attrs) do
     client_device
-    |> cast(attrs, [:uuid, :firebase_token, :apns_token, :preferred_language, :user_agent, :user_version])
+    |> cast(attrs, [
+      :uuid,
+      :firebase_token,
+      :apns_token,
+      :preferred_language,
+      :user_agent,
+      :user_version
+    ])
     |> validate_required([:uuid, :firebase_token, :apns_token, :preferred_language, :user_agent])
   end
 end

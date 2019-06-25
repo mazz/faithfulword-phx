@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreatePlaylists do
 
   def change do
     create table(:playlists, primary_key: true) do
-
       add :ordinal, :integer
       add :uuid, :uuid
       add :basename, :string

@@ -9,7 +9,8 @@ defmodule DB.Schema.UserAction do
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias DB.Schema.{UserAction, User} #, Video, Speaker, Comment, Statement}
+  # , Video, Speaker, Comment, Statement}
+  alias DB.Schema.{UserAction, User}
 
   schema "users_actions" do
     belongs_to(:user, User)
