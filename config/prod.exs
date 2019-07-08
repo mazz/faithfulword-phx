@@ -2,9 +2,7 @@ use Mix.Config
 
 # faithful_word ###############################################################
 
-config :faithful_word, DB.Repo,
-  pool_size: 30
-
+config :faithful_word, DB.Repo, pool_size: 30
 
 # ---- [Global config keys] ----
 
@@ -19,7 +17,8 @@ config :faithful_word,
   env: Mix.env(),
   ecto_repos: [DB.Repo],
   frontend_url: frontend_url,
-  youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4", #fwsaved-web
+  # fwsaved-web
+  youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4",
   oauth: [
     facebook: [
       client_id: "client_id",
@@ -27,7 +26,6 @@ config :faithful_word,
       redirect_uri: Path.join(frontend_url, "login/callback/facebook")
     ]
   ]
-
 
 # TODO: add ex_aws keys
 

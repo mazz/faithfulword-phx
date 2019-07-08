@@ -78,14 +78,14 @@ defmodule FaithfulWord.Jobs.Flags do
 
   # Check for flags on comments
   # defp update_entity_flags(:comment, %UserAction{comment_id: comment_id}) do
-    # nb_flags = Flagger.get_nb_flags(:create, :comment, comment_id)
+  # nb_flags = Flagger.get_nb_flags(:create, :comment, comment_id)
 
-    # with true <- nb_flags >= Moderation.nb_flags_to_report(:create, :comment),
-    #      {:ok, _} <- Moderation.ban_comment(comment_id) do
-    #   1
-    # else
-    #   _ -> 0
-    # end
+  # with true <- nb_flags >= Moderation.nb_flags_to_report(:create, :comment),
+  #      {:ok, _} <- Moderation.ban_comment(comment_id) do
+  #   1
+  # else
+  #   _ -> 0
+  # end
   # end
 
   # # Ignore other flags

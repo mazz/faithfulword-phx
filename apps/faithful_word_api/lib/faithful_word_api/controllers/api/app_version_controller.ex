@@ -17,34 +17,39 @@ defmodule FaithfulWordApi.AppVersionController do
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "language not found in supported list."})
+
       app_version_v12 ->
-        Logger.debug("app_version_v12 #{inspect %{attributes: app_version_v12}}")
+        Logger.debug("app_version_v12 #{inspect(%{attributes: app_version_v12})}")
+
         conn
         |> put_view(AppVersionV12View)
         |> render("indexv12.json", %{app_version_v12: app_version_v12})
     end
   end
 
-  def indexv13(conn,  %{"offset" => offset, "limit" => limit}) do
+  def indexv13(conn, %{"offset" => offset, "limit" => limit}) do
     V13.app_versions(offset, limit)
-    |>
-    case do
+    |> case do
       nil ->
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "language not found in supported list."})
+
       app_version_v13 ->
-        Logger.debug("app_version #{inspect %{attributes: app_version_v13}}")
+        Logger.debug("app_version #{inspect(%{attributes: app_version_v13})}")
+
         Enum.at(conn.path_info, 0)
-        |>
-        case do
+        |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
+
             conn
             |> put_view(AppVersionV13View)
-            |> render("indexv13.json", %{app_version_v13: app_version_v13, api_version: api_version})
+            |> render("indexv13.json", %{
+              app_version_v13: app_version_v13,
+              api_version: api_version
+            })
         end
     end
   end
-
 end

@@ -24,5 +24,4 @@ defmodule FaithfulWordApi.Admin.UploadController do
   #   push_message = PushNotifications.get_push_message!(id)
   #   render(conn, "show.json", push_message: push_message)
   # end
-
 end

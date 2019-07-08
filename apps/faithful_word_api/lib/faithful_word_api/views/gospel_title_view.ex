@@ -11,9 +11,11 @@ defmodule FaithfulWordApi.GospelTitleView do
   end
 
   def render("gospel_title.json", %{gospel_title: gospel_title}) do
-    %{id: gospel_title.id,
+    %{
+      id: gospel_title.id,
       uuid: gospel_title.uuid,
       localizedname: gospel_title.localizedname,
-      language_id: gospel_title.language_id}
+      language_id: gospel_title.language_id
+    }
   end
 end

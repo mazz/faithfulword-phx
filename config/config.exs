@@ -26,8 +26,9 @@ config :faithful_word,
   ecto_repos: [DB.Repo],
   frontend_url: frontend_url,
   invitation_system: false,
-  #ENV_SUBSTITUTION
-  youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4", #fwsaved-web
+  # ENV_SUBSTITUTION
+  # fwsaved-web
+  youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4",
   oauth: [
     facebook: [
       client_id: "client_id",
@@ -49,14 +50,15 @@ config :arc,
 
 config :faithful_word, FaithfulWord.Mailer,
   adapter: Bamboo.MailgunAdapter,
-  #ENV_SUBSTITUTION
+  # ENV_SUBSTITUTION
   api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
   domain: "sandbox30725.mailgun.org"
 
 config :pigeon, :fcm,
   fcm_default: %{
-    #ENV_SUBSTITUTION
-    key: "AAAA7hc7NSo:APA91bFIP2n9IHrcBxitXcV8BWfdY_bb8BDEljEAh8o4EqUZZZWUNhEzi360upRcySV9gRVyL9kEoXSCUtCm9DZEyvE4JQbTSsN1n1ocCZ-lMOjD2e4M_J_u-ij05UI0o1pTh_dfzVd3"
+    # ENV_SUBSTITUTION
+    key:
+      "AAAA7hc7NSo:APA91bFIP2n9IHrcBxitXcV8BWfdY_bb8BDEljEAh8o4EqUZZZWUNhEzi360upRcySV9gRVyL9kEoXSCUtCm9DZEyvE4JQbTSsN1n1ocCZ-lMOjD2e4M_J_u-ij05UI0o1pTh_dfzVd3"
   }
 
 # config :faithful_word, FaithfulWordApi.Auth.Guardian,
@@ -64,7 +66,7 @@ config :pigeon, :fcm,
 #   issuer: "FaithfulWordApi"
 
 config :faithful_word, FaithfulWord.Authenticator.GuardianImpl,
-  #ENV_SUBSTITUTION
+  # ENV_SUBSTITUTION
   secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
   issuer: "FaithfulWord",
   ttl: {30, :days},
@@ -78,7 +80,7 @@ config :guardian, Guardian.DB, repo: DB.Repo
 
 config :rollbax,
   enabled: true,
-  #ENV_SUBSTITUTION
+  # ENV_SUBSTITUTION
   access_token: "a68f30a241f64dddab0349d1f4375506",
   environment: "production"
 
@@ -91,7 +93,8 @@ config :faithful_word_api,
 
 config :faithful_word_api,
   cors_origins: "*"
-  # cors_origins: []
+
+# cors_origins: []
 
 # Configures the endpoint
 config :faithful_word_api, FaithfulWordApi.Endpoint,
@@ -128,8 +131,7 @@ config :faithful_word_jobs, FaithfulWord.Jobs.Scheduler,
     # Various updaters
     # Every 5 minutes
     # {"*/5 * * * *", {FaithfulWord.Jobs.Moderation, :update, []}}
-]
-
+  ]
 
 # General #####################################################################
 

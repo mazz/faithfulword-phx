@@ -11,12 +11,14 @@ defmodule FaithfulWordApi.PushMessageView do
   end
 
   def render("push_message.json", %{push_message: push_message}) do
-    %{id: push_message.id,
+    %{
+      id: push_message.id,
       uuid: push_message.uuid,
       created_at: push_message.created_at,
       updated_at: push_message.updated_at,
       title: push_message.title,
       message: push_message.message,
-      sent: push_message.sent}
+      sent: push_message.sent
+    }
   end
 end

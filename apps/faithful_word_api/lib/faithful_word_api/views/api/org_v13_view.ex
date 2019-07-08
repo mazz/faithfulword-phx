@@ -5,13 +5,15 @@ defmodule FaithfulWordApi.OrgV13View do
   require Logger
 
   def render("defaultv13.json", %{org_v13: org_v13, api_version: api_version}) do
-    %{result: render_many(org_v13, OrgV13View, "org_v13.json"),
-    pageNumber: org_v13.page_number,
-    pageSize: org_v13.page_size,
-    status: "success",
-    totalEntries: org_v13.total_entries,
-    totalPages: org_v13.total_pages,
-    version: api_version}
+    %{
+      result: render_many(org_v13, OrgV13View, "org_v13.json"),
+      pageNumber: org_v13.page_number,
+      pageSize: org_v13.page_size,
+      status: "success",
+      totalEntries: org_v13.total_entries,
+      totalPages: org_v13.total_pages,
+      version: api_version
+    }
   end
 
   def render("show.json", %{org_v13: org_v13}) do
@@ -21,9 +23,10 @@ defmodule FaithfulWordApi.OrgV13View do
   def render("org_v13.json", %{org_v13: org_v13}) do
     # {"Revelation", "Apocalipse", "2c22a08a-80ee-4ec1-be94-f018892fe8ba", "pt"}
     # {b.basename, title.localizedname, b.uuid, title.language_id}
-    Logger.debug("org #{inspect %{attributes: org_v13}}")
+    Logger.debug("org #{inspect(%{attributes: org_v13})}")
 
-    %{basename: org_v13.basename,
+    %{
+      basename: org_v13.basename,
       uuid: org_v13.uuid,
       shortname: org_v13.shortname,
       smallThumbnailPath: org_v13.small_thumbnail_path,
@@ -38,6 +41,4 @@ defmodule FaithfulWordApi.OrgV13View do
 
   defp render_unix_timestamp(nil), do: nil
   defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
-
 end
-
