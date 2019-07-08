@@ -128,8 +128,7 @@ config :faithful_word_jobs, FaithfulWord.Jobs.Scheduler,
     # Various updaters
     # Every 5 minutes
     # {"*/5 * * * *", {FaithfulWord.Jobs.Moderation, :update, []}}
-
-
+]
 
 
 # General #####################################################################
