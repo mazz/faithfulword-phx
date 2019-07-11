@@ -5,19 +5,14 @@ The devnotes.md has some commands to get your environment up but you'll need asd
 https://asdf-vm.com/#/core-manage-asdf-vm
 
 then:
-
 ```
 asdf plugin-add elixir
 asdf plugin-add erlang
 asdf plugin-add nodejs
 
-asdf install elixir 1.8.1-otp-21
-asdf install erlang 21.0
-NODEJS_CHECK_SIGNATURES=no asdf install nodejs 10.15.3
-
-asdf global elixir 1.8.1-otp-21
-asdf global erlang 21.0
-asdf global nodejs 10.15.3
+asdf install elixir 1.9.0
+asdf install erlang 21.2.3
+NODEJS_CHECK_SIGNATURES=no asdf install nodejs 10.16.0
 ```
 
 ### install a local postgresql db server
