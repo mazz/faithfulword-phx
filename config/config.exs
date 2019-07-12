@@ -18,15 +18,11 @@ config :db,
 
 frontend_url = String.trim_trailing("http://localhost:3000/") <> "/"
 
-# TODO: add facebook keys
-# TODO: add youtube_api_key keys
-
 config :faithful_word,
   env: Mix.env(),
   ecto_repos: [DB.Repo],
   frontend_url: frontend_url,
   invitation_system: false,
-  # ENV_SUBSTITUTION
   # fwsaved-web
   youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4",
   oauth: [
@@ -37,26 +33,20 @@ config :faithful_word,
     ]
   ]
 
-# TODO: add ex_aws keys
-
 config :ex_aws,
   access_key_id: ["access_key_id", :instance_role],
   secret_access_key: ["secret_access_key", :instance_role]
 
-# TODO: add arc keys
-
 config :arc,
-  bucket: "s3_bucket"
+  bucket: {:system, "AWS_S3_BUCKET"}
 
 config :faithful_word, FaithfulWord.Mailer,
   adapter: Bamboo.MailgunAdapter,
-  # ENV_SUBSTITUTION
   api_key: "key-6-lwae88m8q5gefyfzuv-k1j33f05666",
   domain: "sandbox30725.mailgun.org"
 
 config :pigeon, :fcm,
   fcm_default: %{
-    # ENV_SUBSTITUTION
     key:
       "AAAA7hc7NSo:APA91bFIP2n9IHrcBxitXcV8BWfdY_bb8BDEljEAh8o4EqUZZZWUNhEzi360upRcySV9gRVyL9kEoXSCUtCm9DZEyvE4JQbTSsN1n1ocCZ-lMOjD2e4M_J_u-ij05UI0o1pTh_dfzVd3"
   }
@@ -66,7 +56,6 @@ config :pigeon, :fcm,
 #   issuer: "FaithfulWordApi"
 
 config :faithful_word, FaithfulWord.Authenticator.GuardianImpl,
-  # ENV_SUBSTITUTION
   secret_key: "pnggot8GyQJKcPpPpnt1hZ1iGO9MZWkBd09+T6aJOQ2lK3ao6AnNgk0sCbydY8dW",
   issuer: "FaithfulWord",
   ttl: {30, :days},
@@ -80,13 +69,10 @@ config :guardian, Guardian.DB, repo: DB.Repo
 
 config :rollbax,
   enabled: true,
-  # ENV_SUBSTITUTION
   access_token: "a68f30a241f64dddab0349d1f4375506",
   environment: "production"
 
 # faithful_word_api ###########################################################
-
-# General application configuration
 config :faithful_word_api,
   ecto_repos: [DB.Repo],
   generators: [context_app: :db, binary_id: true]
@@ -94,22 +80,17 @@ config :faithful_word_api,
 config :faithful_word_api,
   cors_origins: "*"
 
-# cors_origins: []
-
 # Configures the endpoint
 config :faithful_word_api, FaithfulWordApi.Endpoint,
   # url: [host: "api.faithfulword.app"],
   check_origin: ["//localhost", "//api.faithfulword.app"],
-  # ENV_SUBSTITUTION
   secret_key_base: "QI+125cFBB5Z+vR6D3ULCuhDalvbkd7Gse5zkpLrjhSK7sdm8XeNeB/Gq1zO5Gt8",
   render_errors: [view: FaithfulWordApi.ErrorView, accepts: ~w(html json)],
   pubsub: [name: FaithfulWordApi.PubSub, adapter: Phoenix.PubSub.PG2],
-  # ENV_SUBSTITUTION
   live_view: [signing_salt: "KbeDjtwqHvOg4RGpnnLTEAEZ0raM2+5N3JbN5d2pCfnOSJ2Ir9+SJUlaApGvT1ej"]
 
 config :faithful_word_api, FaithfulWordApi.Guardian,
   issuer: "FaithfulWordApi",
-  # ENV_SUBSTITUTION
   secret_key: "ft8TBDLTR8kFdU253xYhBxzX6aTyJK+dJKkGGUo8Ju8vPCgo5IEX590sh6OgY0s6"
 
 # faithful_word_jobs ##########################################################
