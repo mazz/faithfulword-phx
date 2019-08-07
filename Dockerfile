@@ -14,10 +14,17 @@ RUN apk update \
 
 COPY . .
 
-RUN HEX_HTTP_CONCURRENCY=1 HEX_HTTP_TIMEOUT=120 mix do deps.get, deps.compile, compile
+RUN HEX_HTTP_CONCURRENCY=1 HEX_HTTP_TIMEOUT=120 mix do deps.get, deps.compile, compile, release
+RUN mv _build/prod/rel/${APP_NAME} /opt/release \
+    && mv /opt/release/bin/${APP_NAME} /opt/release/bin/start_server
 
-RUN mix release --env=prod 
-
+FROM alpine:3.9
+RUN apk update && apk --no-cache --update add bash openssl-dev
+WORKDIR /opt/app
+EXPOSE 4000
+COPY --from=0 /opt/release .
+# ENTRYPOINT ["/opt/app/bin/start_server"]
+# CMD ["start"]
 # # docker build -t faithful_word:deps --target=deps .
 # FROM builder as deps
 # COPY mix.* /app/
@@ -39,7 +46,7 @@ RUN mix release --env=prod
 # COPY apps/faithful_word_api/assets/package*.json /app/
 # COPY --from=deps /app/deps/phoenix /deps/phoenix
 # COPY --from=deps /app/deps/phoenix_html /deps/phoenix_html
-# COPY --from=deps /app/deps/phoenix_live_view /deps/phoenix_live_view
+# COPY --fr/home/abella/Videos/Developer/Nuxt.js – Vue.js on Steroids/Nuxt.js – Vue.js on Steroidsom=deps /app/deps/phoenix_live_view /deps/phoenix_live_view
 # RUN npm ci
 # COPY apps/faithful_word_api/assets /app
 # RUN npm run deploy

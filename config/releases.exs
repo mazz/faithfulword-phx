@@ -2,11 +2,7 @@ import Config
 
 port = String.to_integer(System.fetch_env!("FW_PORT"))
 
-config :db,
-  username: System.fetch_env!("FW_DB_USERNAME"),
-  password: System.fetch_env!("FW_DB_PASSWORD"),
-  database: System.fetch_env!("FW_DB_NAME"),
-  hostname: System.fetch_env!("FW_DB_HOSTNAME")
+# Database is configured in /apps/db/lib/db/repo
 
 config :faithful_word,
   youtube_api_key: System.fetch_env!("FW_YOUTUBE_API_KEY"),
