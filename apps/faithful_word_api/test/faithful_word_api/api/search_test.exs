@@ -13,7 +13,7 @@ defmodule FaithfulWordApi.SearchTest do
     search_string = "1 chr anderson 1 chr test amos 3 john 2john 2j 2 j 1cor"
 
     MediaItemsSearch.normalize_bible_book_abbreviations(search_string)
-    |> IO.inspect
+    |> IO.inspect()
 
     # ## Remove blanks from numbered books
     # no_blanks_in_abbrev_search_string = replace_and_remove_blanks_from_numbered_books(search_string)
@@ -49,7 +49,6 @@ defmodule FaithfulWordApi.SearchTest do
 
     # IO.inspect(expanded_book_name(book_map, search_string))
 
-
     # Logger.info("joined: #{joined}")
     # for  {k, v}  <- MediaItemsSearch.abbreviations()  do
     #   search_string = "Colossians"
@@ -64,7 +63,10 @@ defmodule FaithfulWordApi.SearchTest do
   end
 
   defp replace_and_remove_blanks_from_numbered_books(search_string) do
-    Regex.replace(~r{([1-3]\s*w*[a-zA-Z]\w*)}, search_string, fn _, x -> "#{String.replace(x, " ", "")}" end)
+    Regex.replace(~r{([1-3]\s*w*[a-zA-Z]\w*)}, search_string, fn _, x ->
+      "#{String.replace(x, " ", "")}"
+    end)
+
     # Regex.split(~r{[1-3]\s*w*[a-zA-Z]\w*}, search_string, include_captures: true, trim: true)
   end
 
@@ -74,8 +76,8 @@ defmodule FaithfulWordApi.SearchTest do
     IO.inspect(search_string)
     ## WORKS, returns an array with matched books at the correct index
     ## and nil where there is no match
-    Enum.map(String.split(search_string, " "), fn(y) ->
-      Enum.find(bible, fn(x) -> y in x["abbreviations"] end)
+    Enum.map(String.split(search_string, " "), fn y ->
+      Enum.find(bible, fn x -> y in x["abbreviations"] end)
     end)
 
     ## WORKS but does triplicate
@@ -106,4 +108,3 @@ defmodule FaithfulWordApi.SearchTest do
     # Enum.find(book_map, fn x -> search_string in elem(x, 1) end)
   end
 end
-

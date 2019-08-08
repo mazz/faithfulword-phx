@@ -14,4 +14,3 @@ defenum(
   tutorial: 9,
   conference: 10
 )
-

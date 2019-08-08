@@ -19,7 +19,6 @@ defmodule FaithfulWordApi do
 
   alias FaithfulWord.Authenticator.GuardianImpl
 
-
   def controller do
     quote do
       use Phoenix.Controller, namespace: FaithfulWordApi

@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateMediaitems do
 
   def change do
     create table(:mediaitems, primary_key: true) do
-
       add :ordinal, :integer
       add :uuid, :uuid
       add :track_number, :integer

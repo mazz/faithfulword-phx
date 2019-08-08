@@ -47,5 +47,4 @@ defmodule FaithfulWordJobs.MixProject do
   defp aliases do
     []
   end
-
 end

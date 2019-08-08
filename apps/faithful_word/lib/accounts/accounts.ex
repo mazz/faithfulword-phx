@@ -228,17 +228,22 @@ defmodule FaithfulWord.Accounts do
 
   def confirm_email!(user = %User{email_confirmed: false}) do
     confirm = User.changeset_confirm_email(user, true)
-    case Repo.update confirm do
-      {:ok, updated_user} ->  # Updated with success
+
+    case Repo.update(confirm) do
+      # Updated with success
+      {:ok, updated_user} ->
         Logger.debug("update success")
+
         case unlock_achievement(updated_user, :not_a_robot) do
           {:ok, final_user} ->
             final_user
+
           # Don't fail if achievement cannot be unlocked, but log the error
           _ ->
             Logger.error(":not_a_robot achievement unlock failed for user #{user.id}")
             updated_user
         end
+
       {:error, _, reason, _} ->
         Logger.error(reason)
         raise reason
@@ -425,5 +430,3 @@ defmodule FaithfulWord.Accounts do
     |> Repo.one!()
   end
 end
-
-

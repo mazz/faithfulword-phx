@@ -11,9 +11,11 @@ defmodule FaithfulWordApi.MusicTitleView do
   end
 
   def render("music_title.json", %{music_title: music_title}) do
-    %{id: music_title.id,
+    %{
+      id: music_title.id,
       uuid: music_title.uuid,
       localizedname: music_title.localizedname,
-      language_id: music_title.language_id}
+      language_id: music_title.language_id
+    }
   end
 end

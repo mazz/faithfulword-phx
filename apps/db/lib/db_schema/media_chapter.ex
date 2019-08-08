@@ -21,7 +21,29 @@ defmodule DB.Schema.MediaChapter do
   @doc false
   def changeset(media_chapter, attrs) do
     media_chapter
-    |> cast(attrs, [:absolute_id, :uuid, :track_number, :localizedname, :path, :large_thumbnail_path, :small_thumbnail_path, :language_id, :presenter_name, :source_material])
-    |> validate_required([:absolute_id, :uuid, :track_number, :localizedname, :path, :large_thumbnail_path, :small_thumbnail_path, :language_id, :presenter_name, :source_material])
+    |> cast(attrs, [
+      :absolute_id,
+      :uuid,
+      :track_number,
+      :localizedname,
+      :path,
+      :large_thumbnail_path,
+      :small_thumbnail_path,
+      :language_id,
+      :presenter_name,
+      :source_material
+    ])
+    |> validate_required([
+      :absolute_id,
+      :uuid,
+      :track_number,
+      :localizedname,
+      :path,
+      :large_thumbnail_path,
+      :small_thumbnail_path,
+      :language_id,
+      :presenter_name,
+      :source_material
+    ])
   end
 end

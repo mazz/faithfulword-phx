@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateLanguageidentifier do
 
   def change do
     create table(:languageidentifiers) do
-
       add :uuid, :uuid
       add :identifier, :string
       add :source_material, :string

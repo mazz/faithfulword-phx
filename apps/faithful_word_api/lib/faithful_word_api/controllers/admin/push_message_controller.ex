@@ -12,7 +12,8 @@ defmodule FaithfulWordApi.Admin.PushMessageController do
   end
 
   def create(conn, %{"push_message" => push_message_params}) do
-    with {:ok, %PushMessage{} = push_message} <- PushNotifications.create_push_message(push_message_params) do
+    with {:ok, %PushMessage{} = push_message} <-
+           PushNotifications.create_push_message(push_message_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.push_message_path(conn, :show, push_message))
@@ -28,7 +29,8 @@ defmodule FaithfulWordApi.Admin.PushMessageController do
   def update(conn, %{"id" => id, "push_message" => push_message_params}) do
     push_message = PushNotifications.get_push_message!(id)
 
-    with {:ok, %PushMessage{} = push_message} <- PushNotifications.update_push_message(push_message, push_message_params) do
+    with {:ok, %PushMessage{} = push_message} <-
+           PushNotifications.update_push_message(push_message, push_message_params) do
       render(conn, "show.json", push_message: push_message)
     end
   end

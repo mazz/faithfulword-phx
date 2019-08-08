@@ -7,6 +7,7 @@ defmodule FaithfulWordApi.PageController do
     # |> assign(:users, Accounts.list_users())
     # |> assign(:current_user, Guardian.Plug.current_resource(conn))
     |> render("index.html")
+
     # render conn, "index.html"
 
     # |> send_resp(200, """
@@ -17,5 +18,4 @@ defmodule FaithfulWordApi.PageController do
   def about(conn, _params) do
     render(conn, "about.html")
   end
-
 end

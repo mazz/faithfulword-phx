@@ -2,7 +2,6 @@ defmodule DB.Schema.Gospel do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "gospel" do
     field :absolute_id, :integer
     field :basename, :string
@@ -12,7 +11,6 @@ defmodule DB.Schema.Gospel do
     has_many :mediagospel, DB.Schema.MediaGospel
     has_many :gospeltitles, DB.Schema.GospelTitle
     timestamps(type: :utc_datetime)
-
   end
 
   @doc false

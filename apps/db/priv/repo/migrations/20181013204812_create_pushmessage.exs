@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreatePushmessage do
 
   def change do
     create table(:pushmessages) do
-
       add :uuid, :uuid
       # add :created_at, :utc_datetime
       # add :updated_at, :utc_datetime
