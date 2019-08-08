@@ -117,7 +117,6 @@ class Dbtool(object):
             {'basename': 'All Scripture Baptist Church, Knoxville, TN', 'shortname': 'asbc'},
             {'basename': 'ibsa, USA', 'shortname': 'ibsa'},
             {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'},
-            {'basename': 'Strong Hold Baptist Church', 'shortname': 'shbc'},
             {'basename': 'Stedfast Baptist JAX', 'shortname': 'sbcj'},
             {'basename': 'New Life Baptist Church', 'shortname': 'nlbc'},
             {'basename': 'Verity Baptist Manila', 'shortname': 'vbcm'}
