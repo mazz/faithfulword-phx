@@ -105,7 +105,7 @@ class Dbtool(object):
             {'basename': 'faithfulwordapp', 'shortname': 'faithfulwordapp'},
             {'basename': 'Faithful Word Baptist Church, Tempe, AZ', 'shortname': 'fwbc'},
             {'basename': 'Verity Baptist Church, Sacramento, CA', 'shortname': 'vbc'},
-            {'basename': 'Word of Truth Baptist Church', 'shortname': 'wotbc'},
+            {'basename': 'Strong Hold Baptist Church', 'shortname': 'wotbc'},
             {'basename': 'Faith Baptist Church', 'shortname': 'fbc'},
             {'basename': 'Liberty Baptist Church', 'shortname': 'lbc'},
             {'basename': 'Faithful Word Baptist Church LA', 'shortname': 'fwbcla'},
@@ -116,7 +116,11 @@ class Dbtool(object):
             {'basename': 'Old Paths Baptist Church, El Paso, TX', 'shortname': 'opbc'},
             {'basename': 'All Scripture Baptist Church, Knoxville, TN', 'shortname': 'asbc'},
             {'basename': 'ibsa, USA', 'shortname': 'ibsa'},
-            {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'}
+            {'basename': 'Stedfast Baptist Church Houston, TX', 'shortname': 'sbc'},
+            {'basename': 'Strong Hold Baptist Church', 'shortname': 'shbc'},
+            {'basename': 'Stedfast Baptist JAX', 'shortname': 'sbcj'},
+            {'basename': 'New Life Baptist Church', 'shortname': 'nlbc'},
+            {'basename': 'Verity Baptist Manila', 'shortname': 'vbcm'}
         ]
         # generate ORGs and make a 'main' channel
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format('faithful_word_dev'))
@@ -227,7 +231,7 @@ class Dbtool(object):
                 elif gospel['basename'] == 'Plan of Salvation' or gospel['basename'] == 'Soul-winning Sermons' or gospel['basename'] == 'आत्मिक जीत स्पष्टीकरण':
                     channel_id = k_channel_id["gospel"]
                     media_category = k_media_category["gospel"]
-                elif gospel['basename'] == 'Word of Truth Baptist Church Sermons' or gospel['basename'] == 'FWBC Sermons' or gospel['basename'] == 'Faith Baptist Church Louisiana Sermons' or gospel['basename'] == 'Verity Baptist Church Sermons' or gospel['basename'] == 'Old Path Baptist Church Sermons' or gospel['basename'] == 'Liberty Baptist Church Sermons' or gospel['basename'] == 'Faithful Word Baptist Church LA' or gospel['basename'] == 'Temple Baptist Church Sermons' or gospel['basename'] == 'Sean Jolley Spanish' or gospel['basename'] == 'ASBC' or gospel['basename'] == 'Entire Bible Preached Project' or gospel['basename'] == 'Pillar Baptist Church' or gospel['basename'] == 'Iglesia Bautista de Santa Ana' or gospel['basename'] == 'FWBC Espanol' or gospel['basename'] == 'Make America Straight Again Conference' or gospel['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or gospel['basename'] == 'Justice by Jack Hyles' or gospel['basename'] == 'Verity Baptist Vancouver (Preaching)' or gospel['basename'] == 'Stedfast Baptist Church' or gospel['basename'] == 'Post Trib Bible Prophecy Conference' or gospel['basename'] == 'Mountain Baptist Church':
+                elif gospel['basename'] == 'Word of Truth Baptist Church Sermons' or gospel['basename'] == 'FWBC Sermons' or gospel['basename'] == 'Faith Baptist Church Louisiana Sermons' or gospel['basename'] == 'Verity Baptist Church Sermons' or gospel['basename'] == 'Old Path Baptist Church Sermons' or gospel['basename'] == 'Liberty Baptist Church Sermons' or gospel['basename'] == 'Faithful Word Baptist Church LA' or gospel['basename'] == 'Temple Baptist Church Sermons' or gospel['basename'] == 'Sean Jolley Spanish' or gospel['basename'] == 'ASBC' or gospel['basename'] == 'Entire Bible Preached Project' or gospel['basename'] == 'Pillar Baptist Church' or gospel['basename'] == 'Iglesia Bautista de Santa Ana' or gospel['basename'] == 'FWBC Espanol' or gospel['basename'] == 'Make America Straight Again Conference' or gospel['basename'] == 'Win Your Wife\'s Heart by Jack Hyles' or gospel['basename'] == 'Justice by Jack Hyles' or gospel['basename'] == 'Verity Baptist Vancouver (Preaching)' or gospel['basename'] == 'Stedfast Baptist Church' or gospel['basename'] == 'Post Trib Bible Prophecy Conference' or gospel['basename'] == 'Mountain Baptist Church' or gospel['basename'] == 'Strong Hold Baptist Church' or gospel['basename'] == 'Stedfast Baptist JAX' or gospel['basename'] == 'New Life Baptist Church' or gospel['basename'] == 'Verity Baptist Manila':
                         channel_id = k_channel_id["preaching"]
                         media_category = k_media_category["preaching"]
                 elif gospel['basename'] == 'Documentaries':
@@ -737,7 +741,7 @@ class Dbtool(object):
         self._insertmediaitemrows(self._preachingrows(5, 'Soul-winning Sermons', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(6, 'FWBC Sermons', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(7, 'Verity Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
-        self._insertmediaitemrows(self._preachingrows(9, 'Word of Truth Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(9, 'Strong Hold Baptist Church', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(10, 'Faith Baptist Church Louisiana Sermons', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(12, 'Old Path Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(14, 'Liberty Baptist Church Sermons', args.dbname), k_media_category["preaching"], args.dbname)
@@ -759,6 +763,9 @@ class Dbtool(object):
         self._insertmediaitemrows(self._preachingrows(33, 'Stedfast Baptist Church', args.dbname), k_media_category["preaching"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(23, 'Documentaries', args.dbname), k_media_category["movie"], args.dbname)
         self._insertmediaitemrows(self._preachingrows(34, 'Make America Straight Again Conference', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(35, 'Stedfast Baptist JAX', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(37, 'New Life Baptist Church', args.dbname), k_media_category["preaching"], args.dbname)
+        self._insertmediaitemrows(self._preachingrows(38, 'Verity Baptist Manila', args.dbname), k_media_category["preaching"], args.dbname)
 
     def _preachingrows(self, gospelid, playlistname, dbname):
         sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(dbname))
@@ -1304,7 +1311,7 @@ class Dbtool(object):
 
             UPDATE mediaitems SET presenter_name = \'Pastor Tommy McMurtry\' WHERE  presenter_name = \'Pastor McMurtry\';
             UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE presenter_name = \'Brother Matthew Stucky\';
-            UPDATE mediaitems SET source_material = \'Word of Truth Baptist Church\' WHERE presenter_name = \'Pastor David Berzins\';
+            UPDATE mediaitems SET source_material = \'Strong Hold Baptist Church\' WHERE presenter_name = \'Pastor David Berzins\';
             UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE presenter_name = \'Pastor Roger Jimenez\';
             UPDATE mediaitems SET source_material = \'Faithful Word Baptist Church\' WHERE presenter_name = \'Pastor Steven Anderson\';
             UPDATE mediaitems SET presenter_name = \'Brother Aaron Thompson\' WHERE uuid = \'87c66fa7-c695-4f51-aa30-b0d5334ed652\';
