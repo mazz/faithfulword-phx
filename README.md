@@ -10,9 +10,9 @@ asdf plugin-add elixir
 asdf plugin-add erlang
 asdf plugin-add nodejs
 
-asdf install elixir 1.9.0
-asdf install erlang 21.2.3
-NODEJS_CHECK_SIGNATURES=no asdf install nodejs 10.16.0
+asdf install elixir 1.9.1
+asdf install erlang 22.0.7
+NODEJS_CHECK_SIGNATURES=no asdf install nodejs 11.15.0
 ```
 
 ### install a local postgresql db server
@@ -35,9 +35,16 @@ pip install -U pip
 pip install psycopg2
 cd ../faithfulword-phx
 
-./dbtool.py migratefromwebsauna ./2019-06-22-media-item-v1.3-bin.pgsql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs ; mix run apps/db/priv/repo/hash_ids.exs
+### latest db fie:
+2019-08-07-mediaitem-v1.3-bin.sql
+
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-08-07-mediaitem-v1.3-bin.sql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+
+### export db as a complete seeded file to production:
+./dbtool.py exportdb faithful_word_dev 2019-06-22-media-item-seeded-not-materialized.pgsql
+
 ### run
-mix phx.server
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix phx.server
 ```
 
 ### open url in browser
