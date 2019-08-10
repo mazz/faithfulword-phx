@@ -1,6 +1,7 @@
 defmodule FaithfulWordApi.ShareMediaItemController do
   use FaithfulWordApi, :controller
   alias FaithfulWordApi.V13
+  alias FaithfulWordApi.ErrorView
 
   require Logger
 
