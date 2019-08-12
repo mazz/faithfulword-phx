@@ -31,6 +31,7 @@ defmodule FaithfulWordApi.UserView do
   def render("user.json", %{user: user}) do
     %{
       id: user.id,
+      uuid: user.uuid,
       email: user.email,
       fb_user_id: user.fb_user_id,
       name: user.name,
@@ -39,7 +40,7 @@ defmodule FaithfulWordApi.UserView do
       picture_url: DB.Type.UserPicture.url({user.picture_url, user}, :thumb),
       mini_picture_url: DB.Type.UserPicture.url({user.picture_url, user}, :mini_thumb),
       locale: user.locale,
-      registered_at: user.inserted_at,
+      registered_at: user.inserted_at |> render_unix_timestamp(),
       achievements: user.achievements,
       is_publisher: user.is_publisher
     }
@@ -51,5 +52,9 @@ defmodule FaithfulWordApi.UserView do
       token: token
     }
   end
+
+  defp render_unix_timestamp(nil), do: nil
+  defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
+
 end
 
