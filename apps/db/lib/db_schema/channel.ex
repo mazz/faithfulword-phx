@@ -24,13 +24,31 @@ defmodule DB.Schema.Channel do
   @doc false
   def changeset(channel, attrs) do
     channel
-    |> cast(attrs, [:uuid, :ordinal, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :org_id, :hash_id])
-    |> validate_required([:uuid, :ordinal, :basename, :large_thumbnail_path, :med_thumbnail_path, :small_thumbnail_path, :banner_path, :org_id, :hash_id])
+    |> cast(attrs, [
+      :uuid,
+      :ordinal,
+      :basename,
+      :large_thumbnail_path,
+      :med_thumbnail_path,
+      :small_thumbnail_path,
+      :banner_path,
+      :org_id,
+      :hash_id
+    ])
+    |> validate_required([
+      :uuid,
+      :ordinal,
+      :basename,
+      :large_thumbnail_path,
+      :med_thumbnail_path,
+      :small_thumbnail_path,
+      :banner_path,
+      :org_id,
+      :hash_id
+    ])
   end
 
-
-
-    @doc """
+  @doc """
   Generate hash ID for channels
 
   ## Examples
@@ -41,5 +59,4 @@ defmodule DB.Schema.Channel do
   def changeset_generate_hash_id(channel) do
     change(channel, hash_id: ChannelHashId.encode(channel.id))
   end
-
 end

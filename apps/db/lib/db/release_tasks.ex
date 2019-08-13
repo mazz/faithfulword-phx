@@ -9,8 +9,6 @@ defmodule DB.ReleaseTasks do
 
   @repos Application.get_env(:db, :ecto_repos, [])
 
-
-
   def generate_hash_ids(_argv) do
     start_services()
 

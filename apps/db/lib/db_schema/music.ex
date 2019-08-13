@@ -2,7 +2,6 @@ defmodule DB.Schema.Music do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "music" do
     field :absolute_id, :integer
     field :basename, :string
@@ -12,7 +11,6 @@ defmodule DB.Schema.Music do
     has_many :mediamusic, DB.Schema.MediaMusic
     has_many :musictitle, DB.Schema.MusicTitle
     timestamps(type: :utc_datetime)
-
   end
 
   @doc false

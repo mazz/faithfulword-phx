@@ -1,4 +1,3 @@
-
 defmodule FaithfulWordApi.SessionView do
   use FaithfulWordApi, :view
 

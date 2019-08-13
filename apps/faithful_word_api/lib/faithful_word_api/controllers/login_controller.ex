@@ -34,11 +34,13 @@ defmodule FaithfulWordApi.LoginController do
   def create(conn, %{"login" => login_params}) do
     {:ok, email} = Map.fetch(login_params, "email")
     {:ok, password} = Map.fetch(login_params, "password")
+
     case Authenticator.get_user_for_email_or_name_password(email, password) do
       nil ->
         conn
         |> put_flash(:error, "Invalid credentials!")
         |> render("new.html")
+
       user ->
         conn
         |> Guardian.Plug.sign_in(user)
@@ -64,5 +66,4 @@ defmodule FaithfulWordApi.LoginController do
     |> put_flash(:error, gettext("Authentication required"))
     |> redirect(to: Routes.login_path(conn, :new))
   end
-
 end

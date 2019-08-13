@@ -57,4 +57,3 @@ defmodule FaithfulWordApi.UserView do
   defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
 
 end
-

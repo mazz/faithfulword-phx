@@ -89,6 +89,7 @@ defmodule FaithfulWordApi.UserController do
 
   def confirm_email(conn, %{"token" => token}) do
     Logger.debug("confirm_email token: #{token}")
+
     try do
       Accounts.confirm_email!(token)
       send_resp(conn, :no_content, "")

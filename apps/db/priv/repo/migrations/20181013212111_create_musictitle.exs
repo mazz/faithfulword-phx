@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateMusictitle do
 
   def change do
     create table(:musictitles) do
-
       add :uuid, :uuid
       add :localizedname, :string
       add :language_id, :string

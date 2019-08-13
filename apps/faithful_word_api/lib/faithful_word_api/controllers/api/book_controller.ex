@@ -13,7 +13,7 @@ defmodule FaithfulWordApi.BookController do
   action_fallback FaithfulWordApi.FallbackController
 
   def indexv12(conn, %{"language-id" => lang}) do
-    Logger.debug("lang #{inspect %{attributes: lang}}")
+    Logger.debug("lang #{inspect(%{attributes: lang})}")
 
     V12.books_by_language(lang)
     |> case do
@@ -21,6 +21,7 @@ defmodule FaithfulWordApi.BookController do
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "language not found in supported list."})
+
       book_v12 ->
         conn
         |> put_view(BookV12View)
@@ -35,12 +36,14 @@ defmodule FaithfulWordApi.BookController do
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "language not found in supported list."})
+
       book_v13 ->
         # Logger.debug("books #{inspect %{attributes: books}}")
         Enum.at(conn.path_info, 0)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
+
             conn
             |> put_view(BookV13View)
             |> render("indexv13.json", %{book_v13: book_v13, api_version: api_version})

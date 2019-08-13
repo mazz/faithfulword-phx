@@ -13,9 +13,11 @@ defmodule FaithfulWordApi.BookTitleView do
   end
 
   def render("book_title.json", %{book_title: book_title}) do
-    %{id: book_title.id,
+    %{
+      id: book_title.id,
       uuid: book_title.uuid,
       localizedname: book_title.localizedname,
-      language_id: book_title.language_id}
+      language_id: book_title.language_id
+    }
   end
 end

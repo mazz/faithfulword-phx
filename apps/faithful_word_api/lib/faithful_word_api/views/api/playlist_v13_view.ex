@@ -3,13 +3,15 @@ defmodule FaithfulWordApi.PlaylistV13View do
   alias FaithfulWordApi.PlaylistV13View
 
   def render("indexv13.json", %{playlist_v13: playlist_v13, api_version: api_version}) do
-    %{result: render_many(playlist_v13, PlaylistV13View, "playlist_v13.json"),
-    pageNumber: playlist_v13.page_number,
-    pageSize: playlist_v13.page_size,
-    status: "success",
-    totalEntries: playlist_v13.total_entries,
-    totalPages: playlist_v13.total_pages,
-    version: api_version}
+    %{
+      result: render_many(playlist_v13, PlaylistV13View, "playlist_v13.json"),
+      pageNumber: playlist_v13.page_number,
+      pageSize: playlist_v13.page_size,
+      status: "success",
+      totalEntries: playlist_v13.total_entries,
+      totalPages: playlist_v13.total_pages,
+      version: api_version
+    }
 
     # %{data: render_many(playlist_v13, PlaylistV13View, "playlist_v13.json")}
   end
@@ -19,7 +21,8 @@ defmodule FaithfulWordApi.PlaylistV13View do
   end
 
   def render("playlist_v13.json", %{playlist_v13: playlist_v13}) do
-    %{localizedname: playlist_v13.localizedname,
+    %{
+      localizedname: playlist_v13.localizedname,
       languageId: playlist_v13.language_id,
       uuid: playlist_v13.uuid,
       channelUuid: playlist_v13.channel_uuid,
@@ -37,6 +40,4 @@ defmodule FaithfulWordApi.PlaylistV13View do
 
   defp render_unix_timestamp(nil), do: nil
   defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
-
 end
-

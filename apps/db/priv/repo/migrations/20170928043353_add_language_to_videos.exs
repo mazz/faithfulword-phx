@@ -5,6 +5,7 @@ defmodule DB.Repo.Migrations.AddLanguageToVideos do
     alter table(:videos) do
       add :language, :string, size: 2
     end
+
     create index(:videos, :language)
   end
 end

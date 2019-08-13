@@ -69,8 +69,6 @@ defmodule FaithfulWord.MixProject do
 
       # ---- Internal ----
       {:db, in_umbrella: true}
-
-
     ]
   end
 
@@ -80,5 +78,4 @@ defmodule FaithfulWord.MixProject do
   #     $ mix ecto.setup
   #
   # See the documentation for `Mix` for more info on aliases.
-
 end

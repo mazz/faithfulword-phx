@@ -9,7 +9,6 @@ defmodule DB.Schema.AppVersion do
     field :uuid, Ecto.UUID
     field :version_number, :string
 
-
     # timestamps()
   end
 
@@ -17,6 +16,12 @@ defmodule DB.Schema.AppVersion do
   def changeset(app_version, attrs) do
     app_version
     |> cast(attrs, [:uuid, :version_number, :ios_supported, :android_supported, :web_supported])
-    |> validate_required([:uuid, :version_number, :ios_supported, :android_supported, :web_supported])
+    |> validate_required([
+      :uuid,
+      :version_number,
+      :ios_supported,
+      :android_supported,
+      :web_supported
+    ])
   end
 end

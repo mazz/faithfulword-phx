@@ -245,13 +245,16 @@ defmodule FaithfulWord.Actions.ActionCreator do
   """
   def admin_action(entity, action_type, params \\ []) do
     Logger.debug("admin_action: #{entity} #{action_type}")
-    changeset = UserAction.changeset_admin(
-      %UserAction{},
-      Enum.into(params, %{
-        type: action_type,
-        entity: entity
-      })
-    )
+
+    changeset =
+      UserAction.changeset_admin(
+        %UserAction{},
+        Enum.into(params, %{
+          type: action_type,
+          entity: entity
+        })
+      )
+
     Logger.debug("UserAction.changeset_admin")
     IO.inspect(changeset)
   end

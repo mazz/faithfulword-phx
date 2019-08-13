@@ -40,22 +40,19 @@ defmodule FaithfulWord.Jobs.MetadataFetch do
   # --- Internal API ---
 
   def handle_call(:update, _, _) do
-
     # "https://www.youtube.com/channel/UCq7BdmVpQsay5XrwOgMhN5w" fwbc
 
-    {:ok, youtube_items} = YoutubeMetaDataFetcher.fetch_playlist_item_list_metadata("UUq7BdmVpQsay5XrwOgMhN5w")
+    {:ok, youtube_items} =
+      YoutubeMetaDataFetcher.fetch_playlist_item_list_metadata("UUq7BdmVpQsay5XrwOgMhN5w")
 
     user = Repo.get_by(User, email: "michael@faithfulword.app")
 
     Enum.each(youtube_items, fn item ->
       case get_video_by_url(item.url) do
-      nil ->
+        nil ->
           create!(user, item.url)
       end
-
     end)
-
-
 
     # fetch_timeout = 10000
     # Logger.debug("moderation handle_call :update")
