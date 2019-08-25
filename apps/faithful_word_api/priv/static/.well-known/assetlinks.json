@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "kjvrvg.com.rvg",
+    "sha256_cert_fingerprints":
+    ["C9:5B:54:CA:CC:4A:95:7F:6A:25:EC:3C:2A:45:49:C9:D1:88:8F:77:86:EF:BE:CF:9D:AE:D1:FE:14:C9:F7:08"]
+  }
+}]
