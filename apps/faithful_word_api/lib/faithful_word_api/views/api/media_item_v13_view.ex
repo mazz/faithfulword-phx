@@ -27,6 +27,7 @@ defmodule FaithfulWordApi.MediaItemV13View do
       trackNumber: media_item_v13.track_number,
       medium: media_item_v13.medium,
       localizedname: media_item_v13.localizedname,
+      multilanguage: media_item_v13.multilanguage,
       path: media_item_v13.path,
       contentProviderLink: media_item_v13.content_provider_link,
       ipfsLink: media_item_v13.ipfs_link,
