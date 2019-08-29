@@ -22,8 +22,8 @@ defmodule FaithfulWordApi.SignupController do
          {:ok, user} <- Accounts.authenticate(email, password) do
       conn
       # |> Guardian.Plug.sign_in(user)
-        |> put_flash(:info, gettext("%{user_email} already exists.", user_email: user.email))
-        |> redirect(to: Routes.page_path(conn, :index))
+      |> put_flash(:info, gettext("%{user_email} already exists.", user_email: user.email))
+      |> redirect(to: Routes.page_path(conn, :index))
     else
       _ ->
         conn

@@ -3,8 +3,7 @@ defmodule DB.Repo.Migrations.ChangeFlagsToFlagActions do
 
   alias DB.Repo
 
-
-  @doc"""
+  @doc """
   Flags used to point on entities, they will now point directly on actions
 
   [!] This will remove all old flags

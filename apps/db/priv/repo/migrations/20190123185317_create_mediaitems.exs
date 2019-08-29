@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateMediaitems do
 
   def change do
     create table(:mediaitems, primary_key: true) do
-
       add :ordinal, :integer
       add :uuid, :uuid
       add :track_number, :integer
@@ -28,5 +27,8 @@ defmodule DB.Repo.Migrations.CreateMediaitems do
 
     create index(:mediaitems, [:playlist_id])
     create index(:mediaitems, ["updated_at DESC"])
+    create index(:mediaitems, [:uuid])
+
+    flush()
   end
 end

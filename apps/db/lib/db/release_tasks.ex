@@ -9,6 +9,14 @@ defmodule DB.ReleaseTasks do
 
   @repos Application.get_env(:db, :ecto_repos, [])
 
+  def generate_hash_ids(_argv) do
+    start_services()
+
+    run_generate_hash_ids()
+
+    stop_services()
+  end
+
   def migrate(_argv) do
     start_services()
 
@@ -44,14 +52,28 @@ defmodule DB.ReleaseTasks do
     :init.stop()
   end
 
+  defp run_generate_hash_ids do
+    Enum.each(@repos, &run_generate_hash_ids_for/1)
+  end
+
+  defp run_generate_hash_ids_for(repo) do
+    # Run the hash_ids script if it exists
+    hash_ids_script = priv_path_for(repo, "hash_ids.exs")
+
+    if File.exists?(hash_ids_script) do
+      IO.puts("Running hash_ids script..")
+      Code.eval_file(hash_ids_script)
+    end
+  end
+
   defp run_migrations do
     Enum.each(@repos, &run_migrations_for/1)
   end
 
   defp run_migrations_for(repo) do
     app = Keyword.get(repo.config, :otp_app)
-    IO.puts("Running migrations for #{app}")
     migrations_path = priv_path_for(repo, "migrations")
+    IO.puts("Running migrations for #{app} repo: #{repo} migrations_path: #{migrations_path}")
     Ecto.Migrator.run(repo, migrations_path, :up, all: true)
   end
 

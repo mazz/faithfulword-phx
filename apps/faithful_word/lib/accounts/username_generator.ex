@@ -10,7 +10,7 @@ defmodule FaithfulWord.Accounts.UsernameGenerator do
     Agent.start_link(
       fn ->
         Hashids.new(
-          alphabet: "123456789abcdefghijklmnopqrstuvwxyz",
+          alphabet: "23456789abcdefghijkmnopqrstuvwxyz",
           salt: "C4pt41nUser"
         )
       end,

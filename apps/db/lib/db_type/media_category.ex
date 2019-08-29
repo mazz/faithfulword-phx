@@ -11,6 +11,6 @@ defenum(
   podcast: 6,
   preaching: 7,
   testimony: 8,
-  tutorial: 9
+  tutorial: 9,
+  conference: 10
 )
-

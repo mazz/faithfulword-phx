@@ -11,5 +11,6 @@ defmodule DB.Repo.Migrations.CreateGospel do
       # timestamps()
     end
 
+    create index(:gospel, [:uuid])
   end
 end

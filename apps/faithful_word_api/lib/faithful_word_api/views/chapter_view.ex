@@ -11,9 +11,11 @@ defmodule FaithfulWordApi.ChapterView do
   end
 
   def render("chapter.json", %{chapter: chapter}) do
-    %{id: chapter.id,
+    %{
+      id: chapter.id,
       absolute_id: chapter.absolute_id,
       uuid: chapter.uuid,
-      basename: chapter.basename}
+      basename: chapter.basename
+    }
   end
 end

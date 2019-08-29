@@ -2,7 +2,6 @@ defmodule DB.Schema.Book do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   # @primary_key {:id, :serial, autogenerate: true}
   # @foreign_key_type :serial
   schema "books" do
@@ -22,4 +21,3 @@ defmodule DB.Schema.Book do
     |> validate_required([:absolute_id, :uuid, :basename])
   end
 end
-

@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+    {
+      "appID": "AW22Z53SAJ.fwsaved",
+      "paths": ["/m/*", "/c/*", "/p/*"]
+    },
+    {
+      "appID": "AW22Z53SAJ.com.kjvrvg.kjvrvg-ios",
+      "paths": ["/m/*", "/c/*", "/p/*"]
+    }
+    ]
+  }
+}

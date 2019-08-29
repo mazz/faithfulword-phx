@@ -52,4 +52,3 @@ defmodule FaithfulWordApi.UserView do
     }
   end
 end
-

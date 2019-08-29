@@ -6,6 +6,7 @@ defmodule DB.Repo.Migrations.CreateUsers do
       add :username, :citext, null: false
       add :email, :citext, null: false
       add :encrypted_password, :string, null: false
+      add :uuid, :uuid
       add :name, :citext, null: true
       add :picture_url, :string, null: true
       add :reputation, :integer, null: false, default: 0

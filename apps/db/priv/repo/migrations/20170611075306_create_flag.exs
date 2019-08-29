@@ -12,6 +12,7 @@ defmodule DB.Repo.Migrations.CreateFlag do
 
       timestamps(type: :utc_datetime)
     end
+
     create index(:flags, [:source_user_id])
     create index(:flags, [:target_user_id])
     create unique_index(:flags, [:source_user_id, :type, :entity_id])

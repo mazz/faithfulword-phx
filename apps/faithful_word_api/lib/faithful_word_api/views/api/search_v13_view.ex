@@ -3,13 +3,15 @@ defmodule FaithfulWordApi.SearchV13View do
   alias FaithfulWordApi.SearchV13View
 
   def render("searchv13.json", %{search_v13: search_v13, api_version: api_version}) do
-    %{result: render_many(search_v13, SearchV13View, "search_v13.json"),
-    pageNumber: search_v13.page_number,
-    pageSize: search_v13.page_size,
-    status: "success",
-    totalEntries: search_v13.total_entries,
-    totalPages: search_v13.total_pages,
-    version: api_version}
+    %{
+      result: render_many(search_v13, SearchV13View, "search_v13.json"),
+      pageNumber: search_v13.page_number,
+      pageSize: search_v13.page_size,
+      status: "success",
+      totalEntries: search_v13.total_entries,
+      totalPages: search_v13.total_pages,
+      version: api_version
+    }
 
     # %{data: render_many(search_v13, SearchV13View, "search_v13.json")}
   end
@@ -19,7 +21,8 @@ defmodule FaithfulWordApi.SearchV13View do
   end
 
   def render("search_v13.json", %{search_v13: search_v13}) do
-    %{ordinal: search_v13.ordinal,
+    %{
+      ordinal: search_v13.ordinal,
       uuid: search_v13.uuid,
       trackNumber: search_v13.track_number,
       medium: search_v13.medium,
@@ -35,11 +38,14 @@ defmodule FaithfulWordApi.SearchV13View do
       smallThumbnailPath: search_v13.small_thumbnail_path,
       medThumbnailPath: search_v13.med_thumbnail_path,
       largeThumbnailPath: search_v13.large_thumbnail_path,
-      insertedAt: search_v13.inserted_at,
-      updatedAt: search_v13.updated_at,
+      insertedAt: search_v13.inserted_at |> render_unix_timestamp(),
+      updatedAt: search_v13.updated_at |> render_unix_timestamp(),
       mediaCategory: search_v13.media_category,
-      presentedAt: search_v13.presented_at,
-      publishedAt: search_v13.published_at}
+      presentedAt: search_v13.presented_at |> render_unix_timestamp(),
+      publishedAt: search_v13.published_at |> render_unix_timestamp()
+    }
   end
-end
 
+  defp render_unix_timestamp(nil), do: nil
+  defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
+end

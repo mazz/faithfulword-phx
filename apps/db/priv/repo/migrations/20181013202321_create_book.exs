@@ -10,5 +10,6 @@ defmodule DB.Repo.Migrations.CreateBook do
       # timestamps()
     end
 
+    create index(:books, [:uuid])
   end
 end

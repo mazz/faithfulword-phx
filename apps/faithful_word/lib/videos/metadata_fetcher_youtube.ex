@@ -17,7 +17,6 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
   alias GoogleApi.YouTube.V3.Model.PlaylistItemListResponse, as: YouTubePlaylistVideos
   alias GoogleApi.YouTube.V3.Model.PlaylistItem, as: YouTubePlaylistVideo
 
-
   alias GoogleApi.YouTube.V3.Model.Video, as: YouTubeVideo
   alias GoogleApi.YouTube.V3.Model.VideoListResponse, as: YouTubeVideoList
 
@@ -67,17 +66,16 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
     do: {:error, "Invalid URL"}
 
   def fetch_playlist_item_list_metadata(playlist_id) when is_binary(playlist_id) do
-
     case Application.get_env(:faithful_word, :youtube_api_key) do
       nil ->
         Logger.warn("No YouTube API key provided. Bailing")
-        # MetadataFetcher.Opengraph.fetch_video_metadata(url)
+
+      # MetadataFetcher.Opengraph.fetch_video_metadata(url)
 
       api_key ->
         do_fetch_playlist_item_list_metadata(playlist_id, api_key)
     end
   end
-
 
   # defp do_fetch_video_metadata(video_id, api_key) do
 
@@ -179,20 +177,19 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
   # end
 
   defp do_fetch_playlist_item_list_metadata(playlist_id, api_key) do
-
     # returns playlistid for sanderson1611
     # %GoogleApi.YouTube.V3.Model.ChannelListResponse{
     # conn |> YouTubeChannels.youtube_channels_list("contentDetails", forUsername: "sanderson1611", key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4")
 
-    #sanderson1611 playlist
+    # sanderson1611 playlist
     # conn = GoogleApi.YouTube.V3.Connection.new()
     # conn |> GoogleApi.YouTube.V3.Api.PlaylistItems.youtube_playlist_items_list("snippet", maxResults: 50, playlistId: "UUq7BdmVpQsay5XrwOgMhN5w", key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4")
 
-    #video
+    # video
     # conn |> GoogleApi.YouTube.V3.Api.Videos.youtube_videos_list("snippet", maxResults: 50, id: "qSVJOYxg1dA", key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4")
 
     #  GoogleApi.YouTube.V3.Model.PlaylistItemListResponse.yout
-    #returns first 50
+    # returns first 50
     # %GoogleApi.YouTube.V3.Model.PlaylistItemListResponse{
     # with
     # items: [%GoogleApi.YouTube.V3.Model.PlaylistItem{ ...}]
@@ -203,17 +200,21 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
     # user = Repo.get_by(User, email: "admin@faithfulword.app")
 
     YouTubeConnection.new()
-      |> GoogleApi.YouTube.V3.Api.PlaylistItems.youtube_playlist_items_list("snippet", maxResults: 50, playlistId: playlist_id, key: api_key)
-      |> Result.map_error(fn e -> "YouTube API Error: #{inspect(e)}" end)
-      |> Result.keep_if(&(!Enum.empty?(&1.items)), "remote_video_404")
-      |> Result.map(fn %GoogleApi.YouTube.V3.Model.PlaylistItemListResponse{items: videos} ->
-        Enum.map(videos, fn video ->
-          # url = Video.build_url(%{youtube_id: video.snippet.resourceId.videoId})
+    |> GoogleApi.YouTube.V3.Api.PlaylistItems.youtube_playlist_items_list("snippet",
+      maxResults: 50,
+      playlistId: playlist_id,
+      key: api_key
+    )
+    |> Result.map_error(fn e -> "YouTube API Error: #{inspect(e)}" end)
+    |> Result.keep_if(&(!Enum.empty?(&1.items)), "remote_video_404")
+    |> Result.map(fn %GoogleApi.YouTube.V3.Model.PlaylistItemListResponse{items: videos} ->
+      Enum.map(videos, fn video ->
+        # url = Video.build_url(%{youtube_id: video.snippet.resourceId.videoId})
 
-          # case get_video_by_url(url) do
-          #   nil ->
-          #     create!(user, url)
-          # end
+        # case get_video_by_url(url) do
+        #   nil ->
+        #     create!(user, url)
+        # end
         %{
           title: video.snippet.title,
           description: video.snippet.description,
@@ -221,11 +222,11 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
           thumbnails: video.snippet.thumbnails,
           url: Video.build_url(%{youtube_id: video.snippet.resourceId.videoId})
         }
-      # |> IO.inspect("after video:")
+
+        # |> IO.inspect("after video:")
       end)
     end)
   end
-
 end
 
 """

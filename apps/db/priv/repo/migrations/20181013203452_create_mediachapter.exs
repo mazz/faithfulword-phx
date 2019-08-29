@@ -19,5 +19,6 @@ defmodule DB.Repo.Migrations.CreateMediachapter do
     end
 
     create index(:mediachapters, [:chapter_id])
+    create index(:mediachapters, [:uuid])
   end
 end

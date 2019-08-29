@@ -9,7 +9,8 @@ defmodule DB.Schema.User do
   import Ecto.Changeset
 
   alias DB.Type.{Achievement, UserPicture}
-  alias DB.Schema.{UserAction}#, Comment, Vote, Flag, Speaker}
+  # , Comment, Vote, Flag, Speaker}
+  alias DB.Schema.{UserAction}
   require Logger
 
   schema "users" do
@@ -17,6 +18,7 @@ defmodule DB.Schema.User do
     field(:email, :string)
     field(:encrypted_password, :string)
     field(:name, :string)
+    field :uuid, Ecto.UUID
     field(:picture_url, UserPicture.Type)
     field(:reputation, :integer, default: 0)
     field(:today_reputation_gain, :integer, default: 0)
@@ -26,6 +28,8 @@ defmodule DB.Schema.User do
     field(:newsletter_subscription_token, :string)
     field(:is_publisher, :boolean, default: false)
     field(:completed_onboarding_steps, {:array, :integer}, default: [])
+
+    field :org_id, :id
 
     # Social networks profiles
     field(:fb_user_id, :string)
@@ -140,9 +144,9 @@ defmodule DB.Schema.User do
     Ecto.Changeset.change(model, achievements: updated_achievements)
   end
 
-  @doc """
-  Generate a changeset to link given `speaker` to user
-  """
+  # @doc """
+  # Generate a changeset to link given `speaker` to user
+  # """
   # def changeset_link_speaker(model, %Speaker{id: id}) do
   #   change(model, speaker_id: id)
   # end

@@ -14,16 +14,39 @@ docker logs <container-id>
 
 https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part-2/
 
+# deploy dev to prod
+
+## dev environment:
+
+### latest db fie:
+2019-08-07-mediaitem-v1.3-bin.sql
+
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-08-07-mediaitem-v1.3-bin.sql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+
+./dbtool.py exportdb faithful_word_dev 2019-06-22-media-item-seeded-not-materialized.pgsql
+
+<commit 2019-06-22-media-item-seeded-not-materialized.pgsql>
+<commit 2019-06-22-media-item-v1.3-bin.pgsql>
+<push to origin/develop>
+
+## prod environment:
+
+ssh root@157.230.171.172 (api.faithfulword.app)
+
+cd faithfulword-phx
+
+git checkout develop
+git pull
+
 docker-compose pull
-docker-compose build --pull faithful_word 
-## OR build and restart faithful_word only -- use IFF there was no db schema change!
-docker-compose up --detach --build faithful_word 
+docker-compose build --pull faithful_word
 
 docker-compose up --build -d postgres
-docker-compose run --rm faithful_word migrate
 
-docker cp ./2019-01-27-plurals-10-bin.sql add-12-api_postgres_1:/2019-01-27-plurals-10-bin.sql
-docker exec -ti add-12-api_postgres_1 bash
+docker cp ./2019-06-22-media-item-seeded-not-materialized.pgsql faithfulword-phx_postgres_1:/2019-06-22-media-item-seeded-not-materialized.pgsql
+
+docker exec -ti faithfulword-phx_postgres_1 bash
+docker exec -ti faithfulword-phx_faithful_word_1 bash
 
 psql -U faithful_word
 <!-- drop database faithful_word;
@@ -31,16 +54,20 @@ create database faithful_word; -->
 SET session_replication_role = replica;
 \q
 
-pg_restore -U faithful_word --clean --dbname=faithful_word 2019-01-27-plurals-10-bin.sql
+pg_restore -U faithful_word --clean --dbname=faithful_word 2019-06-22-media-item-seeded-not-materialized.pgsql
 psql -U faithful_word
 SET session_replication_role = DEFAULT;
+refresh materialized view media_items_search;
 exit
 
 docker-compose run --rm faithful_word seed
+docker-compose run --rm faithful_word generate_hash_ids
 
-Booting the application in Docker-Compose
+# Booting the application in Docker-Compose
 
 docker-compose up --build faithful_word
+OR
+docker-compose down && docker-compose up -d --force-recreate --build faithful_word
 
 You can then browse the application by visiting http://localhost:4000 as normal, and should see the typical (production-style) log output in the shell session that’s running the above docker-compose command.
 
@@ -56,6 +83,11 @@ docker ps -a
 docker rmi 
 docker image ls
 docker rm 
+
+# Delete all containers
+docker rm $(docker ps -a -q)
+# Delete all images
+docker rmi $(docker images -q)
 
 ## use psql
 
@@ -125,5 +157,46 @@ git clone https://github.com/FaithfulAudio/faithfulword-phx.git -b upload-ui upl
 
 # import 1.3 database
 
-./dbimport.py migratefromwebsauna ./2019-04-21-media-items-v1.3-bin.pgsql faithful_word_dev ; ./dbimport.py convertv12bibletoplaylists faithful_word_dev ; ./dbimport.py convertv12gospeltoplaylists faithful_word_dev ; ./dbimport.py convertv12musictoplaylists faithful_word_dev ; ./dbimport.py normalizemusic faithful_word_dev ; ./dbimport.py normalizegospel faithful_word_dev ; ./dbimport.py normalizepreaching faithful_word_dev ; ./dbimport.py normalizebible faithful_word_dev ; ./dbimport.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs
+./dbtool.py migratefromwebsauna ./2019-06-22-media-item-v1.3-bin.pgsql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs ; mix run apps/db/priv/repo/hash_ids.exs
 
+
+## design notes
+
+channels can contain playlists and channels
+playlists can only contain mediaitems
+
+
+## rich notifications
+{
+  "to" : "devicekey OR /topics/sometopic",
+  "mutable_content": true,
+  "data": {
+    "mymediavideo": "https://myserver.com/myvideo.mp4"
+  },
+  "notification": {
+    "title": "my title",
+    "subtitle": "my subtitle",
+    "body": "some body"
+  }
+}
+
+ msg = %{ "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_content" => true, "data" => %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}, "notification" => %{ "title" => "push note title", "subtitle" => "push note subtitle", "body" => "push note body" } }
+
+  msg = %{ "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_content" => true }
+
+msg = %{ "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_content" => true, "data" => %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"} }
+
+ msg = %{ "data" => %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}, "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_content" => true, "title" => "push note title", "subtitle" => "push note subtitle", "body" => "push note body" }
+
+
+  notification = %{"body" => "your message"}
+  data = %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}
+  Pigeon.FCM.Notification.new("registration ID", notification, data)
+
+
+
+  n = Pigeon.FCM.Notification.new("dcu92ujVPf4:APA91bEaZOL75G1-zWWFGjkNM_l5QW17lmi27veyILTLz7eNeU2hwLNv_17_9Hx_GU8FUWtC82IAGNT8ibqsPGbPH9zOD7N7oRg8seaeDOY3v23pMuuo5wyvuApdEaBFIV3rek4L3c8t", notification, data)
+
+notification = %{"body" => "your message"}
+data = %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}
+n = Pigeon.FCM.Notification.new("dcu92ujVPf4:APA91bEaZOL75G1-zWWFGjkNM_l5QW17lmi27veyILTLz7eNeU2hwLNv_17_9Hx_GU8FUWtC82IAGNT8ibqsPGbPH9zOD7N7oRg8seaeDOY3v23pMuuo5wyvuApdEaBFIV3rek4L3c8t", notification, data)

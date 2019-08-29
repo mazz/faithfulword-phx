@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateMusic do
 
   def change do
     create table(:music) do
-
       add :absolute_id, :integer
       add :uuid, :uuid
       add :basename, :string
@@ -12,5 +11,6 @@ defmodule DB.Repo.Migrations.CreateMusic do
       # timestamps()
     end
 
+    create index(:music, [:uuid])
   end
 end

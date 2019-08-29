@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateClientdevice do
 
   def change do
     create table(:clientdevices) do
-
       add :uuid, :uuid
       add :firebase_token, :string
       add :apns_token, :string
@@ -13,5 +12,6 @@ defmodule DB.Repo.Migrations.CreateClientdevice do
       # timestamps()
     end
 
+    create index(:clientdevices, [:uuid])
   end
 end

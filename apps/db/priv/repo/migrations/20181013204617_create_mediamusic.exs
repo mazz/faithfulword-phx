@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateMediamusic do
 
   def change do
     create table(:mediamusic) do
-
       add :absolute_id, :integer
       add :uuid, :uuid
       add :track_number, :integer
@@ -21,5 +20,6 @@ defmodule DB.Repo.Migrations.CreateMediamusic do
     end
 
     create index(:mediamusic, [:music_id])
+    create index(:mediamusic, [:uuid])
   end
 end

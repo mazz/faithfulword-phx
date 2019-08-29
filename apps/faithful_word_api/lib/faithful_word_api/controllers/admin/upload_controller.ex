@@ -1,7 +1,7 @@
 defmodule FaithfulWordApi.Admin.UploadController do
   use FaithfulWordApi, :controller
-  alias Phoenix.LiveView
-  alias FaithfulWordApi.Admin.UploadView
+  # alias Phoenix.LiveView
+  # alias FaithfulWordApi.Admin.UploadView
 
   action_fallback FaithfulWordApi.FallbackController
 
@@ -24,5 +24,4 @@ defmodule FaithfulWordApi.Admin.UploadController do
   #   push_message = PushNotifications.get_push_message!(id)
   #   render(conn, "show.json", push_message: push_message)
   # end
-
 end

@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateChannels do
 
   def change do
     create table(:channels, primary_key: true) do
-
       add :uuid, :uuid
       add :ordinal, :integer
       add :basename, :string
@@ -18,5 +17,8 @@ defmodule DB.Repo.Migrations.CreateChannels do
     end
 
     create index(:channels, [:org_id])
+    create index(:channels, [:uuid])
+
+    flush()
   end
 end

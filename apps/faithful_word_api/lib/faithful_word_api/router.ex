@@ -2,7 +2,6 @@ defmodule FaithfulWordApi.Router do
   use FaithfulWordApi, :router
   alias FaithfulWord.Authenticator.GuardianImpl
 
-
   # ---- Pipelines ----
   pipeline :browser do
     plug :accepts, ["html"]
@@ -10,11 +9,8 @@ defmodule FaithfulWordApi.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    # plug :put_layout, false
     plug :put_layout, {FaithfulWordApi.LayoutView, :app}
     plug FaithfulWordApi.Plugs.GuardianPipeline
-
-    # plug WordApi.Plugs.GuardianPipeline
   end
 
   pipeline :authentication_required do
@@ -22,16 +18,19 @@ defmodule FaithfulWordApi.Router do
   end
 
   scope "/", FaithfulWordApi do
-    pipe_through :browser # Use the default browser stack
+    # Use the default browser stack
+    pipe_through :browser
 
     get "/", PageController, :index
-    get "/about", PageController, :about
-    get "/login", LoginController, :new
-    # get "/logout", LoginController, :delete
-    post "/login", LoginController, :create
-    get "/signup", SignupController, :new
-    post "/signup", SignupController, :create
-    # get "/login/:magic_token", LoginController, :callback
+    get "/m/:hash_id", ShareMediaItemController, :show
+
+    # get "/about", PageController, :about
+    # get "/login", LoginController, :new
+    # # get "/logout", LoginController, :delete
+    # post "/login", LoginController, :create
+    # get "/signup", SignupController, :new
+    # post "/signup", SignupController, :create
+    # # get "/login/:magic_token", LoginController, :callback
   end
 
   scope "/", FaithfulWordApi do
@@ -39,11 +38,11 @@ defmodule FaithfulWordApi.Router do
 
     get "/logout", LoginController, :delete
 
-    scope "/admin", Admin do
+    # scope "/admin", Admin do
     # scope "/admin", Admin, as: :admin do
-        get "/notification/send", PushMessageController, :index
-      get "/upload", UploadController, :index
-    end
+    # get "/notification/send", PushMessageController, :index
+    # get "/upload", UploadController, :index
+    # end
   end
 
   pipeline :api do
@@ -65,20 +64,25 @@ defmodule FaithfulWordApi.Router do
         get "/", BookController, :indexv12
         get "/:bid/media", MediaChapterController, :indexv12
       end
+
       scope "/gospels" do
         get "/", GospelController, :indexv12
         get "/:gid/media", MediaGospelController, :indexv12
       end
+
       scope "/music" do
         get "/", MusicController, :indexv12
         get "/:mid/media", MediaMusicController, :indexv12
       end
+
       scope "/languages" do
         get "/supported", LanguageIdentifierController, :indexv12
       end
+
       scope "/app" do
         get "/versions", AppVersionController, :indexv12
       end
+
       scope "/device" do
         post "/pushtoken/update", ClientDeviceController, :indexv12
       end
@@ -89,63 +93,50 @@ defmodule FaithfulWordApi.Router do
         get "/", BookController, :indexv13
         get "/:uuid/media", MediaChapterController, :indexv13
       end
+
       scope "/orgs" do
         get "/default", OrgController, :defaultv13
         get "/:uuid/channels", OrgController, :channelsv13
       end
+
       scope "/channels" do
         # get "/", ChannelController, :indexv13
         get "/:uuid/playlists", PlaylistController, :indexv13
       end
+
       scope "/playlists" do
         # get "/", MusicController, :indexv13
         get "/:uuid/media", MediaItemController, :indexv13
       end
+
       scope "/search" do
         post "/", SearchController, :searchv13
       end
 
-      """
-      part
-      *digest
-      full
-    order
-      date
-      rating
-      relevance
-      title
-    publishedAfter
-      unixtime
-    mediaCat
-    medium
-    q
-      string
-    channelUuid
-    playlistUuid
-      """
+      scope "/device" do
+        post "/pushtoken/update", ClientDeviceController, :indexv13
+      end
 
       ### DEPRECATED ###
       scope "/gospels" do
         get "/", GospelController, :indexv13
         get "/:uuid/media", MediaGospelController, :indexv13
       end
+
       scope "/music" do
         get "/", MusicController, :indexv13
         get "/:uuid/media", MediaMusicController, :indexv13
       end
+
       scope "/languages" do
         get "/supported", LanguageIdentifierController, :indexv13
       end
+
       scope "/app" do
         get "/versions", AppVersionController, :indexv13
       end
-      scope "/device" do
-        post "/pushtoken/update", ClientDeviceController, :indexv13
-      end
     end
   end
-
-
 
   scope "/", FaithfulWordApi do
     pipe_through([:api])
@@ -202,77 +193,77 @@ defmodule FaithfulWordApi.Router do
       post("/moderation/feedback", ModerationController, :post_feedback)
     end
 
-  # end
+    # end
 
-  defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
-    conn =
-      conn
-      |> Plug.Conn.fetch_cookies()
-      |> Plug.Conn.fetch_query_params()
+    defp handle_errors(conn, %{kind: kind, reason: reason, stack: stacktrace}) do
+      conn =
+        conn
+        |> Plug.Conn.fetch_cookies()
+        |> Plug.Conn.fetch_query_params()
 
-    params =
-      case conn.params do
-        %Plug.Conn.Unfetched{aspect: :params} -> "unfetched"
-        other -> other
-      end
+      params =
+        case conn.params do
+          %Plug.Conn.Unfetched{aspect: :params} -> "unfetched"
+          other -> other
+        end
 
-    occurrence_data = %{
-      "request" => %{
-        "cookies" => conn.req_cookies,
-        "url" => "#{conn.scheme}://#{conn.host}:#{conn.port}#{conn.request_path}",
-        "user_ip" => List.to_string(:inet.ntoa(conn.remote_ip)),
-        "headers" => filter_headers(conn),
-        "method" => conn.method,
-        "params" => filter_params(params)
+      occurrence_data = %{
+        "request" => %{
+          "cookies" => conn.req_cookies,
+          "url" => "#{conn.scheme}://#{conn.host}:#{conn.port}#{conn.request_path}",
+          "user_ip" => List.to_string(:inet.ntoa(conn.remote_ip)),
+          "headers" => filter_headers(conn),
+          "method" => conn.method,
+          "params" => filter_params(params)
+        }
       }
-    }
 
-    FaithfulWord.Errors.do_report(kind, reason, stacktrace, data: occurrence_data)
-  end
+      FaithfulWord.Errors.do_report(kind, reason, stacktrace, data: occurrence_data)
+    end
 
-  defp filter_headers(conn) do
-    for {key, value} = tuple <- conn.req_headers, into: %{} do
-      case key do
-        "authorization" ->
-          {key, filter_str(value, 16)}
+    defp filter_headers(conn) do
+      for {key, value} = tuple <- conn.req_headers, into: %{} do
+        case key do
+          "authorization" ->
+            {key, filter_str(value, 16)}
 
-        _ ->
-          tuple
+          _ ->
+            tuple
+        end
       end
     end
-  end
 
-  defp filter_params(params) when is_map(params) do
-    for {key, value} = tuple <- params, into: %{} do
-      case key do
-        k when k in ~w(password passwordRepeat) ->
-          {key, filter_str(value)}
+    defp filter_params(params) when is_map(params) do
+      for {key, value} = tuple <- params, into: %{} do
+        case key do
+          k when k in ~w(password passwordRepeat) ->
+            {key, filter_str(value)}
 
-        "user" when is_map(value) ->
-          {key, filter_params(value)}
+          "user" when is_map(value) ->
+            {key, filter_params(value)}
 
-        _ ->
-          tuple
+          _ ->
+            tuple
+        end
       end
     end
-  end
 
-  defp filter_params(params), do: params
+    defp filter_params(params), do: params
 
-  def filter_str(str, length_to_keep \\ 0) do
-    "#{String.slice(str, 0, length_to_keep)}********* [FILTERED]"
-  end
-
-  # ---- Dev only: mailer. We can use Mix.env here cause file is interpreted at compile time ----
-  if Mix.env() == :dev do
-    pipeline :browser do
-      plug(:accepts, ["html"])
+    def filter_str(str, length_to_keep \\ 0) do
+      "#{String.slice(str, 0, length_to_keep)}********* [FILTERED]"
     end
 
-    scope "/_dev/" do
-      pipe_through([:browser])
-      forward("/mail", Bamboo.SentEmailViewerPlug)
+    # ---- Dev only: mailer. We can use Mix.env here cause file is interpreted at compile time ----
+    if Mix.env() == :dev do
+      pipeline :browser do
+        plug(:accepts, ["html"])
+      end
+
+      scope "/_dev/" do
+        pipe_through([:browser])
+        forward("/mail", Bamboo.SentEmailViewerPlug)
+      end
     end
-  end
   end
 end

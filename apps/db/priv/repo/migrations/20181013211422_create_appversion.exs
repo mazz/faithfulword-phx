@@ -3,7 +3,6 @@ defmodule DB.Repo.Migrations.CreateAppversion do
 
   def change do
     create table(:appversions) do
-
       add :uuid, :uuid
       add :version_number, :string
       add :ios_supported, :boolean, default: false, null: false
@@ -12,5 +11,6 @@ defmodule DB.Repo.Migrations.CreateAppversion do
       # timestamps()
     end
 
+    create index(:appversions, [:uuid])
   end
 end

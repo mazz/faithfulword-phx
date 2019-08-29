@@ -73,16 +73,16 @@ defmodule DB.Schema.Video do
   defp limit_video_query_list(query, limit),
     do: limit(query, ^limit)
 
-  @doc """
-  Preload speakers for given video query
-  """
+  # @doc """
+  # Preload speakers for given video query
+  # """
   # def with_speakers(query) do
   #   from(v in query, preload: [:speakers])
   # end
 
-  @doc """
-  Preload statements for given video query
-  """
+  # @doc """
+  # Preload statements for given video query
+  # """
   # def with_statements(query) do
   #   from(v in query, preload: [:statements])
   # end
@@ -154,8 +154,8 @@ defmodule DB.Schema.Video do
       iex> DB.Schema.Video.changeset_generate_hash_id(%DB.Schema.Video{id: 42, hash_id: nil})
       #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #DB.Schema.Video<>, valid?: true>
   """
-  def changeset_generate_hash_id(video = %{id: id}) do
-    change(video, hash_id: VideoHashId.encode(id))
+  def changeset_generate_hash_id(video) do
+    change(video, hash_id: VideoHashId.encode(video.id))
   end
 
   @doc """
@@ -232,8 +232,8 @@ defmodule DB.Schema.Video do
       {:min_id, id}, query ->
         from(v in query, where: v.id > ^id)
 
-      # {:is_partner, is_partner}, query ->
-      #   from(v in query, where: v.is_partner == ^is_partner)
+        # {:is_partner, is_partner}, query ->
+        #   from(v in query, where: v.is_partner == ^is_partner)
     end)
   end
 end

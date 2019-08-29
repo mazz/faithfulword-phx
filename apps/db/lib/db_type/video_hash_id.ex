@@ -12,8 +12,8 @@ defmodule DB.Type.VideoHashId do
 
   @coder Hashids.new(
            min_len: 4,
-           alphabet: "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
-           salt: "C4pt41nV1d€0"
+           alphabet: "23456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKMNOPQRSTUVWXYZ",
+           salt: "F41thfu1W0rDV1d€0"
          )
 
   @doc """

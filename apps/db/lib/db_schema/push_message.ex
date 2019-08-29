@@ -2,7 +2,6 @@ defmodule DB.Schema.PushMessage do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "pushmessage" do
     field :created_at, :utc_datetime
     field :message, :string, size: 4096

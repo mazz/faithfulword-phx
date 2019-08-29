@@ -11,9 +11,11 @@ defmodule FaithfulWordApi.AppVersionV12View do
   end
 
   def render("app_version_v12.json", %{app_version_v12: app_version_v12}) do
-    %{uuid: app_version_v12.uuid,
+    %{
+      uuid: app_version_v12.uuid,
       versionNumber: app_version_v12.version_number,
       iosSupported: app_version_v12.ios_supported,
-      androidSupported: app_version_v12.android_supported}
+      androidSupported: app_version_v12.android_supported
+    }
   end
 end

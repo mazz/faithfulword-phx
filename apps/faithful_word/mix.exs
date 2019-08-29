@@ -40,7 +40,7 @@ defmodule FaithfulWord.MixProject do
     [
       {:httpoison, "~> 1.5.0"},
       {:mochiweb, "~> 2.18"},
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.1", override: true},
       {:postgrex, ">= 0.0.0"},
       {:bamboo, "~> 1.2"},
       {:ex_aws, "~> 2.1"},
@@ -69,8 +69,6 @@ defmodule FaithfulWord.MixProject do
 
       # ---- Internal ----
       {:db, in_umbrella: true}
-
-
     ]
   end
 
@@ -80,5 +78,4 @@ defmodule FaithfulWord.MixProject do
   #     $ mix ecto.setup
   #
   # See the documentation for `Mix` for more info on aliases.
-
 end

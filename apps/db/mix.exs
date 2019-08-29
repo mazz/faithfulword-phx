@@ -29,7 +29,7 @@ defmodule DB.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto_sql, "~> 3.0"},
+      {:ecto_sql, "~> 3.1", override: true},
       {:postgrex, ">= 0.0.0"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
@@ -44,7 +44,7 @@ defmodule DB.MixProject do
       {:hashids, "~> 2.0"},
       {:kaur, "~> 1.1"},
       {:mime, "~> 1.2"},
-      {:scrivener_ecto, "~> 2.2"},
+      {:scrivener_ecto, "~> 2.2"}
 
       # Dev only
       # {:exsync, "~> 0.2", only: :dev},
