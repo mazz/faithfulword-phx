@@ -29,12 +29,18 @@ Logger.debug("Application.get_env #{Application.get_env(:db, :env)}")
 # if Application.get_env(:db, :env) == :dev do
 # Logger.warn("API is running in dev mode. Inserting default user admin@faithfulword.app")
 
+
+# default_org = Org
+# |> Repo.one!()
+
 # No need to warn if already exists
 Repo.insert(
   User.registration_changeset(
     %User{
       reputation: 4200,
-      username: "Amos",
+      username: "amos",
+      name: "Amos",
+      locale: "en",
       is_publisher: true,
       uuid: Ecto.UUID.generate(),
       org_id: 1
@@ -50,7 +56,9 @@ Repo.insert(
   User.registration_changeset(
     %User{
       reputation: 4200,
-      username: "Peter",
+      username: "peter",
+      name: "Peter",
+      locale: "en",
       is_publisher: true,
       uuid: Ecto.UUID.generate(),
       org_id: 1
@@ -66,7 +74,9 @@ Repo.insert(
   User.registration_changeset(
     %User{
       reputation: 4200,
-      username: "Joseph",
+      username: "joseph",
+      name: "Joseph",
+      locale: "en",
       is_publisher: true,
       uuid: Ecto.UUID.generate(),
       org_id: 1
@@ -82,7 +92,9 @@ Repo.insert(
   User.registration_changeset(
     %User{
       reputation: 4200,
-      username: "Adam",
+      username: "adam",
+      name: "Adam",
+      locale: "en",
       is_publisher: true,
       uuid: Ecto.UUID.generate(),
       org_id: 1
@@ -98,7 +110,9 @@ Repo.insert(
   User.registration_changeset(
     %User{
       reputation: 4200,
-      username: "Jonathan",
+      username: "jonathan",
+      name: "Jonathan",
+      locale: "en",
       is_publisher: true,
       uuid: Ecto.UUID.generate(),
       org_id: 1
@@ -114,7 +128,9 @@ Repo.insert(
   User.registration_changeset(
     %User{
       reputation: 4200,
-      username: "Collin",
+      username: "collin",
+      name: "Collin",
+      locale: "en",
       is_publisher: true,
       uuid: Ecto.UUID.generate(),
       org_id: 1
@@ -130,7 +146,9 @@ Repo.insert(
   User.registration_changeset(
     %User{
       reputation: 4200,
-      username: "Michael",
+      username: "michael",
+      name: "Michael",
+      locale: "en",
       is_publisher: true,
       uuid: Ecto.UUID.generate(),
       org_id: 1
