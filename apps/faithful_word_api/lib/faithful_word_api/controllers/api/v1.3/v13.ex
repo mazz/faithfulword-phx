@@ -413,6 +413,7 @@ defmodule FaithfulWordApi.V13 do
   def media_item_by_hash_id(hash_id) do
     query =
       from(mi in MediaItem,
+        join: pl in Playlist,
         where: mi.hash_id == ^hash_id,
         select: %{
           ordinal: mi.ordinal,
@@ -420,6 +421,7 @@ defmodule FaithfulWordApi.V13 do
           track_number: mi.track_number,
           medium: mi.medium,
           localizedname: mi.localizedname,
+          multilanguage: pl.multilanguage,
           path: mi.path,
           content_provider_link: mi.content_provider_link,
           ipfs_link: mi.ipfs_link,
@@ -435,7 +437,9 @@ defmodule FaithfulWordApi.V13 do
           media_category: mi.media_category,
           presented_at: mi.presented_at,
           published_at: mi.published_at,
-          hash_id: mi.hash_id
+          hash_id: mi.hash_id,
+          playlist_uuid: pl.uuid,
+          duration: mi.duration
         }
       )
 
