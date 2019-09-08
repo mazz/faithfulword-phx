@@ -353,7 +353,9 @@ defmodule FaithfulWordApi.V13 do
 
     {direction, sorting} =
       if category_and_multilanguage.media_category in special_categories do
-        {:desc, :presented_at}
+
+        # do not use presented_at because many presented_at dates are identical
+        {:desc, :inserted_at}
       else
         {:asc, :ordinal}
       end
