@@ -1292,6 +1292,7 @@ class Dbtool(object):
             UPDATE mediaitems SET source_material = \'Soul-winning Tutorial\' WHERE path LIKE \'tutorials/VerityBaptistChurch/%\';
 
             UPDATE mediaitems SET source_material = \'A Conversation with Pastor Jimenez\' WHERE uuid = \'0920cad6-1a3d-40e2-b75a-9d574ba4a3bc\';
+            UPDATE mediaitems SET language_id = \'en\' WHERE localizedname = \'Zephaniah 1: Preaching In Season And Out Of Season\';
 
             UPDATE mediaitems SET source_material = \'Faithful Word Baptist Church\' WHERE path LIKE \'preaching/fwbc%\';
             UPDATE mediaitems SET source_material = \'Verity Baptist Church\' WHERE path LIKE \'preaching/vbc%\';
@@ -1316,7 +1317,7 @@ class Dbtool(object):
             UPDATE mediaitems SET presenter_name = \'Brother Aaron Thompson\' WHERE uuid = \'87c66fa7-c695-4f51-aa30-b0d5334ed652\';
             UPDATE mediaitems SET presenter_name = \'Brother Aaron Thompson\' WHERE uuid = \'07a3b451-9ca3-42ea-bf86-f4e5fb2e0135\';
 
-            UPDATE mediaitems SET source_material = \'Hindi Plan of Salvation\' WHERE uuid = \'72239e97-9c03-4130-8207-e3d54e2ab5fb\';
+            UPDATE mediaitems SET source_material = \'Hindi Plan of Salvation\' WHERE path = \'gospel/hi/BibleWayToHeaven-PrashantKanhurkar-hi.mp3\';
             UPDATE mediaitems SET presenter_name = \'Unknown\' WHERE uuid = \'72239e97-9c03-4130-8207-e3d54e2ab5fb\';
 
 
