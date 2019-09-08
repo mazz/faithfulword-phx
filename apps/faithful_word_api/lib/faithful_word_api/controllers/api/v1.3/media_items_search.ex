@@ -1,5 +1,6 @@
 defmodule FaithfulWordApi.MediaItemsSearch do
   import Ecto.Query
+  alias DB.Schema.{Playlist}
 
   require Logger
 
@@ -31,8 +32,38 @@ defmodule FaithfulWordApi.MediaItemsSearch do
   defp _run(query, search_string) do
     from(media_item in query,
       join: id_and_score in matching_media_items_and_score(search_string),
+      join: pl in Playlist,
       on: id_and_score.id == media_item.id,
-      order_by: [desc: id_and_score.score]
+      where: media_item.playlist_id == pl.id,
+      order_by: [desc: id_and_score.score],
+      select: %{
+        ordinal: media_item.ordinal,
+        uuid: media_item.uuid,
+        track_number: media_item.track_number,
+        medium: media_item.medium,
+        localizedname: media_item.localizedname,
+        multilanguage: pl.multilanguage,
+        path: media_item.path,
+        content_provider_link: media_item.content_provider_link,
+        ipfs_link: media_item.ipfs_link,
+        language_id: media_item.language_id,
+        presenter_name: media_item.presenter_name,
+        source_material: media_item.source_material,
+        playlist_uuid: pl.uuid,
+        tags: media_item.tags,
+        duration: media_item.duration,
+        hash_id: media_item.hash_id,
+        small_thumbnail_path: media_item.small_thumbnail_path,
+        med_thumbnail_path: media_item.med_thumbnail_path,
+        large_thumbnail_path: media_item.large_thumbnail_path,
+        inserted_at: media_item.inserted_at,
+        updated_at: media_item.updated_at,
+        media_category: media_item.media_category,
+        presented_at: media_item.presented_at,
+        published_at: media_item.published_at,
+        hash_id: media_item.hash_id,
+        duration: media_item.duration
+      }
     )
   end
 
