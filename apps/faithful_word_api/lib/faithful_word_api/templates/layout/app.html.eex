@@ -20,7 +20,7 @@
 
   <body>
     <%= render_shared "_navbar.html", conn: @conn %>
-    <%= render_shared "_hero.html", conn: @conn %>
+    <%# <%= render_shared "_hero.html", conn: @conn %> %>
 
     <section class="section app">
       <div class="container">

@@ -17,9 +17,9 @@ import * as navbar from "./app/navbar.js";
 function navbarScroll() {
   var navbar = document.getElementsByClassName("navbar is-fixed-top")[0];
   if (navbar && (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50)) {
-    navbar.classList.remove("is-transparent");
+    // navbar.classList.remove("is-transparent");
   } else {
-    navbar.classList.add("is-transparent");
+    // navbar.classList.add("is-transparent");
   }
 }
 
