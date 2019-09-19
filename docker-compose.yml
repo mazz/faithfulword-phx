@@ -7,10 +7,10 @@ services:
       - 80:80
       - 443:443
     networks:
-      - proxy-public
+      - proxy-network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - proxy-public-certificates:/certificates
+      - proxy-certificates-storage:/certificates
     command: >
       --docker
       --docker.watch
@@ -33,7 +33,7 @@ services:
       - traefik.enable=true
       - traefik.port=8080
       - traefik.tags=proxy-public
-      - traefik.docker.network=proxy-public
+      - traefik.docker.network=proxy-network
       # Traefik service that listens to HTTP
       - traefik.redirectorservice.frontend.entryPoints=http
       - traefik.redirectorservice.frontend.redirect.entryPoint=https
@@ -44,11 +44,13 @@ services:
   postgres:
     image: postgres:11.3-alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DB?Variable POSTGRES_DB not set}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?Variable POSTGRES_PASSWORD not set}
-      POSTGRES_USER: ${POSTGRES_USER?Variable POSTGRES_USER not set}
+      POSTGRES_DB: ${FW_DATABASE_NAME?Variable FW_DATABASE_NAME not set}
+      POSTGRES_PASSWORD: ${FW_DATABASE_PASSWORD?Variable FW_DATABASE_PASSWORD not set}
+      POSTGRES_USER: ${FW_DATABASE_USERNAME?Variable FW_DATABASE_USERNAME not set}
+    networks:
+      - db-network
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - database-storage:/var/lib/postgresql/data
 
   faithful_word:
     build: .
@@ -57,13 +59,14 @@ services:
       - proxy
       - postgres
     networks:
-      - proxy-public
+      - db-network
+      - proxy-network
     labels:
       - traefik.frontend.rule=Host:${DOMAIN?Variable DOMAIN not set}
       - traefik.enable=true
       - traefik.port=4000
       - traefik.tags=proxy-public
-      - traefik.docker.network=proxy-public
+      - traefik.docker.network=proxy-network
       # Traefik service that listens to HTTP
       - traefik.redirectorservice.frontend.entryPoints=http
       - traefik.redirectorservice.frontend.redirect.entryPoint=https
@@ -71,11 +74,10 @@ services:
       - traefik.webservice.frontend.entryPoints=https
 
 networks:
-  proxy-public:
+  db-network:
+  proxy-network:
     external: true
 
 volumes:
-  proxy-public-certificates:
-    external: true
-  postgres-data:
-    external: true
+  proxy-certificates-storage:
+  database-storage:
