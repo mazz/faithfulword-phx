@@ -10,7 +10,8 @@ defmodule DB.Schema.User do
 
   alias DB.Type.{Achievement, UserPicture}
   # , Comment, Vote, Flag, Speaker}
-  alias DB.Schema.{UserAction}
+  alias DB.Schema.{UserAction, Org}
+  alias DB.Repo
   require Logger
 
   schema "users" do
@@ -18,7 +19,7 @@ defmodule DB.Schema.User do
     field(:email, :string)
     field(:encrypted_password, :string)
     field(:name, :string)
-    field :uuid, Ecto.UUID
+    field(:uuid, Ecto.UUID, autogenerate: true)
     field(:picture_url, UserPicture.Type)
     field(:reputation, :integer, default: 0)
     field(:today_reputation_gain, :integer, default: 0)
@@ -264,6 +265,22 @@ defmodule DB.Schema.User do
   end
 
   def validate_locale(changeset), do: changeset
+
+  def org_changeset(model, params \\ %{}) do
+    model
+    |> cast(params, [:org_id])
+    |> validate_required([:org_id])
+    case Repo.get_by(Org, id: params["org_id"]) do
+      nil ->
+        Logger.debug("did not find org: #{params["org_id"]}")
+        model
+        |> add_error(model, :org_id, "non-existent org")
+      org ->
+        Logger.debug("found org: #{org.id}")
+        model
+        |> put_change(:org_id, org.id)
+    end
+  end
 
   @forbidden_username_keywords ~w(faithfulword faithful admin newuser temporary deleted supprimé)
   # Only alphanum, '-' and '_'
