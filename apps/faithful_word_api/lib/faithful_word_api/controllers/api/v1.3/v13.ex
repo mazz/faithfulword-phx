@@ -459,6 +459,7 @@ defmodule FaithfulWordApi.V13 do
       select: %{
         basename: org.basename,
         uuid: org.uuid,
+        org_id: org.id,
         small_thumbnail_path: org.small_thumbnail_path,
         med_thumbnail_path: org.med_thumbnail_path,
         large_thumbnail_path: org.large_thumbnail_path,
