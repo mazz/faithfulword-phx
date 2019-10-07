@@ -28,6 +28,7 @@ defmodule FaithfulWordApi.OrgV13View do
     %{
       basename: org_v13.basename,
       uuid: org_v13.uuid,
+      orgId: org_v13.org_id,
       shortname: org_v13.shortname,
       smallThumbnailPath: org_v13.small_thumbnail_path,
       medThumbnailPath: org_v13.med_thumbnail_path,
