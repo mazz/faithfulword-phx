@@ -23,8 +23,7 @@ config :faithful_word, FaithfulWord.Mailer,
 config :faithful_word_api, FaithfulWordApi.Endpoint,
   http: [port: port],
   url: [host: System.fetch_env!("FW_HOSTNAME"), port: port],
-  secret_key_base: System.fetch_env!("FW_SECRET_KEY_BASE"),
-  live_view: [signing_salt: System.fetch_env!("FW_LIVE_VIEW_SIGNING_SALT")]
+  secret_key_base: System.fetch_env!("FW_SECRET_KEY_BASE")
 
 config :faithful_word_api, FaithfulWordApi.Guardian,
   secret_key: System.fetch_env!("FW_GUARDIAN_SECRET_KEY")
