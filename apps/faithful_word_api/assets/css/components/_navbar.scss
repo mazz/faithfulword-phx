@@ -7,10 +7,6 @@
     background-color: $navbar_color;
   }
 
-  &.is-transparent {
-    background-color: transparent;
-  }
-
   @media screen and (max-width: $desktop) {
     &.mobile-opened {
       background-color: $navbar_color;
@@ -32,7 +28,7 @@
     a {
       text-transform: uppercase;
       font-weight: lighter;
-      color: $white;
+      color: #000;
       &:hover {
         color: $navbar_color;
       }
