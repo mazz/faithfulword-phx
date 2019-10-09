@@ -417,6 +417,7 @@ defmodule FaithfulWordApi.V13 do
       from(mi in MediaItem,
         join: pl in Playlist,
         where: mi.hash_id == ^hash_id,
+        where: mi.playlist_id == pl.id,
         select: %{
           ordinal: mi.ordinal,
           uuid: mi.uuid,
