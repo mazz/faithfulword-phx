@@ -58,8 +58,6 @@ defmodule FaithfulWordApi.MixProject do
       {:bcrypt_elixir, "~> 2.0"},
       {:argon2_elixir, "~> 2.0"},
       {:corsica, "~> 1.1"},
-      {:phoenix_live_view, "~> 0.2.0"},
-
       # ---- Internal ----
       {:faithful_word, in_umbrella: true},
       {:db, in_umbrella: true}

@@ -53,7 +53,7 @@ defmodule FaithfulWord.MixProject do
       {:ecto_enum, "~> 1.3"},
       {:burnex, "~> 1.1"},
       {:guardian, "~> 2.0"},
-      {:guardian_db, "~> 2.0"},
+      {:guardian_db, "~> 2.0.2"},
       {:floki, "~> 0.23.0"},
       {:parse_trans, "~> 3.3"},
       {:scrivener_ecto, "~> 2.2"},

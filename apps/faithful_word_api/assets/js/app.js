@@ -13,10 +13,6 @@ import "phoenix_html"
 
 import "jquery";
 import * as navbar from "./app/navbar.js";
-import LiveSocket from "phoenix_live_view"
-
-let liveSocket = new LiveSocket("/live")
-liveSocket.connect()
 
 function navbarScroll() {
   var navbar = document.getElementsByClassName("navbar is-fixed-top")[0];

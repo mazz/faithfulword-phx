@@ -52,8 +52,6 @@ defmodule FaithfulWordApi do
         # !is_nil(Map.get(conn.assigns, :current_user))
         !is_nil(GuardianImpl.Plug.current_resource(conn))
       end
-
-      import Phoenix.LiveView, only: [live_render: 2, live_render: 3]
     end
   end
 
@@ -62,7 +60,6 @@ defmodule FaithfulWordApi do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
-      import Phoenix.LiveView.Router
     end
   end
 

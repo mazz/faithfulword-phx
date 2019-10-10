@@ -33,7 +33,7 @@ defmodule FaithfulWordJobs.MixProject do
   defp deps do
     [
       {:quantum, "~> 2.3"},
-      {:timex, "~> 3.5"},
+      # {:timex, "~> 3.5"},
 
       # ---- Internal ----
       {:faithful_word, in_umbrella: true},
