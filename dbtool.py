@@ -1286,6 +1286,10 @@ class Dbtool(object):
             cur.execute(query1)
             sourceconn.commit()
 
+            delete_extra_proverbios = 'delete FROM playlist_titles where id = 95'
+            cur.execute(delete_extra_proverbios)
+            sourceconn.commit()
+
             miscquery = """
             UPDATE mediaitems SET source_material = \'Plan of Salvation\' WHERE path LIKE \'gospel/%\';
             UPDATE mediaitems SET source_material = \'Soul-winning Motivation\' WHERE path LIKE \'motivation/%\';
