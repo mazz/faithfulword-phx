@@ -1,4 +1,4 @@
-defmodule DB.Schema.PushMessage do
+defmodule Db.Schema.PushMessage do
   use Ecto.Schema
   import Ecto.Changeset
 

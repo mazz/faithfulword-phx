@@ -1,7 +1,7 @@
-defmodule DB.Repo.Migrations.AddHashIdToMediaItems do
+defmodule Db.Repo.Migrations.AddHashIdToMediaItems do
   use Ecto.Migration
   import Ecto.Query
-  alias DB.Schema.MediaItem
+  alias Db.Schema.MediaItem
 
   def up do
     alter table(:mediaitems) do

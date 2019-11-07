@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateMusictitle do
+defmodule Db.Repo.Migrations.CreateMusictitle do
   use Ecto.Migration
 
   def change do

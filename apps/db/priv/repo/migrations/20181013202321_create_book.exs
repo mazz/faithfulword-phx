@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateBook do
+defmodule Db.Repo.Migrations.CreateBook do
   use Ecto.Migration
 
   def change do

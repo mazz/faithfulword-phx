@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateFlag do
+defmodule Db.Repo.Migrations.CreateFlag do
   use Ecto.Migration
 
   def change do

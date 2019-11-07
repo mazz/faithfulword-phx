@@ -1,9 +1,9 @@
-defmodule DB.Schema.InvitationRequest do
+defmodule Db.Schema.InvitationRequest do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias DB.Schema.User
-  alias DB.Schema.InvitationRequest
+  alias Db.Schema.User
+  alias Db.Schema.InvitationRequest
 
   schema "invitation_requests" do
     field(:email, :string)

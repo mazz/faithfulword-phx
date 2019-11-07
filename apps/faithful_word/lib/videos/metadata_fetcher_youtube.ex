@@ -20,10 +20,10 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
   alias GoogleApi.YouTube.V3.Model.Video, as: YouTubeVideo
   alias GoogleApi.YouTube.V3.Model.VideoListResponse, as: YouTubeVideoList
 
-  alias DB.Schema.Video
-  alias DB.Schema.User
+  alias Db.Schema.Video
+  alias Db.Schema.User
   alias FaithfulWord.Videos.MetadataFetcher
-  alias DB.Repo
+  alias Db.Repo
 
   @doc """
   Fetch metadata from video. Returns an object containing  :title, :url and :language

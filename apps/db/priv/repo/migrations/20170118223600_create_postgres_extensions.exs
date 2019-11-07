@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreatePostgresExtensions do
+defmodule Db.Repo.Migrations.CreatePostgresExtensions do
   use Ecto.Migration
 
   def change do

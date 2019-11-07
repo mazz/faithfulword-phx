@@ -1,4 +1,4 @@
-defmodule DB.Schema.GospelTitle do
+defmodule Db.Schema.GospelTitle do
   use Ecto.Schema
   import Ecto.Changeset
 

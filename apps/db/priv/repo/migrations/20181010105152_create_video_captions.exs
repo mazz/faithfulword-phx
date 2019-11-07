@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateVideoCaptions do
+defmodule Db.Repo.Migrations.CreateVideoCaptions do
   use Ecto.Migration
 
   def change do

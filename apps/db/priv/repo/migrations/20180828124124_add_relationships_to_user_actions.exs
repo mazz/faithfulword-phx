@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddRelationshipsToUserActions do
+defmodule Db.Repo.Migrations.AddRelationshipsToUserActions do
   @moduledoc """
   Add real relationships and migrate existing actions.
 
@@ -14,12 +14,12 @@ defmodule DB.Repo.Migrations.AddRelationshipsToUserActions do
   import Ecto.Changeset, only: [change: 1, change: 2]
   import Ecto.Query
 
-  alias DB.Repo
-  alias DB.Schema.UserAction
-  alias DB.Schema.Video
-  # alias DB.Schema.Speaker
-  # alias DB.Schema.Statement
-  # alias DB.Schema.Comment
+  alias Db.Repo
+  alias Db.Schema.UserAction
+  alias Db.Schema.Video
+  # alias Db.Schema.Speaker
+  # alias Db.Schema.Statement
+  # alias Db.Schema.Comment
 
   def up do
     # Remove actions that cannot be migrated
@@ -178,7 +178,7 @@ defmodule DB.Repo.Migrations.AddRelationshipsToUserActions do
   # defp get_comment_video_id!(comment) do
   #   Statement
   #   |> select([s], s.video_id)
-  #   |> DB.Repo.get!(comment.statement_id)
+  #   |> Db.Repo.get!(comment.statement_id)
   # end
 
   defp get_video_id_from_context(nil),

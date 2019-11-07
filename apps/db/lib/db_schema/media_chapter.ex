@@ -1,4 +1,4 @@
-defmodule DB.Schema.MediaChapter do
+defmodule Db.Schema.MediaChapter do
   use Ecto.Schema
   import Ecto.Changeset
 

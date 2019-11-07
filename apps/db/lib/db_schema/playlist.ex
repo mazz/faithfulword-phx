@@ -1,7 +1,7 @@
-defmodule DB.Schema.Playlist do
+defmodule Db.Schema.Playlist do
   use Ecto.Schema
   import Ecto.Changeset
-  alias DB.Type.PlaylistHashId
+  alias Db.Type.PlaylistHashId
 
   schema "playlists" do
     # field :language_id, :string
@@ -13,12 +13,12 @@ defmodule DB.Schema.Playlist do
     field :banner_path, :string
     field :uuid, Ecto.UUID
     field :channel_id, :id
-    field :media_category, DB.Type.MediaCategory
+    field :media_category, Db.Type.MediaCategory
     field :hash_id, :string
     field :multilanguage, :boolean, default: false
 
-    has_many :mediaitems, DB.Schema.MediaItem
-    has_many :playlist_titles, DB.Schema.PlaylistTitle
+    has_many :mediaitems, Db.Schema.MediaItem
+    has_many :playlist_titles, Db.Schema.PlaylistTitle
 
     timestamps(type: :utc_datetime)
 
@@ -55,8 +55,8 @@ defmodule DB.Schema.Playlist do
 
   ## Examples
 
-      iex> DB.Schema.MediaItem.changeset_generate_hash_id(%DB.Schema.Video{id: 42, hash_id: nil})
-      #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #DB.Schema.Video<>, valid?: true>
+      iex> Db.Schema.MediaItem.changeset_generate_hash_id(%Db.Schema.Video{id: 42, hash_id: nil})
+      #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #Db.Schema.Video<>, valid?: true>
   """
   def changeset_generate_hash_id(playlist) do
     change(playlist, hash_id: PlaylistHashId.encode(playlist.id))

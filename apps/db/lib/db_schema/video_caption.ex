@@ -1,10 +1,10 @@
-defmodule DB.Schema.VideoCaption do
+defmodule Db.Schema.VideoCaption do
   use Ecto.Schema
   import Ecto.Changeset
 
   @primary_key false
   schema "videos_captions" do
-    belongs_to(:video, DB.Schema.Video, primary_key: true)
+    belongs_to(:video, Db.Schema.Video, primary_key: true)
     field(:content, :string)
     field(:format, :string)
 

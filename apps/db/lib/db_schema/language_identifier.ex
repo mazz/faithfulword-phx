@@ -1,4 +1,4 @@
-defmodule DB.Schema.LanguageIdentifier do
+defmodule Db.Schema.LanguageIdentifier do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateAchievements do
+defmodule Db.Repo.Migrations.CreateAchievements do
   use Ecto.Migration
 
   def change do

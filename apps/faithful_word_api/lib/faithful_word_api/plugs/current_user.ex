@@ -5,8 +5,8 @@ defmodule FaithfulWordApi.Plugs.CurrentUser do
 
   import Plug.Conn
 
-  alias DB.Repo
-  alias DB.Schema.User
+  alias Db.Repo
+  alias Db.Schema.User
   alias FaithfulWordApi.Guardian.Plug, as: GuardianPlug
 
   def init(_), do: []

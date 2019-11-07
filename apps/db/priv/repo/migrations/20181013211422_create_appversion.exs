@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateAppversion do
+defmodule Db.Repo.Migrations.CreateAppversion do
   use Ecto.Migration
 
   def change do

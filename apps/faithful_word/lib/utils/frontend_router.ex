@@ -3,9 +3,9 @@ defmodule FaithfulWord.Utils.FrontendRouter do
   Generate routes matching Frontend URL.
   """
 
-  alias DB.Schema.User
-  # alias DB.Schema.Speaker
-  # alias DB.Schema.Comment
+  alias Db.Schema.User
+  # alias Db.Schema.Speaker
+  # alias Db.Schema.Comment
 
   @doc """
   Base frontend URL

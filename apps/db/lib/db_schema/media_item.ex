@@ -1,7 +1,7 @@
-defmodule DB.Schema.MediaItem do
+defmodule Db.Schema.MediaItem do
   use Ecto.Schema
   import Ecto.Changeset
-  alias DB.Type.MediaItemHashId
+  alias Db.Type.MediaItemHashId
 
   schema "mediaitems" do
     field :content_provider_link, :string
@@ -19,7 +19,7 @@ defmodule DB.Schema.MediaItem do
     field :source_material, :string
     field :track_number, :integer
     field :tags, {:array, :string}
-    field :media_category, DB.Type.MediaCategory
+    field :media_category, Db.Type.MediaCategory
     field :uuid, Ecto.UUID
     field :playlist_id, :integer
     field :org_id, :integer
@@ -86,8 +86,8 @@ defmodule DB.Schema.MediaItem do
 
   ## Examples
 
-      iex> DB.Schema.MediaItem.changeset_generate_hash_id(%DB.Schema.Video{id: 42, hash_id: nil})
-      #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #DB.Schema.Video<>, valid?: true>
+      iex> Db.Schema.MediaItem.changeset_generate_hash_id(%Db.Schema.Video{id: 42, hash_id: nil})
+      #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #Db.Schema.Video<>, valid?: true>
   """
   def changeset_generate_hash_id(media_item) do
     change(media_item, hash_id: MediaItemHashId.encode(media_item.id))

@@ -2,8 +2,8 @@ defmodule FaithfulWord.Jobs.ReportManager do
   import Ecto.Query
   # TODO Implement this as a behaviour
 
-  alias DB.Repo
-  alias DB.Schema.UsersActionsReport
+  alias Db.Repo
+  alias Db.Schema.UsersActionsReport
 
   def get_last_report(analyser_id) do
     UsersActionsReport
@@ -58,18 +58,18 @@ defmodule FaithfulWord.Jobs.ReportManager do
   def show_running() do
     UsersActionsReport
     |> where([r], r.status == ^UsersActionsReport.status(:running))
-    |> DB.Repo.all()
+    |> Db.Repo.all()
   end
 
   def show_pending() do
     UsersActionsReport
     |> where([r], r.status == ^UsersActionsReport.status(:pending))
-    |> DB.Repo.all()
+    |> Db.Repo.all()
   end
 
   def show_failed() do
     UsersActionsReport
     |> where([r], r.status == ^UsersActionsReport.status(:pending))
-    |> DB.Repo.all()
+    |> Db.Repo.all()
   end
 end

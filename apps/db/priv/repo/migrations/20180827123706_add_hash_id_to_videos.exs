@@ -1,7 +1,7 @@
-defmodule DB.Repo.Migrations.AddHashIdToVideos do
+defmodule Db.Repo.Migrations.AddHashIdToVideos do
   use Ecto.Migration
   import Ecto.Query
-  alias DB.Schema.Video
+  alias Db.Schema.Video
 
   def up do
     alter table(:videos) do
@@ -17,9 +17,9 @@ defmodule DB.Repo.Migrations.AddHashIdToVideos do
 
     # Update all existing videos with their hashIds
 
-    # DB.Repo.all(from v in Video)
+    # Db.Repo.all(from v in Video)
     # |> Enum.map(&Video.changeset_generate_hash_id/1)
-    # |> Enum.map(&DB.Repo.update/1)
+    # |> Enum.map(&Db.Repo.update/1)
   end
 
   def down do

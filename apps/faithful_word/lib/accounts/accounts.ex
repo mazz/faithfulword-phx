@@ -7,10 +7,10 @@ defmodule FaithfulWord.Accounts do
   require Logger
 
   alias Ecto.Multi
-  alias DB.Repo
-  alias DB.Type.Achievement
-  alias DB.Schema.User
-  alias DB.Schema.ResetPasswordRequest
+  alias Db.Repo
+  alias Db.Type.Achievement
+  alias Db.Schema.User
+  alias Db.Schema.ResetPasswordRequest
 
   alias FaithfulWord.Mailer.Email
   alias FaithfulWord.Accounts.{UsernameGenerator, UserPermissions, Invitations}
@@ -96,7 +96,7 @@ defmodule FaithfulWord.Accounts do
 
     if fetch_default_picture?() && user.picture_url == nil do
       Task.start(fn ->
-        pic_url = DB.Type.UserPicture.default_url(:thumb, user)
+        pic_url = Db.Type.UserPicture.default_url(:thumb, user)
         fetch_picture(user, pic_url)
       end)
     end
@@ -201,7 +201,7 @@ defmodule FaithfulWord.Accounts do
   def fetch_picture(user, picture_url) do
     # TODO config instead of matching env
     if Application.get_env(:faithful_word, :env) != :test do
-      case DB.Type.UserPicture.store({picture_url, user}) do
+      case Db.Type.UserPicture.store({picture_url, user}) do
         {:ok, picture} ->
           Repo.update(User.changeset_picture(user, picture))
 
@@ -255,7 +255,7 @@ defmodule FaithfulWord.Accounts do
 
   @doc """
   Unlock given achievement. `achievement` can be passed as an integer or as the
-  atom representation. See `DB.Type.Achievement` for more info.
+  atom representation. See `Db.Type.Achievement` for more info.
   """
   def unlock_achievement(user, achievement) when is_atom(achievement),
     do: unlock_achievement(user, Achievement.get(achievement))

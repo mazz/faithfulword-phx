@@ -1,4 +1,4 @@
-defmodule DB.Schema.AppVersion do
+defmodule Db.Schema.AppVersion do
   use Ecto.Schema
   import Ecto.Changeset
 

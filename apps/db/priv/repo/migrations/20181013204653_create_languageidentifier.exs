@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateLanguageidentifier do
+defmodule Db.Repo.Migrations.CreateLanguageidentifier do
   use Ecto.Migration
 
   def change do

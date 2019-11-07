@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AllowNullUserOnUserAction do
+defmodule Db.Repo.Migrations.AllowNullUserOnUserAction do
   @moduledoc """
   This migration allow for null value in user_id which will represent an admin action
   """

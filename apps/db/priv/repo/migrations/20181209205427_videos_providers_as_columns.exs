@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.VideosProvidersAsColumns do
+defmodule Db.Repo.Migrations.VideosProvidersAsColumns do
   @moduledoc """
   This migration changes the `Videos` schema to go from a pair
   of {provider, provider_id} to a model where we have multiple  `{provider}_id`
@@ -18,7 +18,7 @@ defmodule DB.Repo.Migrations.VideosProvidersAsColumns do
     flush()
 
     # Migrate existing videos - we only have YouTube right now
-    Ecto.Adapters.SQL.query!(DB.Repo, """
+    Ecto.Adapters.SQL.query!(Db.Repo, """
     UPDATE videos SET youtube_id = provider_id;
     """)
 
@@ -44,7 +44,7 @@ defmodule DB.Repo.Migrations.VideosProvidersAsColumns do
     flush()
 
     # Migrate existing videos
-    Ecto.Adapters.SQL.query!(DB.Repo, """
+    Ecto.Adapters.SQL.query!(Db.Repo, """
     UPDATE videos SET provider_id = youtube_id, provider = 'youtube';
     """)
 

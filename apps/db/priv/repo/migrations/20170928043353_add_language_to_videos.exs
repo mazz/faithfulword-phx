@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddLanguageToVideos do
+defmodule Db.Repo.Migrations.AddLanguageToVideos do
   use Ecto.Migration
 
   def change do

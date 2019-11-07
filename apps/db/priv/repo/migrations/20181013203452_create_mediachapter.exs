@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateMediachapter do
+defmodule Db.Repo.Migrations.CreateMediachapter do
   use Ecto.Migration
 
   def change do

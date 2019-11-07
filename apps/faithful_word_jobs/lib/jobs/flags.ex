@@ -10,9 +10,9 @@ defmodule FaithfulWord.Jobs.Flags do
   require Logger
   import Ecto.Query
 
-  alias DB.Repo
-  alias DB.Schema.UserAction
-  alias DB.Schema.UsersActionsReport
+  alias Db.Repo
+  alias Db.Schema.UserAction
+  alias Db.Schema.UsersActionsReport
 
   alias FaithfulWord.Moderation.Flagger
   alias FaithfulWord.Moderation

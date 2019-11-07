@@ -1,4 +1,4 @@
-defmodule DB.Schema.BookTitle do
+defmodule Db.Schema.BookTitle do
   use Ecto.Schema
   import Ecto.Changeset
 

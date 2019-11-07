@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateMediaItemsSearch do
+defmodule Db.Repo.Migrations.CreateMediaItemsSearch do
   use Ecto.Migration
 
   def change do

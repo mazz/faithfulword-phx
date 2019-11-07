@@ -1,7 +1,7 @@
 import EctoEnum
 
 defenum(
-  DB.Type.Entity,
+  Db.Type.Entity,
   video: 1,
   speaker: 2,
   statement: 3,

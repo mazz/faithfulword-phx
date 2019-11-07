@@ -1,6 +1,6 @@
 defmodule FaithfulWordApi.MediaItemsSearch do
   import Ecto.Query
-  alias DB.Schema.{Playlist}
+  alias Db.Schema.{Playlist}
 
   require Logger
 

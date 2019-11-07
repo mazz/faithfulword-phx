@@ -1,7 +1,7 @@
-defmodule DB.Repo.Migrations.ChangeFlagsToFlagActions do
+defmodule Db.Repo.Migrations.ChangeFlagsToFlagActions do
   use Ecto.Migration
 
-  alias DB.Repo
+  alias Db.Repo
 
   @doc """
   Flags used to point on entities, they will now point directly on actions
@@ -10,7 +10,7 @@ defmodule DB.Repo.Migrations.ChangeFlagsToFlagActions do
   """
   def change do
     # Remove all entries and deprecated indexes
-    Repo.delete_all(DB.Schema.Flag, log: false)
+    Repo.delete_all(Db.Schema.Flag, log: false)
     drop unique_index(:flags, [:source_user_id, :entity, :entity_id])
 
     # Alter table

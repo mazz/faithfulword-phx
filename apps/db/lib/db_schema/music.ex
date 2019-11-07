@@ -1,4 +1,4 @@
-defmodule DB.Schema.Music do
+defmodule Db.Schema.Music do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,8 +8,8 @@ defmodule DB.Schema.Music do
     field :uuid, Ecto.UUID
 
     # timestamps()
-    has_many :mediamusic, DB.Schema.MediaMusic
-    has_many :musictitle, DB.Schema.MusicTitle
+    has_many :mediamusic, Db.Schema.MediaMusic
+    has_many :musictitle, Db.Schema.MusicTitle
     timestamps(type: :utc_datetime)
   end
 

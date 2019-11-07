@@ -7,7 +7,7 @@ defmodule FaithfulWordApi.LoginController do
   alias FaithfulWord.Authenticator.GuardianImpl
   alias FaithfulWordApi.Guardian
   alias FaithfulWord.Authenticator
-  alias DB.Schema.User
+  alias Db.Schema.User
 
   alias Phoenix.LiveView
 

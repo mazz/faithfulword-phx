@@ -3,7 +3,7 @@ use Mix.Config
 # db ##########################################################################
 
 # Configure your database
-config :db, DB.Repo,
+config :db, Db.Repo,
   username: System.get_env("FW_DB_USERNAME") || "postgres",
   password: System.get_env("FW_DB_PASSWORD") || "postgres",
   database: "faithful_word_dev",
@@ -17,7 +17,7 @@ config :arc, storage: Arc.Storage.Local, asset_host: "http://localhost:4000"
 dev_secret = "8C6FsJwjV11d+1WPUIbkEH6gB/VavJrcXWoPLujgpclfxjkLkoNFSjVU9XfeNm6s"
 
 # Configure your database
-config :faithful_word, DB.Repo,
+config :faithful_word, Db.Repo,
   database: "faithful_word_dev",
   pool_size: 10
 

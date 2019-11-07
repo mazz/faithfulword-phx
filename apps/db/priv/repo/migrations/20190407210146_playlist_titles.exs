@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.PlaylistTitles do
+defmodule Db.Repo.Migrations.PlaylistTitles do
   use Ecto.Migration
 
   def change do

@@ -1,2 +1,2 @@
-defmodule DB do
+defmodule Db do
 end

@@ -1,7 +1,7 @@
-defmodule DB.Repo.Migrations.AddHashIdToChannels do
+defmodule Db.Repo.Migrations.AddHashIdToChannels do
   use Ecto.Migration
   import Ecto.Query
-  alias DB.Schema.Channel
+  alias Db.Schema.Channel
 
   def up do
     alter table(:channels) do

@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddNewsletterToUser do
+defmodule Db.Repo.Migrations.AddNewsletterToUser do
   use Ecto.Migration
 
   def change do

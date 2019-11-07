@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateChannels do
+defmodule Db.Repo.Migrations.CreateChannels do
   use Ecto.Migration
 
   def change do

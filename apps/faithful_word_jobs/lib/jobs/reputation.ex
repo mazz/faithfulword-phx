@@ -9,11 +9,11 @@ defmodule FaithfulWord.Jobs.Reputation do
   require Logger
   import Ecto.Query
 
-  alias DB.Repo
-  alias DB.Schema.User
-  alias DB.Schema.UserAction
-  alias DB.Schema.UsersActionsReport
-  alias DB.Query.Actions
+  alias Db.Repo
+  alias Db.Schema.User
+  alias Db.Schema.UserAction
+  alias Db.Schema.UsersActionsReport
+  alias Db.Query.Actions
 
   alias FaithfulWord.Actions.ReputationChange
   alias FaithfulWord.Jobs.ReportManager
