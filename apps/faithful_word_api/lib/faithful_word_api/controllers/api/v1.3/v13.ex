@@ -456,20 +456,24 @@ defmodule FaithfulWordApi.V13 do
 
     Ecto.Query.from(org in Org,
       where: org.shortname == "faithfulwordapp",
+      preload: [:channels],
       order_by: org.id,
       select: %{
-        basename: org.basename,
-        uuid: org.uuid,
-        org_id: org.id,
-        small_thumbnail_path: org.small_thumbnail_path,
-        med_thumbnail_path: org.med_thumbnail_path,
-        large_thumbnail_path: org.large_thumbnail_path,
-        banner_path: org.banner_path,
-        inserted_at: org.inserted_at,
-        updated_at: org.updated_at,
-        shortname: org.shortname,
-        hash_id: org.hash_id
+        org: org
       }
+      # select: %{
+      #   basename: org.basename,
+      #   uuid: org.uuid,
+      #   org_id: org.id,
+      #   small_thumbnail_path: org.small_thumbnail_path,
+      #   med_thumbnail_path: org.med_thumbnail_path,
+      #   large_thumbnail_path: org.large_thumbnail_path,
+      #   banner_path: org.banner_path,
+      #   inserted_at: org.inserted_at,
+      #   updated_at: org.updated_at,
+      #   shortname: org.shortname,
+      #   hash_id: org.hash_id
+      # }
     )
     |> Repo.paginate(page: offset, page_size: limit)
   end

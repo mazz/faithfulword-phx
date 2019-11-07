@@ -3,6 +3,20 @@ defmodule Db.Schema.Channel do
   import Ecto.Changeset
   alias Db.Type.ChannelHashId
 
+  @derive {Jason.Encoder, only: [
+    :basename,
+    :ordinal,
+    :small_thumbnail_path,
+    :med_thumbnail_path,
+    :large_thumbnail_path,
+    :banner_path,
+    :uuid,
+    :org_id,
+    :hash_id,
+    :updated_at,
+    :inserted_at
+  ]}
+
   schema "channels" do
     field :basename, :string
     field :ordinal, :integer
