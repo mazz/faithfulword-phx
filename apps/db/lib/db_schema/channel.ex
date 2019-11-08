@@ -42,23 +42,13 @@ defmodule Db.Schema.Channel do
       :uuid,
       :ordinal,
       :basename,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
-      :small_thumbnail_path,
-      :banner_path,
-      :org_id,
-      :hash_id
+      :org_id
     ])
     |> validate_required([
       :uuid,
       :ordinal,
       :basename,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
-      :small_thumbnail_path,
-      :banner_path,
-      :org_id,
-      :hash_id
+      :org_id
     ])
   end
 

@@ -1,6 +1,7 @@
 defmodule FaithfulWordApi.V13 do
   import Ecto.Query, warn: false
   alias Db.Repo
+  alias Ecto.Multi
 
   alias Db.Schema.{MediaChapter, Chapter, Book}
   alias Db.Schema.{BookTitle, LanguageIdentifier}
@@ -243,6 +244,37 @@ defmodule FaithfulWordApi.V13 do
       }
     )
     |> Repo.paginate(page: offset, page_size: limit)
+  end
+
+  def add_channel(
+    ordinal,
+    basename,
+    small_thumbnail_path,
+    med_thumbnail_path,
+    large_thumbnail_path,
+    banner_path,
+    org_id) do
+
+    changeset = Channel.changeset(%Channel{}, %{
+      ordinal: ordinal,
+      basename: basename,
+      small_thumbnail_path: small_thumbnail_path,
+      med_thumbnail_path: med_thumbnail_path,
+      large_thumbnail_path: large_thumbnail_path,
+      banner_path: banner_path,
+      org_id: org_id,
+      uuid: Ecto.UUID.generate()
+      })
+
+    Multi.new()
+    |> Multi.insert(:item_without_hash_id, changeset)
+    |> Multi.run(:channel, fn _repo, %{item_without_hash_id: channel} ->
+      channel
+      |> Channel.changeset_generate_hash_id()
+      |> Repo.update()
+    end)
+    |> Repo.transaction()
+
   end
 
   def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version) do

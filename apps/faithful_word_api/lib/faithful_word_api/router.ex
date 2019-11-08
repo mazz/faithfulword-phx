@@ -101,6 +101,7 @@ defmodule FaithfulWordApi.Router do
 
       scope "/channels" do
         # get "/", ChannelController, :indexv13
+        post "/add", ChannelController, :addv13
         get "/:uuid/playlists", PlaylistController, :indexv13
       end
 
