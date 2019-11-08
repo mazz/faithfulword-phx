@@ -1,7 +1,7 @@
 defmodule FaithfulWord.Authenticator.OAuth do
   import Ecto.Query
-  alias DB.Repo
-  alias DB.Schema.User
+  alias Db.Repo
+  alias Db.Schema.User
   alias FaithfulWord.Accounts
   alias FaithfulWord.Authenticator.OAuth.Facebook
   alias FaithfulWord.Authenticator.ProviderInfos

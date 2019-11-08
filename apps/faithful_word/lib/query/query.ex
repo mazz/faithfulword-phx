@@ -1,4 +1,4 @@
-defmodule DB.Query do
+defmodule Db.Query do
   @moduledoc """
   General queries
   """

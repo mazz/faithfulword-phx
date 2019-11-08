@@ -4,9 +4,9 @@ defmodule FaithfulWord.Content do
   """
 
   import Ecto.Query, warn: false
-  alias DB.Repo
+  alias Db.Repo
 
-  alias DB.Schema.Book
+  alias Db.Schema.Book
 
   @doc """
   Returns the list of book.
@@ -102,7 +102,7 @@ defmodule FaithfulWord.Content do
     Book.changeset(book, %{})
   end
 
-  alias DB.Schema.Chapter
+  alias Db.Schema.Chapter
 
   @doc """
   Returns the list of chapter.
@@ -198,7 +198,7 @@ defmodule FaithfulWord.Content do
     Chapter.changeset(chapter, %{})
   end
 
-  alias DB.Schema.BookTitle
+  alias Db.Schema.BookTitle
 
   @doc """
   Returns the list of booktitle.
@@ -294,7 +294,7 @@ defmodule FaithfulWord.Content do
     BookTitle.changeset(book_title, %{})
   end
 
-  alias DB.Schema.MediaChapter
+  alias Db.Schema.MediaChapter
 
   @doc """
   Returns the list of mediachapter.
@@ -390,7 +390,7 @@ defmodule FaithfulWord.Content do
     MediaChapter.changeset(media_chapter, %{})
   end
 
-  alias DB.Schema.Gospel
+  alias Db.Schema.Gospel
 
   @doc """
   Returns the list of gospel.
@@ -486,7 +486,7 @@ defmodule FaithfulWord.Content do
     Gospel.changeset(gospel, %{})
   end
 
-  alias DB.Schema.MediaGospel
+  alias Db.Schema.MediaGospel
 
   @doc """
   Returns the list of mediagospel.
@@ -582,7 +582,7 @@ defmodule FaithfulWord.Content do
     MediaGospel.changeset(media_gospel, %{})
   end
 
-  alias DB.Schema.GospelTitle
+  alias Db.Schema.GospelTitle
 
   @doc """
   Returns the list of gospeltitle.
@@ -678,7 +678,7 @@ defmodule FaithfulWord.Content do
     GospelTitle.changeset(gospel_title, %{})
   end
 
-  alias DB.Schema.Music
+  alias Db.Schema.Music
 
   @doc """
   Returns the list of music.
@@ -774,7 +774,7 @@ defmodule FaithfulWord.Content do
     Music.changeset(music, %{})
   end
 
-  alias DB.Schema.MediaMusic
+  alias Db.Schema.MediaMusic
 
   @doc """
   Returns the list of mediamusic.
@@ -870,7 +870,7 @@ defmodule FaithfulWord.Content do
     MediaMusic.changeset(media_music, %{})
   end
 
-  alias DB.Schema.MusicTitle
+  alias Db.Schema.MusicTitle
 
   @doc """
   Returns the list of musictitle.
@@ -966,7 +966,7 @@ defmodule FaithfulWord.Content do
     MusicTitle.changeset(music_title, %{})
   end
 
-  alias DB.Schema.LanguageIdentifier
+  alias Db.Schema.LanguageIdentifier
 
   @doc """
   Returns the list of languageidentifier.

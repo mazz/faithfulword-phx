@@ -1,4 +1,4 @@
-defmodule DB.Utils.TokenGenerator do
+defmodule Db.Utils.TokenGenerator do
   @moduledoc """
   Generate base64 unique tokens using :crypto.strong_rand_bytes/1
   """

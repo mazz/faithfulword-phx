@@ -8,7 +8,7 @@ defmodule FaithfulWord.Videos.CaptionsFetcherYoutube do
   @impl true
   def fetch(%{youtube_id: youtube_id, language: language}) do
     with {:ok, content} <- fetch_captions_content(youtube_id, language) do
-      captions = %DB.Schema.VideoCaption{
+      captions = %Db.Schema.VideoCaption{
         content: content,
         format: "xml"
       }

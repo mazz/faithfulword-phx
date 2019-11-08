@@ -9,12 +9,12 @@ defmodule FaithfulWord.Jobs.Moderation do
   require Logger
   import Ecto.Query
 
-  alias DB.Repo
-  # alias DB.Schema.ModerationUserFeedback
-  # alias DB.Schema.UserAction
-  # alias DB.Schema.Comment
-  # alias DB.Schema.Flag
-  # alias DB.Type.FlagReason
+  alias Db.Repo
+  # alias Db.Schema.ModerationUserFeedback
+  # alias Db.Schema.UserAction
+  # alias Db.Schema.Comment
+  # alias Db.Schema.Flag
+  # alias Db.Type.FlagReason
 
   alias FaithfulWord.Actions.ActionCreator
   # alias FaithfulWord.Comments

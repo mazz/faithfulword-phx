@@ -6,7 +6,7 @@ use Mix.Config
 config :arc, storage: Arc.Storage.Local
 
 # Configure your database
-config :db, DB.Repo,
+config :db, Db.Repo,
   hostname: "localhost",
   username: System.get_env("FW_DB_USERNAME") || "postgres",
   password: System.get_env("FW_DB_PASSWORD") || "postgres",
@@ -16,7 +16,7 @@ config :db, DB.Repo,
 # faithful_word ###############################################################
 
 # Configure your database
-config :faithful_word, DB.Repo,
+config :faithful_word, Db.Repo,
   database: "faithful_word_test",
   pool: Ecto.Adapters.SQL.Sandbox
 

@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddCompletedOnboardingToUsers do
+defmodule Db.Repo.Migrations.AddCompletedOnboardingToUsers do
   use Ecto.Migration
 
   def up do

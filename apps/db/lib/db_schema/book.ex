@@ -1,4 +1,4 @@
-defmodule DB.Schema.Book do
+defmodule Db.Schema.Book do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -10,8 +10,8 @@ defmodule DB.Schema.Book do
     field :basename, :string
     field :uuid, Ecto.UUID
 
-    has_many :chapters, DB.Schema.Chapter
-    has_many :booktitles, DB.Schema.BookTitle
+    has_many :chapters, Db.Schema.Chapter
+    has_many :booktitles, Db.Schema.BookTitle
   end
 
   @doc false

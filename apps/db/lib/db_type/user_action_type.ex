@@ -1,7 +1,7 @@
 import EctoEnum
 
 defenum(
-  DB.Type.UserActionType,
+  Db.Type.UserActionType,
   # Common
   create: 1,
   remove: 2,
@@ -18,7 +18,7 @@ defenum(
   revert_vote_up: 12,
   revert_vote_down: 13,
   revert_self_vote: 14,
-  # Bans - See DB.Type.FlagReason for labels
+  # Bans - See Db.Type.FlagReason for labels
   action_banned_bad_language: 21,
   action_banned_spam: 22,
   action_banned_irrelevant: 23,

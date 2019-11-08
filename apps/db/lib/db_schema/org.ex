@@ -1,7 +1,7 @@
-defmodule DB.Schema.Org do
+defmodule Db.Schema.Org do
   use Ecto.Schema
   import Ecto.Changeset
-  alias DB.Type.OrgHashId
+  alias Db.Type.OrgHashId
 
   schema "orgs" do
     field :basename, :string
@@ -13,8 +13,8 @@ defmodule DB.Schema.Org do
     field :uuid, Ecto.UUID
     field :hash_id, :string
 
-    has_many :channels, DB.Schema.Channel
-    has_many :users, DB.Schema.User
+    has_many :channels, Db.Schema.Channel
+    has_many :users, Db.Schema.User
 
     timestamps(type: :utc_datetime)
 
@@ -26,8 +26,8 @@ defmodule DB.Schema.Org do
 
   ## Examples
 
-      iex> DB.Schema.MediaItem.changeset_generate_hash_id(%DB.Schema.Video{id: 42, hash_id: nil})
-      #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #DB.Schema.Video<>, valid?: true>
+      iex> Db.Schema.MediaItem.changeset_generate_hash_id(%Db.Schema.Video{id: 42, hash_id: nil})
+      #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #Db.Schema.Video<>, valid?: true>
   """
   def changeset_generate_hash_id(org) do
     change(org, hash_id: OrgHashId.encode(org.id))

@@ -4,9 +4,9 @@ defmodule FaithfulWord.PushNotifications do
   """
 
   import Ecto.Query, warn: false
-  alias DB.Repo
+  alias Db.Repo
 
-  alias DB.Schema.PushMessage
+  alias Db.Schema.PushMessage
 
   @doc """
   Returns the list of pushmessage.

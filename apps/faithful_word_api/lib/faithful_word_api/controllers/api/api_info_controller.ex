@@ -7,7 +7,7 @@ defmodule FaithfulWordApi.ApiInfoController do
     |> json(%{
       status: "✔",
       version: FaithfulWord.Application.version(),
-      db_version: DB.Application.version()
+      db_version: Db.Application.version()
     })
   end
 end

@@ -1,4 +1,4 @@
-defmodule DB.MixProject do
+defmodule Db.MixProject do
   use Mix.Project
 
   def project do
@@ -21,7 +21,7 @@ defmodule DB.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {DB.Application, []},
+      mod: {Db.Application, []},
       extra_applications: [:logger, :ecto, :postgrex]
     ]
   end

@@ -1,4 +1,4 @@
-defmodule DB.ReleaseTasks do
+defmodule Db.ReleaseTasks do
   @start_apps [
     :crypto,
     :ssl,

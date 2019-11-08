@@ -5,9 +5,9 @@ defmodule FaithfulWord.Actions do
 
   import Ecto.Query
 
-  alias DB.Schema.{User, UserAction}
-  alias DB.Repo
-  alias DB.Query.Actions, as: ActionsQuery
+  alias Db.Schema.{User, UserAction}
+  alias Db.Repo
+  alias Db.Query.Actions, as: ActionsQuery
 
   @doc """
   Count all actions with `action_type` type for this entity

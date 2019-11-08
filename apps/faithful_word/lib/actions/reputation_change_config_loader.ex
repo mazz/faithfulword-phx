@@ -24,7 +24,7 @@ defmodule FaithfulWord.Actions.ReputationChangeConfigLoader do
   """
   def convert(base_config) do
     Enum.reduce(base_config, %{}, fn {atom_action_type, value}, actions_map ->
-      if DB.Type.UserActionType.valid_value?(atom_action_type) do
+      if Db.Type.UserActionType.valid_value?(atom_action_type) do
         Map.put(actions_map, atom_action_type, convert_value(value))
       else
         raise "Unknown action type in YAML reputation changes config: #{atom_action_type}"
@@ -38,7 +38,7 @@ defmodule FaithfulWord.Actions.ReputationChangeConfigLoader do
 
   defp convert_value(value) when is_map(value) do
     Enum.reduce(value, %{}, fn {entity, change_list}, action_changes ->
-      if DB.Type.Entity.valid_value?(entity) do
+      if Db.Type.Entity.valid_value?(entity) do
         Map.put(action_changes, entity, List.to_tuple(change_list))
       else
         raise "Unknown entity in YAML reputation changes config: #{entity}"

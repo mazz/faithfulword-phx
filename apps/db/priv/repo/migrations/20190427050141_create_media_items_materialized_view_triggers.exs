@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateMediaItemsMaterializedViewTriggers do
+defmodule Db.Repo.Migrations.CreateMediaItemsMaterializedViewTriggers do
   use Ecto.Migration
 
   def change do

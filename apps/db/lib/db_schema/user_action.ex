@@ -1,4 +1,4 @@
-defmodule DB.Schema.UserAction do
+defmodule Db.Schema.UserAction do
   @moduledoc """
   Represent a user action. This is usefull to generate logs of all actions
   for a video, or all actions for a user without having to query multiple
@@ -10,14 +10,14 @@ defmodule DB.Schema.UserAction do
   use Ecto.Schema
   import Ecto.Changeset
   # , Video, Speaker, Comment, Statement}
-  alias DB.Schema.{UserAction, User}
+  alias Db.Schema.{UserAction, User}
 
   schema "users_actions" do
     belongs_to(:user, User)
     belongs_to(:target_user, User)
 
-    field(:type, DB.Type.UserActionType)
-    field(:entity, DB.Type.Entity)
+    field(:type, Db.Type.UserActionType)
+    field(:entity, Db.Type.Entity)
     field(:changes, :map)
 
     # belongs_to(:video, Video)

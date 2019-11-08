@@ -1,14 +1,14 @@
-defmodule DB.Schema.Flag do
+defmodule Db.Schema.Flag do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias DB.Schema.{User, UserAction}
+  alias Db.Schema.{User, UserAction}
 
   schema "flags" do
     # Source user
     belongs_to(:source_user, User)
     belongs_to(:action, UserAction)
-    field(:reason, DB.Type.FlagReason)
+    field(:reason, Db.Type.FlagReason)
     timestamps(type: :utc_datetime)
   end
 

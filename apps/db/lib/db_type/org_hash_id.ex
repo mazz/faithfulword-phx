@@ -1,4 +1,4 @@
-defmodule DB.Type.OrgHashId do
+defmodule Db.Type.OrgHashId do
   @moduledoc """
   Convert a media item integer id to hash
   """
@@ -19,7 +19,7 @@ defmodule DB.Type.OrgHashId do
   @doc """
   Encode a given id
   ## Examples
-      iex> DB.Type.OrgHashId.encode(42)
+      iex> Db.Type.OrgHashId.encode(42)
       "4VyJ"
   """
   @spec encode(Integer.t()) :: String.t()
@@ -30,9 +30,9 @@ defmodule DB.Type.OrgHashId do
   @doc """
   Decode a given hash
   ## Examples
-      iex> DB.Type.OrgHashId.decode("JbOz")
+      iex> Db.Type.OrgHashId.decode("JbOz")
       {:ok, 1337}
-      iex> DB.Type.OrgHashId.decode("€€€€€€€€€€€€€€€€€")
+      iex> Db.Type.OrgHashId.decode("€€€€€€€€€€€€€€€€€")
       {:error, :invalid_input_data}
   """
   @spec decode(String.t()) :: Integer.t()
@@ -46,10 +46,10 @@ defmodule DB.Type.OrgHashId do
   @doc """
   Decode a given hash. Raise if hash is invalid
   ## Examples
-      iex> DB.Type.OrgHashId.decode!("JbOz")
+      iex> Db.Type.OrgHashId.decode!("JbOz")
       1337
-      iex> catch_throw(DB.Type.OrgHashId.decode!("€€€"))
-      DB.Type.OrgHashId.InvalidOrgHashError
+      iex> catch_throw(Db.Type.OrgHashId.decode!("€€€"))
+      Db.Type.OrgHashId.InvalidOrgHashError
   """
   @spec decode!(String.t()) :: Integer.t()
   def decode!(hash) do

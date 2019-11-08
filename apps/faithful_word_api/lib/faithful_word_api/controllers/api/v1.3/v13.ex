@@ -1,16 +1,16 @@
 defmodule FaithfulWordApi.V13 do
   import Ecto.Query, warn: false
-  alias DB.Repo
+  alias Db.Repo
 
-  alias DB.Schema.{MediaChapter, Chapter, Book}
-  alias DB.Schema.{BookTitle, LanguageIdentifier}
+  alias Db.Schema.{MediaChapter, Chapter, Book}
+  alias Db.Schema.{BookTitle, LanguageIdentifier}
 
-  alias DB.Schema.{MediaGospel, Gospel}
-  alias DB.Schema.{GospelTitle, LanguageIdentifier}
-  alias DB.Schema.{MusicTitle, Music, MediaMusic}
-  alias DB.Schema.{Org, Channel, Playlist, PlaylistTitle, MediaItem}
-  alias DB.Schema.AppVersion
-  alias DB.Schema.ClientDevice
+  alias Db.Schema.{MediaGospel, Gospel}
+  alias Db.Schema.{GospelTitle, LanguageIdentifier}
+  alias Db.Schema.{MusicTitle, Music, MediaMusic}
+  alias Db.Schema.{Org, Channel, Playlist, PlaylistTitle, MediaItem}
+  alias Db.Schema.AppVersion
+  alias Db.Schema.ClientDevice
 
   alias FaithfulWordApi.MediaItemsSearch
 
@@ -32,8 +32,8 @@ defmodule FaithfulWordApi.V13 do
       # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
 
       if Enum.find(languages, fn _element -> String.starts_with?(language, languages) end) do
-        Ecto.Query.from(title in DB.Schema.BookTitle,
-          join: b in DB.Schema.Book,
+        Ecto.Query.from(title in Db.Schema.BookTitle,
+          join: b in Db.Schema.Book,
           on: title.book_id == b.id,
           where: title.language_id == ^language,
           order_by: b.absolute_id,
@@ -46,7 +46,7 @@ defmodule FaithfulWordApi.V13 do
         )
         |> Repo.paginate(page: offset, page_size: limit)
 
-        # |> DB.Repo.all
+        # |> Db.Repo.all
       else
         nil
       end

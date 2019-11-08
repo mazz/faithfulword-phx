@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddUnlistedToVideos do
+defmodule Db.Repo.Migrations.AddUnlistedToVideos do
   use Ecto.Migration
 
   def change do

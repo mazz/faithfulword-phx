@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddTodayReputationGainToUser do
+defmodule Db.Repo.Migrations.AddTodayReputationGainToUser do
   use Ecto.Migration
 
   def change do

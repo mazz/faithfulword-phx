@@ -1,8 +1,8 @@
-defmodule DB.Statistics do
+defmodule Db.Statistics do
   import Ecto.Query
 
-  alias DB.Schema.User
-  alias DB.Repo
+  alias Db.Schema.User
+  alias Db.Repo
 
   @doc """
   A shortcut to returns the amount of user in the database

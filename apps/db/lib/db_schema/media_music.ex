@@ -1,4 +1,4 @@
-defmodule DB.Schema.MediaMusic do
+defmodule Db.Schema.MediaMusic do
   use Ecto.Schema
   import Ecto.Changeset
 

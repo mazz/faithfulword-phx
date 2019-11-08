@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddIsPartnerToVideo do
+defmodule Db.Repo.Migrations.AddIsPartnerToVideo do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule DB.Schema.Gospel do
+defmodule Db.Schema.Gospel do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,8 +8,8 @@ defmodule DB.Schema.Gospel do
     field :uuid, Ecto.UUID
 
     # timestamps()
-    has_many :mediagospel, DB.Schema.MediaGospel
-    has_many :gospeltitles, DB.Schema.GospelTitle
+    has_many :mediagospel, Db.Schema.MediaGospel
+    has_many :gospeltitles, Db.Schema.GospelTitle
     timestamps(type: :utc_datetime)
   end
 

@@ -1,15 +1,15 @@
 defmodule FaithfulWordApi.V12 do
   import Ecto.Query, warn: false
-  alias DB.Repo
+  alias Db.Repo
 
-  alias DB.Schema.{MediaChapter, Chapter, Book}
-  alias DB.Schema.{BookTitle, LanguageIdentifier}
+  alias Db.Schema.{MediaChapter, Chapter, Book}
+  alias Db.Schema.{BookTitle, LanguageIdentifier}
 
-  alias DB.Schema.{MediaGospel, Gospel}
-  alias DB.Schema.{GospelTitle, LanguageIdentifier}
+  alias Db.Schema.{MediaGospel, Gospel}
+  alias Db.Schema.{GospelTitle, LanguageIdentifier}
 
-  alias DB.Schema.{Music, MediaMusic}
-  alias DB.Schema.{AppVersion, ClientDevice}
+  alias Db.Schema.{Music, MediaMusic}
+  alias Db.Schema.{AppVersion, ClientDevice}
 
   require Ecto.Query
   require Logger

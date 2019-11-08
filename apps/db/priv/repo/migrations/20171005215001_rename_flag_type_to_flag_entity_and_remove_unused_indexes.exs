@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.RenameFlagTypeToFlagEntityAndRemoveUnusedIndexes do
+defmodule Db.Repo.Migrations.RenameFlagTypeToFlagEntityAndRemoveUnusedIndexes do
   use Ecto.Migration
 
   def change do

@@ -19,8 +19,8 @@ if [[ -z `psql -Atqc "\\list $FW_DATABASE_NAME"` ]]; then
 
 
     # Put here the commands to migrate and seed the database:
-    # /opt/app/bin/start_server eval "DB.ReleaseTasks.migrate(args)"
-    # /opt/app/bin/start_server eval "DB.ReleaseTasks.seed(args)"
+    # /opt/app/bin/start_server eval "Db.ReleaseTasks.migrate(args)"
+    # /opt/app/bin/start_server eval "Db.ReleaseTasks.seed(args)"
     ############################################################
 
     echo "Database $FW_DATABASE_NAME created."

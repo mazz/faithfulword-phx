@@ -5,11 +5,11 @@ defmodule FaithfulWord.Actions.ActionCreator do
   match with `FaithfulWord.Actions.Validator` checks.
   """
 
-  alias DB.Schema.UserAction
-  alias DB.Schema.Video
-  # alias DB.Schema.Speaker
-  # alias DB.Schema.Statement
-  # alias DB.Schema.Comment
+  alias Db.Schema.UserAction
+  alias Db.Schema.Video
+  # alias Db.Schema.Speaker
+  # alias Db.Schema.Statement
+  # alias Db.Schema.Comment
 
   require Logger
 

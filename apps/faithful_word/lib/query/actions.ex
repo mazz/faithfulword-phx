@@ -1,11 +1,11 @@
-defmodule DB.Query.Actions do
+defmodule Db.Query.Actions do
   @moduledoc """
   Functions to query and handle `UserAction`
   """
 
   import Ecto.Query
 
-  alias DB.Schema.User
+  alias Db.Schema.User
 
   @doc """
   Return all action concerning user, which is actions he made + actions he was

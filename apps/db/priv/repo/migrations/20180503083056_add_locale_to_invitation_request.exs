@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddLocaleToInvitationRequest do
+defmodule Db.Repo.Migrations.AddLocaleToInvitationRequest do
   use Ecto.Migration
 
   def change do

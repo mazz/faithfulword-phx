@@ -1,4 +1,4 @@
-defmodule DB.Type.Achievement do
+defmodule Db.Type.Achievement do
   @moduledoc """
   Translate a user achievement from atom to integer.
   TODO: Migrate this to a real Ecto.Type using Ecto.Enum

@@ -5,7 +5,7 @@ defmodule FaithfulWord.Errors do
   """
 
   @type fw_error_params :: [
-          user: DB.Schema.User.t(),
+          user: Db.Schema.User.t(),
           custom: Map.t(),
           data: Map.t()
         ]
