@@ -2,6 +2,17 @@ defmodule FaithfulWordApi.PlaylistV13View do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.PlaylistV13View
 
+  require Logger
+
+  def render("addv13.json", %{playlist_v13: playlist_v13, api_version: api_version}) do
+    Logger.debug("render playlist_v13 #{inspect(%{attributes: playlist_v13})}")
+    %{result: [], status: "success", version: api_version}
+  end
+
+  def render("addv13.json", %{add_playlist_v13: add_playlist_v13}) do
+    %{add_playlist_v13: add_playlist_v13}
+  end
+
   def render("indexv13.json", %{playlist_v13: playlist_v13, api_version: api_version}) do
     %{
       result: render_many(playlist_v13, PlaylistV13View, "playlist_v13.json"),

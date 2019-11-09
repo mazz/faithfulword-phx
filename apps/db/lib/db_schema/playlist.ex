@@ -31,22 +31,14 @@ defmodule Db.Schema.Playlist do
     |> cast(attrs, [
       :ordinal,
       :uuid,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
-      :small_thumbnail_path,
-      :banner_path,
-      :channel_id,
-      :hash_id
+      :media_category,
+      :channel_id
     ])
     |> validate_required([
       :ordinal,
       :uuid,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
-      :small_thumbnail_path,
-      :banner_path,
-      :channel_id,
-      :hash_id
+      :media_category,
+      :channel_id
     ])
   end
 

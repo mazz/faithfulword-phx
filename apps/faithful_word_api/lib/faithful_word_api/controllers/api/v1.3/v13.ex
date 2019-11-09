@@ -246,6 +246,41 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
+  def add_playlist(
+    ordinal,
+    basename,
+    small_thumbnail_path,
+    med_thumbnail_path,
+    large_thumbnail_path,
+    banner_path,
+    media_category,
+    localized_titles,
+    channel_id
+    ) do
+
+    changeset = Playlist.changeset(%Playlist{}, %{
+      ordinal: ordinal,
+      basename: basename,
+      small_thumbnail_path: small_thumbnail_path,
+      med_thumbnail_path: med_thumbnail_path,
+      large_thumbnail_path: large_thumbnail_path,
+      banner_path: banner_path,
+      media_category: media_category,
+      channel_id: channel_id,
+      uuid: Ecto.UUID.generate()
+      })
+
+    Multi.new()
+    |> Multi.insert(:item_without_hash_id, changeset)
+    |> Multi.run(:playlist, fn _repo, %{item_without_hash_id: playlist} ->
+      playlist
+      |> Playlist.changeset_generate_hash_id()
+      |> Repo.update()
+    end)
+    |> Repo.transaction()
+
+  end
+
   def add_channel(
     ordinal,
     basename,

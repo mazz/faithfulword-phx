@@ -51,7 +51,7 @@ defmodule FaithfulWordApi.ChannelController do
             })
         end
     end
-end
+  end
 
   def indexv13(conn, %{"org-uuid" => orguuid, "offset" => offset, "limit" => limit}) do
     Logger.debug("orguuid #{inspect(%{attributes: orguuid})}")
