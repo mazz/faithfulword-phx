@@ -258,7 +258,7 @@ defmodule FaithfulWordApi.V13 do
     channel_id
     ) do
 
-    changeset = Playlist.changeset(%Playlist{}, %{
+    changeset = Playlist.changeset(%Playlist{basename: basename}, %{
       ordinal: ordinal,
       basename: basename,
       small_thumbnail_path: small_thumbnail_path,
@@ -277,8 +277,23 @@ defmodule FaithfulWordApi.V13 do
       |> Playlist.changeset_generate_hash_id()
       |> Repo.update()
     end)
-    |> Repo.transaction()
+    |> Multi.run(:add_localized_titles, fn _repo, %{item_without_hash_id: playlist} ->
+      maps =
+        for title <- localized_titles,
+            _ = Logger.debug("title #{inspect(%{attributes: title})}"),
+            {k, v} <- title do
+          IO.puts "#{k} --> #{v}"
 
+          Repo.insert(%PlaylistTitle{language_id: k,
+            localizedname: v,
+            uuid: Ecto.UUID.generate(),
+            playlist_id: playlist.id})
+
+        end
+      Logger.debug("maps #{inspect(%{attributes: maps})}")
+      {:ok, maps}
+    end)
+    |> Repo.transaction()
   end
 
   def add_channel(

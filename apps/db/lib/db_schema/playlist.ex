@@ -7,6 +7,7 @@ defmodule Db.Schema.Playlist do
     # field :language_id, :string
     # field :localizedname, :string
     field :ordinal, :integer
+    field :basename, :string
     field :small_thumbnail_path, :string
     field :med_thumbnail_path, :string
     field :large_thumbnail_path, :string
