@@ -25,35 +25,36 @@ defmodule Db.Schema.MediaItem do
     field :org_id, :integer
     field :published_at, :utc_datetime, null: true
     field :hash_id, :string
-    field :duration, :float, default: 0
+    field :duration, :float, default: 0.0
 
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(media_item, attrs) do
+    types = %{duration: :float}
     media_item
     |> cast(attrs, [
       :ordinal,
       :uuid,
       :playlist_id,
       :org_id,
-      :track_number,
-      :tags,
+      # :track_number,
+      # :tags,
       :media_category,
       :medium,
       :localizedname,
       :path,
-      :small_thumbnail_path,
-      :med_thumbnail_path,
-      :large_thumbnail_path,
-      :content_provider_link,
-      :ipfs_link,
+      # :small_thumbnail_path,
+      # :med_thumbnail_path,
+      # :large_thumbnail_path,
+      # :content_provider_link,
+      # :ipfs_link,
       :language_id,
-      :presenter_name,
-      :presented_at,
-      :source_material,
-      :hash_id,
+      # :presenter_name,
+      # :presented_at,
+      # :source_material,
+      # :hash_id,
       :duration
     ])
     |> validate_required([
@@ -61,23 +62,23 @@ defmodule Db.Schema.MediaItem do
       :uuid,
       :playlist_id,
       :org_id,
-      :track_number,
-      :tags,
+      # :track_number,
+      # :tags,
       :media_category,
       :medium,
       :localizedname,
       :path,
-      :small_thumbnail_path,
-      :med_thumbnail_path,
-      :large_thumbnail_path,
-      :content_provider_link,
-      :ipfs_link,
-      :language_id,
-      :presenter_name,
-      :presented_at,
-      :source_material,
-      :hash_id,
-      :duration
+      # :small_thumbnail_path,
+      # :med_thumbnail_path,
+      # :large_thumbnail_path,
+      # :content_provider_link,
+      # :ipfs_link,
+      :language_id
+      # :presenter_name,
+      # :presented_at,
+      # :source_material,
+      # :hash_id,
+      # :duration
     ])
   end
 

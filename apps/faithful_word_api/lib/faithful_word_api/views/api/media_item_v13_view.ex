@@ -2,6 +2,17 @@ defmodule FaithfulWordApi.MediaItemV13View do
   use FaithfulWordApi, :view
   alias FaithfulWordApi.MediaItemV13View
 
+  require Logger
+
+  def render("addv13.json", %{media_item_v13: media_item_v13, api_version: api_version}) do
+    Logger.debug("render media_item_v13 #{inspect(%{attributes: media_item_v13})}")
+    %{result: [], status: "success", version: api_version}
+  end
+
+  def render("addv13.json", %{add_media_item_v13: add_media_item_v13}) do
+    %{add_media_item_v13: add_media_item_v13}
+  end
+
   def render("indexv13.json", %{media_item_v13: media_item_v13, api_version: api_version}) do
     %{
       result: render_many(media_item_v13, MediaItemV13View, "media_item_v13.json"),

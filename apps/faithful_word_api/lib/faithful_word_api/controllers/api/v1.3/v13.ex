@@ -246,6 +246,62 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
+  def add_media_item(
+    ordinal,
+    localizedname,
+    media_category,
+    medium,
+    path,
+    language_id,
+    playlist_id,
+    org_id,
+    # optional >>>
+    track_number,
+    tags,
+    small_thumbnail_path,
+    med_thumbnail_path,
+    large_thumbnail_path,
+    content_provider_link,
+    ipfs_link,
+    presenter_name,
+    presented_at,
+    source_material,
+    duration
+    ) do
+
+    changeset = MediaItem.changeset(%MediaItem{}, %{
+      ordinal: ordinal,
+      localizedname: localizedname,
+      media_category: media_category,
+      medium: medium,
+      path: path,
+      language_id: language_id,
+      playlist_id: playlist_id,
+      org_id: org_id,
+      track_number: track_number,
+      tags: tags,
+      small_thumbnail_path: small_thumbnail_path,
+      med_thumbnail_path: med_thumbnail_path,
+      large_thumbnail_path: large_thumbnail_path,
+      content_provider_link: content_provider_link,
+      ipfs_link: ipfs_link,
+      presenter_name: presenter_name,
+      presented_at: presented_at,
+      source_material: source_material,
+      duration: duration,
+      uuid: Ecto.UUID.generate()
+      })
+
+    Multi.new()
+    |> Multi.insert(:item_without_hash_id, changeset)
+    |> Multi.run(:media_item, fn _repo, %{item_without_hash_id: media_item} ->
+      media_item
+      |> MediaItem.changeset_generate_hash_id()
+      |> Repo.update()
+    end)
+    |> Repo.transaction()
+  end
+
   def add_playlist(
     ordinal,
     basename,
@@ -277,7 +333,9 @@ defmodule FaithfulWordApi.V13 do
       |> Playlist.changeset_generate_hash_id()
       |> Repo.update()
     end)
-    |> Multi.run(:add_localized_titles, fn _repo, %{item_without_hash_id: playlist} ->
+    # iterate over the localized_titles and add to db
+    # pass in playlist that was just inserted
+    |> Multi.run(:add_localized_titles, fn _repo, %{playlist: playlist} ->
       maps =
         for title <- localized_titles,
             _ = Logger.debug("title #{inspect(%{attributes: title})}"),
@@ -324,7 +382,6 @@ defmodule FaithfulWordApi.V13 do
       |> Repo.update()
     end)
     |> Repo.transaction()
-
   end
 
   def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version) do
