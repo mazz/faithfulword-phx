@@ -10,7 +10,7 @@ defmodule Db.Repo.Migrations.PostDbImportTweaks do
     end
 
     alter table(:mediaitems) do
-      add :media_category, Db.Type.MediaCategory.type()
+      # add :media_category, Db.Type.MediaCategory.type()
       add :presented_at, :utc_datetime, null: true
       # null published_at means never published
       add :published_at, :utc_datetime, null: true
