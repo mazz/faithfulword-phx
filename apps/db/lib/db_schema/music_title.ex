@@ -1,4 +1,4 @@
-defmodule DB.Schema.MusicTitle do
+defmodule Db.Schema.MusicTitle do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddWebToAppVersions do
+defmodule Db.Repo.Migrations.AddWebToAppVersions do
   use Ecto.Migration
 
   def change do

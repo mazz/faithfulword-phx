@@ -1,7 +1,7 @@
-defmodule DB.Repo.Migrations.AddHashIdToPlaylists do
+defmodule Db.Repo.Migrations.AddHashIdToPlaylists do
   use Ecto.Migration
   import Ecto.Query
-  alias DB.Schema.Playlist
+  alias Db.Schema.Playlist
 
   def up do
     alter table(:playlists) do

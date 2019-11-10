@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateDB.Accounts.ResetPasswordRequest do
+defmodule Db.Repo.Migrations.CreateDb.Accounts.ResetPasswordRequest do
   use Ecto.Migration
 
   def change do

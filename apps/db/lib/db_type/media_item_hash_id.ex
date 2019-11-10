@@ -1,4 +1,4 @@
-defmodule DB.Type.MediaItemHashId do
+defmodule Db.Type.MediaItemHashId do
   @moduledoc """
   Convert a media item integer id to hash
   """
@@ -19,7 +19,7 @@ defmodule DB.Type.MediaItemHashId do
   @doc """
   Encode a given id
   ## Examples
-      iex> DB.Type.MediaItemHashId.encode(42)
+      iex> Db.Type.MediaItemHashId.encode(42)
       "4VyJ"
   """
   @spec encode(Integer.t()) :: String.t()
@@ -30,9 +30,9 @@ defmodule DB.Type.MediaItemHashId do
   @doc """
   Decode a given hash
   ## Examples
-      iex> DB.Type.MediaItemHashId.decode("JbOz")
+      iex> Db.Type.MediaItemHashId.decode("JbOz")
       {:ok, 1337}
-      iex> DB.Type.MediaItemHashId.decode("€€€€€€€€€€€€€€€€€")
+      iex> Db.Type.MediaItemHashId.decode("€€€€€€€€€€€€€€€€€")
       {:error, :invalid_input_data}
   """
   @spec decode(String.t()) :: Integer.t()
@@ -46,10 +46,10 @@ defmodule DB.Type.MediaItemHashId do
   @doc """
   Decode a given hash. Raise if hash is invalid
   ## Examples
-      iex> DB.Type.MediaItemHashId.decode!("JbOz")
+      iex> Db.Type.MediaItemHashId.decode!("JbOz")
       1337
-      iex> catch_throw(DB.Type.MediaItemHashId.decode!("€€€"))
-      DB.Type.MediaItemHashId.InvalidMediaItemHashError
+      iex> catch_throw(Db.Type.MediaItemHashId.decode!("€€€"))
+      Db.Type.MediaItemHashId.InvalidMediaItemHashError
   """
   @spec decode!(String.t()) :: Integer.t()
   def decode!(hash) do

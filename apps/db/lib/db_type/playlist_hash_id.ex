@@ -1,4 +1,4 @@
-defmodule DB.Type.PlaylistHashId do
+defmodule Db.Type.PlaylistHashId do
   @moduledoc """
   Convert a media item integer id to hash
   """
@@ -19,7 +19,7 @@ defmodule DB.Type.PlaylistHashId do
   @doc """
   Encode a given id
   ## Examples
-      iex> DB.Type.PlaylistHashId.encode(42)
+      iex> Db.Type.PlaylistHashId.encode(42)
       "4VyJ"
   """
   @spec encode(Integer.t()) :: String.t()
@@ -30,9 +30,9 @@ defmodule DB.Type.PlaylistHashId do
   @doc """
   Decode a given hash
   ## Examples
-      iex> DB.Type.PlaylistHashId.decode("JbOz")
+      iex> Db.Type.PlaylistHashId.decode("JbOz")
       {:ok, 1337}
-      iex> DB.Type.PlaylistHashId.decode("€€€€€€€€€€€€€€€€€")
+      iex> Db.Type.PlaylistHashId.decode("€€€€€€€€€€€€€€€€€")
       {:error, :invalid_input_data}
   """
   @spec decode(String.t()) :: Integer.t()
@@ -46,10 +46,10 @@ defmodule DB.Type.PlaylistHashId do
   @doc """
   Decode a given hash. Raise if hash is invalid
   ## Examples
-      iex> DB.Type.PlaylistHashId.decode!("JbOz")
+      iex> Db.Type.PlaylistHashId.decode!("JbOz")
       1337
-      iex> catch_throw(DB.Type.PlaylistHashId.decode!("€€€"))
-      DB.Type.PlaylistHashId.InvalidPlaylistHashError
+      iex> catch_throw(Db.Type.PlaylistHashId.decode!("€€€"))
+      Db.Type.PlaylistHashId.InvalidPlaylistHashError
   """
   @spec decode!(String.t()) :: Integer.t()
   def decode!(hash) do

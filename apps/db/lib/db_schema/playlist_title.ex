@@ -1,4 +1,4 @@
-defmodule DB.Schema.PlaylistTitle do
+defmodule Db.Schema.PlaylistTitle do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -4,8 +4,8 @@ defmodule FaithfulWord.Authenticator do
   """
   import Ecto.Query
 
-  alias DB.Repo
-  alias DB.Schema.User
+  alias Db.Repo
+  alias Db.Schema.User
   alias FaithfulWord.Authenticator.ProviderInfos
   alias FaithfulWord.Authenticator.OAuth
   alias Kaur.Result

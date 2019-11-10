@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateClientdevice do
+defmodule Db.Repo.Migrations.CreateClientdevice do
   use Ecto.Migration
 
   def change do

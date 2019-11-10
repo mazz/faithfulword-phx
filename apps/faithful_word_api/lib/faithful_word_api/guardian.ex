@@ -6,8 +6,8 @@ defmodule FaithfulWordApi.Guardian do
 
   use Guardian, otp_app: :faithful_word_api
 
-  alias DB.Repo
-  alias DB.Schema.User
+  alias Db.Repo
+  alias Db.Schema.User
   alias Kaur.Result
 
   require Logger

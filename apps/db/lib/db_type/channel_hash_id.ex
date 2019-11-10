@@ -1,4 +1,4 @@
-defmodule DB.Type.ChannelHashId do
+defmodule Db.Type.ChannelHashId do
   @moduledoc """
   Convert a media item integer id to hash
   """
@@ -19,7 +19,7 @@ defmodule DB.Type.ChannelHashId do
   @doc """
   Encode a given id
   ## Examples
-      iex> DB.Type.ChannelHashId.encode(42)
+      iex> Db.Type.ChannelHashId.encode(42)
       "4VyJ"
   """
   @spec encode(Integer.t()) :: String.t()
@@ -30,9 +30,9 @@ defmodule DB.Type.ChannelHashId do
   @doc """
   Decode a given hash
   ## Examples
-      iex> DB.Type.ChannelHashId.decode("JbOz")
+      iex> Db.Type.ChannelHashId.decode("JbOz")
       {:ok, 1337}
-      iex> DB.Type.ChannelHashId.decode("€€€€€€€€€€€€€€€€€")
+      iex> Db.Type.ChannelHashId.decode("€€€€€€€€€€€€€€€€€")
       {:error, :invalid_input_data}
   """
   @spec decode(String.t()) :: Integer.t()
@@ -46,10 +46,10 @@ defmodule DB.Type.ChannelHashId do
   @doc """
   Decode a given hash. Raise if hash is invalid
   ## Examples
-      iex> DB.Type.ChannelHashId.decode!("JbOz")
+      iex> Db.Type.ChannelHashId.decode!("JbOz")
       1337
-      iex> catch_throw(DB.Type.ChannelHashId.decode!("€€€"))
-      DB.Type.ChannelHashId.InvalidChannelHashError
+      iex> catch_throw(Db.Type.ChannelHashId.decode!("€€€"))
+      Db.Type.ChannelHashId.InvalidChannelHashError
   """
   @spec decode!(String.t()) :: Integer.t()
   def decode!(hash) do

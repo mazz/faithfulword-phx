@@ -1,15 +1,15 @@
 defmodule FaithfulWordApi.UserController do
   use FaithfulWordApi, :controller
 
-  alias DB.Schema.User
-  alias DB.Type.Achievement
+  alias Db.Schema.User
+  alias Db.Type.Achievement
 
   alias FaithfulWord.Accounts
   alias FaithfulWord.Accounts.Invitations
   alias FaithfulWord.Accounts.UserPermissions
   alias FaithfulWord.Authenticator.GuardianImpl
   alias FaithfulWordApi.UserView
-  alias DB.Repo
+  alias Db.Repo
 
   alias Kaur.Result
 

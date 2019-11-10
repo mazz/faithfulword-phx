@@ -1,4 +1,4 @@
-defmodule DB.Schema.Chapter do
+defmodule Db.Schema.Chapter do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,7 +8,7 @@ defmodule DB.Schema.Chapter do
     field :uuid, Ecto.UUID
     field :book_id, :id
 
-    has_many :mediachapters, DB.Schema.MediaChapter
+    has_many :mediachapters, Db.Schema.MediaChapter
     # timestamps()
   end
 

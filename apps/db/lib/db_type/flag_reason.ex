@@ -1,6 +1,6 @@
-defmodule DB.Type.FlagReason do
+defmodule Db.Type.FlagReason do
   @moduledoc """
-  An Ecto type to represent a Flag reason in DB. Reason is stored as an integer
+  An Ecto type to represent a Flag reason in Db. Reason is stored as an integer
   but thanks to this type, it also accept a string representation that will
   automatically be converted (ex: "spam", "bad_language"...)
   """

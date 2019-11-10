@@ -9,10 +9,10 @@ defmodule FaithfulWord.Accounts.Invitations do
   require Logger
   import Ecto.Query
 
-  alias DB.Utils.TokenGenerator
-  alias DB.Schema.InvitationRequest
-  alias DB.Schema.User
-  alias DB.Repo
+  alias Db.Utils.TokenGenerator
+  alias Db.Schema.InvitationRequest
+  alias Db.Schema.User
+  alias Db.Repo
 
   @default_token_length 8
 

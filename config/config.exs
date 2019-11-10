@@ -12,7 +12,7 @@ import Config
 # db ##########################################################################
 
 config :db,
-  ecto_repos: [DB.Repo]
+  ecto_repos: [Db.Repo]
 
 # faithful_word ###############################################################
 
@@ -20,7 +20,7 @@ frontend_url = String.trim_trailing("http://localhost:3000/") <> "/"
 
 config :faithful_word,
   env: Mix.env(),
-  ecto_repos: [DB.Repo],
+  ecto_repos: [Db.Repo],
   frontend_url: frontend_url,
   invitation_system: false,
   # fwsaved-web
@@ -65,7 +65,7 @@ config :faithful_word, FaithfulWord.Authenticator.GuardianImpl,
 config :faithful_word,
   captions_fetcher: FaithfulWord.Videos.CaptionsFetcherYoutube
 
-config :guardian, Guardian.DB, repo: DB.Repo
+config :guardian, Guardian.DB, repo: Db.Repo
 
 config :rollbax,
   enabled: true,
@@ -74,7 +74,7 @@ config :rollbax,
 
 # faithful_word_api ###########################################################
 config :faithful_word_api,
-  ecto_repos: [DB.Repo],
+  ecto_repos: [Db.Repo],
   generators: [context_app: :db, binary_id: true]
 
 config :faithful_word_api,

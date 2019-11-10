@@ -10,9 +10,9 @@ defmodule FaithfulWord.Jobs.MetadataFetch do
   import Ecto.Query
   import FaithfulWord.Videos
 
-  alias DB.Schema.User
+  alias Db.Schema.User
   alias FaithfulWord.Videos.MetadataFetcher.Youtube, as: YoutubeMetaDataFetcher
-  alias DB.Repo
+  alias Db.Repo
 
   @name __MODULE__
   # @min_nb_feedbacks_to_process_entry 3

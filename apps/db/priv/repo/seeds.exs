@@ -5,21 +5,21 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     DB.Repo.insert!(%FaithfulWord.SomeSchema{})
+#     Db.Repo.insert!(%FaithfulWord.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias DB.Repo
-alias DB.Schema.User
+alias Db.Repo
+alias Db.Schema.User
 require Logger
 
 # book =
-#   DB.Schema.Book.changeset(%DB.Schema.Book{}, %{
+#   Db.Schema.Book.changeset(%Db.Schema.Book{}, %{
 #     absolute_id: 100,
 #     basename: "Genesis",
 #     uuid: Ecto.UUID.generate,
-#     chapter: %DB.Schema.Chapter{}
+#     chapter: %Db.Schema.Chapter{}
 #   })
 
 #   Repo.insert!(book)

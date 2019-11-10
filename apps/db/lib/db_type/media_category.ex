@@ -1,7 +1,7 @@
 import EctoEnum
 
 defenum(
-  DB.Type.MediaCategory,
+  Db.Type.MediaCategory,
   bible: 0,
   gospel: 1,
   livestream: 2,

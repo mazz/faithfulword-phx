@@ -1,12 +1,12 @@
-defmodule DB.Schema do
+defmodule Db.Schema do
   @moduledoc """
   The Analytics context.
   """
 
   import Ecto.Query, warn: false
-  alias DB.Repo
+  alias Db.Repo
 
-  alias DB.Schema.ClientDevice
+  alias Db.Schema.ClientDevice
 
   @doc """
   Returns the list of clientdevice.
@@ -102,7 +102,7 @@ defmodule DB.Schema do
     ClientDevice.changeset(client_device, %{})
   end
 
-  alias DB.Schema.AppVersion
+  alias Db.Schema.AppVersion
 
   @doc """
   Returns the list of appversion.

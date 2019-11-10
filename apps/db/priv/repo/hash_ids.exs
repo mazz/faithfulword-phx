@@ -5,27 +5,27 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     DB.Repo.insert!(%FaithfulWord.SomeSchema{})
+#     Db.Repo.insert!(%FaithfulWord.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-alias DB.Repo
-alias DB.Schema.MediaItem
-alias DB.Schema.Playlist
-alias DB.Schema.Channel
-alias DB.Schema.Org
-alias DB.Schema.Video
+alias Db.Repo
+alias Db.Schema.MediaItem
+alias Db.Schema.Playlist
+alias Db.Schema.Channel
+alias Db.Schema.Org
+alias Db.Schema.Video
 
 import Ecto.Query
 require Logger
 
 # book =
-#   DB.Schema.Book.changeset(%DB.Schema.Book{}, %{
+#   Db.Schema.Book.changeset(%Db.Schema.Book{}, %{
 #     absolute_id: 100,
 #     basename: "Genesis",
 #     uuid: Ecto.UUID.generate,
-#     chapter: %DB.Schema.Chapter{}
+#     chapter: %Db.Schema.Chapter{}
 #   })
 
 #   Repo.insert!(book)
@@ -38,24 +38,24 @@ Logger.debug("Application.get_env #{Application.get_env(:db, :env)}")
 # No need to warn if already exists
 
 # Update all existing mediaitems with their hashIds
-DB.Repo.all(from mi in MediaItem)
+Db.Repo.all(from mi in MediaItem)
 |> Enum.map(&MediaItem.changeset_generate_hash_id/1)
-|> Enum.map(&DB.Repo.update/1)
+|> Enum.map(&Db.Repo.update/1)
 
 # Update all existing playlist with their hashIds
-DB.Repo.all(from p in Playlist)
+Db.Repo.all(from p in Playlist)
 |> Enum.map(&Playlist.changeset_generate_hash_id/1)
-|> Enum.map(&DB.Repo.update/1)
+|> Enum.map(&Db.Repo.update/1)
 
 # Update all existing channel with their hashIds
-DB.Repo.all(from c in Channel)
+Db.Repo.all(from c in Channel)
 |> Enum.map(&Channel.changeset_generate_hash_id/1)
-|> Enum.map(&DB.Repo.update/1)
+|> Enum.map(&Db.Repo.update/1)
 
-DB.Repo.all(from o in Org)
+Db.Repo.all(from o in Org)
 |> Enum.map(&Org.changeset_generate_hash_id/1)
-|> Enum.map(&DB.Repo.update/1)
+|> Enum.map(&Db.Repo.update/1)
 
-DB.Repo.all(from v in Video)
+Db.Repo.all(from v in Video)
 |> Enum.map(&Video.changeset_generate_hash_id/1)
-|> Enum.map(&DB.Repo.update/1)
+|> Enum.map(&Db.Repo.update/1)

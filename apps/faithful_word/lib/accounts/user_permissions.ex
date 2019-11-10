@@ -6,8 +6,8 @@ defmodule FaithfulWord.Accounts.UserPermissions do
   require Logger
   import Ecto.Query
 
-  alias DB.Repo
-  alias DB.Schema.User
+  alias Db.Repo
+  alias Db.Schema.User
   alias FaithfulWord.Actions
 
   defmodule PermissionsError do
@@ -46,7 +46,7 @@ defmodule FaithfulWord.Accounts.UserPermissions do
 
   ## Examples
       iex> alias CF.Accounts.UserPermissions
-      iex> user = DB.Factory.insert(:user, %{reputation: 45})
+      iex> user = Db.Factory.insert(:user, %{reputation: 45})
       iex> UserPermissions.check(user, :create, :comment)
       {:ok, 20}
       iex> UserPermissions.check(%{user | reputation: -42}, :remove, :statement)

@@ -1,4 +1,4 @@
-defmodule DB.Schema.PushMessage do
+defmodule Db.Schema.PushMessage do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -8,6 +8,7 @@ defmodule DB.Schema.PushMessage do
     field :sent, :boolean, default: false
     field :title, :string
     field :updated_at, :utc_datetime
+    field :org_id, :integer
     field :uuid, Ecto.UUID
 
     # timestamps()

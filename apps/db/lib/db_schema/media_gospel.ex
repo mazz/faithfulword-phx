@@ -1,4 +1,4 @@
-defmodule DB.Schema.MediaGospel do
+defmodule Db.Schema.MediaGospel do
   use Ecto.Schema
   import Ecto.Changeset
 

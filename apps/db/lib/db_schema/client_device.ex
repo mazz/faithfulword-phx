@@ -1,4 +1,4 @@
-defmodule DB.Schema.ClientDevice do
+defmodule Db.Schema.ClientDevice do
   use Ecto.Schema
   import Ecto.Changeset
 

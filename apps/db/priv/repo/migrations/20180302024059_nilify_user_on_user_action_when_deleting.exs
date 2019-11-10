@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.NilifyUserOnUserActionWhenDeleting do
+defmodule Db.Repo.Migrations.NilifyUserOnUserActionWhenDeleting do
   use Ecto.Migration
 
   def change do

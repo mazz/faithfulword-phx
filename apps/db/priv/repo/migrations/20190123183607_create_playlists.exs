@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreatePlaylists do
+defmodule Db.Repo.Migrations.CreatePlaylists do
   use Ecto.Migration
 
   def change do
@@ -6,7 +6,7 @@ defmodule DB.Repo.Migrations.CreatePlaylists do
       add :ordinal, :integer
       add :uuid, :uuid
       add :basename, :string
-      add :media_category, DB.Type.MediaCategory.type()
+      add :media_category, Db.Type.MediaCategory.type()
       # add :language_id, :string
       # add :localizedname, :string
       add :small_thumbnail_path, :string

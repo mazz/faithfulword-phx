@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddIsPublisherToUsers do
+defmodule Db.Repo.Migrations.AddIsPublisherToUsers do
   use Ecto.Migration
 
   def change do

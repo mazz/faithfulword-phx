@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateMediaitems do
+defmodule Db.Repo.Migrations.CreateMediaitems do
   use Ecto.Migration
 
   def change do
@@ -18,7 +18,7 @@ defmodule DB.Repo.Migrations.CreateMediaitems do
       add :presenter_name, :string
       add :source_material, :string
       add :tags, {:array, :string}
-      add :media_category, DB.Type.MediaCategory.type()
+      add :media_category, Db.Type.MediaCategory.type()
 
       add :playlist_id, references(:playlists, on_delete: :delete_all)
 

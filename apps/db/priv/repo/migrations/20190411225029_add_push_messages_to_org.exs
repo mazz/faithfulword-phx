@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.AddPushMessagesToOrg do
+defmodule Db.Repo.Migrations.AddPushMessagesToOrg do
   use Ecto.Migration
 
   def change do

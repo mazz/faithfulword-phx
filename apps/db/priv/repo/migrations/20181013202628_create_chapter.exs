@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateChapter do
+defmodule Db.Repo.Migrations.CreateChapter do
   use Ecto.Migration
 
   def change do

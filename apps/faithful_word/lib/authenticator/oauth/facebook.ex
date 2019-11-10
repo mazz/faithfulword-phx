@@ -5,7 +5,7 @@ defmodule FaithfulWord.Authenticator.OAuth.Facebook do
   """
   use OAuth2.Strategy
   alias FaithfulWord.Authenticator.ProviderInfos
-  alias DB.Schema.User
+  alias Db.Schema.User
   alias Kaur.Result
   alias OAuth2.Client
 

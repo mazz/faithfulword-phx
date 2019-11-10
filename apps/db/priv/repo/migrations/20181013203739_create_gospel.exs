@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateGospel do
+defmodule Db.Repo.Migrations.CreateGospel do
   use Ecto.Migration
 
   def change do

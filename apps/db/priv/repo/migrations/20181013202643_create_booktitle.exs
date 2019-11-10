@@ -1,4 +1,4 @@
-defmodule DB.Repo.Migrations.CreateBooktitle do
+defmodule Db.Repo.Migrations.CreateBooktitle do
   use Ecto.Migration
 
   def change do

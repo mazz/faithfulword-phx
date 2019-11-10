@@ -1,4 +1,4 @@
-defmodule DB.Schema.Video do
+defmodule Db.Schema.Video do
   @moduledoc """
   Ecto schema for `videos` table.
   """
@@ -6,8 +6,8 @@ defmodule DB.Schema.Video do
   use Ecto.Schema
   import Ecto.{Changeset, Query}
 
-  alias DB.Type.VideoHashId
-  # alias DB.Schema.{Speaker, Statement, VideoSpeaker}
+  alias Db.Type.VideoHashId
+  # alias Db.Schema.{Speaker, Statement, VideoSpeaker}
 
   schema "videos" do
     field(:title, :string)
@@ -94,11 +94,11 @@ defmodule DB.Schema.Video do
 
   ## Examples
 
-      iex> DB.Schema.Video.is_valid_url "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+      iex> Db.Schema.Video.is_valid_url "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
       true
-      iex> DB.Schema.Video.is_valid_url "https://www.youtube.com/watch?v="
+      iex> Db.Schema.Video.is_valid_url "https://www.youtube.com/watch?v="
       false
-      iex> DB.Schema.Video.is_valid_url "https://www.google.fr/watch?v=dQw4w9WgXcQ"
+      iex> Db.Schema.Video.is_valid_url "https://www.google.fr/watch?v=dQw4w9WgXcQ"
       false
   """
   def is_valid_url(url) do
@@ -112,7 +112,7 @@ defmodule DB.Schema.Video do
 
   ## Examples
 
-      iex> import DB.Schema.Video, only: [build_url: 1]
+      iex> import Db.Schema.Video, only: [build_url: 1]
       iex> build_url(%{youtube_id: "dQw4w9WgXcQ"})
       "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
   """
@@ -151,8 +151,8 @@ defmodule DB.Schema.Video do
 
   ## Examples
 
-      iex> DB.Schema.Video.changeset_generate_hash_id(%DB.Schema.Video{id: 42, hash_id: nil})
-      #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #DB.Schema.Video<>, valid?: true>
+      iex> Db.Schema.Video.changeset_generate_hash_id(%Db.Schema.Video{id: 42, hash_id: nil})
+      #Ecto.Changeset<action: nil, changes: %{hash_id: \"4VyJ\"}, errors: [], data: #Db.Schema.Video<>, valid?: true>
   """
   def changeset_generate_hash_id(video) do
     change(video, hash_id: VideoHashId.encode(video.id))
@@ -163,8 +163,8 @@ defmodule DB.Schema.Video do
 
   ## Examples
 
-      iex> DB.Schema.Video.changeset_shift_offsets(%DB.Schema.Video{}, %{youtube_offset: 42})
-      #Ecto.Changeset<action: nil, changes: %{youtube_offset: 42}, errors: [], data: #DB.Schema.Video<>, valid?: true>
+      iex> Db.Schema.Video.changeset_shift_offsets(%Db.Schema.Video{}, %{youtube_offset: 42})
+      #Ecto.Changeset<action: nil, changes: %{youtube_offset: 42}, errors: [], data: #Db.Schema.Video<>, valid?: true>
   """
   def changeset_shift_offsets(struct, params \\ %{}) do
     cast(struct, params, [:youtube_offset])
@@ -195,7 +195,7 @@ defmodule DB.Schema.Video do
 
   ## Examples
 
-      iex> import DB.Schema.Video, only: [parse_url: 1]
+      iex> import Db.Schema.Video, only: [parse_url: 1]
       iex> parse_url ""
       nil
       iex> parse_url "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
