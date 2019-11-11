@@ -6,7 +6,35 @@ defmodule FaithfulWordApi.MediaItemV13View do
 
   def render("addv13.json", %{media_item_v13: media_item_v13, api_version: api_version}) do
     Logger.debug("render media_item_v13 #{inspect(%{attributes: media_item_v13})}")
-    %{result: [], status: "success", version: api_version}
+
+    media_item_map = %{
+      ordinal: media_item_v13.ordinal,
+      uuid: media_item_v13.uuid,
+      track_number: media_item_v13.track_number,
+      medium: media_item_v13.medium,
+      localizedname: media_item_v13.localizedname,
+      # multilanguage: media_item_v13.multilanguage,
+      path: media_item_v13.path,
+      content_provider_link: media_item_v13.content_provider_link,
+      ipfs_link: media_item_v13.ipfs_link,
+      language_id: media_item_v13.language_id,
+      presenter_name: media_item_v13.presenter_name,
+      source_material: media_item_v13.source_material,
+      playlist_id: media_item_v13.playlist_id,
+      tags: media_item_v13.tags,
+      small_thumbnail_path: media_item_v13.small_thumbnail_path,
+      med_thumbnail_path: media_item_v13.med_thumbnail_path,
+      large_thumbnail_path: media_item_v13.large_thumbnail_path,
+      hash_id: media_item_v13.hash_id,
+      duration: media_item_v13.duration,
+      inserted_at: media_item_v13.inserted_at,# |> render_unix_timestamp(),
+      updated_at: media_item_v13.updated_at,# |> render_unix_timestamp(),
+      media_category: media_item_v13.media_category,
+      presented_at: media_item_v13.presented_at,# |> render_unix_timestamp(),
+      published_at: media_item_v13.published_at# |> render_unix_timestamp()
+    }
+
+    %{result: media_item_map, status: "success", version: api_version}
   end
 
   def render("addv13.json", %{add_media_item_v13: add_media_item_v13}) do

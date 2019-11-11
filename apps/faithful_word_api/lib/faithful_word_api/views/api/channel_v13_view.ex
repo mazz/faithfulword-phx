@@ -6,7 +6,7 @@ defmodule FaithfulWordApi.ChannelV13View do
 
   def render("addv13.json", %{channel_v13: channel_v13, api_version: api_version}) do
     Logger.debug("render channel_v13 #{inspect(%{attributes: channel_v13})}")
-    %{result: [], status: "success", version: api_version}
+    %{result: channel_v13, status: "success", version: api_version}
   end
 
   def render("addv13.json", %{add_channel_v13: add_channel_v13}) do

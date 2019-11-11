@@ -115,6 +115,11 @@ defmodule FaithfulWordApi.Router do
         # get "/:uuid/media", MediaItemController, :indexv13
       end
 
+      scope "/pushmessages" do
+        post "/add", PushMessageController, :addv13
+        # get "/:uuid/media", MediaItemController, :indexv13
+      end
+
       scope "/search" do
         post "/", SearchController, :searchv13
       end

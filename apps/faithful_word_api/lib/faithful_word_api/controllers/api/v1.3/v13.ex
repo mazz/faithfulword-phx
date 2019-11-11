@@ -9,7 +9,7 @@ defmodule FaithfulWordApi.V13 do
   alias Db.Schema.{MediaGospel, Gospel}
   alias Db.Schema.{GospelTitle, LanguageIdentifier}
   alias Db.Schema.{MusicTitle, Music, MediaMusic}
-  alias Db.Schema.{Org, Channel, Playlist, PlaylistTitle, MediaItem}
+  alias Db.Schema.{Org, Channel, Playlist, PlaylistTitle, MediaItem, PushMessage}
   alias Db.Schema.AppVersion
   alias Db.Schema.ClientDevice
 
@@ -246,6 +246,30 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
+  def add_push_message(
+    title,
+    message,
+    org_id) do
+
+    changeset = PushMessage.changeset(%PushMessage{}, %{
+      title: title,
+      message: message,
+      org_id: org_id,
+      uuid: Ecto.UUID.generate()
+      })
+
+    Multi.new()
+    |> Multi.insert(:push_message, changeset)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{push_message: push_message}} ->
+        push_message
+      {:error, :push_message, changeset, %{}} ->
+        # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+        # {:reply, {:error, "Unknown error", socket}}
+    end
+  end
+
   def add_media_item(
     ordinal,
     localizedname,
@@ -269,7 +293,7 @@ defmodule FaithfulWordApi.V13 do
     duration
     ) do
 
-    changeset = MediaItem.changeset(%MediaItem{}, %{
+    changeset = MediaItem.changeset(%MediaItem{tags: tags}, %{
       ordinal: ordinal,
       localizedname: localizedname,
       media_category: media_category,
@@ -291,15 +315,24 @@ defmodule FaithfulWordApi.V13 do
       duration: duration,
       uuid: Ecto.UUID.generate()
       })
+      Logger.debug("media_item changeset #{inspect(%{attributes: changeset})}")
 
     Multi.new()
     |> Multi.insert(:item_without_hash_id, changeset)
     |> Multi.run(:media_item, fn _repo, %{item_without_hash_id: media_item} ->
+      Logger.debug("media_item insert #{inspect(%{attributes: media_item})}")
       media_item
       |> MediaItem.changeset_generate_hash_id()
       |> Repo.update()
     end)
     |> Repo.transaction()
+    |> case do
+      {:ok, %{media_item: media_item}} ->
+        media_item
+      {:error, :media_item, changeset, %{}} ->
+        # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+        # {:reply, {:error, "Unknown error", socket}}
+    end
   end
 
   def add_playlist(
@@ -352,6 +385,14 @@ defmodule FaithfulWordApi.V13 do
       {:ok, maps}
     end)
     |> Repo.transaction()
+    |> case do
+      {:ok, %{playlist: playlist}} ->
+        playlist
+      {:error, :playlist, changeset, %{}} ->
+        # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+        # {:reply, {:error, "Unknown error", socket}}
+    end
+
   end
 
   def add_channel(
@@ -382,6 +423,14 @@ defmodule FaithfulWordApi.V13 do
       |> Repo.update()
     end)
     |> Repo.transaction()
+    |> case do
+      {:ok, %{channel: channel}} ->
+        channel
+      {:error, :channel, changeset, %{}} ->
+        # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+        # {:reply, {:error, "Unknown error", socket}}
+    end
+
   end
 
   def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version) do

@@ -3,6 +3,32 @@ defmodule Db.Schema.MediaItem do
   import Ecto.Changeset
   alias Db.Type.MediaItemHashId
 
+  @derive {Jason.Encoder, only: [
+    :localizedname,
+    :ordinal,
+    :small_thumbnail_path,
+    :med_thumbnail_path,
+    :large_thumbnail_path,
+    :banner_path,
+    :content_provider_link,
+    :ipfs_link,
+    :language_id,
+    :medium,
+    :path,
+    :presenter_name,
+    :uuid,
+    :channel_id,
+    :playlist_id,
+    :org_id,
+    :media_category,
+    :hash_id,
+    :multilanguage,
+    :presented_at,
+    :published_at,
+    :updated_at,
+    :inserted_at
+  ]}
+
   schema "mediaitems" do
     field :content_provider_link, :string
     field :ipfs_link, :string
