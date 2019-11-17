@@ -169,10 +169,12 @@ defmodule FaithfulWordApi.Router do
       pipe_through([:api_auth])
 
       # Authentication
-      scope "/auth" do
-        delete("/", AuthController, :logout)
-        delete("/:provider/link", AuthController, :unlink_provider)
-        post("/:provider/callback", AuthController, :callback)
+      scope "/api" do
+        scope "/auth" do
+          delete("/", AuthController, :logout)
+          delete("/:provider/link", AuthController, :unlink_provider)
+          post("/:provider/callback", AuthController, :callback)
+        end
       end
 
       # Users
