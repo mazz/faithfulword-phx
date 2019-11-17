@@ -8,7 +8,7 @@ defmodule Db.Schema.ClientDevice do
     field :preferred_language, :string
     field :user_agent, :string
     field :user_version, :string
-    field :user_uuid, Ecto.UUID
+    # field :user_uuid, Ecto.UUID
     field :uuid, Ecto.UUID
 
     # timestamps()
