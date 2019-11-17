@@ -36,7 +36,7 @@ defmodule FaithfulWordApi.Router do
   scope "/", FaithfulWordApi do
     pipe_through [:browser, :authentication_required]
 
-    get "/logout", LoginController, :delete
+    # get "/logout", LoginController, :delete
 
     # scope "/admin", Admin do
     # scope "/admin", Admin, as: :admin do
