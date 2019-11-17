@@ -29,7 +29,7 @@ defmodule FaithfulWordApi.PushMessageController do
         # Logger.debug("channels #{inspect %{attributes: channels}}")
         Logger.debug("push_message_v13 #{inspect(%{attributes: push_message_v13})}")
 
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             Logger.debug("api_version #{inspect(%{attributes: api_version})}")

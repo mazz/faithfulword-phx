@@ -22,7 +22,7 @@ defmodule FaithfulWordApi.OrgController do
 
       org_v13 ->
         # Logger.debug("books #{inspect %{attributes: books}}")
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
@@ -45,7 +45,7 @@ defmodule FaithfulWordApi.OrgController do
         |> render("403.json", %{message: "language not found in supported list."})
 
       channel_v13 ->
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")

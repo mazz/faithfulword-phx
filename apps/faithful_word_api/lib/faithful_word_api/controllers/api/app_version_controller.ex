@@ -38,7 +38,7 @@ defmodule FaithfulWordApi.AppVersionController do
       app_version_v13 ->
         Logger.debug("app_version #{inspect(%{attributes: app_version_v13})}")
 
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")

@@ -64,7 +64,7 @@ defmodule FaithfulWordApi.MediaItemController do
         # Logger.debug("channels #{inspect %{attributes: channels}}")
         Logger.debug("media_item_v13 #{inspect(%{attributes: media_item_v13})}")
 
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             Logger.debug("api_version #{inspect(%{attributes: api_version})}")
@@ -102,7 +102,7 @@ defmodule FaithfulWordApi.MediaItemController do
       media_item_v13 ->
         Logger.debug("media_item_v13 #{inspect(%{attributes: media_item_v13})}")
 
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")

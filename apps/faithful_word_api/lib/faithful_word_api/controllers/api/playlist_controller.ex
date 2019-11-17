@@ -41,7 +41,7 @@ defmodule FaithfulWordApi.PlaylistController do
         # Logger.debug("channels #{inspect %{attributes: channels}}")
         Logger.debug("playlist_v13 #{inspect(%{attributes: playlist_v13})}")
 
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             Logger.debug("api_version #{inspect(%{attributes: api_version})}")
@@ -76,7 +76,7 @@ defmodule FaithfulWordApi.PlaylistController do
       playlist_v13 ->
         Logger.debug("playlist_v13 #{inspect(%{attributes: playlist_v13})}")
 
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
