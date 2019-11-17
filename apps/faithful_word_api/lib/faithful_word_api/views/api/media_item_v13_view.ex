@@ -27,10 +27,10 @@ defmodule FaithfulWordApi.MediaItemV13View do
       large_thumbnail_path: media_item_v13.large_thumbnail_path,
       hash_id: media_item_v13.hash_id,
       duration: media_item_v13.duration,
-      inserted_at: media_item_v13.inserted_at,# |> render_unix_timestamp(),
-      updated_at: media_item_v13.updated_at,# |> render_unix_timestamp(),
+      inserted_at: media_item_v13.inserted_at, ## |> render_unix_timestamp(),
+      updated_at: media_item_v13.updated_at, ## |> render_unix_timestamp(),
       media_category: media_item_v13.media_category,
-      presented_at: media_item_v13.presented_at,# |> render_unix_timestamp(),
+      presented_at: media_item_v13.presented_at, ## |> render_unix_timestamp(),
       published_at: media_item_v13.published_at# |> render_unix_timestamp()
     }
 
@@ -80,11 +80,11 @@ defmodule FaithfulWordApi.MediaItemV13View do
       largeThumbnailPath: media_item_v13.large_thumbnail_path,
       hashId: media_item_v13.hash_id,
       duration: media_item_v13.duration,
-      insertedAt: media_item_v13.inserted_at |> render_unix_timestamp(),
-      updatedAt: media_item_v13.updated_at |> render_unix_timestamp(),
+      insertedAt: media_item_v13.inserted_at, ## |> render_unix_timestamp(),
+      updatedAt: media_item_v13.updated_at, ## |> render_unix_timestamp(),
       mediaCategory: media_item_v13.media_category,
-      presentedAt: media_item_v13.presented_at |> render_unix_timestamp(),
-      publishedAt: media_item_v13.published_at |> render_unix_timestamp()
+      presentedAt: media_item_v13.presented_at, ## |> render_unix_timestamp(),
+      publishedAt: media_item_v13.published_at# |> render_unix_timestamp()
     }
   end
 

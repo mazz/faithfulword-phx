@@ -42,7 +42,7 @@ defmodule FaithfulWordApi.UserView do
       picture_url: Db.Type.UserPicture.url({user.picture_url, user}, :thumb),
       mini_picture_url: Db.Type.UserPicture.url({user.picture_url, user}, :mini_thumb),
       locale: user.locale,
-      registered_at: user.inserted_at |> render_unix_timestamp(),
+      registered_at: user.inserted_at , #, ## |> render_unix_timestamp(),
       achievements: user.achievements,
       is_publisher: user.is_publisher
     }

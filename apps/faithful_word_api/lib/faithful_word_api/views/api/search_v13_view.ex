@@ -41,11 +41,11 @@ defmodule FaithfulWordApi.SearchV13View do
       smallThumbnailPath: search_v13.small_thumbnail_path,
       medThumbnailPath: search_v13.med_thumbnail_path,
       largeThumbnailPath: search_v13.large_thumbnail_path,
-      insertedAt: search_v13.inserted_at |> render_unix_timestamp(),
-      updatedAt: search_v13.updated_at |> render_unix_timestamp(),
+      insertedAt: search_v13.inserted_at , #, ## |> render_unix_timestamp(),
+      updatedAt: search_v13.updated_at , #, ## |> render_unix_timestamp(),
       mediaCategory: search_v13.media_category,
-      presentedAt: search_v13.presented_at |> render_unix_timestamp(),
-      publishedAt: search_v13.published_at |> render_unix_timestamp()
+      presentedAt: search_v13.presented_at , #, ## |> render_unix_timestamp(),
+      publishedAt: search_v13.published_at# |> render_unix_timestamp()
     }
   end
 
