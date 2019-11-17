@@ -57,13 +57,13 @@ defmodule FaithfulWord.Utils.FrontendRouter do
   URL to confirm email
   """
   def confirm_email_url(email_confirmation_token),
-    do: url("confirm_email/#{email_confirmation_token}")
+    do: url("api/user/confirm_email/#{email_confirmation_token}")
 
   @doc """
   URL to reset user password
   """
   def reset_password_url(reset_password_token),
-    do: url("reset_password/confirm/#{reset_password_token}")
+    do: url("api/users/reset_password/verify/#{reset_password_token}")
 
   @doc """
   URL to help pages
