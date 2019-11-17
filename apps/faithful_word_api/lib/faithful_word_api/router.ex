@@ -203,11 +203,14 @@ defmodule FaithfulWordApi.Router do
     end
 
       # Videos
-      post("/videos", VideoController, :get_or_create)
-
+      scope "/api" do
+        post("/videos", VideoController, :get_or_create)
+      end
       # Moderation
-      get("/moderation/random", ModerationController, :random)
-      post("/moderation/feedback", ModerationController, :post_feedback)
+      scope "/api" do
+        get("/moderation/random", ModerationController, :random)
+        post("/moderation/feedback", ModerationController, :post_feedback)
+      end
     end
 
     # end
