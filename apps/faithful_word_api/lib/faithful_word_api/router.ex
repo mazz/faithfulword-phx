@@ -175,32 +175,32 @@ defmodule FaithfulWordApi.Router do
           delete("/:provider/link", AuthController, :unlink_provider)
           post("/:provider/callback", AuthController, :callback)
         end
-      end
 
-      # Users
-      scope "/users" do
-        post("/", UserController, :create)
-        post("/request_invitation", UserController, :request_invitation)
-        get("/username/:username", UserController, :show)
+        # Users
+        scope "/users" do
+          post("/", UserController, :create)
+          post("/request_invitation", UserController, :request_invitation)
+          get("/username/:username", UserController, :show)
 
-        scope "/reset_password" do
-          post("/request", UserController, :reset_password_request)
-          get("/verify/:token", UserController, :reset_password_verify)
-          post("/confirm", UserController, :reset_password_confirm)
+          scope "/reset_password" do
+            post("/request", UserController, :reset_password_request)
+            get("/verify/:token", UserController, :reset_password_verify)
+            post("/confirm", UserController, :reset_password_confirm)
+          end
+
+          scope "/me" do
+            get("/", UserController, :show_me)
+            put("/", UserController, :update)
+            delete("/", UserController, :delete)
+            get("/available_flags", UserController, :available_flags)
+            put("/confirm_email/:token", UserController, :confirm_email)
+            put("/achievements/:achievement", UserController, :unlock_achievement)
+            post("/onboarding/complete_step", UserController, :complete_onboarding_step)
+            post("/onboarding/complete_steps", UserController, :complete_onboarding_steps)
+            delete("/onboarding", UserController, :delete_onboarding)
+          end
         end
-
-        scope "/me" do
-          get("/", UserController, :show_me)
-          put("/", UserController, :update)
-          delete("/", UserController, :delete)
-          get("/available_flags", UserController, :available_flags)
-          put("/confirm_email/:token", UserController, :confirm_email)
-          put("/achievements/:achievement", UserController, :unlock_achievement)
-          post("/onboarding/complete_step", UserController, :complete_onboarding_step)
-          post("/onboarding/complete_steps", UserController, :complete_onboarding_steps)
-          delete("/onboarding", UserController, :delete_onboarding)
-        end
-      end
+    end
 
       # Videos
       post("/videos", VideoController, :get_or_create)
