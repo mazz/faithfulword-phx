@@ -92,7 +92,7 @@ defmodule FaithfulWord.Videos do
 
       Multi.new()
       |> Multi.insert(:video_without_hash_id, Video.changeset(base_video, metadata))
-      |> Multi.run(:video, fn %{video_without_hash_id: video} ->
+      |> Multi.run(:video, fn _repo, %{video_without_hash_id: video} ->
         video
         |> Video.changeset_generate_hash_id()
         |> Repo.update()
