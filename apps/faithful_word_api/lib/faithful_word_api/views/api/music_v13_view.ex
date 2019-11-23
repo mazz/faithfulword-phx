@@ -5,11 +5,11 @@ defmodule FaithfulWordApi.MusicV13View do
   def render("indexv13.json", %{music_v13: music_v13, api_version: api_version}) do
     %{
       result: render_many(music_v13, MusicV13View, "music_v13.json"),
-      pageNumber: music_v13.page_number,
-      pageSize: music_v13.page_size,
+      page_number: music_v13.page_number,
+      page_size: music_v13.page_size,
       status: "success",
-      totalEntries: music_v13.total_entries,
-      totalPages: music_v13.total_pages,
+      total_entries: music_v13.total_entries,
+      total_pages: music_v13.total_pages,
       version: api_version
     }
   end

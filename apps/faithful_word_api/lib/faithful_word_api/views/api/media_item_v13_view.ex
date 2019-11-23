@@ -44,11 +44,11 @@ defmodule FaithfulWordApi.MediaItemV13View do
   def render("indexv13.json", %{media_item_v13: media_item_v13, api_version: api_version}) do
     %{
       result: render_many(media_item_v13, MediaItemV13View, "media_item_v13.json"),
-      pageNumber: media_item_v13.page_number,
-      pageSize: media_item_v13.page_size,
+      page_number: media_item_v13.page_number,
+      page_size: media_item_v13.page_size,
       status: "success",
-      totalEntries: media_item_v13.total_entries,
-      totalPages: media_item_v13.total_pages,
+      total_entries: media_item_v13.total_entries,
+      total_pages: media_item_v13.total_pages,
       version: api_version
     }
 
@@ -63,28 +63,28 @@ defmodule FaithfulWordApi.MediaItemV13View do
     %{
       ordinal: media_item_v13.ordinal,
       uuid: media_item_v13.uuid,
-      trackNumber: media_item_v13.track_number,
+      track_number: media_item_v13.track_number,
       medium: media_item_v13.medium,
       localizedname: media_item_v13.localizedname,
       multilanguage: media_item_v13.multilanguage,
       path: media_item_v13.path,
-      contentProviderLink: media_item_v13.content_provider_link,
-      ipfsLink: media_item_v13.ipfs_link,
-      languageId: media_item_v13.language_id,
-      presenterName: media_item_v13.presenter_name,
-      sourceMaterial: media_item_v13.source_material,
-      playlistUuid: media_item_v13.playlist_uuid,
+      content_provider_link: media_item_v13.content_provider_link,
+      ipfs_link: media_item_v13.ipfs_link,
+      language_id: media_item_v13.language_id,
+      presenter_name: media_item_v13.presenter_name,
+      source_material: media_item_v13.source_material,
+      playlist_uuid: media_item_v13.playlist_uuid,
       tags: media_item_v13.tags,
-      smallThumbnailPath: media_item_v13.small_thumbnail_path,
-      medThumbnailPath: media_item_v13.med_thumbnail_path,
-      largeThumbnailPath: media_item_v13.large_thumbnail_path,
-      hashId: media_item_v13.hash_id,
+      small_thumbnail_path: media_item_v13.small_thumbnail_path,
+      med_thumbnail_path: media_item_v13.med_thumbnail_path,
+      large_thumbnail_path: media_item_v13.large_thumbnail_path,
+      hash_id: media_item_v13.hash_id,
       duration: media_item_v13.duration,
-      insertedAt: media_item_v13.inserted_at, ## |> render_unix_timestamp(),
-      updatedAt: media_item_v13.updated_at, ## |> render_unix_timestamp(),
-      mediaCategory: media_item_v13.media_category,
-      presentedAt: media_item_v13.presented_at, ## |> render_unix_timestamp(),
-      publishedAt: media_item_v13.published_at# |> render_unix_timestamp()
+      inserted_at: media_item_v13.inserted_at, ## |> render_unix_timestamp(),
+      updated_at: media_item_v13.updated_at, ## |> render_unix_timestamp(),
+      media_category: media_item_v13.media_category,
+      presented_at: media_item_v13.presented_at, ## |> render_unix_timestamp(),
+      published_at: media_item_v13.published_at# |> render_unix_timestamp()
     }
   end
 
