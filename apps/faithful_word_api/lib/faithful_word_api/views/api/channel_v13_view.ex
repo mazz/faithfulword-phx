@@ -34,6 +34,7 @@ defmodule FaithfulWordApi.ChannelV13View do
 
     %{
       basename: channel_v13.basename,
+      channel_id: channel_v13.channel_id,
       uuid: channel_v13.uuid,
       org_uuid: channel_v13.org_uuid,
       ordinal: channel_v13.ordinal,

@@ -347,7 +347,12 @@ defmodule FaithfulWordApi.V13 do
     channel_id
     ) do
 
-    changeset = Playlist.changeset(%Playlist{basename: basename}, %{
+    changeset = Playlist.changeset(%Playlist{
+        basename: basename,
+        small_thumbnail_path: small_thumbnail_path,
+        med_thumbnail_path: med_thumbnail_path,
+        large_thumbnail_path: large_thumbnail_path,
+        banner_path: banner_path}, %{
       ordinal: ordinal,
       basename: basename,
       small_thumbnail_path: small_thumbnail_path,
@@ -476,6 +481,7 @@ defmodule FaithfulWordApi.V13 do
           org_uuid: org.uuid,
           ordinal: channel.ordinal,
           basename: channel.basename,
+          channel_id: channel.id,
           small_thumbnail_path: channel.small_thumbnail_path,
           med_thumbnail_path: channel.med_thumbnail_path,
           large_thumbnail_path: channel.large_thumbnail_path,
@@ -504,6 +510,7 @@ defmodule FaithfulWordApi.V13 do
         where: pt.language_id == ^language_id,
         order_by: [pl.ordinal],
         select: %{
+          basename: pl.basename,
           localizedname: pt.localizedname,
           language_id: pt.language_id,
           ordinal: pl.ordinal,
@@ -514,6 +521,7 @@ defmodule FaithfulWordApi.V13 do
           media_category: pl.media_category,
           uuid: pl.uuid,
           channel_uuid: ch.uuid,
+          channel_id: ch.id,
           inserted_at: pl.inserted_at,
           updated_at: pl.updated_at,
           hash_id: pl.hash_id
