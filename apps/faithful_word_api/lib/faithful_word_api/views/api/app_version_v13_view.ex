@@ -5,11 +5,11 @@ defmodule FaithfulWordApi.AppVersionV13View do
   def render("indexv13.json", %{app_version_v13: app_version_v13, api_version: api_version}) do
     %{
       result: render_many(app_version_v13, AppVersionV13View, "app_version_v13.json"),
-      pageNumber: app_version_v13.page_number,
-      pageSize: app_version_v13.page_size,
+      page_number: app_version_v13.page_number,
+      page_size: app_version_v13.page_size,
       status: "success",
-      totalEntries: app_version_v13.total_entries,
-      totalPages: app_version_v13.total_pages,
+      total_entries: app_version_v13.total_entries,
+      total_pages: app_version_v13.total_pages,
       version: api_version
     }
   end
@@ -21,10 +21,10 @@ defmodule FaithfulWordApi.AppVersionV13View do
   def render("app_version_v13.json", %{app_version_v13: app_version_v13}) do
     %{
       uuid: app_version_v13.uuid,
-      versionNumber: app_version_v13.version_number,
-      iosSupported: app_version_v13.ios_supported,
-      androidSupported: app_version_v13.android_supported,
-      webSupported: app_version_v13.web_supported
+      version_number: app_version_v13.version_number,
+      ios_supported: app_version_v13.ios_supported,
+      android_supported: app_version_v13.android_supported,
+      web_supported: app_version_v13.web_supported
     }
   end
 end

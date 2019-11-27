@@ -16,11 +16,11 @@ defmodule FaithfulWordApi.ChannelV13View do
   def render("channelsv13.json", %{channel_v13: channel_v13, api_version: api_version}) do
     %{
       result: render_many(channel_v13, ChannelV13View, "channel_v13.json"),
-      pageNumber: channel_v13.page_number,
-      pageSize: channel_v13.page_size,
+      page_number: channel_v13.page_number,
+      page_size: channel_v13.page_size,
       status: "success",
-      totalEntries: channel_v13.total_entries,
-      totalPages: channel_v13.total_pages,
+      total_entries: channel_v13.total_entries,
+      total_pages: channel_v13.total_pages,
       version: api_version
     }
   end
@@ -34,16 +34,17 @@ defmodule FaithfulWordApi.ChannelV13View do
 
     %{
       basename: channel_v13.basename,
+      channel_id: channel_v13.channel_id,
       uuid: channel_v13.uuid,
-      orgUuid: channel_v13.org_uuid,
+      org_uuid: channel_v13.org_uuid,
       ordinal: channel_v13.ordinal,
-      smallThumbnailPath: channel_v13.small_thumbnail_path,
-      medThumbnailPath: channel_v13.med_thumbnail_path,
-      largeThumbnailPath: channel_v13.large_thumbnail_path,
-      bannerPath: channel_v13.banner_path,
-      hashId: channel_v13.hash_id,
-      insertedAt: channel_v13.inserted_at |> render_unix_timestamp(),
-      updatedAt: channel_v13.updated_at |> render_unix_timestamp()
+      small_thumbnail_path: channel_v13.small_thumbnail_path,
+      med_thumbnail_path: channel_v13.med_thumbnail_path,
+      large_thumbnail_path: channel_v13.large_thumbnail_path,
+      banner_path: channel_v13.banner_path,
+      hash_id: channel_v13.hash_id,
+      inserted_at: channel_v13.inserted_at , #, ## |> render_unix_timestamp(),
+      updated_at: channel_v13.updated_at# |> render_unix_timestamp()
     }
   end
 

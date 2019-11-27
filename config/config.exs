@@ -24,7 +24,7 @@ config :faithful_word,
   frontend_url: frontend_url,
   invitation_system: false,
   # fwsaved-web
-  youtube_api_key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4",
+  youtube_api_key: "AIzaSyAhdlLkJO6ctSCh1AWueqeBEFXAM9al_90",
   oauth: [
     facebook: [
       client_id: "client_id",

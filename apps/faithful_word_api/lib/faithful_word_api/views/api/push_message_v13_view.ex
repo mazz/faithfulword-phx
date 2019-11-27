@@ -16,11 +16,11 @@ defmodule FaithfulWordApi.PushMessageV13View do
   def render("channelsv13.json", %{push_message_v13: push_message_v13, api_version: api_version}) do
     %{
       result: render_many(push_message_v13, PushMessageV13View, "push_message_v13.json"),
-      pageNumber: push_message_v13.page_number,
-      pageSize: push_message_v13.page_size,
+      page_number: push_message_v13.page_number,
+      page_size: push_message_v13.page_size,
       status: "success",
-      totalEntries: push_message_v13.total_entries,
-      totalPages: push_message_v13.total_pages,
+      total_entries: push_message_v13.total_entries,
+      total_pages: push_message_v13.total_pages,
       version: api_version
     }
   end
@@ -36,8 +36,8 @@ defmodule FaithfulWordApi.PushMessageV13View do
       title: push_message_v13.basename,
       message: push_message_v13.uuid,
       org_id: push_message_v13.org_id,
-      insertedAt: push_message_v13.inserted_at, #, ## |> render_unix_timestamp(),
-      updatedAt: push_message_v13.updated_at # |> render_unix_timestamp()
+      inserted_at: push_message_v13.inserted_at, #, ## |> render_unix_timestamp(),
+      updated_at: push_message_v13.updated_at # |> render_unix_timestamp()
     }
   end
 

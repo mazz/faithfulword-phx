@@ -5,11 +5,11 @@ defmodule FaithfulWordApi.MediaGospelV13View do
   def render("indexv13.json", %{media_gospel_v13: media_gospel_v13, api_version: api_version}) do
     %{
       result: render_many(media_gospel_v13, MediaGospelV13View, "media_gospel_v13.json"),
-      pageNumber: media_gospel_v13.page_number,
-      pageSize: media_gospel_v13.page_size,
+      page_number: media_gospel_v13.page_number,
+      page_size: media_gospel_v13.page_size,
       status: "success",
-      totalEntries: media_gospel_v13.total_entries,
-      totalPages: media_gospel_v13.total_pages,
+      total_entries: media_gospel_v13.total_entries,
+      total_pages: media_gospel_v13.total_pages,
       version: api_version
     }
 

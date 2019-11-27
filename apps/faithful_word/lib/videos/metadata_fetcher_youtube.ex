@@ -83,7 +83,7 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
 
   #   # conn = GoogleApi.YouTube.V3.Connection.new()
   #   #video
-  #   # conn |> GoogleApi.YouTube.V3.Api.Videos.youtube_videos_list("snippet", maxResults: 50, id: "yea9PLUMuzs", key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4")
+  #   # conn |> GoogleApi.YouTube.V3.Api.Videos.youtube_videos_list("snippet", maxResults: 50, id: "yea9PLUMuzs", key: "AIzaSyAhdlLkJO6ctSCh1AWueqeBEFXAM9al_90")
 
   #   user = Repo.get_by(User, email: "admin@faithfulword.app")
 
@@ -179,14 +179,14 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
   defp do_fetch_playlist_item_list_metadata(playlist_id, api_key) do
     # returns playlistid for sanderson1611
     # %GoogleApi.YouTube.V3.Model.ChannelListResponse{
-    # conn |> YouTubeChannels.youtube_channels_list("contentDetails", forUsername: "sanderson1611", key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4")
+    # conn |> YouTubeChannels.youtube_channels_list("contentDetails", forUsername: "sanderson1611", key: "AIzaSyAhdlLkJO6ctSCh1AWueqeBEFXAM9al_90")
 
     # sanderson1611 playlist
     # conn = GoogleApi.YouTube.V3.Connection.new()
-    # conn |> GoogleApi.YouTube.V3.Api.PlaylistItems.youtube_playlist_items_list("snippet", maxResults: 50, playlistId: "UUq7BdmVpQsay5XrwOgMhN5w", key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4")
+    # conn |> GoogleApi.YouTube.V3.Api.PlaylistItems.youtube_playlist_items_list("snippet", maxResults: 50, playlistId: "UUq7BdmVpQsay5XrwOgMhN5w", key: "AIzaSyAhdlLkJO6ctSCh1AWueqeBEFXAM9al_90")
 
     # video
-    # conn |> GoogleApi.YouTube.V3.Api.Videos.youtube_videos_list("snippet", maxResults: 50, id: "qSVJOYxg1dA", key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4")
+    # conn |> GoogleApi.YouTube.V3.Api.Videos.youtube_videos_list("snippet", maxResults: 50, id: "qSVJOYxg1dA", key: "AIzaSyAhdlLkJO6ctSCh1AWueqeBEFXAM9al_90")
 
     #  GoogleApi.YouTube.V3.Model.PlaylistItemListResponse.yout
     # returns first 50
@@ -195,7 +195,7 @@ defmodule FaithfulWord.Videos.MetadataFetcher.Youtube do
     # items: [%GoogleApi.YouTube.V3.Model.PlaylistItem{ ...}]
     # from main sanderson1611 playlist
     # with pageToken "CDIQAA"
-    # conn |> GoogleApi.YouTube.V3.Api.PlaylistItems.youtube_playlist_items_list("snippet", maxResults: 50, playlistId: "UUq7BdmVpQsay5XrwOgMhN5w", pageToken: "CDIQAA", key: "AIzaSyB01nsJz0y24aXMqbX34oJ9Y4ywh0koKe4")
+    # conn |> GoogleApi.YouTube.V3.Api.PlaylistItems.youtube_playlist_items_list("snippet", maxResults: 50, playlistId: "UUq7BdmVpQsay5XrwOgMhN5w", pageToken: "CDIQAA", key: "AIzaSyAhdlLkJO6ctSCh1AWueqeBEFXAM9al_90")
 
     # user = Repo.get_by(User, email: "admin@faithfulword.app")
 
