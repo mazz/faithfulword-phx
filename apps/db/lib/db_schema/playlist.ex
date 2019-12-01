@@ -4,22 +4,23 @@ defmodule Db.Schema.Playlist do
   alias Db.Type.PlaylistHashId
 
   @derive {Jason.Encoder,
-           only: [
-             :basename,
-             :ordinal,
-             :small_thumbnail_path,
-             :med_thumbnail_path,
-             :large_thumbnail_path,
-             :banner_path,
-             :uuid,
-             :channel_id,
-             :org_id,
-             :media_category,
-             :hash_id,
-             :multilanguage,
-             :updated_at,
-             :inserted_at
-           ]}
+   only: [
+     :basename,
+     :ordinal,
+     :small_thumbnail_path,
+     :med_thumbnail_path,
+     :large_thumbnail_path,
+     :banner_path,
+     :uuid,
+     :channel_id,
+     :org_id,
+     :media_category,
+     :hash_id,
+     #  :playlist_titles,
+     :multilanguage,
+     :updated_at,
+     :inserted_at
+   ]}
 
   schema "playlists" do
     # field :language_id, :string

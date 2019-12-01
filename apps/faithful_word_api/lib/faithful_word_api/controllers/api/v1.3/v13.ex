@@ -512,12 +512,20 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def playlist_details_by_uuid(uuid_str) do
+  def playlist_details_by_uuid(uuid_str, offset, limit) do
     {:ok, playlist_uuid} = Ecto.UUID.dump(uuid_str)
     Logger.debug("playlist_uuid: #{uuid_str}")
-    # query =
-      # from(pl in Playlist
+
+    Ecto.Query.from(pl in Playlist,
+      where: pl.uuid == ^playlist_uuid,
+      preload: [:playlist_titles],
+      select: %{
+        playlist: pl
+      }
+    )
+    |> Repo.paginate(page: offset, page_size: limit)
   end
+
   def playlists_by_channel_uuid(uuid_str, language_id, offset, limit) do
     {:ok, channel_uuid} = Ecto.UUID.dump(uuid_str)
     Logger.debug("channel_uuid: #{uuid_str}")
