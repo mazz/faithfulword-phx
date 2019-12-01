@@ -76,6 +76,7 @@ defmodule FaithfulWordApi.PlaylistDetailsV13View do
     %{
       basename: playlist_details_v13.playlist.basename,
       uuid: playlist_details_v13.playlist.uuid,
+      playlist_id: playlist_details_v13.playlist.id,
       # channel_uuid: playlist_details_v13.channel_uuid,
       # channel_id: playlist_details_v13.channel_id,
       ordinal: playlist_details_v13.playlist.ordinal,
