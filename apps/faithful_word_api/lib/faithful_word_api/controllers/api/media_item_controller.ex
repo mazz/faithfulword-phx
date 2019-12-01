@@ -11,27 +11,27 @@ defmodule FaithfulWordApi.MediaItemController do
   action_fallback FaithfulWordApi.FallbackController
 
   def addv13(conn, %{
-    "ordinal" => ordinal,
-    "localizedname" => localizedname,
-    "media_category" => media_category,
-    "medium" => medium,
-    "path" => path,
-    "language_id" => language_id,
-    "playlist_id" => playlist_id,
-    "org_id" => org_id,
-    # optional >>>
-    "track_number" => track_number,
-    "tags" => tags,
-    "small_thumbnail_path" => small_thumbnail_path,
-    "med_thumbnail_path" => med_thumbnail_path,
-    "large_thumbnail_path" => large_thumbnail_path,
-    "content_provider_link" => content_provider_link,
-    "ipfs_link" => ipfs_link,
-    "presenter_name" => presenter_name,
-    "presented_at" => presented_at,
-    "source_material" => source_material,
-    "duration" => duration
-  }) do
+        "ordinal" => ordinal,
+        "localizedname" => localizedname,
+        "media_category" => media_category,
+        "medium" => medium,
+        "path" => path,
+        "language_id" => language_id,
+        "playlist_id" => playlist_id,
+        "org_id" => org_id,
+        # optional >>>
+        "track_number" => track_number,
+        "tags" => tags,
+        "small_thumbnail_path" => small_thumbnail_path,
+        "med_thumbnail_path" => med_thumbnail_path,
+        "large_thumbnail_path" => large_thumbnail_path,
+        "content_provider_link" => content_provider_link,
+        "ipfs_link" => ipfs_link,
+        "presenter_name" => presenter_name,
+        "presented_at" => presented_at,
+        "source_material" => source_material,
+        "duration" => duration
+      }) do
     V13.add_media_item(
       ordinal,
       localizedname,
@@ -53,14 +53,14 @@ defmodule FaithfulWordApi.MediaItemController do
       presented_at,
       source_material,
       duration
-      )
+    )
     |> case do
       nil ->
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "something happened."})
 
-        media_item_v13 ->
+      media_item_v13 ->
         # Logger.debug("channels #{inspect %{attributes: channels}}")
         Logger.debug("media_item_v13 #{inspect(%{attributes: media_item_v13})}")
 

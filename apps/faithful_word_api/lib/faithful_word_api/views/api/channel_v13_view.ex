@@ -43,8 +43,10 @@ defmodule FaithfulWordApi.ChannelV13View do
       large_thumbnail_path: channel_v13.large_thumbnail_path,
       banner_path: channel_v13.banner_path,
       hash_id: channel_v13.hash_id,
-      inserted_at: channel_v13.inserted_at , #, ## |> render_unix_timestamp(),
-      updated_at: channel_v13.updated_at# |> render_unix_timestamp()
+      # , ## |> render_unix_timestamp(),
+      inserted_at: channel_v13.inserted_at,
+      # |> render_unix_timestamp()
+      updated_at: channel_v13.updated_at
     }
   end
 

@@ -2,15 +2,16 @@ defmodule Db.Schema.PushMessage do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [
-    :title,
-    :message,
-    :sent,
-    :uuid,
-    :org_id,
-    :updated_at,
-    :inserted_at
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :title,
+             :message,
+             :sent,
+             :uuid,
+             :org_id,
+             :updated_at,
+             :inserted_at
+           ]}
 
   schema "pushmessages" do
     # field :created_at, :utc_datetime
@@ -33,13 +34,13 @@ defmodule Db.Schema.PushMessage do
       :message,
       :sent,
       :org_id
-      ])
+    ])
     |> validate_required([
       :uuid,
       :title,
       :message,
       :sent,
       :org_id
-      ])
+    ])
   end
 end

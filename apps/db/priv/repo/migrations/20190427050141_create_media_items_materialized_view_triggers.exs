@@ -2,7 +2,6 @@ defmodule Db.Repo.Migrations.CreateMediaItemsMaterializedViewTriggers do
   use Ecto.Migration
 
   def change do
-
     # make this a no-op because it will get fired during migration from v1.2 -> v1.3
     # db migration, which results in the migration slowing to a crawl
     # uncomment at last stages of prod deployment, AFTER db migration

@@ -270,13 +270,17 @@ defmodule Db.Schema.User do
     model
     |> cast(params, [:org_id])
     |> validate_required([:org_id])
+
     case Repo.get_by(Org, id: params["org_id"]) do
       nil ->
         Logger.debug("did not find org: #{params["org_id"]}")
+
         model
         |> add_error(model, :org_id, "non-existent org")
+
       org ->
         Logger.debug("found org: #{org.id}")
+
         model
         |> put_change(:org_id, org.id)
     end

@@ -36,8 +36,10 @@ defmodule FaithfulWordApi.OrgV13View do
       banner_path: org_v13.org.banner_path,
       hash_id: org_v13.org.hash_id,
       channels: org_v13.org.channels,
-      inserted_at: org_v13.org.inserted_at , #, ## |> render_unix_timestamp(),
-      updated_at: org_v13.org.updated_at# |> render_unix_timestamp()
+      # , ## |> render_unix_timestamp(),
+      inserted_at: org_v13.org.inserted_at,
+      # |> render_unix_timestamp()
+      updated_at: org_v13.org.updated_at
     }
   end
 

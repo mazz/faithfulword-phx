@@ -11,14 +11,14 @@ defmodule FaithfulWordApi.ChannelController do
   action_fallback FaithfulWordApi.FallbackController
 
   def addv13(conn, %{
-    "ordinal" => ordinal,
-    "basename" => basename,
-    "small_thumbnail_path" => small_thumbnail_path,
-    "med_thumbnail_path" => med_thumbnail_path,
-    "large_thumbnail_path" => large_thumbnail_path,
-    "banner_path" => banner_path,
-    "org_id" => org_id
-  }) do
+        "ordinal" => ordinal,
+        "basename" => basename,
+        "small_thumbnail_path" => small_thumbnail_path,
+        "med_thumbnail_path" => med_thumbnail_path,
+        "large_thumbnail_path" => large_thumbnail_path,
+        "banner_path" => banner_path,
+        "org_id" => org_id
+      }) do
     V13.add_channel(
       ordinal,
       basename,
@@ -26,14 +26,15 @@ defmodule FaithfulWordApi.ChannelController do
       med_thumbnail_path,
       large_thumbnail_path,
       banner_path,
-      org_id)
+      org_id
+    )
     |> case do
       nil ->
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "something happened."})
 
-        channel_v13 ->
+      channel_v13 ->
         # Logger.debug("channels #{inspect %{attributes: channels}}")
         Logger.debug("channel_v13 #{inspect(%{attributes: channel_v13})}")
 

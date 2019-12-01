@@ -29,7 +29,6 @@ Logger.debug("Application.get_env #{Application.get_env(:db, :env)}")
 # if Application.get_env(:db, :env) == :dev do
 # Logger.warn("API is running in dev mode. Inserting default user admin@faithfulword.app")
 
-
 # default_org = Org
 # |> Repo.one!()
 

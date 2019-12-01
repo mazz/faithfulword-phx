@@ -88,7 +88,7 @@ defmodule FaithfulWordApi.Router do
       end
     end
 
-    #prefix public api with /api for v1.3 and above
+    # prefix public api with /api for v1.3 and above
 
     scope "/api" do
       scope "/v1.3" do
@@ -106,6 +106,10 @@ defmodule FaithfulWordApi.Router do
           # get "/", ChannelController, :indexv13
           post "/add", ChannelController, :addv13
           get "/:uuid/playlists", PlaylistController, :indexv13
+        end
+
+        scope "/playlist" do
+          get "/:uuid/details", PlaylistController, :detailsv13
         end
 
         scope "/playlists" do
@@ -187,8 +191,8 @@ defmodule FaithfulWordApi.Router do
             get("/verify/:token", UserController, :reset_password_verify)
             post("/confirm", UserController, :reset_password_confirm)
           end
-
         end
+
         scope "/user" do
           get("/", UserController, :show_me)
           put("/", UserController, :update)
@@ -200,12 +204,13 @@ defmodule FaithfulWordApi.Router do
           post("/onboarding/complete_steps", UserController, :complete_onboarding_steps)
           delete("/onboarding", UserController, :delete_onboarding)
         end
-    end
+      end
 
       # Videos
       scope "/api" do
         post("/videos", VideoController, :get_or_create)
       end
+
       # Moderation
       scope "/api" do
         get("/moderation/random", ModerationController, :random)

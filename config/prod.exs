@@ -11,8 +11,7 @@ config :faithful_word,
   ecto_repos: [Db.Repo],
   frontend_url: frontend_url
 
-config :faithful_word, FaithfulWord.Mailer,
-  adapter: Bamboo.MailgunAdapter
+config :faithful_word, FaithfulWord.Mailer, adapter: Bamboo.MailgunAdapter
 
 config :faithful_word, FaithfulWord.Authenticator.GuardianImpl,
   issuer: "FaithfulWord",

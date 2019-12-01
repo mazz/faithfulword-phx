@@ -247,15 +247,16 @@ defmodule FaithfulWordApi.V13 do
   end
 
   def add_push_message(
-    title,
-    message,
-    org_id) do
-
-    changeset = PushMessage.changeset(%PushMessage{}, %{
-      title: title,
-      message: message,
-      org_id: org_id,
-      uuid: Ecto.UUID.generate()
+        title,
+        message,
+        org_id
+      ) do
+    changeset =
+      PushMessage.changeset(%PushMessage{}, %{
+        title: title,
+        message: message,
+        org_id: org_id,
+        uuid: Ecto.UUID.generate()
       })
 
     Multi.new()
@@ -264,63 +265,67 @@ defmodule FaithfulWordApi.V13 do
     |> case do
       {:ok, %{push_message: push_message}} ->
         push_message
+
       {:error, :push_message, changeset, %{}} ->
+        nil
         # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
         # {:reply, {:error, "Unknown error", socket}}
     end
   end
 
   def add_media_item(
-    ordinal,
-    localizedname,
-    media_category,
-    medium,
-    path,
-    language_id,
-    playlist_id,
-    org_id,
-    # optional >>>
-    track_number,
-    tags,
-    small_thumbnail_path,
-    med_thumbnail_path,
-    large_thumbnail_path,
-    content_provider_link,
-    ipfs_link,
-    presenter_name,
-    presented_at,
-    source_material,
-    duration
-    ) do
-
-    changeset = MediaItem.changeset(%MediaItem{tags: tags}, %{
-      ordinal: ordinal,
-      localizedname: localizedname,
-      media_category: media_category,
-      medium: medium,
-      path: path,
-      language_id: language_id,
-      playlist_id: playlist_id,
-      org_id: org_id,
-      track_number: track_number,
-      tags: tags,
-      small_thumbnail_path: small_thumbnail_path,
-      med_thumbnail_path: med_thumbnail_path,
-      large_thumbnail_path: large_thumbnail_path,
-      content_provider_link: content_provider_link,
-      ipfs_link: ipfs_link,
-      presenter_name: presenter_name,
-      presented_at: presented_at,
-      source_material: source_material,
-      duration: duration,
-      uuid: Ecto.UUID.generate()
+        ordinal,
+        localizedname,
+        media_category,
+        medium,
+        path,
+        language_id,
+        playlist_id,
+        org_id,
+        # optional >>>
+        track_number,
+        tags,
+        small_thumbnail_path,
+        med_thumbnail_path,
+        large_thumbnail_path,
+        content_provider_link,
+        ipfs_link,
+        presenter_name,
+        presented_at,
+        source_material,
+        duration
+      ) do
+    changeset =
+      MediaItem.changeset(%MediaItem{tags: tags}, %{
+        ordinal: ordinal,
+        localizedname: localizedname,
+        media_category: media_category,
+        medium: medium,
+        path: path,
+        language_id: language_id,
+        playlist_id: playlist_id,
+        org_id: org_id,
+        track_number: track_number,
+        tags: tags,
+        small_thumbnail_path: small_thumbnail_path,
+        med_thumbnail_path: med_thumbnail_path,
+        large_thumbnail_path: large_thumbnail_path,
+        content_provider_link: content_provider_link,
+        ipfs_link: ipfs_link,
+        presenter_name: presenter_name,
+        presented_at: presented_at,
+        source_material: source_material,
+        duration: duration,
+        uuid: Ecto.UUID.generate()
       })
-      Logger.debug("media_item changeset #{inspect(%{attributes: changeset})}")
+
+    Logger.debug("media_item changeset #{inspect(%{attributes: changeset})}")
 
     Multi.new()
     |> Multi.insert(:item_without_hash_id, changeset)
     |> Multi.run(:media_item, fn _repo, %{item_without_hash_id: media_item} ->
       Logger.debug("media_item insert #{inspect(%{attributes: media_item})}")
+
       media_item
       |> MediaItem.changeset_generate_hash_id()
       |> Repo.update()
@@ -329,40 +334,46 @@ defmodule FaithfulWordApi.V13 do
     |> case do
       {:ok, %{media_item: media_item}} ->
         media_item
+
       {:error, :media_item, changeset, %{}} ->
+        nil
         # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
         # {:reply, {:error, "Unknown error", socket}}
     end
   end
 
   def add_playlist(
-    ordinal,
-    basename,
-    small_thumbnail_path,
-    med_thumbnail_path,
-    large_thumbnail_path,
-    banner_path,
-    media_category,
-    localized_titles,
-    channel_id
-    ) do
-
-    changeset = Playlist.changeset(%Playlist{
-        basename: basename,
-        small_thumbnail_path: small_thumbnail_path,
-        med_thumbnail_path: med_thumbnail_path,
-        large_thumbnail_path: large_thumbnail_path,
-        banner_path: banner_path}, %{
-      ordinal: ordinal,
-      basename: basename,
-      small_thumbnail_path: small_thumbnail_path,
-      med_thumbnail_path: med_thumbnail_path,
-      large_thumbnail_path: large_thumbnail_path,
-      banner_path: banner_path,
-      media_category: media_category,
-      channel_id: channel_id,
-      uuid: Ecto.UUID.generate()
-      })
+        ordinal,
+        basename,
+        small_thumbnail_path,
+        med_thumbnail_path,
+        large_thumbnail_path,
+        banner_path,
+        media_category,
+        localized_titles,
+        channel_id
+      ) do
+    changeset =
+      Playlist.changeset(
+        %Playlist{
+          basename: basename,
+          small_thumbnail_path: small_thumbnail_path,
+          med_thumbnail_path: med_thumbnail_path,
+          large_thumbnail_path: large_thumbnail_path,
+          banner_path: banner_path
+        },
+        %{
+          ordinal: ordinal,
+          basename: basename,
+          small_thumbnail_path: small_thumbnail_path,
+          med_thumbnail_path: med_thumbnail_path,
+          large_thumbnail_path: large_thumbnail_path,
+          banner_path: banner_path,
+          media_category: media_category,
+          channel_id: channel_id,
+          uuid: Ecto.UUID.generate()
+        }
+      )
 
     Multi.new()
     |> Multi.insert(:item_without_hash_id, changeset)
@@ -378,14 +389,16 @@ defmodule FaithfulWordApi.V13 do
         for title <- localized_titles,
             _ = Logger.debug("title #{inspect(%{attributes: title})}"),
             {k, v} <- title do
-          IO.puts "#{k} --> #{v}"
+          IO.puts("#{k} --> #{v}")
 
-          Repo.insert(%PlaylistTitle{language_id: k,
+          Repo.insert(%PlaylistTitle{
+            language_id: k,
             localizedname: v,
             uuid: Ecto.UUID.generate(),
-            playlist_id: playlist.id})
-
+            playlist_id: playlist.id
+          })
         end
+
       Logger.debug("maps #{inspect(%{attributes: maps})}")
       {:ok, maps}
     end)
@@ -393,31 +406,33 @@ defmodule FaithfulWordApi.V13 do
     |> case do
       {:ok, %{playlist: playlist}} ->
         playlist
+
       {:error, :playlist, changeset, %{}} ->
+        nil
         # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
         # {:reply, {:error, "Unknown error", socket}}
     end
-
   end
 
   def add_channel(
-    ordinal,
-    basename,
-    small_thumbnail_path,
-    med_thumbnail_path,
-    large_thumbnail_path,
-    banner_path,
-    org_id) do
-
-    changeset = Channel.changeset(%Channel{}, %{
-      ordinal: ordinal,
-      basename: basename,
-      small_thumbnail_path: small_thumbnail_path,
-      med_thumbnail_path: med_thumbnail_path,
-      large_thumbnail_path: large_thumbnail_path,
-      banner_path: banner_path,
-      org_id: org_id,
-      uuid: Ecto.UUID.generate()
+        ordinal,
+        basename,
+        small_thumbnail_path,
+        med_thumbnail_path,
+        large_thumbnail_path,
+        banner_path,
+        org_id
+      ) do
+    changeset =
+      Channel.changeset(%Channel{}, %{
+        ordinal: ordinal,
+        basename: basename,
+        small_thumbnail_path: small_thumbnail_path,
+        med_thumbnail_path: med_thumbnail_path,
+        large_thumbnail_path: large_thumbnail_path,
+        banner_path: banner_path,
+        org_id: org_id,
+        uuid: Ecto.UUID.generate()
       })
 
     Multi.new()
@@ -431,11 +446,12 @@ defmodule FaithfulWordApi.V13 do
     |> case do
       {:ok, %{channel: channel}} ->
         channel
+
       {:error, :channel, changeset, %{}} ->
+        nil
         # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
         # {:reply, {:error, "Unknown error", socket}}
     end
-
   end
 
   def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version) do
@@ -496,6 +512,12 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
+  def playlist_details_by_uuid(uuid_str) do
+    {:ok, playlist_uuid} = Ecto.UUID.dump(uuid_str)
+    Logger.debug("playlist_uuid: #{uuid_str}")
+    # query =
+      # from(pl in Playlist
+  end
   def playlists_by_channel_uuid(uuid_str, language_id, offset, limit) do
     {:ok, channel_uuid} = Ecto.UUID.dump(uuid_str)
     Logger.debug("channel_uuid: #{uuid_str}")
@@ -549,7 +571,6 @@ defmodule FaithfulWordApi.V13 do
 
     {direction, sorting} =
       if category_and_multilanguage.media_category in special_categories do
-
         # do not use presented_at because many presented_at dates are identical
         {:desc, :inserted_at}
       else

@@ -11,21 +11,22 @@ defmodule FaithfulWordApi.PushMessageController do
   action_fallback FaithfulWordApi.FallbackController
 
   def addv13(conn, %{
-    "title" => title,
-    "message" => message,
-    "org_id" => org_id
-  }) do
+        "title" => title,
+        "message" => message,
+        "org_id" => org_id
+      }) do
     V13.add_push_message(
       title,
       message,
-      org_id)
+      org_id
+    )
     |> case do
       nil ->
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "something happened."})
 
-        push_message_v13 ->
+      push_message_v13 ->
         # Logger.debug("channels #{inspect %{attributes: channels}}")
         Logger.debug("push_message_v13 #{inspect(%{attributes: push_message_v13})}")
 
