@@ -88,10 +88,6 @@ class Dbtool(object):
         subprocess.call(['mix', 'ecto.create'])
         subprocess.call(['mix', 'ecto.migrate'])
 
-        ##
-        ## HACK make a `michael` user with password `michael`
-        ##
-
         # sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
         
         # with sourceconn.cursor() as cur:
