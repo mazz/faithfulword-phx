@@ -8,6 +8,7 @@ import os
 import subprocess
 import psycopg2
 import psycopg2.extras
+from psycopg2.extensions import AsIs
 from psycopg2 import sql
 import uuid
 import datetime
@@ -50,44 +51,63 @@ class Dbtool(object):
         getattr(self, args.command)()
 
     def exportdb(self):
-        parser = argparse.ArgumentParser(description='binary pg_dump export', usage='''dbtool.py export_db <dbname> <sqlfileout> 
+        parser = argparse.ArgumentParser(description='binary pg_dump export', usage='''dbtool.py export_db <dbname> <pgpath> <sqlfileout> 
 ''')
+        
         # prefixing the argument with -- means it's optional
         parser.add_argument('dbname')
+        parser.add_argument('pgpath')
         parser.add_argument('sqlfileout')
         # parser.add_argument('livestream_url')
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (git) and the subcommand (commit)
         args = parser.parse_args(sys.argv[2:])
         print('sqlfileout: {}'.format(repr(args.sqlfileout)))
+        print('pgpath: {}'.format(repr(args.pgpath)))
 
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_dump\" -U postgres --no-owner --no-acl -W -Fc -C -d {0} > {1}'.format(args.dbname, args.sqlfileout))
-            
+        # os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_dump\" -U postgres --no-owner --no-acl -W -Fc -C -d {0} > {1}'.format(args.dbname, args.sqlfileout))
+        os.system('{}/pg_dump -U postgres --no-owner --no-acl -W -Fc -C -d {} > {}'.format(args.pgpath, args.dbname, args.sqlfileout))
+
     def migratefromwebsauna(self):
         parser = argparse.ArgumentParser(
             description='dbtool v1.3 pgsql file')
         # prefixing the argument with -- means it's optional
         parser.add_argument('pgfile')
         parser.add_argument('dbname')
+        parser.add_argument('pgpath')
+
         # parser.add_argument('livestream_url')
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (git) and the subcommand (commit)
         args = parser.parse_args(sys.argv[2:])
         print('pgfile: {}'.format(repr(args.pgfile)))
+        print('pgpath: {}'.format(repr(args.pgpath)))
         # psql -c "SELECT * FROM my_table"
         # mix ecto.drop; mix ecto.create ; mix ecto.migrate
         subprocess.call(['mix', 'ecto.drop'])
         subprocess.call(['mix', 'ecto.create'])
         subprocess.call(['mix', 'ecto.migrate'])
 
-        subprocess.call(['/Applications/Postgres.app/Contents/Versions/11/bin/psql', '-c', 'SET session_replication_role = replica;'])
+        ##
+        ## HACK make a `michael` user with password `michael`
+        ##
+
+        # sourceconn = psycopg2.connect("host=localhost dbname={} user=postgres".format(args.dbname))
+        
+        # with sourceconn.cursor() as cur:
+        #     cur.execute("create user %s with password %s", (AsIs('michael'), 'bWljaGFlbA==',))
+
+        # subprocess.call(['/Applications/Postgres.app/Contents/Versions/11/bin/psql', '-c', 'SET session_replication_role = replica;'])
+        subprocess.call(['{}/psql'.format(args.pgpath), '-c', 'SET session_replication_role = replica;'])
 
         # os.system("psql -U postgres -d {0} -f {1}".format('faithful_word_dev', args.pgfile) )
 
         #import db
-        os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_restore\" -U postgres --clean --dbname={0} {1}'.format(args.dbname, args.pgfile) )
+        # os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/pg_restore\" -U postgres --clean --dbname={0} {1}'.format(args.dbname, args.pgfile) )
+        os.system('{}/pg_restore -U postgres --clean --dbname={} {}'.format(args.pgpath, args.dbname, args.pgfile))
 
-        subprocess.call(['/Applications/Postgres.app/Contents/Versions/11/bin/psql', '-c', 'SET session_replication_role = DEFAULT;'])
+        # subprocess.call(['/Applications/Postgres.app/Contents/Versions/11/bin/psql', '-c', 'SET session_replication_role = DEFAULT;'])
+        subprocess.call(['{}/psql'.format(args.pgpath), '-c', 'SET session_replication_role = DEFAULT;'])
 
         # os.system('\"/Applications/Postgres.app/Contents/Versions/11/bin/psql\" -U postgres -d {0} -c {1}'.format('faithful_word_dev', '\"INSERT INTO musictitles (uuid, localizedname, language_id, music_id) SELECT md5(random()::text || clock_timestamp()::text)::uuid, basename, \'en\', id from music;\"'))
 
