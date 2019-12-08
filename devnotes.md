@@ -18,13 +18,41 @@ https://www.shanesveller.com/blog/2018/11/13/kubernetes-native-phoenix-apps-part
 
 ## dev environment:
 
-### latest db fie:
+### latest db file:
 2019-11-10-mediaitem-v1.3-bin.sql
 
-FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-11-10-mediaitem-v1.3-bin.sql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+
+## linux local postgresql
+
+sudo vim /etc/postgresql/10/main/pg_hba.conf
+
+```
+local   all             postgres                                trust
+local   all             all                                     trust
+host    all             all             127.0.0.1/32            trust
+host    all             all             ::1/128                 trust
+```
+
+### create postgres/postgres
+```
+sudo -u postgres psql
+```
+psql:
+```
+postgres=# ALTER USER postgres PASSWORD 'postgres';
+postgres=# CREATE ROLE michael WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'michael';
+postgres=# create database michael;
+```
+
+
+```
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-11-10-mediaitem-v1.3-bin.sql faithful_word_dev /usr/bin ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+```
 
 ## export db as a complete seeded file to production:
-./dbtool.py exportdb faithful_word_dev 2019-11-10-media-item-seeded-not-materialized.pgsql
+```
+./dbtool.py exportdb faithful_word_dev /usr/bin 2019-11-10-media-item-seeded-not-materialized.pgsql
+```
 
 <commit 2019-11-10-media-item-seeded-not-materialized.pgsql>
 <commit 2019-11-10-media-item-v1.3-bin.pgsql>

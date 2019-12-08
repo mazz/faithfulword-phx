@@ -38,19 +38,44 @@ cd ../faithfulword-phx
 ### latest db file:
 2019-11-10-mediaitem-v1.3-bin.sql
 
-FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-11-10-mediaitem-v1.3-bin.sql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
 
+## linux local postgresql
+
+sudo vim /etc/postgresql/10/main/pg_hba.conf
+```
+```
+local   all             postgres                                trust
+local   all             all                                     trust
+host    all             all             127.0.0.1/32            trust
+host    all             all             ::1/128                 trust
+```
+
+### create postgres/postgres
+```
+sudo -u postgres psql
+```
+psql:
+```
+postgres=# ALTER USER postgres PASSWORD 'postgres';
+postgres=# CREATE ROLE michael WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'michael';
+postgres=# create database michael;
+```
+
+```
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-11-10-mediaitem-v1.3-bin.sql faithful_word_dev /usr/bin ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+```
 ### export db as a complete seeded file to production:
-./dbtool.py exportdb faithful_word_dev 2019-11-10-media-item-seeded-not-materialized.pgsql
-
+```
+./dbtool.py exportdb faithful_word_dev /usr/bin 2019-11-10-media-item-seeded-not-materialized.pgsql
+```
 ### run
 FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix phx.server
 ```
 
 ### open url in browser
+```
 http://localhost:4000/v1.2/books?language-id=en
 
-### refresh materialzed view media_items_search
 ```
 currently we manually refresh the ts_vector index because the PG triggers slow down the dbtool.py import script.
 If you want /v1.3/search to return results you must run this SQL statement:
