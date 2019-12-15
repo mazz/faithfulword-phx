@@ -2,11 +2,10 @@ defmodule FaithfulWord.PushNotifications do
   @moduledoc """
   The PushNotifications context.
   """
-
   import Ecto.Query, warn: false
   alias Db.Repo
-
   alias Db.Schema.PushMessage
+  require Logger
 
   def send_pushmessage_now(message) do
     [
@@ -25,8 +24,25 @@ defmodule FaithfulWord.PushNotifications do
       "version" => "1.3"
     })
     |> Pigeon.FCM.Notification.put_mutable_content(true)
-    |> Pigeon.FCM.push()
+    |> Pigeon.FCM.push(on_response: &handle_push/1)
+    # |> Pigeon.FCM.push()
   end
+
+  def handle_push(%Pigeon.FCM.Notification{status: :success} = notif) do
+    to_update = Pigeon.FCM.Notification.update?(notif)
+    Logger.debug("handle_push to_update #{inspect(%{attributes: to_update})}")
+
+    to_remove = Pigeon.FCM.Notification.remove?(notif)
+    Logger.debug("handle_push to_remove #{inspect(%{attributes: to_remove})}")
+
+    # do the reg ID update and deletes
+  end
+
+  def handle_push(%Pigeon.FCM.Notification{status: other_error}) do
+    # some other error happened
+    Logger.debug("handle_push other_error #{inspect(%{attributes: other_error})}")
+  end
+
 
   @doc """
   Returns the list of pushmessage.
