@@ -15,9 +15,9 @@ defmodule FaithfulWord.PushNotifications do
     |> Pigeon.FCM.Notification.put_notification(%{"title" => message.title, "body" => message.message})
     |> Pigeon.FCM.Notification.put_data(%{
       "deeplink" => "https://site/m/j4X8",
-      "entity_type" => "mediaitem",
-      "entity_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e",
-      "org" => "fwbcapp",
+      "media_type" => "mediaitem",
+      "media_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e",
+      "org_uuid" => "fwbcapp",
       "image_thumbnail_path" => "thumbs/lg/0005-0026-Psalm81-en.jpg",
       "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg",
       "mutable-content" => true,
