@@ -48,8 +48,7 @@ defmodule FaithfulWordApi.PushMessageController do
     V13.add_or_update_push_message(
       title,
       message,
-      org_id,
-      "00000000-0000-0000-0000-000000000000"
+      org_id
     )
     |> case do
       nil ->

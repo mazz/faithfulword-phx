@@ -251,9 +251,14 @@ defmodule FaithfulWordApi.V13 do
         title,
         message,
         org_id,
-        message_uuid
+        message_uuid \\ nil
       ) do
-    {:ok, messageuuid} = Ecto.UUID.dump(message_uuid)
+    {:ok, messageuuid} =
+      if message_uuid do
+        Ecto.UUID.dump(message_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
 
     case Repo.get_by(PushMessage, uuid: messageuuid) do
       nil ->
