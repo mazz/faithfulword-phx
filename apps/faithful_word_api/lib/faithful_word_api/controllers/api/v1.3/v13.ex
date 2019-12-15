@@ -247,30 +247,51 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def add_push_message(
+  def add_or_update_push_message(
         title,
         message,
-        org_id
+        org_id,
+        message_uuid
       ) do
-    changeset =
-      PushMessage.changeset(%PushMessage{}, %{
-        title: title,
-        message: message,
-        org_id: org_id,
-        uuid: Ecto.UUID.generate()
-      })
+    {:ok, messageuuid} = Ecto.UUID.dump(message_uuid)
 
-    Multi.new()
-    |> Multi.insert(:push_message, changeset)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{push_message: push_message}} ->
-        push_message
+    case Repo.get_by(PushMessage, uuid: messageuuid) do
+      nil ->
+        changeset =
+          PushMessage.changeset(%PushMessage{}, %{
+            title: title,
+            message: message,
+            org_id: org_id,
+            uuid: Ecto.UUID.generate()
+          })
 
-      {:error, :push_message, changeset, %{}} ->
-        nil
-        # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
-        # {:reply, {:error, "Unknown error", socket}}
+        Multi.new()
+        |> Multi.insert(:push_message, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{push_message: push_message}} ->
+            push_message
+
+          {:error, :push_message, changeset, %{}} ->
+            nil
+
+            # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+            # {:reply, {:error, "Unknown error", socket}}
+        end
+
+      push_message ->
+        {:ok, updated} =
+          PushMessage.changeset(%PushMessage{id: push_message.id}, %{
+            message: message,
+            title: title,
+            updated_at: DateTime.utc_now(),
+            org_id: org_id,
+            uuid: push_message.uuid,
+            sent: push_message.sent
+          })
+          |> Repo.update()
+
+        updated
     end
   end
 
@@ -291,16 +312,16 @@ defmodule FaithfulWordApi.V13 do
         # field :org_id, :integer
         # field :uuid, Ecto.UUID
 
-
-        {:ok, updated} = PushMessage.changeset(%PushMessage{id: push_message.id}, %{
-          message: push_message.message,
-          title: push_message.title,
-          updated_at: DateTime.utc_now(),
-          org_id: push_message.org_id,
-          uuid: push_message.uuid,
-          sent: true
-        })
-        |> Repo.update()
+        {:ok, updated} =
+          PushMessage.changeset(%PushMessage{id: push_message.id}, %{
+            message: push_message.message,
+            title: push_message.title,
+            updated_at: DateTime.utc_now(),
+            org_id: push_message.org_id,
+            uuid: push_message.uuid,
+            sent: true
+          })
+          |> Repo.update()
 
         updated
     end

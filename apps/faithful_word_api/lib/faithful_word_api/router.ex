@@ -209,8 +209,9 @@ defmodule FaithfulWordApi.Router do
       # Push Messages
       scope "/api" do
         scope "pushmessages" do
-          post "/add", PushMessageController, :addv13
-          post "/send", PushMessageController, :sendv13
+          post "/add", PushMessageController, :add
+          put "/update", PushMessageController, :update
+          post "/send", PushMessageController, :send
         end
       end
 

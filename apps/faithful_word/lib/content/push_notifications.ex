@@ -12,7 +12,10 @@ defmodule FaithfulWord.PushNotifications do
       "fo6cdLGfU7k:APA91bHKQ3d7l8z6JlepC-xX4iUWicuNNxlAq7GNpVogSv47Nb2gkF2DBME6NFAomtiae-8QVkOvNZQbsM-9GqutPj1a94OKL_sG9OAb9qBbMhH81-6yo7v7MGYhkI7aUF5LD09JHZ_w"
     ]
     |> Pigeon.FCM.Notification.new()
-    |> Pigeon.FCM.Notification.put_notification(%{"title" => message.title, "body" => message.message})
+    |> Pigeon.FCM.Notification.put_notification(%{
+      "title" => message.title,
+      "body" => message.message
+    })
     |> Pigeon.FCM.Notification.put_data(%{
       "deeplink" => "https://site/m/j4X8",
       "media_type" => "mediaitem",
@@ -25,6 +28,7 @@ defmodule FaithfulWord.PushNotifications do
     })
     |> Pigeon.FCM.Notification.put_mutable_content(true)
     |> Pigeon.FCM.push(on_response: &handle_push/1)
+
     # |> Pigeon.FCM.push()
   end
 
@@ -42,7 +46,6 @@ defmodule FaithfulWord.PushNotifications do
     # some other error happened
     Logger.debug("handle_push other_error #{inspect(%{attributes: other_error})}")
   end
-
 
   @doc """
   Returns the list of pushmessage.
