@@ -10,11 +10,44 @@ defmodule FaithfulWordApi.PushMessageController do
 
   action_fallback FaithfulWordApi.FallbackController
 
+  plug(
+    Guardian.Plug.EnsureAuthenticated,
+    [handler: FaithfulWordApi.AuthController]
+    when action in [
+           :sendv13,
+           :addv13
+         ]
+  )
+
+  # post "/send", PushMessageController, :sendv13
+
+  def sendv13(conn, %{
+        "message_uuid" => message_uuid
+      }) do
+    V13.send_push_message(message_uuid)
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
+
+      push_message_v13 ->
+        conn
+        |> put_view(PushMessageV13View)
+        |> render("addv13.json", %{
+          push_message_v13: push_message_v13,
+          api_version: "1.3"
+        })
+    end
+  end
+
   def addv13(conn, %{
         "title" => title,
         "message" => message,
         "org_id" => org_id
       }) do
+    # conn
+    # |> GuardianImpl.Plug.current_resource()
     V13.add_push_message(
       title,
       message,
@@ -30,19 +63,12 @@ defmodule FaithfulWordApi.PushMessageController do
         # Logger.debug("channels #{inspect %{attributes: channels}}")
         Logger.debug("push_message_v13 #{inspect(%{attributes: push_message_v13})}")
 
-        Enum.at(conn.path_info, 1)
-        |> case do
-          api_version ->
-            Logger.debug("api_version #{inspect(%{attributes: api_version})}")
-            api_version = String.trim_leading(api_version, "v")
-
-            conn
-            |> put_view(PushMessageV13View)
-            |> render("addv13.json", %{
-              push_message_v13: push_message_v13,
-              api_version: api_version
-            })
-        end
+        conn
+        |> put_view(PushMessageV13View)
+        |> render("addv13.json", %{
+          push_message_v13: push_message_v13,
+          api_version: "1.3"
+        })
     end
   end
 

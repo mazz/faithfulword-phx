@@ -194,6 +194,9 @@ git clone https://github.com/FaithfulAudio/faithfulword-phx.git -b upload-ui upl
 channels can contain playlists and channels
 playlists can only contain mediaitems
 
+n = Pigeon.FCM.Notification.new("c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj", msg)
+
+n = Pigeon.FCM.Notification.new("8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj", notification, data)
 
 ## rich notifications
 {
@@ -228,4 +231,34 @@ msg = %{ "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_cont
 
 notification = %{"body" => "your message"}
 data = %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}
-n = Pigeon.FCM.Notification.new("dcu92ujVPf4:APA91bEaZOL75G1-zWWFGjkNM_l5QW17lmi27veyILTLz7eNeU2hwLNv_17_9Hx_GU8FUWtC82IAGNT8ibqsPGbPH9zOD7N7oRg8seaeDOY3v23pMuuo5wyvuApdEaBFIV3rek4L3c8t", notification, data)
+n = Pigeon.FCM.Notification.new("c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj", notification, data)
+
+notification = %{"body" => "your message"}
+
+
+
+
+notification = %{"title" => "New Content", "body" => "Clint Anderson Sings Psalm 81"}
+data = %{ "deeplink" => "https://site/m/j4X8", "media_item_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e", "image_thumbnail_path" => "fwbcapp/thumbs/lg/0005-0026-Psalm81-en.jpg", "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg", "version" => "1.3"}
+
+
+"mutable-content": 1,
+      "content-available": 1,
+
+
+ ["c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj"] |> Pigeon.FCM.Notification.new()  |> Pigeon.FCM.Notification.put_mutable_content(true) |> Pigeon.FCM.Notification.put_data(%{ "deeplink" => "https://site/m/j4X8", "media_item_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e", "image_thumbnail_path" => "fwbcapp/thumbs/lg/0005-0026-Psalm81-en.jpg", "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg", "mutable-content" => true, "version" => "1.3"}) |> Pigeon.FCM.push()
+
+
+piping and WORKS:
+
+ ["c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj"] |> Pigeon.FCM.Notification.new() |> Pigeon.FCM.Notification.put_notification(%{"body" => "your message"}) |> Pigeon.FCM.push() 
+
+piping and mutable_content WORKS:
+
+ ["c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj"] |> Pigeon.FCM.Notification.new() |> Pigeon.FCM.Notification.put_notification(%{"body" => "your message"}) |> Pigeon.FCM.Notification.put_mutable_content(true) |> Pigeon.FCM.push()
+
+piping and mutable_content and data WORKS:
+
+ ["c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj"] |> Pigeon.FCM.Notification.new() |> Pigeon.FCM.Notification.put_notification(%{"body" => "your message"}) |> Pigeon.FCM.Notification.put_data(%{ "deeplink" => "https://site/m/j4X8", "entity_type" => "mediaitem", "entity_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e", "org" => "fwbcapp", "image_thumbnail_path" => "thumbs/lg/0005-0026-Psalm81-en.jpg", "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg", "mutable-content" => true, "version" => "1.3"}) |> Pigeon.FCM.Notification.put_mutable_content(true) |> Pigeon.FCM.push() 
+
+

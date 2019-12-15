@@ -122,11 +122,6 @@ defmodule FaithfulWordApi.Router do
           # get "/:uuid/media", MediaItemController, :indexv13
         end
 
-        scope "/pushmessages" do
-          post "/add", PushMessageController, :addv13
-          # get "/:uuid/media", MediaItemController, :indexv13
-        end
-
         scope "/search" do
           post "/", SearchController, :searchv13
         end
@@ -209,6 +204,14 @@ defmodule FaithfulWordApi.Router do
       # Videos
       scope "/api" do
         post("/videos", VideoController, :get_or_create)
+      end
+
+      # Push Messages
+      scope "/api" do
+        scope "pushmessages" do
+          post "/add", PushMessageController, :addv13
+          post "/send", PushMessageController, :sendv13
+        end
       end
 
       # Moderation

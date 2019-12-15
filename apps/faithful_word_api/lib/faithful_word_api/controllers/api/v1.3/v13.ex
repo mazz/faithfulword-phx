@@ -14,6 +14,7 @@ defmodule FaithfulWordApi.V13 do
   alias Db.Schema.ClientDevice
 
   alias FaithfulWordApi.MediaItemsSearch
+  alias FaithfulWord.PushNotifications
 
   require Ecto.Query
   require Logger
@@ -271,6 +272,43 @@ defmodule FaithfulWordApi.V13 do
         # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
         # {:reply, {:error, "Unknown error", socket}}
     end
+  end
+
+  def send_push_message(message_uuid) do
+    {:ok, messageuuid} = Ecto.UUID.dump(message_uuid)
+
+    case Repo.get_by(PushMessage, uuid: messageuuid) do
+      nil ->
+        {:error, :not_found}
+
+      push_message ->
+        PushNotifications.send_pushmessage_now(push_message)
+
+        # field :message, :string, size: 4096
+        # field :sent, :boolean, default: false
+        # field :title, :string
+        # # field :updated_at, :utc_datetime
+        # field :org_id, :integer
+        # field :uuid, Ecto.UUID
+
+
+        {:ok, updated} = PushMessage.changeset(%PushMessage{id: push_message.id}, %{
+          message: push_message.message,
+          title: push_message.title,
+          updated_at: DateTime.utc_now(),
+          org_id: push_message.org_id,
+          uuid: push_message.uuid,
+          sent: true
+        })
+        |> Repo.update()
+
+        updated
+    end
+
+    # message =
+    #   PushMessage
+    #   |> where([m], m.uuid == ^messageuuid)
+    #   |> Repo.one!()
   end
 
   def add_media_item(
