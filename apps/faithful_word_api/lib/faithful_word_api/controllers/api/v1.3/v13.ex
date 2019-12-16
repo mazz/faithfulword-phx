@@ -253,7 +253,6 @@ defmodule FaithfulWordApi.V13 do
         org_id,
         message_uuid \\ nil
       ) do
-
     {:ok, messageuuid} =
       if message_uuid do
         Ecto.UUID.dump(message_uuid)

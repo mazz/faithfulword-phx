@@ -38,11 +38,14 @@ defmodule FaithfulWordApi.PushMessageController do
     end
   end
 
-  def add_or_update(conn, params = %{
-        "title" => title,
-        "message" => message,
-        "org_id" => org_id
-      }) do
+  def add_or_update(
+        conn,
+        params = %{
+          "title" => title,
+          "message" => message,
+          "org_id" => org_id
+        }
+      ) do
     # conn
     # |> GuardianImpl.Plug.current_resource()
     # optional params

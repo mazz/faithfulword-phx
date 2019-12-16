@@ -203,14 +203,18 @@ defmodule FaithfulWordApi.Router do
 
       # Videos
       scope "/api" do
-        post("/videos", VideoController, :get_or_create)
+        scope "/v1.3" do
+          post("/videos", VideoController, :get_or_create)
+        end
       end
 
       # Push Messages
       scope "/api" do
-        scope "pushmessages" do
-          post "/addorupdate", PushMessageController, :add_or_update
-          post "/send", PushMessageController, :send
+        scope "/v1.3" do
+          scope "/pushmessages" do
+            post "/addorupdate", PushMessageController, :add_or_update
+            post "/send", PushMessageController, :send
+          end
         end
       end
 
