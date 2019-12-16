@@ -103,8 +103,7 @@ defmodule FaithfulWordApi.Router do
         end
 
         scope "/channels" do
-          # get "/", ChannelController, :indexv13
-          post "/add", ChannelController, :addv13
+          # post "/add", ChannelController, :addv13
           get "/:uuid/playlists", PlaylistController, :indexv13
         end
 
@@ -208,12 +207,16 @@ defmodule FaithfulWordApi.Router do
         end
       end
 
-      # Push Messages
+      # v1.3 non-public content api
       scope "/api" do
         scope "/v1.3" do
           scope "/pushmessages" do
             post "/addorupdate", PushMessageController, :add_or_update
             post "/send", PushMessageController, :send
+          end
+
+          scope "/channels" do
+            post "/addorupdate", ChannelController, :addv13
           end
         end
       end

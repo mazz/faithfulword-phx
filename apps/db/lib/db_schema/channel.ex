@@ -43,6 +43,10 @@ defmodule Db.Schema.Channel do
       :uuid,
       :ordinal,
       :basename,
+      :small_thumbnail_path,
+      :med_thumbnail_path,
+      :large_thumbnail_path,
+      :banner_path,
       :org_id
     ])
     |> validate_required([

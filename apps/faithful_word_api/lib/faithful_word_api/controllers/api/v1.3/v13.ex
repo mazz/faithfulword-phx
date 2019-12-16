@@ -518,6 +518,90 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
+  def add_or_update_channel(
+        ordinal,
+        basename,
+        small_thumbnail_path,
+        med_thumbnail_path,
+        large_thumbnail_path,
+        banner_path,
+        org_id,
+        channel_uuid \\ nil
+      ) do
+    {:ok, channeluuid} =
+      if channel_uuid do
+        Ecto.UUID.dump(channel_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Channel, uuid: channeluuid) do
+      nil ->
+        changeset =
+          Channel.changeset(
+            %Channel{
+              ordinal: ordinal,
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path
+            },
+            %{
+              ordinal: ordinal,
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              org_id: org_id,
+              uuid: Ecto.UUID.generate()
+            }
+          )
+
+        Multi.new()
+        |> Multi.insert(:item_without_hash_id, changeset)
+        |> Multi.run(:channel, fn _repo, %{item_without_hash_id: channel} ->
+          channel
+          |> Channel.changeset_generate_hash_id()
+          |> Repo.update()
+        end)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{channel: channel}} ->
+            channel
+
+          {:error, :channel, changeset, %{}} ->
+            nil
+
+            # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+            # {:reply, {:error, "Unknown error", socket}}
+        end
+
+      channel ->
+        {:ok, updated} =
+          Channel.changeset(
+            %Channel{
+              id: channel.id
+            },
+            %{
+              ordinal: ordinal,
+              basename: basename,
+              org_id: org_id,
+              uuid: channel.uuid,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              updated_at: DateTime.utc_now()
+            }
+          )
+          |> Repo.update()
+
+        updated
+    end
+  end
+
   def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version) do
     case Repo.get_by(ClientDevice, firebase_token: fcm_token) do
       nil ->

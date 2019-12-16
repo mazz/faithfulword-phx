@@ -10,23 +10,38 @@ defmodule FaithfulWordApi.ChannelController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def addv13(conn, %{
-        "ordinal" => ordinal,
-        "basename" => basename,
-        "small_thumbnail_path" => small_thumbnail_path,
-        "med_thumbnail_path" => med_thumbnail_path,
-        "large_thumbnail_path" => large_thumbnail_path,
-        "banner_path" => banner_path,
-        "org_id" => org_id
-      }) do
-    V13.add_channel(
+  plug(
+    Guardian.Plug.EnsureAuthenticated,
+    [handler: FaithfulWordApi.AuthController]
+    when action in [
+           # :addv13
+         ]
+  )
+
+  def addv13(
+        conn,
+        params = %{
+          "ordinal" => ordinal,
+          "basename" => basename,
+          "small_thumbnail_path" => small_thumbnail_path,
+          "med_thumbnail_path" => med_thumbnail_path,
+          "large_thumbnail_path" => large_thumbnail_path,
+          "banner_path" => banner_path,
+          "org_id" => org_id
+        }
+      ) do
+    # optional params
+    channel_uuid = Map.get(params, "channel_uuid", nil)
+
+    V13.add_or_update_channel(
       ordinal,
       basename,
       small_thumbnail_path,
       med_thumbnail_path,
       large_thumbnail_path,
       banner_path,
-      org_id
+      org_id,
+      channel_uuid
     )
     |> case do
       nil ->
