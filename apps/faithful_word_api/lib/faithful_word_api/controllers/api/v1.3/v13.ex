@@ -478,43 +478,110 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def add_channel(
+  def add_or_update_playlist(
         ordinal,
         basename,
         small_thumbnail_path,
         med_thumbnail_path,
         large_thumbnail_path,
         banner_path,
-        org_id
+        media_category,
+        localized_titles,
+        channel_id,
+        playlist_uuid \\ nil
       ) do
-    changeset =
-      Channel.changeset(%Channel{}, %{
-        ordinal: ordinal,
-        basename: basename,
-        small_thumbnail_path: small_thumbnail_path,
-        med_thumbnail_path: med_thumbnail_path,
-        large_thumbnail_path: large_thumbnail_path,
-        banner_path: banner_path,
-        org_id: org_id,
-        uuid: Ecto.UUID.generate()
-      })
+    {:ok, playlistuuid} =
+      if playlist_uuid do
+        Ecto.UUID.dump(playlist_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
 
-    Multi.new()
-    |> Multi.insert(:item_without_hash_id, changeset)
-    |> Multi.run(:channel, fn _repo, %{item_without_hash_id: channel} ->
-      channel
-      |> Channel.changeset_generate_hash_id()
-      |> Repo.update()
-    end)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{channel: channel}} ->
-        channel
+    case Repo.get_by(Playlist, uuid: playlistuuid) do
+      nil ->
+        changeset =
+          Playlist.changeset(
+            %Playlist{
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path
+            },
+            %{
+              ordinal: ordinal,
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              media_category: media_category,
+              channel_id: channel_id,
+              uuid: Ecto.UUID.generate()
+            }
+          )
 
-      {:error, :channel, changeset, %{}} ->
-        nil
-        # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
-        # {:reply, {:error, "Unknown error", socket}}
+        Multi.new()
+        |> Multi.insert(:item_without_hash_id, changeset)
+        |> Multi.run(:playlist, fn _repo, %{item_without_hash_id: playlist} ->
+          playlist
+          |> Playlist.changeset_generate_hash_id()
+          |> Repo.update()
+        end)
+        # iterate over the localized_titles and add to db
+        # pass in playlist that was just inserted
+        |> Multi.run(:add_localized_titles, fn _repo, %{playlist: playlist} ->
+          maps =
+            for title <- localized_titles,
+                _ = Logger.debug("title #{inspect(%{attributes: title})}"),
+                {k, v} <- title do
+              IO.puts("#{k} --> #{v}")
+
+              Repo.insert(%PlaylistTitle{
+                language_id: k,
+                localizedname: v,
+                uuid: Ecto.UUID.generate(),
+                playlist_id: playlist.id
+              })
+            end
+
+          Logger.debug("maps #{inspect(%{attributes: maps})}")
+          {:ok, maps}
+        end)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{playlist: playlist}} ->
+            playlist
+
+          {:error, :playlist, changeset, %{}} ->
+            nil
+
+            # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+            # {:reply, {:error, "Unknown error", socket}}
+        end
+
+      playlist ->
+        {:ok, updated} =
+          Playlist.changeset(
+            %Playlist{
+              id: playlist.id
+            },
+            %{
+              uuid: playlist.uuid,
+              ordinal: ordinal,
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              media_category: media_category,
+              channel_id: channel_id,
+              updated_at: DateTime.utc_now()
+            }
+          )
+          |> Repo.update()
+
+        updated
     end
   end
 

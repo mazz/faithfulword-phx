@@ -52,6 +52,11 @@ defmodule Db.Schema.Playlist do
       :ordinal,
       :uuid,
       :media_category,
+      :basename,
+      :small_thumbnail_path,
+      :med_thumbnail_path,
+      :large_thumbnail_path,
+      :banner_path,
       :channel_id
     ])
     |> validate_required([

@@ -10,6 +10,14 @@ defmodule FaithfulWordApi.PlaylistController do
 
   action_fallback FaithfulWordApi.FallbackController
 
+  plug(
+    Guardian.Plug.EnsureAuthenticated,
+    [handler: FaithfulWordApi.AuthController]
+    when action in [
+           # :addv13
+         ]
+  )
+
   def detailsv13(
         conn,
         _params = %{
@@ -43,18 +51,24 @@ defmodule FaithfulWordApi.PlaylistController do
     end
   end
 
-  def addv13(conn, %{
-        "ordinal" => ordinal,
-        "basename" => basename,
-        "small_thumbnail_path" => small_thumbnail_path,
-        "med_thumbnail_path" => med_thumbnail_path,
-        "large_thumbnail_path" => large_thumbnail_path,
-        "banner_path" => banner_path,
-        "media_category" => media_category,
-        "localized_titles" => localized_titles,
-        "channel_id" => channel_id
-      }) do
-    V13.add_playlist(
+  def addv13(
+        conn,
+        params = %{
+          "ordinal" => ordinal,
+          "basename" => basename,
+          "small_thumbnail_path" => small_thumbnail_path,
+          "med_thumbnail_path" => med_thumbnail_path,
+          "large_thumbnail_path" => large_thumbnail_path,
+          "banner_path" => banner_path,
+          "media_category" => media_category,
+          "localized_titles" => localized_titles,
+          "channel_id" => channel_id
+        }
+      ) do
+    # optional params
+    playlist_uuid = Map.get(params, "playlist_uuid", nil)
+
+    V13.add_or_update_playlist(
       ordinal,
       basename,
       small_thumbnail_path,
@@ -63,7 +77,8 @@ defmodule FaithfulWordApi.PlaylistController do
       banner_path,
       media_category,
       localized_titles,
-      channel_id
+      channel_id,
+      playlist_uuid
     )
     |> case do
       nil ->
