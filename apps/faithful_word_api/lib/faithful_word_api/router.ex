@@ -211,7 +211,7 @@ defmodule FaithfulWordApi.Router do
       scope "/api" do
         scope "/v1.3" do
           scope "/pushmessages" do
-            post "/addorupdate", PushMessageController, :add_or_update
+            post "/addorupdate", PushMessageController, :add_or_update_v13
             post "/send", PushMessageController, :send
           end
 

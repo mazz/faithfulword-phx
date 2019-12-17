@@ -275,17 +275,17 @@ defmodule FaithfulWordApi.V13 do
         |> Repo.transaction()
         |> case do
           {:ok, %{push_message: push_message}} ->
-            push_message
+            {:ok, push_message}
 
-          {:error, :push_message, changeset, %{}} ->
-            nil
+          {:error, _, error, _} ->
+            {:error, error}
 
             # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
             # {:reply, {:error, "Unknown error", socket}}
         end
 
       push_message ->
-        {:ok, updated} =
+        changeset =
           PushMessage.changeset(%PushMessage{id: push_message.id}, %{
             message: message,
             title: title,
@@ -294,9 +294,17 @@ defmodule FaithfulWordApi.V13 do
             uuid: push_message.uuid,
             sent: push_message.sent
           })
-          |> Repo.update()
 
-        updated
+        Multi.new()
+        |> Multi.update(:push_message, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{push_message: push_message}} ->
+            {:ok, push_message}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
     end
   end
 
@@ -730,7 +738,6 @@ defmodule FaithfulWordApi.V13 do
         end
 
       channel ->
-        # {:ok, updated} =
         changeset =
           Channel.changeset(
             %Channel{

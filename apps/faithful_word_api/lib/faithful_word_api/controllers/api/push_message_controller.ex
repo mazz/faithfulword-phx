@@ -38,7 +38,7 @@ defmodule FaithfulWordApi.PushMessageController do
     end
   end
 
-  def add_or_update(
+  def add_or_update_v13(
         conn,
         params = %{
           "title" => title,
@@ -58,12 +58,12 @@ defmodule FaithfulWordApi.PushMessageController do
       message_uuid
     )
     |> case do
-      nil ->
+      {:error, _changeset} ->
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "something happened."})
 
-      push_message_v13 ->
+      {:ok, push_message_v13} ->
         # Logger.debug("channels #{inspect %{attributes: channels}}")
         Logger.debug("push_message_v13 #{inspect(%{attributes: push_message_v13})}")
 
