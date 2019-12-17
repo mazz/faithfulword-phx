@@ -406,6 +406,86 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
+  def add_or_update_media_item(
+        ordinal,
+        localizedname,
+        media_category,
+        medium,
+        path,
+        language_id,
+        playlist_id,
+        org_id,
+        # optional >>>
+        track_number,
+        tags,
+        small_thumbnail_path,
+        med_thumbnail_path,
+        large_thumbnail_path,
+        content_provider_link,
+        ipfs_link,
+        presenter_name,
+        presented_at,
+        source_material,
+        duration,
+        media_item_uuid \\ nil
+      ) do
+    {:ok, media_itemuuid} =
+      if media_item_uuid do
+        Ecto.UUID.dump(media_item_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    # check if we already have the playlist
+    # if playlist is not present, ADD
+    # if playlist is present in db, UPDATE
+
+    changeset =
+      MediaItem.changeset(%MediaItem{tags: tags}, %{
+        ordinal: ordinal,
+        localizedname: localizedname,
+        media_category: media_category,
+        medium: medium,
+        path: path,
+        language_id: language_id,
+        playlist_id: playlist_id,
+        org_id: org_id,
+        track_number: track_number,
+        tags: tags,
+        small_thumbnail_path: small_thumbnail_path,
+        med_thumbnail_path: med_thumbnail_path,
+        large_thumbnail_path: large_thumbnail_path,
+        content_provider_link: content_provider_link,
+        ipfs_link: ipfs_link,
+        presenter_name: presenter_name,
+        presented_at: presented_at,
+        source_material: source_material,
+        duration: duration,
+        uuid: Ecto.UUID.generate()
+      })
+
+    Logger.debug("media_item changeset #{inspect(%{attributes: changeset})}")
+
+    Multi.new()
+    |> Multi.insert(:item_without_hash_id, changeset)
+    |> Multi.run(:media_item, fn _repo, %{item_without_hash_id: media_item} ->
+      Logger.debug("media_item insert #{inspect(%{attributes: media_item})}")
+
+      media_item
+      |> MediaItem.changeset_generate_hash_id()
+      |> Repo.update()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{media_item: media_item}} ->
+        media_item
+
+      {:error, :media_item, changeset, %{}} ->
+        nil
+        # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+        # {:reply, {:error, "Unknown error", socket}}
+    end
+  end
 
   def add_or_update_playlist(
         ordinal,
@@ -485,10 +565,10 @@ defmodule FaithfulWordApi.V13 do
         |> Repo.transaction()
         |> case do
           {:ok, %{playlist: playlist}} ->
-            playlist
+            {:ok, playlist}
 
-          {:error, :playlist, changeset, %{}} ->
-            nil
+          {:error, _, error, _} ->
+            {:error, error}
 
             # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
             # {:reply, {:error, "Unknown error", socket}}
@@ -640,17 +720,18 @@ defmodule FaithfulWordApi.V13 do
         |> Repo.transaction()
         |> case do
           {:ok, %{channel: channel}} ->
-            channel
+            {:ok, channel}
 
-          {:error, :channel, changeset, %{}} ->
-            nil
+          {:error, _, error, _} ->
+            {:error, error}
 
             # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
             # {:reply, {:error, "Unknown error", socket}}
         end
 
       channel ->
-        {:ok, updated} =
+        # {:ok, updated} =
+        changeset =
           Channel.changeset(
             %Channel{
               id: channel.id
@@ -667,9 +748,20 @@ defmodule FaithfulWordApi.V13 do
               updated_at: DateTime.utc_now()
             }
           )
-          |> Repo.update()
 
-        updated
+        Multi.new()
+        |> Multi.update(:channel, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{channel: channel}} ->
+            {:ok, channel}
+
+          {:error, _, error, _} ->
+            {:error, error}
+
+            # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+            # {:reply, {:error, "Unknown error", socket}}
+        end
     end
   end
 
