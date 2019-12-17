@@ -24,7 +24,12 @@ defmodule Db.Schema.PlaylistTitle do
   @doc false
   def changeset(playlist_title, attrs) do
     playlist_title
-    |> cast(attrs, [:uuid, :localizedname, :language_id, :playlist_id])
+    |> cast(attrs, [
+      :uuid,
+      :localizedname,
+      :language_id,
+      :playlist_id
+    ])
     |> validate_required([:uuid, :localizedname, :language_id, :playlist_id])
   end
 end

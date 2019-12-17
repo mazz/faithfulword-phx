@@ -497,7 +497,12 @@ defmodule FaithfulWordApi.V13 do
         Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
       end
 
+    # check if we already have the playlist
+    # if playlist is not present, ADD
+    # if playlist is present in db, UPDATE
+
     case Repo.get_by(Playlist, uuid: playlistuuid) do
+      # add playlist
       nil ->
         changeset =
           Playlist.changeset(
@@ -560,6 +565,7 @@ defmodule FaithfulWordApi.V13 do
             # {:reply, {:error, "Unknown error", socket}}
         end
 
+      # update playlist
       playlist ->
         # changeset = User.changeset(user, params)
 
@@ -585,6 +591,66 @@ defmodule FaithfulWordApi.V13 do
         # {:ok, updated} =
         Multi.new()
         |> Multi.update(:playlist, changeset)
+
+        # iterate over the localized_titles and add/update to db
+        # pass in playlist that was just added/updated
+        |> Multi.run(:add_localized_titles, fn _repo, %{playlist: playlist} ->
+          maps =
+            for title <- localized_titles,
+                _ = Logger.debug("title #{inspect(%{attributes: title})}"),
+                {k, v} <- title do
+              IO.puts("#{k} --> #{v}")
+
+              # check if playlist title is already in db
+              title_query =
+                from(title in PlaylistTitle,
+                  where: title.language_id == ^k and title.playlist_id == ^playlist.id
+                )
+
+              one_title = Repo.one(title_query)
+
+              case one_title do
+                # playlist title is not in db, so add it
+                nil ->
+                  IO.inspect(one_title)
+
+                  Repo.insert(%PlaylistTitle{
+                    language_id: k,
+                    localizedname: v,
+                    uuid: Ecto.UUID.generate(),
+                    playlist_id: playlist.id
+                  })
+
+                title ->
+                  # playlist title IS in db, so update it
+                  IO.inspect(title)
+
+                  PlaylistTitle.changeset(
+                    %PlaylistTitle{
+                      id: title.id
+                    },
+                    %{
+                      uuid: title.uuid,
+                      language_id: k,
+                      localizedname: v,
+                      playlist_id: playlist.id,
+                      updated_at: DateTime.utc_now()
+                    }
+                  )
+                  |> Repo.update()
+              end
+
+              # Repo.insert(%PlaylistTitle{
+              #   language_id: k,
+              #   localizedname: v,
+              #   uuid: Ecto.UUID.generate(),
+              #   playlist_id: playlist.id
+              # })
+            end
+
+          Logger.debug("maps #{inspect(%{attributes: maps})}")
+          {:ok, maps}
+        end)
         |> Repo.transaction()
         # |> IO.inspect()
         |> case do
