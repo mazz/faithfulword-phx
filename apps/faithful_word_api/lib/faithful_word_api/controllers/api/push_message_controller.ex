@@ -23,12 +23,12 @@ defmodule FaithfulWordApi.PushMessageController do
       }) do
     V13.send_push_message(message_uuid)
     |> case do
-      nil ->
+      {:error, _changeset} ->
         put_status(conn, 403)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "something happened."})
 
-      push_message_v13 ->
+      {:ok, push_message_v13} ->
         conn
         |> put_view(PushMessageV13View)
         |> render("addv13.json", %{

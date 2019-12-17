@@ -318,14 +318,7 @@ defmodule FaithfulWordApi.V13 do
       push_message ->
         PushNotifications.send_pushmessage_now(push_message)
 
-        # field :message, :string, size: 4096
-        # field :sent, :boolean, default: false
-        # field :title, :string
-        # # field :updated_at, :utc_datetime
-        # field :org_id, :integer
-        # field :uuid, Ecto.UUID
-
-        {:ok, updated} =
+        changeset =
           PushMessage.changeset(%PushMessage{id: push_message.id}, %{
             message: push_message.message,
             title: push_message.title,
@@ -334,15 +327,18 @@ defmodule FaithfulWordApi.V13 do
             uuid: push_message.uuid,
             sent: true
           })
-          |> Repo.update()
 
-        updated
+        Multi.new()
+        |> Multi.update(:push_message, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{push_message: push_message}} ->
+            {:ok, push_message}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
     end
-
-    # message =
-    #   PushMessage
-    #   |> where([m], m.uuid == ^messageuuid)
-    #   |> Repo.one!()
   end
 
   def add_media_item(
