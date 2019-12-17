@@ -639,13 +639,6 @@ defmodule FaithfulWordApi.V13 do
                   )
                   |> Repo.update()
               end
-
-              # Repo.insert(%PlaylistTitle{
-              #   language_id: k,
-              #   localizedname: v,
-              #   uuid: Ecto.UUID.generate(),
-              #   playlist_id: playlist.id
-              # })
             end
 
           Logger.debug("maps #{inspect(%{attributes: maps})}")
