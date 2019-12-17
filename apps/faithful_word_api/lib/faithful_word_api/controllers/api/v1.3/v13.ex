@@ -561,7 +561,9 @@ defmodule FaithfulWordApi.V13 do
         end
 
       playlist ->
-        {:ok, updated} =
+        # changeset = User.changeset(user, params)
+
+        changeset =
           Playlist.changeset(
             %Playlist{
               id: playlist.id
@@ -579,9 +581,23 @@ defmodule FaithfulWordApi.V13 do
               updated_at: DateTime.utc_now()
             }
           )
-          |> Repo.update()
 
-        updated
+        # {:ok, updated} =
+        Multi.new()
+        |> Multi.update(:playlist, changeset)
+        |> Repo.transaction()
+        # |> IO.inspect()
+        |> case do
+          {:ok, %{playlist: playlist}} ->
+            {:ok, playlist}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+
+        # |> Repo.update()
+
+        # updated
     end
   end
 

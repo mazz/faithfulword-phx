@@ -80,29 +80,23 @@ defmodule FaithfulWordApi.PlaylistController do
       channel_id,
       playlist_uuid
     )
+    # |> IO.inspect()
     |> case do
-      nil ->
-        put_status(conn, 403)
+      {:ok, playlist} ->
+        Logger.debug("playlist #{inspect(%{attributes: playlist})}")
+
+        conn
+        |> put_view(PlaylistV13View)
+        |> render("addv13.json", %{
+          playlist_v13: playlist,
+          api_version: "1.3"
+        })
+
+      {:error, _changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "something happened."})
-
-      playlist_v13 ->
-        # Logger.debug("channels #{inspect %{attributes: channels}}")
-        Logger.debug("playlist_v13 #{inspect(%{attributes: playlist_v13})}")
-
-        Enum.at(conn.path_info, 1)
-        |> case do
-          api_version ->
-            Logger.debug("api_version #{inspect(%{attributes: api_version})}")
-            api_version = String.trim_leading(api_version, "v")
-
-            conn
-            |> put_view(PlaylistV13View)
-            |> render("addv13.json", %{
-              playlist_v13: playlist_v13,
-              api_version: api_version
-            })
-        end
     end
   end
 
