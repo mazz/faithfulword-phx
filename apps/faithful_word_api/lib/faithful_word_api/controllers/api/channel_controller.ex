@@ -18,7 +18,7 @@ defmodule FaithfulWordApi.ChannelController do
          ]
   )
 
-  def addv13(
+  def add_or_update_v13(
         conn,
         params = %{
           "ordinal" => ordinal,

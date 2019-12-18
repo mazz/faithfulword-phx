@@ -51,7 +51,7 @@ defmodule FaithfulWordApi.PlaylistController do
     end
   end
 
-  def addv13(
+  def add_or_update_v13(
         conn,
         params = %{
           "ordinal" => ordinal,

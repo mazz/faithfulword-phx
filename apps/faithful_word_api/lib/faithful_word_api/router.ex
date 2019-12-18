@@ -112,13 +112,8 @@ defmodule FaithfulWordApi.Router do
         end
 
         scope "/playlists" do
-          post "/add", PlaylistController, :addv13
+          # post "/add", PlaylistController, :addv13
           get "/:uuid/media", MediaItemController, :indexv13
-        end
-
-        scope "/mediaitems" do
-          post "/add", MediaItemController, :addv13
-          # get "/:uuid/media", MediaItemController, :indexv13
         end
 
         scope "/search" do
@@ -216,11 +211,16 @@ defmodule FaithfulWordApi.Router do
           end
 
           scope "/channels" do
-            post "/addorupdate", ChannelController, :addv13
+            post "/addorupdate", ChannelController, :add_or_update_v13
           end
 
           scope "/playlists" do
-            post "/addorupdate", PlaylistController, :addv13
+            post "/addorupdate", PlaylistController, :add_or_update_v13
+          end
+
+          scope "/mediaitems" do
+            post "/addorupdate", MediaItemController, :add_or_update_v13
+            # get "/:uuid/media", MediaItemController, :indexv13
           end
         end
       end

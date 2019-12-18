@@ -10,7 +10,15 @@ defmodule FaithfulWordApi.MediaItemController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def addv13(
+  plug(
+    Guardian.Plug.EnsureAuthenticated,
+    [handler: FaithfulWordApi.AuthController]
+    when action in [
+           # :addv13
+         ]
+  )
+
+  def add_or_update_v13(
         conn,
         params = %{
           "ordinal" => ordinal,
