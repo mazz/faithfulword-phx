@@ -214,6 +214,10 @@ defmodule FaithfulWordApi.Router do
             post "/addorupdate", ChannelController, :add_or_update_v13
           end
 
+          scope "/playlisttitles" do
+            post "/delete", PlaylistTitleController, :delete_v13
+          end
+
           scope "/playlists" do
             post "/addorupdate", PlaylistController, :add_or_update_v13
           end

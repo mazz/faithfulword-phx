@@ -458,6 +458,26 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
+  def delete_playlist_title(playlist_title_uuid) do
+    {:ok, playlisttitleuuid} =
+      if playlist_title_uuid do
+        Ecto.UUID.dump(playlist_title_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(PlaylistTitle, uuid: playlisttitleuuid) do
+      # no playlist title by that uuid
+      nil ->
+        {:error, :not_found}
+
+      playlist_title ->
+        Repo.delete!(playlist_title)
+
+        {:ok, playlist_title}
+    end
+  end
+
   def add_or_update_playlist(
         ordinal,
         basename,
