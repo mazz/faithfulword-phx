@@ -651,6 +651,26 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
+  def delete_playlist(playlist_uuid) do
+    {:ok, playlistuuid} =
+      if playlist_uuid do
+        Ecto.UUID.dump(playlist_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Playlist, uuid: playlistuuid) do
+      # no playlist title by that uuid
+      nil ->
+        {:error, :not_found}
+
+        playlist ->
+        Repo.delete!(playlist)
+
+        {:ok, playlist}
+    end
+  end
+
   def add_or_update_channel(
         ordinal,
         basename,

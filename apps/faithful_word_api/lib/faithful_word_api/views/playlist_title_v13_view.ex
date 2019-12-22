@@ -9,21 +9,10 @@ defmodule FaithfulWordApi.PlaylistTitleV13View do
 
     playlist_title_map = %{
       # hash_id: task_v10.rubric.hash_id,
-      basename: playlist_title_v13.basename,
-      # languageId: playlist_title_v13.language_id,
+      language_id: playlist_title_v13.language_id,
+      localizedname: playlist_title_v13.localizedname,
       uuid: playlist_title_v13.uuid,
-      channel_id: playlist_title_v13.channel_id,
-      ordinal: playlist_title_v13.ordinal,
-      small_thumbnail_path: playlist_title_v13.small_thumbnail_path,
-      med_thumbnail_path: playlist_title_v13.med_thumbnail_path,
-      large_thumbnail_path: playlist_title_v13.large_thumbnail_path,
-      banner_path: playlist_title_v13.banner_path,
-      media_category: playlist_title_v13.media_category,
-      hash_id: playlist_title_v13.hash_id,
-      # , ## |> render_unix_timestamp(),
-      inserted_at: playlist_title_v13.inserted_at,
-      # |> render_unix_timestamp()
-      updated_at: playlist_title_v13.updated_at
+      playlist_id: playlist_title_v13.playlist_id
     }
 
     %{result: playlist_title_map, status: "success", version: api_version}
@@ -77,7 +66,4 @@ defmodule FaithfulWordApi.PlaylistTitleV13View do
       playlist_id: playlist_title_v13.playlist_id
     }
   end
-
-  defp render_unix_timestamp(nil), do: nil
-  defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
 end

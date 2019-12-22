@@ -36,9 +36,9 @@ defmodule FaithfulWordApi.PlaylistTitleController do
           api_version: "1.3"
         })
 
-      {:error, _changeset} ->
+      {:error, error} ->
         conn
-        |> put_status(:unprocessable_entity)
+        |> put_status(error)
         |> put_view(ErrorView)
         |> render("403.json", %{message: "something happened."})
     end

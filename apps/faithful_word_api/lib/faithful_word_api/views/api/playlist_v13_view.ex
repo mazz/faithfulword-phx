@@ -33,6 +33,35 @@ defmodule FaithfulWordApi.PlaylistV13View do
     %{add_playlist_v13: add_playlist_v13}
   end
 
+  def render("deletev13.json", %{playlist_v13: playlist_v13, api_version: api_version}) do
+    Logger.debug("render playlist_v13 #{inspect(%{attributes: playlist_v13})}")
+
+    playlist_map = %{
+      # hash_id: task_v10.rubric.hash_id,
+      basename: playlist_v13.basename,
+      # languageId: playlist_v13.language_id,
+      uuid: playlist_v13.uuid,
+      channel_id: playlist_v13.channel_id,
+      ordinal: playlist_v13.ordinal,
+      small_thumbnail_path: playlist_v13.small_thumbnail_path,
+      med_thumbnail_path: playlist_v13.med_thumbnail_path,
+      large_thumbnail_path: playlist_v13.large_thumbnail_path,
+      banner_path: playlist_v13.banner_path,
+      media_category: playlist_v13.media_category,
+      hash_id: playlist_v13.hash_id,
+      # , ## |> render_unix_timestamp(),
+      inserted_at: playlist_v13.inserted_at,
+      # |> render_unix_timestamp()
+      updated_at: playlist_v13.updated_at
+    }
+
+    %{result: playlist_map, status: "success", version: api_version}
+  end
+
+  def render("deletev13.json", %{delete_playlist_v13: delete_playlist_v13}) do
+    %{delete_playlist_v13: delete_playlist_v13}
+  end
+
   def render("indexv13.json", %{playlist_v13: playlist_v13, api_version: api_version}) do
     %{
       result: render_many(playlist_v13, PlaylistV13View, "playlist_v13.json"),

@@ -29,7 +29,7 @@ defmodule Db.Schema.Channel do
     field :org_id, :id
     field :hash_id, :string
 
-    has_many :playlists, Db.Schema.Playlist
+    has_many :playlists, Db.Schema.Playlist, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
 

@@ -100,6 +100,33 @@ defmodule FaithfulWordApi.PlaylistController do
     end
   end
 
+  def delete_v13(
+        conn,
+        %{
+          "playlist_uuid" => playlist_uuid
+        }
+      ) do
+    V13.delete_playlist(playlist_uuid)
+    # |> IO.inspect()
+    |> case do
+      {:ok, playlist} ->
+        Logger.debug("playlist #{inspect(%{attributes: playlist})}")
+
+        conn
+        |> put_view(PlaylistV13View)
+        |> render("deletev13.json", %{
+          playlist_v13: playlist,
+          api_version: "1.3"
+        })
+
+      {:error, error} ->
+        conn
+        |> put_status(error)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
+    end
+  end
+
   def indexv13(
         conn,
         _params = %{

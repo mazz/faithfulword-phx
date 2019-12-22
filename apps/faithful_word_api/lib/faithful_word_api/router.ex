@@ -220,6 +220,7 @@ defmodule FaithfulWordApi.Router do
 
           scope "/playlists" do
             post "/addorupdate", PlaylistController, :add_or_update_v13
+            post "/delete", PlaylistController, :delete_v13
           end
 
           scope "/mediaitems" do

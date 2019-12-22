@@ -37,8 +37,8 @@ defmodule Db.Schema.Playlist do
     field :hash_id, :string
     field :multilanguage, :boolean, default: false
 
-    has_many :mediaitems, Db.Schema.MediaItem
-    has_many :playlist_titles, Db.Schema.PlaylistTitle
+    has_many :mediaitems, Db.Schema.MediaItem, on_delete: :delete_all
+    has_many :playlist_titles, Db.Schema.PlaylistTitle, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
 
