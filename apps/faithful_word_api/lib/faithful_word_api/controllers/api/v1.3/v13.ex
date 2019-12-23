@@ -664,7 +664,7 @@ defmodule FaithfulWordApi.V13 do
       nil ->
         {:error, :not_found}
 
-        playlist ->
+      playlist ->
         Repo.delete!(playlist)
 
         {:ok, playlist}
@@ -789,16 +789,35 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def channels_by_org_uuid(orguuid, offset, limit) do
+  def channels_by_org_uuid(orguuid, offset, limit, updated_after) do
     # python
     # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
     {:ok, org_uuid} = Ecto.UUID.dump(orguuid)
+    Logger.debug("channel_uuid: #{updated_after}")
+
+    conditions = true
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([chn], chn.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
 
     query =
       from(channel in Channel,
         join: org in Org,
         where: org.uuid == ^org_uuid,
         where: org.id == channel.org_id,
+        where: ^conditions,
         order_by: channel.ordinal,
         select: %{
           basename: channel.basename,
@@ -821,12 +840,31 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def playlist_details_by_uuid(uuid_str, offset, limit) do
+  def playlist_details_by_uuid(uuid_str, offset, limit, updated_after) do
     {:ok, playlist_uuid} = Ecto.UUID.dump(uuid_str)
     Logger.debug("playlist_uuid: #{uuid_str}")
+    Logger.debug("channel_uuid: #{updated_after}")
+
+    conditions = true
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([det], det.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
 
     Ecto.Query.from(pl in Playlist,
       where: pl.uuid == ^playlist_uuid,
+      where: ^conditions,
       preload: [:playlist_titles],
       select: %{
         playlist: pl
@@ -835,9 +873,27 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def playlists_by_channel_uuid(uuid_str, language_id, offset, limit) do
+  def playlists_by_channel_uuid(uuid_str, language_id, offset, limit, updated_after) do
     {:ok, channel_uuid} = Ecto.UUID.dump(uuid_str)
     Logger.debug("channel_uuid: #{uuid_str}")
+    Logger.debug("channel_uuid: #{updated_after}")
+
+    conditions = true
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([playlists], playlists.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
 
     query =
       from(pl in Playlist,
@@ -847,6 +903,7 @@ defmodule FaithfulWordApi.V13 do
         where: ch.id == pl.channel_id,
         where: pl.id == pt.playlist_id,
         where: pt.language_id == ^language_id,
+        where: ^conditions,
         order_by: [pl.ordinal],
         select: %{
           basename: pl.basename,
@@ -872,9 +929,16 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def media_items_by_playlist_uuid(playlist_uuid, language_id, offset \\ 0, limit \\ 0) do
+  def media_items_by_playlist_uuid(
+        playlist_uuid,
+        language_id,
+        offset \\ 0,
+        limit \\ 0,
+        updated_after
+      ) do
     {:ok, pid_uuid} = Ecto.UUID.dump(playlist_uuid)
     Logger.debug("pid_uuid: #{pid_uuid}")
+    Logger.debug("updated_after: #{updated_after}")
 
     category_and_multilanguage =
       Ecto.Query.from(playlist in Playlist,
@@ -904,6 +968,21 @@ defmodule FaithfulWordApi.V13 do
         # dynamic([mi], mi.language_id == ^language_id and ^conditions)
       else
         conditions
+      end
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([orgs], orgs.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
       end
 
     query =
@@ -984,30 +1063,37 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.one()
   end
 
-  def orgs_default_org(offset \\ 0, limit \\ 0) do
+  def orgs_default_org(offset \\ 0, limit \\ 0, updated_after) do
     # python
     # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
 
+    Logger.debug("updated_after: #{updated_after}")
+
+    conditions = true
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([orgs], orgs.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
+
     Ecto.Query.from(org in Org,
       where: org.shortname == "faithfulwordapp",
+      where: ^conditions,
       preload: [:channels],
       order_by: org.id,
       select: %{
         org: org
       }
-      # select: %{
-      #   basename: org.basename,
-      #   uuid: org.uuid,
-      #   org_id: org.id,
-      #   small_thumbnail_path: org.small_thumbnail_path,
-      #   med_thumbnail_path: org.med_thumbnail_path,
-      #   large_thumbnail_path: org.large_thumbnail_path,
-      #   banner_path: org.banner_path,
-      #   inserted_at: org.inserted_at,
-      #   updated_at: org.updated_at,
-      #   shortname: org.shortname,
-      #   hash_id: org.hash_id
-      # }
     )
     |> Repo.paginate(page: offset, page_size: limit)
   end

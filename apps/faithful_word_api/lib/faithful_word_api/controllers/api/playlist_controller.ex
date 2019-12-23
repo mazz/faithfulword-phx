@@ -18,15 +18,21 @@ defmodule FaithfulWordApi.PlaylistController do
          ]
   )
 
+  @spec detailsv13(Plug.Conn.t(), map) :: Plug.Conn.t()
   def detailsv13(
         conn,
-        _params = %{
+        params = %{
           "uuid" => uuid_str,
           "offset" => offset,
           "limit" => limit
         }
       ) do
-    V13.playlist_details_by_uuid(uuid_str, offset, limit)
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
+
+    Logger.debug("updated_after #{inspect(%{attributes: updated_after})}")
+
+    V13.playlist_details_by_uuid(uuid_str, offset, limit, updated_after)
     |> case do
       nil ->
         put_status(conn, 403)
@@ -129,14 +135,19 @@ defmodule FaithfulWordApi.PlaylistController do
 
   def indexv13(
         conn,
-        _params = %{
+        params = %{
           "uuid" => uuid_str,
           "language-id" => language_id,
           "offset" => offset,
           "limit" => limit
         }
       ) do
-    V13.playlists_by_channel_uuid(uuid_str, language_id, offset, limit)
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
+
+    Logger.debug("updated_after #{inspect(%{attributes: updated_after})}")
+
+    V13.playlists_by_channel_uuid(uuid_str, language_id, offset, limit, updated_after)
     |> case do
       nil ->
         put_status(conn, 403)

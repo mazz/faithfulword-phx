@@ -101,7 +101,10 @@ defmodule FaithfulWordApi.MediaItemController do
     # language_id is optional because plan of salvation is many languages
     # language_id = Map.get(params, "language-id", nil)
 
-    V13.media_items_by_playlist_uuid(playlist_uuid, language_id, offset, limit)
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
+
+    V13.media_items_by_playlist_uuid(playlist_uuid, language_id, offset, limit, updated_after)
     |> case do
       nil ->
         put_status(conn, 403)
