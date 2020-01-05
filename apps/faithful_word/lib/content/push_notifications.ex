@@ -8,6 +8,31 @@ defmodule FaithfulWord.PushNotifications do
   require Logger
 
   def send_pushmessage_now(message) do
+
+    # case Repo.get_by(ClientDevice, firebase_token: fcm_token) do
+    #   nil ->
+    #     ClientDevice.changeset(%ClientDevice{}, %{
+    #       apns_token: apns_token,
+    #       firebase_token: fcm_token,
+    #       preferred_language: preferred_language,
+    #       user_agent: user_agent,
+    #       user_version: user_version,
+    #       uuid: Ecto.UUID.generate()
+    #     })
+    #     |> Repo.insert()
+
+    #   client_device ->
+    #     ClientDevice.changeset(%ClientDevice{id: client_device.id}, %{
+    #       apns_token: apns_token,
+    #       firebase_token: fcm_token,
+    #       preferred_language: preferred_language,
+    #       user_agent: user_agent,
+    #       user_version: user_version,
+    #       uuid: client_device.uuid
+    #     })
+    #     |> Repo.update()
+    # end
+
     [
       "fo6cdLGfU7k:APA91bHKQ3d7l8z6JlepC-xX4iUWicuNNxlAq7GNpVogSv47Nb2gkF2DBME6NFAomtiae-8QVkOvNZQbsM-9GqutPj1a94OKL_sG9OAb9qBbMhH81-6yo7v7MGYhkI7aUF5LD09JHZ_w"
     ]

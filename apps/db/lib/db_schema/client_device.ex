@@ -7,11 +7,12 @@ defmodule Db.Schema.ClientDevice do
     field :firebase_token, :string
     field :preferred_language, :string
     field :user_agent, :string
+    field :org_id, :integer
     field :user_version, :string
     # field :user_uuid, Ecto.UUID
     field :uuid, Ecto.UUID
 
-    # timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
@@ -23,8 +24,16 @@ defmodule Db.Schema.ClientDevice do
       :apns_token,
       :preferred_language,
       :user_agent,
+      :org_id,
       :user_version
     ])
-    |> validate_required([:uuid, :firebase_token, :apns_token, :preferred_language, :user_agent])
+    |> validate_required([
+      :uuid,
+      :firebase_token,
+      :apns_token,
+      :preferred_language,
+      :user_agent,
+      :org_id
+      ])
   end
 end

@@ -156,6 +156,10 @@ class Dbtool(object):
         with sourceconn.cursor() as cur:
             cur.execute(sql.SQL("UPDATE pushmessages SET org_id = %s"), [1])
 
+        # add faithfulwordapp to all clientdevices
+
+        with sourceconn.cursor() as cur:
+            cur.execute(sql.SQL("UPDATE clientdevices SET org_id = %s"), [1])
 
         # add a 'Preaching', 'Music', 'Gospel' channel for each org
         with sourceconn.cursor() as cur:
