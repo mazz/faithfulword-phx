@@ -38,7 +38,7 @@ config :ex_aws,
   secret_access_key: ["secret_access_key", :instance_role]
 
 config :arc,
-  bucket: {:system, "AWS_S3_BUCKET"}
+  bucket: {:system, "rvg-tracks-cdn"}
 
 config :faithful_word, FaithfulWord.Mailer,
   adapter: Bamboo.MailgunAdapter,

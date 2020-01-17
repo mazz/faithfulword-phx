@@ -33,7 +33,7 @@ config :ex_aws,
   secret_access_key: System.fetch_env!("FW_AWS_SECRET_ACCESS_KEY")
 
 config :rollbax,
-  access_token: System.fetch_env!("FW_ROLLBAR_ACCESS_TOKEN")
+  access_token: System.fetch_env!("FW_ROLBAX_ACCESS_TOKEN")
 
 config :pigeon, :fcm,
   fcm_default: %{

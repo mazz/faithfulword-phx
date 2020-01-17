@@ -13,12 +13,13 @@ defmodule FaithfulWord.Umbrella.MixProject do
 
   defp releases do
     [
-      faithful_word: [
+      faithful_word_umbrella: [
         version: "1.3.0",
         applications: [
           db: :permanent,
           faithful_word: :permanent,
-          faithful_word_api: :permanent
+          faithful_word_api: :permanent,
+          faithful_word_jobs: :permanent
         ]
       ]
     ]

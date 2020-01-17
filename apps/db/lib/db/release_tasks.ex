@@ -9,7 +9,7 @@ defmodule Db.ReleaseTasks do
 
   @repos Application.get_env(:db, :ecto_repos, [])
 
-  def generate_hash_ids(_argv) do
+  def generate_hash_ids() do
     start_services()
 
     run_generate_hash_ids()
@@ -17,7 +17,7 @@ defmodule Db.ReleaseTasks do
     stop_services()
   end
 
-  def migrate(_argv) do
+  def migrate() do
     start_services()
 
     run_migrations()
@@ -25,7 +25,7 @@ defmodule Db.ReleaseTasks do
     stop_services()
   end
 
-  def seed(_argv) do
+  def seed() do
     start_services()
 
     run_migrations()

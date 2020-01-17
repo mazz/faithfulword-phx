@@ -28,6 +28,13 @@ config :guardian, Guardian.DB, repo: Db.Repo
 
 config :phoenix, :serve_endpoints, true
 
+config :faithful_word_api, FaithfulWordApi.Endpoint,
+  http: [:inet6, port: {:system, "FW_PORT"}],
+  url: [host: "127.0.0.1", port: 4000],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  version: Application.spec(:faithful_word_api, :vsn)
+
 # General #####################################################################
 
 # Do not print debug messages in production
