@@ -1,45 +1,45 @@
 version: '3.7'
 
 services:
-  # proxy:
-  #   image: traefik:v1.7
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   networks:
-  #     - proxy-network
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - proxy-certificates-storage:/certificates
-  #   command: >
-  #     --docker
-  #     --docker.watch
-  #     --docker.exposedbydefault=false
-  #     --constraints=tag==proxy-public
-  #     --entrypoints='Name:http Address::80'
-  #     --entrypoints='Name:https Address::443 TLS'
-  #     --acme
-  #     --acme.email=${EMAIL?Variable EMAIL not set}
-  #     --acme.storage="certificates/acme.json"
-  #     --acme.entryPoint=https
-  #     --acme.httpChallenge.entryPoint=http
-  #     --acme.onhostrule=true
-  #     --acme.acmelogging=true
-  #     --logLevel=INFO
-  #     --accessLog
-  #     --api
-  #   labels:
-  #     - traefik.frontend.rule=Host:proxy.${DOMAIN?Variable DOMAIN not set}
-  #     - traefik.enable=true
-  #     - traefik.port=8080
-  #     - traefik.tags=proxy-public
-  #     - traefik.docker.network=proxy-network
-  #     # Traefik service that listens to HTTP
-  #     - traefik.redirectorservice.frontend.entryPoints=http
-  #     - traefik.redirectorservice.frontend.redirect.entryPoint=https
-  #     # Traefik service that listens to HTTPS
-  #     - traefik.webservice.frontend.entryPoints=https
-  #     - traefik.frontend.auth.basic.users=${TKUSERNAME?Variable TKUSERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}
+  proxy:
+    image: traefik:v1.7
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - proxy-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - proxy-certificates-storage:/certificates
+    command: >
+      --docker
+      --docker.watch
+      --docker.exposedbydefault=false
+      --constraints=tag==proxy-public
+      --entrypoints='Name:http Address::80'
+      --entrypoints='Name:https Address::443 TLS'
+      --acme
+      --acme.email=${EMAIL?Variable EMAIL not set}
+      --acme.storage="certificates/acme.json"
+      --acme.entryPoint=https
+      --acme.httpChallenge.entryPoint=http
+      --acme.onhostrule=true
+      --acme.acmelogging=true
+      --logLevel=INFO
+      --accessLog
+      --api
+    labels:
+      - traefik.frontend.rule=Host:proxy.${DOMAIN?Variable DOMAIN not set}
+      - traefik.enable=true
+      - traefik.port=8080
+      - traefik.tags=proxy-public
+      - traefik.docker.network=proxy-network
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
+      - traefik.frontend.auth.basic.users=${TKUSERNAME?Variable TKUSERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}
 
   postgres:
     image: postgres:12.1-alpine
@@ -60,28 +60,28 @@ services:
     env_file:
       - .services_env    
     depends_on:
-      # - proxy
+      - proxy
       - postgres
     networks:
       - db-network
-      # - proxy-network
-    # labels:
-    #   - traefik.frontend.rule=Host:${DOMAIN?Variable DOMAIN not set}
-    #   - traefik.enable=true
-    #   - traefik.port=4000
-    #   - traefik.tags=proxy-public
-    #   - traefik.docker.network=proxy-network
-    #   # Traefik service that listens to HTTP
-    #   - traefik.redirectorservice.frontend.entryPoints=http
-    #   - traefik.redirectorservice.frontend.redirect.entryPoint=https
-    #   # Traefik service that listens to HTTPS
-    #   - traefik.webservice.frontend.entryPoints=https
+      - proxy-network
+    labels:
+      - traefik.frontend.rule=Host:${DOMAIN?Variable DOMAIN not set}
+      - traefik.enable=true
+      - traefik.port=4000
+      - traefik.tags=proxy-public
+      - traefik.docker.network=proxy-network
+      # Traefik service that listens to HTTP
+      - traefik.redirectorservice.frontend.entryPoints=http
+      - traefik.redirectorservice.frontend.redirect.entryPoint=https
+      # Traefik service that listens to HTTPS
+      - traefik.webservice.frontend.entryPoints=https
 
 networks:
   db-network:
-  # proxy-network:
-    # external: true
+  proxy-network:
+    external: true
 
 volumes:
-  # proxy-certificates-storage:
+  proxy-certificates-storage:
   database-storage:
