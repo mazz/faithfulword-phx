@@ -41,17 +41,18 @@ psql:
 ```
 postgres=# ALTER USER postgres PASSWORD 'postgres';
 postgres=# CREATE ROLE michael WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'michael';
+postgres=# CREATE ROLE faithful_word WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'faithful_word';
 postgres=# create database michael;
 ```
 
 
 ```
-FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-11-10-mediaitem-v1.3-bin.sql faithful_word_dev /usr/bin ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-11-10-mediaitem-v1.3-bin.sql faithful_word_dev /Applications/Postgres.app/Contents/Versions/12/bin ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
 ```
 
 ## export db as a complete seeded file to production:
 ```
-./dbtool.py exportdb faithful_word_dev /usr/bin 2019-11-10-media-item-seeded-not-materialized.pgsql
+./dbtool.py exportdb faithful_word_dev /Applications/Postgres.app/Contents/Versions/12/bin 2019-11-10-media-item-seeded-not-materialized.pgsql
 ```
 
 <commit 2019-11-10-media-item-seeded-not-materialized.pgsql>
