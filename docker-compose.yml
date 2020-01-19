@@ -53,12 +53,13 @@ services:
       - database-storage:/var/lib/postgresql/data
 
   faithful_word_umbrella:
+    restart: on-failure
     build: .
     image: faithful_word_umbrella
     ports:
       - '4000:4000'
     env_file:
-      - .services_env    
+      - .faithful_word_umbrella_env
     depends_on:
       - proxy
       - postgres
