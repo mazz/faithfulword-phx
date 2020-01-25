@@ -39,7 +39,7 @@ defmodule FaithfulWordApi.BookController do
 
       book_v13 ->
         # Logger.debug("books #{inspect %{attributes: books}}")
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")

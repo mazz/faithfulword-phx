@@ -36,7 +36,7 @@ defmodule FaithfulWordApi.Router do
   scope "/", FaithfulWordApi do
     pipe_through [:browser, :authentication_required]
 
-    get "/logout", LoginController, :delete
+    # get "/logout", LoginController, :delete
 
     # scope "/admin", Admin do
     # scope "/admin", Admin, as: :admin do
@@ -88,52 +88,60 @@ defmodule FaithfulWordApi.Router do
       end
     end
 
-    scope "/v1.3" do
-      scope "/books" do
-        get "/", BookController, :indexv13
-        get "/:uuid/media", MediaChapterController, :indexv13
-      end
+    # prefix public api with /api for v1.3 and above
 
-      scope "/orgs" do
-        get "/default", OrgController, :defaultv13
-        get "/:uuid/channels", OrgController, :channelsv13
-      end
+    scope "/api" do
+      scope "/v1.3" do
+        scope "/books" do
+          get "/", BookController, :indexv13
+          get "/:uuid/media", MediaChapterController, :indexv13
+        end
 
-      scope "/channels" do
-        # get "/", ChannelController, :indexv13
-        get "/:uuid/playlists", PlaylistController, :indexv13
-      end
+        scope "/orgs" do
+          get "/default", OrgController, :defaultv13
+          get "/:uuid/channels", OrgController, :channelsv13
+        end
 
-      scope "/playlists" do
-        # get "/", MusicController, :indexv13
-        get "/:uuid/media", MediaItemController, :indexv13
-      end
+        scope "/channels" do
+          # post "/add", ChannelController, :addv13
+          get "/:uuid/playlists", PlaylistController, :indexv13
+        end
 
-      scope "/search" do
-        post "/", SearchController, :searchv13
-      end
+        scope "/playlist" do
+          get "/:uuid/details", PlaylistController, :detailsv13
+        end
 
-      scope "/device" do
-        post "/pushtoken/update", ClientDeviceController, :indexv13
-      end
+        scope "/playlists" do
+          # post "/add", PlaylistController, :addv13
+          get "/:uuid/media", MediaItemController, :indexv13
+        end
 
-      ### DEPRECATED ###
-      scope "/gospels" do
-        get "/", GospelController, :indexv13
-        get "/:uuid/media", MediaGospelController, :indexv13
-      end
+        scope "/search" do
+          post "/", SearchController, :searchv13
+        end
 
-      scope "/music" do
-        get "/", MusicController, :indexv13
-        get "/:uuid/media", MediaMusicController, :indexv13
-      end
+        scope "/device" do
+          post "/pushtoken/update", ClientDeviceController, :indexv13
+        end
 
-      scope "/languages" do
-        get "/supported", LanguageIdentifierController, :indexv13
-      end
+        ### DEPRECATED ###
+        scope "/gospels" do
+          get "/", GospelController, :indexv13
+          get "/:uuid/media", MediaGospelController, :indexv13
+        end
 
-      scope "/app" do
-        get "/versions", AppVersionController, :indexv13
+        scope "/music" do
+          get "/", MusicController, :indexv13
+          get "/:uuid/media", MediaMusicController, :indexv13
+        end
+
+        scope "/languages" do
+          get "/supported", LanguageIdentifierController, :indexv13
+        end
+
+        scope "/app" do
+          get "/versions", AppVersionController, :indexv13
+        end
       end
     end
   end
@@ -154,25 +162,27 @@ defmodule FaithfulWordApi.Router do
       pipe_through([:api_auth])
 
       # Authentication
-      scope "/auth" do
-        delete("/", AuthController, :logout)
-        delete("/:provider/link", AuthController, :unlink_provider)
-        post("/:provider/callback", AuthController, :callback)
-      end
-
-      # Users
-      scope "/users" do
-        post("/", UserController, :create)
-        post("/request_invitation", UserController, :request_invitation)
-        get("/username/:username", UserController, :show)
-
-        scope "/reset_password" do
-          post("/request", UserController, :reset_password_request)
-          get("/verify/:token", UserController, :reset_password_verify)
-          post("/confirm", UserController, :reset_password_confirm)
+      scope "/api" do
+        scope "/auth" do
+          delete("/", AuthController, :logout)
+          delete("/:provider/link", AuthController, :unlink_provider)
+          post("/:provider/callback", AuthController, :callback)
         end
 
-        scope "/me" do
+        # Users
+        scope "/users" do
+          post("/", UserController, :create)
+          post("/request_invitation", UserController, :request_invitation)
+          get("/username/:username", UserController, :show)
+
+          scope "/reset_password" do
+            post("/request", UserController, :reset_password_request)
+            get("/verify/:token", UserController, :reset_password_verify)
+            post("/confirm", UserController, :reset_password_confirm)
+          end
+        end
+
+        scope "/user" do
           get("/", UserController, :show_me)
           put("/", UserController, :update)
           delete("/", UserController, :delete)
@@ -186,11 +196,45 @@ defmodule FaithfulWordApi.Router do
       end
 
       # Videos
-      post("/videos", VideoController, :get_or_create)
+      scope "/api" do
+        scope "/v1.3" do
+          post("/videos", VideoController, :get_or_create)
+        end
+      end
+
+      # v1.3 non-public content api
+      scope "/api" do
+        scope "/v1.3" do
+          scope "/pushmessages" do
+            post "/addorupdate", PushMessageController, :add_or_update_v13
+            post "/send", PushMessageController, :send
+          end
+
+          scope "/channels" do
+            post "/addorupdate", ChannelController, :add_or_update_v13
+          end
+
+          scope "/playlisttitles" do
+            post "/delete", PlaylistTitleController, :delete_v13
+          end
+
+          scope "/playlists" do
+            post "/addorupdate", PlaylistController, :add_or_update_v13
+            post "/delete", PlaylistController, :delete_v13
+          end
+
+          scope "/mediaitems" do
+            post "/addorupdate", MediaItemController, :add_or_update_v13
+            # get "/:uuid/media", MediaItemController, :indexv13
+          end
+        end
+      end
 
       # Moderation
-      get("/moderation/random", ModerationController, :random)
-      post("/moderation/feedback", ModerationController, :post_feedback)
+      scope "/api" do
+        get("/moderation/random", ModerationController, :random)
+        post("/moderation/feedback", ModerationController, :post_feedback)
+      end
     end
 
     # end

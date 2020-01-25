@@ -7,11 +7,11 @@ defmodule FaithfulWordApi.OrgV13View do
   def render("defaultv13.json", %{org_v13: org_v13, api_version: api_version}) do
     %{
       result: render_many(org_v13, OrgV13View, "org_v13.json"),
-      pageNumber: org_v13.page_number,
-      pageSize: org_v13.page_size,
+      page_number: org_v13.page_number,
+      page_size: org_v13.page_size,
       status: "success",
-      totalEntries: org_v13.total_entries,
-      totalPages: org_v13.total_pages,
+      total_entries: org_v13.total_entries,
+      total_pages: org_v13.total_pages,
       version: api_version
     }
   end
@@ -26,17 +26,20 @@ defmodule FaithfulWordApi.OrgV13View do
     Logger.debug("org #{inspect(%{attributes: org_v13})}")
 
     %{
-      basename: org_v13.basename,
-      uuid: org_v13.uuid,
-      orgId: org_v13.org_id,
-      shortname: org_v13.shortname,
-      smallThumbnailPath: org_v13.small_thumbnail_path,
-      medThumbnailPath: org_v13.med_thumbnail_path,
-      largeThumbnailPath: org_v13.large_thumbnail_path,
-      bannerPath: org_v13.banner_path,
-      hashId: org_v13.hash_id,
-      insertedAt: org_v13.inserted_at |> render_unix_timestamp(),
-      updatedAt: org_v13.updated_at |> render_unix_timestamp()
+      basename: org_v13.org.basename,
+      uuid: org_v13.org.uuid,
+      org_id: org_v13.org.id,
+      shortname: org_v13.org.shortname,
+      small_thumbnail_path: org_v13.org.small_thumbnail_path,
+      med_thumbnail_path: org_v13.org.med_thumbnail_path,
+      large_thumbnail_path: org_v13.org.large_thumbnail_path,
+      banner_path: org_v13.org.banner_path,
+      hash_id: org_v13.org.hash_id,
+      channels: org_v13.org.channels,
+      # , ## |> render_unix_timestamp(),
+      inserted_at: org_v13.org.inserted_at,
+      # |> render_unix_timestamp()
+      updated_at: org_v13.org.updated_at
     }
   end
 

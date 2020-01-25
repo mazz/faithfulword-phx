@@ -51,7 +51,7 @@ defmodule FaithfulWordApi.ClientDeviceController do
         # Logger.debug("client_devices #{inspect %{attributes: client_devices}}")
         Logger.debug("client_device_v13 #{inspect(%{attributes: client_device_v13})}")
 
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             Logger.debug("api_version #{inspect(%{attributes: api_version})}")

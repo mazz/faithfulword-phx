@@ -11,9 +11,12 @@ defmodule FaithfulWordApi.OrgController do
 
   action_fallback FaithfulWordApi.FallbackController
 
-  def defaultv13(conn, %{"offset" => offset, "limit" => limit}) do
+  def defaultv13(conn, params = %{"offset" => offset, "limit" => limit}) do
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
+
     # Logger.debug("orgid #{inspect %{attributes: orgid}}")
-    V13.orgs_default_org(offset, limit)
+    V13.orgs_default_org(offset, limit, updated_after)
     |> case do
       nil ->
         put_status(conn, 403)
@@ -22,7 +25,7 @@ defmodule FaithfulWordApi.OrgController do
 
       org_v13 ->
         # Logger.debug("books #{inspect %{attributes: books}}")
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")
@@ -34,10 +37,12 @@ defmodule FaithfulWordApi.OrgController do
     end
   end
 
-  def channelsv13(conn, %{"uuid" => orguuid, "offset" => offset, "limit" => limit}) do
+  def channelsv13(conn, params = %{"uuid" => orguuid, "offset" => offset, "limit" => limit}) do
     Logger.debug("orguuid #{inspect(%{attributes: orguuid})}")
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
 
-    V13.channels_by_org_uuid(orguuid, offset, limit)
+    V13.channels_by_org_uuid(orguuid, offset, limit, updated_after)
     |> case do
       nil ->
         put_status(conn, 403)
@@ -45,7 +50,7 @@ defmodule FaithfulWordApi.OrgController do
         |> render("403.json", %{message: "language not found in supported list."})
 
       channel_v13 ->
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")

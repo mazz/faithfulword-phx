@@ -2,11 +2,75 @@ defmodule FaithfulWord.PushNotifications do
   @moduledoc """
   The PushNotifications context.
   """
-
   import Ecto.Query, warn: false
   alias Db.Repo
-
   alias Db.Schema.PushMessage
+  require Logger
+
+  def send_pushmessage_now(message) do
+
+    # case Repo.get_by(ClientDevice, firebase_token: fcm_token) do
+    #   nil ->
+    #     ClientDevice.changeset(%ClientDevice{}, %{
+    #       apns_token: apns_token,
+    #       firebase_token: fcm_token,
+    #       preferred_language: preferred_language,
+    #       user_agent: user_agent,
+    #       user_version: user_version,
+    #       uuid: Ecto.UUID.generate()
+    #     })
+    #     |> Repo.insert()
+
+    #   client_device ->
+    #     ClientDevice.changeset(%ClientDevice{id: client_device.id}, %{
+    #       apns_token: apns_token,
+    #       firebase_token: fcm_token,
+    #       preferred_language: preferred_language,
+    #       user_agent: user_agent,
+    #       user_version: user_version,
+    #       uuid: client_device.uuid
+    #     })
+    #     |> Repo.update()
+    # end
+
+    [
+      "fo6cdLGfU7k:APA91bHKQ3d7l8z6JlepC-xX4iUWicuNNxlAq7GNpVogSv47Nb2gkF2DBME6NFAomtiae-8QVkOvNZQbsM-9GqutPj1a94OKL_sG9OAb9qBbMhH81-6yo7v7MGYhkI7aUF5LD09JHZ_w"
+    ]
+    |> Pigeon.FCM.Notification.new()
+    |> Pigeon.FCM.Notification.put_notification(%{
+      "title" => message.title,
+      "body" => message.message
+    })
+    |> Pigeon.FCM.Notification.put_data(%{
+      "deeplink" => "https://site/m/j4X8",
+      "media_type" => "mediaitem",
+      "media_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e",
+      "org_uuid" => "fwbcapp",
+      "image_thumbnail_path" => "thumbs/lg/0005-0026-Psalm81-en.jpg",
+      "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg",
+      "mutable-content" => true,
+      "version" => "1.3"
+    })
+    |> Pigeon.FCM.Notification.put_mutable_content(true)
+    |> Pigeon.FCM.push(on_response: &handle_push/1)
+
+    # |> Pigeon.FCM.push()
+  end
+
+  def handle_push(%Pigeon.FCM.Notification{status: :success} = notif) do
+    to_update = Pigeon.FCM.Notification.update?(notif)
+    Logger.debug("handle_push to_update #{inspect(%{attributes: to_update})}")
+
+    to_remove = Pigeon.FCM.Notification.remove?(notif)
+    Logger.debug("handle_push to_remove #{inspect(%{attributes: to_remove})}")
+
+    # do the reg ID update and deletes
+  end
+
+  def handle_push(%Pigeon.FCM.Notification{status: other_error}) do
+    # some other error happened
+    Logger.debug("handle_push other_error #{inspect(%{attributes: other_error})}")
+  end
 
   @doc """
   Returns the list of pushmessage.

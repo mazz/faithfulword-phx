@@ -40,7 +40,7 @@ defmodule FaithfulWordApi.LanguageIdentifierController do
       language_identifier_v13 ->
         Logger.debug("language_identifier_v13 #{inspect(%{attributes: language_identifier_v13})}")
 
-        Enum.at(conn.path_info, 0)
+        Enum.at(conn.path_info, 1)
         |> case do
           api_version ->
             api_version = String.trim_leading(api_version, "v")

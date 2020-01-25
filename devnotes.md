@@ -41,21 +41,22 @@ psql:
 ```
 postgres=# ALTER USER postgres PASSWORD 'postgres';
 postgres=# CREATE ROLE michael WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'michael';
+postgres=# CREATE ROLE faithful_word WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'faithful_word';
 postgres=# create database michael;
 ```
 
 
 ```
-FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-11-10-mediaitem-v1.3-bin.sql faithful_word_dev /usr/bin ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2019-11-10-mediaitem-v1.3-bin.sql faithful_word_dev /Applications/Postgres.app/Contents/Versions/12/bin ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
 ```
 
 ## export db as a complete seeded file to production:
 ```
-./dbtool.py exportdb faithful_word_dev /usr/bin 2019-11-10-media-item-seeded-not-materialized.pgsql
+./dbtool.py exportdb faithful_word_dev /Applications/Postgres.app/Contents/Versions/12/bin 2019-11-10-media-item-seeded-not-materialized.pgsql
 ```
 
-<commit 2019-09-01-media-item-seeded-not-materialized.pgsql>
-<commit 2019-09-01-media-item-v1.3-bin.pgsql>
+<commit 2019-11-10-media-item-seeded-not-materialized.pgsql>
+<commit 2019-11-10-media-item-v1.3-bin.pgsql>
 <push to origin/develop>
 
 ## prod environment:
@@ -72,19 +73,19 @@ docker-compose build --pull faithful_word
 
 docker-compose up --build -d postgres
 
-docker cp ./2019-09-01-media-item-seeded-not-materialized.pgsql faithfulword-phx_postgres_1:/2019-09-01-media-item-seeded-not-materialized.pgsql
+docker cp ./2019-11-10-media-item-seeded-not-materialized.pgsql faithfulword-phx_postgres_1:/2019-11-10-media-item-seeded-not-materialized.pgsql
 
 docker exec -ti faithfulword-phx_postgres_1 bash
 docker exec -ti faithfulword-phx_faithful_word_1 bash
 
-psql -U faithful_word
+psql -U postgres
 <!-- drop database faithful_word;
 create database faithful_word; -->
 SET session_replication_role = replica;
 \q
 
-pg_restore -U faithful_word --clean --dbname=faithful_word 2019-09-01-media-item-seeded-not-materialized.pgsql
-psql -U faithful_word
+pg_restore -U postgres --clean --dbname=faithful_word 2019-11-10-media-item-seeded-not-materialized.pgsql
+psql -U postgres
 SET session_replication_role = DEFAULT;
 refresh materialized view media_items_search;
 exit
@@ -186,7 +187,7 @@ git clone https://github.com/FaithfulAudio/faithfulword-phx.git -b upload-ui upl
 
 # import 1.3 database
 
-./dbtool.py migratefromwebsauna ./2019-09-01-media-item-v1.3-bin.pgsql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs ; mix run apps/db/priv/repo/hash_ids.exs
+./dbtool.py migratefromwebsauna ./2019-11-10-media-item-v1.3-bin.pgsql faithful_word_dev ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; mix run apps/db/priv/repo/seeds.exs ; mix run apps/db/priv/repo/hash_ids.exs
 
 
 ## design notes
@@ -194,6 +195,9 @@ git clone https://github.com/FaithfulAudio/faithfulword-phx.git -b upload-ui upl
 channels can contain playlists and channels
 playlists can only contain mediaitems
 
+n = Pigeon.FCM.Notification.new("c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj", msg)
+
+n = Pigeon.FCM.Notification.new("8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj", notification, data)
 
 ## rich notifications
 {
@@ -228,4 +232,34 @@ msg = %{ "to" => "/fwbcapp/mediaitem/playlist/23-23-423-42-34234", "mutable_cont
 
 notification = %{"body" => "your message"}
 data = %{ "mediaitem" => "uuid-of-media-item", "resource-type" => "uuid"}
-n = Pigeon.FCM.Notification.new("dcu92ujVPf4:APA91bEaZOL75G1-zWWFGjkNM_l5QW17lmi27veyILTLz7eNeU2hwLNv_17_9Hx_GU8FUWtC82IAGNT8ibqsPGbPH9zOD7N7oRg8seaeDOY3v23pMuuo5wyvuApdEaBFIV3rek4L3c8t", notification, data)
+n = Pigeon.FCM.Notification.new("c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj", notification, data)
+
+notification = %{"body" => "your message"}
+
+
+
+
+notification = %{"title" => "New Content", "body" => "Clint Anderson Sings Psalm 81"}
+data = %{ "deeplink" => "https://site/m/j4X8", "media_item_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e", "image_thumbnail_path" => "fwbcapp/thumbs/lg/0005-0026-Psalm81-en.jpg", "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg", "version" => "1.3"}
+
+
+"mutable-content": 1,
+      "content-available": 1,
+
+
+ ["c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj"] |> Pigeon.FCM.Notification.new()  |> Pigeon.FCM.Notification.put_mutable_content(true) |> Pigeon.FCM.Notification.put_data(%{ "deeplink" => "https://site/m/j4X8", "media_item_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e", "image_thumbnail_path" => "fwbcapp/thumbs/lg/0005-0026-Psalm81-en.jpg", "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg", "mutable-content" => true, "version" => "1.3"}) |> Pigeon.FCM.push()
+
+
+piping and WORKS:
+
+ ["c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj"] |> Pigeon.FCM.Notification.new() |> Pigeon.FCM.Notification.put_notification(%{"body" => "your message"}) |> Pigeon.FCM.push() 
+
+piping and mutable_content WORKS:
+
+ ["c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj"] |> Pigeon.FCM.Notification.new() |> Pigeon.FCM.Notification.put_notification(%{"body" => "your message"}) |> Pigeon.FCM.Notification.put_mutable_content(true) |> Pigeon.FCM.push()
+
+piping and mutable_content and data WORKS:
+
+ ["c8xGnjc9b74:APA91bH98ndvTkjHUiF7J3tUcM620WwUcgqImGFSEN7Uw5vXGReJzlu_IkcaDgDpWJRlTyWY836aMN9ujU8bPu5EQnqncsOiovWA_6ww6xbPo9HYuUKXLfyDQ_qc8M3Zzbm9nkTSP6mj"] |> Pigeon.FCM.Notification.new() |> Pigeon.FCM.Notification.put_notification(%{"body" => "your message"}) |> Pigeon.FCM.Notification.put_data(%{ "deeplink" => "https://site/m/j4X8", "entity_type" => "mediaitem", "entity_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e", "org" => "fwbcapp", "image_thumbnail_path" => "thumbs/lg/0005-0026-Psalm81-en.jpg", "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg", "mutable-content" => true, "version" => "1.3"}) |> Pigeon.FCM.Notification.put_mutable_content(true) |> Pigeon.FCM.push() 
+
+

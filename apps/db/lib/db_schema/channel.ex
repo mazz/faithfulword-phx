@@ -3,6 +3,21 @@ defmodule Db.Schema.Channel do
   import Ecto.Changeset
   alias Db.Type.ChannelHashId
 
+  @derive {Jason.Encoder,
+           only: [
+             :basename,
+             :ordinal,
+             :small_thumbnail_path,
+             :med_thumbnail_path,
+             :large_thumbnail_path,
+             :banner_path,
+             :uuid,
+             :org_id,
+             :hash_id,
+             :updated_at,
+             :inserted_at
+           ]}
+
   schema "channels" do
     field :basename, :string
     field :ordinal, :integer
@@ -14,7 +29,7 @@ defmodule Db.Schema.Channel do
     field :org_id, :id
     field :hash_id, :string
 
-    has_many :playlists, Db.Schema.Playlist
+    has_many :playlists, Db.Schema.Playlist, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
 
@@ -28,23 +43,17 @@ defmodule Db.Schema.Channel do
       :uuid,
       :ordinal,
       :basename,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
       :small_thumbnail_path,
+      :med_thumbnail_path,
+      :large_thumbnail_path,
       :banner_path,
-      :org_id,
-      :hash_id
+      :org_id
     ])
     |> validate_required([
       :uuid,
       :ordinal,
       :basename,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
-      :small_thumbnail_path,
-      :banner_path,
-      :org_id,
-      :hash_id
+      :org_id
     ])
   end
 

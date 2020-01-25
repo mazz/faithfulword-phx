@@ -3,10 +3,30 @@ defmodule Db.Schema.Playlist do
   import Ecto.Changeset
   alias Db.Type.PlaylistHashId
 
+  @derive {Jason.Encoder,
+   only: [
+     :basename,
+     :ordinal,
+     :small_thumbnail_path,
+     :med_thumbnail_path,
+     :large_thumbnail_path,
+     :banner_path,
+     :uuid,
+     :channel_id,
+     :org_id,
+     :media_category,
+     :hash_id,
+     #  :playlist_titles,
+     :multilanguage,
+     :updated_at,
+     :inserted_at
+   ]}
+
   schema "playlists" do
     # field :language_id, :string
     # field :localizedname, :string
     field :ordinal, :integer
+    field :basename, :string
     field :small_thumbnail_path, :string
     field :med_thumbnail_path, :string
     field :large_thumbnail_path, :string
@@ -17,8 +37,8 @@ defmodule Db.Schema.Playlist do
     field :hash_id, :string
     field :multilanguage, :boolean, default: false
 
-    has_many :mediaitems, Db.Schema.MediaItem
-    has_many :playlist_titles, Db.Schema.PlaylistTitle
+    has_many :mediaitems, Db.Schema.MediaItem, on_delete: :delete_all
+    has_many :playlist_titles, Db.Schema.PlaylistTitle, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
 
@@ -31,22 +51,19 @@ defmodule Db.Schema.Playlist do
     |> cast(attrs, [
       :ordinal,
       :uuid,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
+      :media_category,
+      :basename,
       :small_thumbnail_path,
+      :med_thumbnail_path,
+      :large_thumbnail_path,
       :banner_path,
-      :channel_id,
-      :hash_id
+      :channel_id
     ])
     |> validate_required([
       :ordinal,
       :uuid,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
-      :small_thumbnail_path,
-      :banner_path,
-      :channel_id,
-      :hash_id
+      :media_category,
+      :channel_id
     ])
   end
 

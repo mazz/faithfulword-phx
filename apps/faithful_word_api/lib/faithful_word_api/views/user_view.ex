@@ -42,7 +42,8 @@ defmodule FaithfulWordApi.UserView do
       picture_url: Db.Type.UserPicture.url({user.picture_url, user}, :thumb),
       mini_picture_url: Db.Type.UserPicture.url({user.picture_url, user}, :mini_thumb),
       locale: user.locale,
-      registered_at: user.inserted_at |> render_unix_timestamp(),
+      # , ## |> render_unix_timestamp(),
+      registered_at: user.inserted_at,
       achievements: user.achievements,
       is_publisher: user.is_publisher
     }
@@ -57,5 +58,4 @@ defmodule FaithfulWordApi.UserView do
 
   defp render_unix_timestamp(nil), do: nil
   defp render_unix_timestamp(datetime), do: DateTime.to_unix(datetime, :second)
-
 end

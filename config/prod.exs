@@ -11,8 +11,7 @@ config :faithful_word,
   ecto_repos: [Db.Repo],
   frontend_url: frontend_url
 
-config :faithful_word, FaithfulWord.Mailer,
-  adapter: Bamboo.MailgunAdapter
+config :faithful_word, FaithfulWord.Mailer, adapter: Bamboo.MailgunAdapter
 
 config :faithful_word, FaithfulWord.Authenticator.GuardianImpl,
   issuer: "FaithfulWord",
@@ -28,6 +27,14 @@ config :guardian, Guardian.DB, repo: Db.Repo
 # faithful_word_api ###########################################################
 
 config :phoenix, :serve_endpoints, true
+
+config :faithful_word_api, FaithfulWordApi.Endpoint,
+  http: [:inet6, port: {:system, "FW_PORT"}],
+  url: [host: "127.0.0.1", port: 4000],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  version: Application.spec(:faithful_word_api, :vsn)
+  # code_reloader: false
 
 # General #####################################################################
 

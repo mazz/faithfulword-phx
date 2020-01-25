@@ -5,11 +5,11 @@ defmodule FaithfulWordApi.GospelV13View do
   def render("indexv13.json", %{gospel_v13: gospel_v13, api_version: api_version}) do
     %{
       result: render_many(gospel_v13, GospelV13View, "gospel_v13.json"),
-      pageNumber: gospel_v13.page_number,
-      pageSize: gospel_v13.page_size,
+      page_number: gospel_v13.page_number,
+      page_size: gospel_v13.page_size,
       status: "success",
-      totalEntries: gospel_v13.total_entries,
-      totalPages: gospel_v13.total_pages,
+      total_entries: gospel_v13.total_entries,
+      total_pages: gospel_v13.total_pages,
       version: api_version
     }
   end

@@ -1,6 +1,7 @@
 defmodule FaithfulWordApi.V13 do
   import Ecto.Query, warn: false
   alias Db.Repo
+  alias Ecto.Multi
 
   alias Db.Schema.{MediaChapter, Chapter, Book}
   alias Db.Schema.{BookTitle, LanguageIdentifier}
@@ -8,11 +9,12 @@ defmodule FaithfulWordApi.V13 do
   alias Db.Schema.{MediaGospel, Gospel}
   alias Db.Schema.{GospelTitle, LanguageIdentifier}
   alias Db.Schema.{MusicTitle, Music, MediaMusic}
-  alias Db.Schema.{Org, Channel, Playlist, PlaylistTitle, MediaItem}
+  alias Db.Schema.{Org, Channel, Playlist, PlaylistTitle, MediaItem, PushMessage}
   alias Db.Schema.AppVersion
   alias Db.Schema.ClientDevice
 
   alias FaithfulWordApi.MediaItemsSearch
+  alias FaithfulWord.PushNotifications
 
   require Ecto.Query
   require Logger
@@ -245,6 +247,522 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
+  def add_or_update_push_message(
+        title,
+        message,
+        org_id,
+        message_uuid \\ nil
+      ) do
+    {:ok, messageuuid} =
+      if message_uuid do
+        Ecto.UUID.dump(message_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(PushMessage, uuid: messageuuid) do
+      nil ->
+        changeset =
+          PushMessage.changeset(%PushMessage{}, %{
+            title: title,
+            message: message,
+            org_id: org_id,
+            uuid: Ecto.UUID.generate()
+          })
+
+        Multi.new()
+        |> Multi.insert(:push_message, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{push_message: push_message}} ->
+            {:ok, push_message}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+
+      push_message ->
+        changeset =
+          PushMessage.changeset(%PushMessage{id: push_message.id}, %{
+            message: message,
+            title: title,
+            updated_at: DateTime.utc_now(),
+            org_id: org_id,
+            uuid: push_message.uuid,
+            sent: push_message.sent
+          })
+
+        Multi.new()
+        |> Multi.update(:push_message, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{push_message: push_message}} ->
+            {:ok, push_message}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+    end
+  end
+
+  def send_push_message(message_uuid) do
+    {:ok, messageuuid} = Ecto.UUID.dump(message_uuid)
+
+    case Repo.get_by(PushMessage, uuid: messageuuid) do
+      nil ->
+        {:error, :not_found}
+
+      push_message ->
+        PushNotifications.send_pushmessage_now(push_message)
+
+        changeset =
+          PushMessage.changeset(%PushMessage{id: push_message.id}, %{
+            message: push_message.message,
+            title: push_message.title,
+            updated_at: DateTime.utc_now(),
+            org_id: push_message.org_id,
+            uuid: push_message.uuid,
+            sent: true
+          })
+
+        Multi.new()
+        |> Multi.update(:push_message, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{push_message: push_message}} ->
+            {:ok, push_message}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+    end
+  end
+
+  def add_or_update_media_item(
+        ordinal,
+        localizedname,
+        media_category,
+        medium,
+        path,
+        language_id,
+        playlist_id,
+        org_id,
+        # optional >>>
+        track_number,
+        tags,
+        small_thumbnail_path,
+        med_thumbnail_path,
+        large_thumbnail_path,
+        content_provider_link,
+        ipfs_link,
+        presenter_name,
+        presented_at,
+        source_material,
+        duration,
+        media_item_uuid \\ nil
+      ) do
+    {:ok, media_itemuuid} =
+      if media_item_uuid do
+        Ecto.UUID.dump(media_item_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    # check if we already have the media_item
+    # if media_item is not present, ADD
+    # if media_item is present in db, UPDATE
+
+    case Repo.get_by(MediaItem, uuid: media_itemuuid) do
+      # add media_item
+      nil ->
+        changeset =
+          MediaItem.changeset(%MediaItem{tags: tags}, %{
+            ordinal: ordinal,
+            localizedname: localizedname,
+            media_category: media_category,
+            medium: medium,
+            path: path,
+            language_id: language_id,
+            playlist_id: playlist_id,
+            org_id: org_id,
+            track_number: track_number,
+            tags: tags,
+            small_thumbnail_path: small_thumbnail_path,
+            med_thumbnail_path: med_thumbnail_path,
+            large_thumbnail_path: large_thumbnail_path,
+            content_provider_link: content_provider_link,
+            ipfs_link: ipfs_link,
+            presenter_name: presenter_name,
+            presented_at: presented_at,
+            source_material: source_material,
+            duration: duration,
+            uuid: Ecto.UUID.generate()
+          })
+
+        Logger.debug("media_item changeset #{inspect(%{attributes: changeset})}")
+
+        Multi.new()
+        |> Multi.insert(:item_without_hash_id, changeset)
+        |> Multi.run(:media_item, fn _repo, %{item_without_hash_id: media_item} ->
+          Logger.debug("media_item insert #{inspect(%{attributes: media_item})}")
+
+          media_item
+          |> MediaItem.changeset_generate_hash_id()
+          |> Repo.update()
+        end)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{media_item: media_item}} ->
+            {:ok, media_item}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+
+      media_item ->
+        changeset =
+          MediaItem.changeset(%MediaItem{id: media_item.id}, %{
+            ordinal: ordinal,
+            localizedname: localizedname,
+            media_category: media_category,
+            medium: medium,
+            path: path,
+            language_id: language_id,
+            playlist_id: playlist_id,
+            org_id: org_id,
+            track_number: track_number,
+            tags: tags,
+            small_thumbnail_path: small_thumbnail_path,
+            med_thumbnail_path: med_thumbnail_path,
+            large_thumbnail_path: large_thumbnail_path,
+            content_provider_link: content_provider_link,
+            ipfs_link: ipfs_link,
+            presenter_name: presenter_name,
+            presented_at: presented_at,
+            source_material: source_material,
+            duration: duration,
+            uuid: media_item.uuid,
+            updated_at: DateTime.utc_now()
+          })
+
+        Multi.new()
+        |> Multi.update(:channel, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{channel: channel}} ->
+            {:ok, channel}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+    end
+  end
+
+  def delete_playlist_title(playlist_title_uuid) do
+    {:ok, playlisttitleuuid} =
+      if playlist_title_uuid do
+        Ecto.UUID.dump(playlist_title_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(PlaylistTitle, uuid: playlisttitleuuid) do
+      # no playlist title by that uuid
+      nil ->
+        {:error, :not_found}
+
+      playlist_title ->
+        Repo.delete!(playlist_title)
+
+        {:ok, playlist_title}
+    end
+  end
+
+  def add_or_update_playlist(
+        ordinal,
+        basename,
+        small_thumbnail_path,
+        med_thumbnail_path,
+        large_thumbnail_path,
+        banner_path,
+        media_category,
+        localized_titles,
+        channel_id,
+        playlist_uuid \\ nil
+      ) do
+    {:ok, playlistuuid} =
+      if playlist_uuid do
+        Ecto.UUID.dump(playlist_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    # check if we already have the playlist
+    # if playlist is not present, ADD
+    # if playlist is present in db, UPDATE
+
+    case Repo.get_by(Playlist, uuid: playlistuuid) do
+      # add playlist
+      nil ->
+        changeset =
+          Playlist.changeset(
+            %Playlist{
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path
+            },
+            %{
+              ordinal: ordinal,
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              media_category: media_category,
+              channel_id: channel_id,
+              uuid: Ecto.UUID.generate()
+            }
+          )
+
+        Multi.new()
+        |> Multi.insert(:item_without_hash_id, changeset)
+        |> Multi.run(:playlist, fn _repo, %{item_without_hash_id: playlist} ->
+          playlist
+          |> Playlist.changeset_generate_hash_id()
+          |> Repo.update()
+        end)
+        # iterate over the localized_titles and add to db
+        # pass in playlist that was just inserted
+        |> Multi.run(:add_localized_titles, fn _repo, %{playlist: playlist} ->
+          maps =
+            for title <- localized_titles,
+                _ = Logger.debug("title #{inspect(%{attributes: title})}"),
+                {k, v} <- title do
+              IO.puts("#{k} --> #{v}")
+
+              Repo.insert(%PlaylistTitle{
+                language_id: k,
+                localizedname: v,
+                uuid: Ecto.UUID.generate(),
+                playlist_id: playlist.id
+              })
+            end
+
+          Logger.debug("maps #{inspect(%{attributes: maps})}")
+          {:ok, maps}
+        end)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{playlist: playlist}} ->
+            {:ok, playlist}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+
+      # update playlist
+      playlist ->
+        # changeset = User.changeset(user, params)
+
+        changeset =
+          Playlist.changeset(
+            %Playlist{
+              id: playlist.id
+            },
+            %{
+              uuid: playlist.uuid,
+              ordinal: ordinal,
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              media_category: media_category,
+              channel_id: channel_id,
+              updated_at: DateTime.utc_now()
+            }
+          )
+
+        Multi.new()
+        |> Multi.update(:playlist, changeset)
+
+        # iterate over the localized_titles and add/update to db
+        # pass in playlist that was just added/updated
+        |> Multi.run(:add_localized_titles, fn _repo, %{playlist: playlist} ->
+          maps =
+            for title <- localized_titles,
+                _ = Logger.debug("title #{inspect(%{attributes: title})}"),
+                {k, v} <- title do
+              IO.puts("#{k} --> #{v}")
+
+              # check if playlist title is already in db
+              title_query =
+                from(title in PlaylistTitle,
+                  where: title.language_id == ^k and title.playlist_id == ^playlist.id
+                )
+
+              one_title = Repo.one(title_query)
+
+              case one_title do
+                # playlist title is not in db, so add it
+                nil ->
+                  IO.inspect(one_title)
+
+                  Repo.insert(%PlaylistTitle{
+                    language_id: k,
+                    localizedname: v,
+                    uuid: Ecto.UUID.generate(),
+                    playlist_id: playlist.id
+                  })
+
+                title ->
+                  # playlist title IS in db, so update it
+                  IO.inspect(title)
+
+                  PlaylistTitle.changeset(
+                    %PlaylistTitle{
+                      id: title.id
+                    },
+                    %{
+                      uuid: title.uuid,
+                      language_id: k,
+                      localizedname: v,
+                      playlist_id: playlist.id,
+                      updated_at: DateTime.utc_now()
+                    }
+                  )
+                  |> Repo.update()
+              end
+            end
+
+          Logger.debug("maps #{inspect(%{attributes: maps})}")
+          {:ok, maps}
+        end)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{playlist: playlist}} ->
+            {:ok, playlist}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+    end
+  end
+
+  def delete_playlist(playlist_uuid) do
+    {:ok, playlistuuid} =
+      if playlist_uuid do
+        Ecto.UUID.dump(playlist_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Playlist, uuid: playlistuuid) do
+      # no playlist title by that uuid
+      nil ->
+        {:error, :not_found}
+
+      playlist ->
+        Repo.delete!(playlist)
+
+        {:ok, playlist}
+    end
+  end
+
+  def add_or_update_channel(
+        ordinal,
+        basename,
+        small_thumbnail_path,
+        med_thumbnail_path,
+        large_thumbnail_path,
+        banner_path,
+        org_id,
+        channel_uuid \\ nil
+      ) do
+    {:ok, channeluuid} =
+      if channel_uuid do
+        Ecto.UUID.dump(channel_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Channel, uuid: channeluuid) do
+      nil ->
+        changeset =
+          Channel.changeset(
+            %Channel{
+              ordinal: ordinal,
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path
+            },
+            %{
+              ordinal: ordinal,
+              basename: basename,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              org_id: org_id,
+              uuid: Ecto.UUID.generate()
+            }
+          )
+
+        Multi.new()
+        |> Multi.insert(:item_without_hash_id, changeset)
+        |> Multi.run(:channel, fn _repo, %{item_without_hash_id: channel} ->
+          channel
+          |> Channel.changeset_generate_hash_id()
+          |> Repo.update()
+        end)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{channel: channel}} ->
+            {:ok, channel}
+
+          {:error, _, error, _} ->
+            {:error, error}
+
+            # {:reply, {:error, ChangesetView.render("error.json", %{changeset: changeset})}, socket}
+            # {:reply, {:error, "Unknown error", socket}}
+        end
+
+      channel ->
+        changeset =
+          Channel.changeset(
+            %Channel{
+              id: channel.id
+            },
+            %{
+              ordinal: ordinal,
+              basename: basename,
+              org_id: org_id,
+              uuid: channel.uuid,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              updated_at: DateTime.utc_now()
+            }
+          )
+
+        Multi.new()
+        |> Multi.update(:channel, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{channel: channel}} ->
+            {:ok, channel}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+    end
+  end
+
   def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version) do
     case Repo.get_by(ClientDevice, firebase_token: fcm_token) do
       nil ->
@@ -271,16 +789,35 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def channels_by_org_uuid(orguuid, offset, limit) do
+  def channels_by_org_uuid(orguuid, offset, limit, updated_after) do
     # python
     # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
     {:ok, org_uuid} = Ecto.UUID.dump(orguuid)
+    Logger.debug("channel_uuid: #{updated_after}")
+
+    conditions = true
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([chn], chn.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
 
     query =
       from(channel in Channel,
         join: org in Org,
         where: org.uuid == ^org_uuid,
         where: org.id == channel.org_id,
+        where: ^conditions,
         order_by: channel.ordinal,
         select: %{
           basename: channel.basename,
@@ -288,6 +825,7 @@ defmodule FaithfulWordApi.V13 do
           org_uuid: org.uuid,
           ordinal: channel.ordinal,
           basename: channel.basename,
+          channel_id: channel.id,
           small_thumbnail_path: channel.small_thumbnail_path,
           med_thumbnail_path: channel.med_thumbnail_path,
           large_thumbnail_path: channel.large_thumbnail_path,
@@ -302,9 +840,60 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def playlists_by_channel_uuid(uuid_str, language_id, offset, limit) do
+  def playlist_details_by_uuid(uuid_str, offset, limit, updated_after) do
+    {:ok, playlist_uuid} = Ecto.UUID.dump(uuid_str)
+    Logger.debug("playlist_uuid: #{uuid_str}")
+    Logger.debug("channel_uuid: #{updated_after}")
+
+    conditions = true
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([det], det.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
+
+    Ecto.Query.from(pl in Playlist,
+      where: pl.uuid == ^playlist_uuid,
+      where: ^conditions,
+      preload: [:playlist_titles],
+      select: %{
+        playlist: pl
+      }
+    )
+    |> Repo.paginate(page: offset, page_size: limit)
+  end
+
+  def playlists_by_channel_uuid(uuid_str, language_id, offset, limit, updated_after) do
     {:ok, channel_uuid} = Ecto.UUID.dump(uuid_str)
     Logger.debug("channel_uuid: #{uuid_str}")
+    Logger.debug("channel_uuid: #{updated_after}")
+
+    conditions = true
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([playlists], playlists.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
 
     query =
       from(pl in Playlist,
@@ -314,8 +903,10 @@ defmodule FaithfulWordApi.V13 do
         where: ch.id == pl.channel_id,
         where: pl.id == pt.playlist_id,
         where: pt.language_id == ^language_id,
+        where: ^conditions,
         order_by: [pl.ordinal],
         select: %{
+          basename: pl.basename,
           localizedname: pt.localizedname,
           language_id: pt.language_id,
           ordinal: pl.ordinal,
@@ -326,6 +917,7 @@ defmodule FaithfulWordApi.V13 do
           media_category: pl.media_category,
           uuid: pl.uuid,
           channel_uuid: ch.uuid,
+          channel_id: ch.id,
           inserted_at: pl.inserted_at,
           updated_at: pl.updated_at,
           hash_id: pl.hash_id
@@ -337,9 +929,16 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
-  def media_items_by_playlist_uuid(playlist_uuid, language_id, offset \\ 0, limit \\ 0) do
+  def media_items_by_playlist_uuid(
+        playlist_uuid,
+        language_id,
+        offset \\ 0,
+        limit \\ 0,
+        updated_after
+      ) do
     {:ok, pid_uuid} = Ecto.UUID.dump(playlist_uuid)
     Logger.debug("pid_uuid: #{pid_uuid}")
+    Logger.debug("updated_after: #{updated_after}")
 
     category_and_multilanguage =
       Ecto.Query.from(playlist in Playlist,
@@ -353,7 +952,6 @@ defmodule FaithfulWordApi.V13 do
 
     {direction, sorting} =
       if category_and_multilanguage.media_category in special_categories do
-
         # do not use presented_at because many presented_at dates are identical
         {:desc, :inserted_at}
       else
@@ -370,6 +968,21 @@ defmodule FaithfulWordApi.V13 do
         # dynamic([mi], mi.language_id == ^language_id and ^conditions)
       else
         conditions
+      end
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([orgs], orgs.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
       end
 
     query =
@@ -450,25 +1063,36 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.one()
   end
 
-  def orgs_default_org(offset \\ 0, limit \\ 0) do
+  def orgs_default_org(offset \\ 0, limit \\ 0, updated_after) do
     # python
     # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
 
+    Logger.debug("updated_after: #{updated_after}")
+
+    conditions = true
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([orgs], orgs.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
+
     Ecto.Query.from(org in Org,
       where: org.shortname == "faithfulwordapp",
+      where: ^conditions,
+      preload: [:channels],
       order_by: org.id,
       select: %{
-        basename: org.basename,
-        uuid: org.uuid,
-        org_id: org.id,
-        small_thumbnail_path: org.small_thumbnail_path,
-        med_thumbnail_path: org.med_thumbnail_path,
-        large_thumbnail_path: org.large_thumbnail_path,
-        banner_path: org.banner_path,
-        inserted_at: org.inserted_at,
-        updated_at: org.updated_at,
-        shortname: org.shortname,
-        hash_id: org.hash_id
+        org: org
       }
     )
     |> Repo.paginate(page: offset, page_size: limit)

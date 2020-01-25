@@ -3,6 +3,33 @@ defmodule Db.Schema.MediaItem do
   import Ecto.Changeset
   alias Db.Type.MediaItemHashId
 
+  @derive {Jason.Encoder,
+           only: [
+             :localizedname,
+             :ordinal,
+             :small_thumbnail_path,
+             :med_thumbnail_path,
+             :large_thumbnail_path,
+             :banner_path,
+             :content_provider_link,
+             :ipfs_link,
+             :language_id,
+             :medium,
+             :path,
+             :presenter_name,
+             :uuid,
+             :channel_id,
+             :playlist_id,
+             :org_id,
+             :media_category,
+             :hash_id,
+             :multilanguage,
+             :presented_at,
+             :published_at,
+             :updated_at,
+             :inserted_at
+           ]}
+
   schema "mediaitems" do
     field :content_provider_link, :string
     field :ipfs_link, :string
@@ -25,13 +52,15 @@ defmodule Db.Schema.MediaItem do
     field :org_id, :integer
     field :published_at, :utc_datetime, null: true
     field :hash_id, :string
-    field :duration, :float, default: 0
+    field :duration, :float, default: 0.0
 
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(media_item, attrs) do
+    types = %{duration: :float}
+
     media_item
     |> cast(attrs, [
       :ordinal,
@@ -61,23 +90,23 @@ defmodule Db.Schema.MediaItem do
       :uuid,
       :playlist_id,
       :org_id,
-      :track_number,
-      :tags,
+      # :track_number,
+      # :tags,
       :media_category,
       :medium,
       :localizedname,
       :path,
-      :small_thumbnail_path,
-      :med_thumbnail_path,
-      :large_thumbnail_path,
-      :content_provider_link,
-      :ipfs_link,
-      :language_id,
-      :presenter_name,
-      :presented_at,
-      :source_material,
-      :hash_id,
-      :duration
+      # :small_thumbnail_path,
+      # :med_thumbnail_path,
+      # :large_thumbnail_path,
+      # :content_provider_link,
+      # :ipfs_link,
+      :language_id
+      # :presenter_name,
+      # :presented_at,
+      # :source_material,
+      # :hash_id,
+      # :duration
     ])
   end
 

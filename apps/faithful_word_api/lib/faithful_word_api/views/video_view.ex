@@ -20,7 +20,7 @@ defmodule FaithfulWordApi.VideoView do
       youtube_offset: video.youtube_offset,
       url: Db.Schema.Video.build_url(video),
       posted_at: video.inserted_at,
-      speakers: render_many(video.speakers, FaithfulWordApi.SpeakerView, "speaker.json"),
+      # speakers: render_many(video.speakers, FaithfulWordApi.SpeakerView, "speaker.json"),
       language: video.language,
       is_partner: video.is_partner,
       unlisted: video.unlisted
