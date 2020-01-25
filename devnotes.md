@@ -78,14 +78,14 @@ docker cp ./2019-11-10-media-item-seeded-not-materialized.pgsql faithfulword-phx
 docker exec -ti faithfulword-phx_postgres_1 bash
 docker exec -ti faithfulword-phx_faithful_word_1 bash
 
-psql -U faithful_word
+psql -U postgres
 <!-- drop database faithful_word;
 create database faithful_word; -->
 SET session_replication_role = replica;
 \q
 
-pg_restore -U faithful_word --clean --dbname=faithful_word 2019-11-10-media-item-seeded-not-materialized.pgsql
-psql -U faithful_word
+pg_restore -U postgres --clean --dbname=faithful_word 2019-11-10-media-item-seeded-not-materialized.pgsql
+psql -U postgres
 SET session_replication_role = DEFAULT;
 refresh materialized view media_items_search;
 exit
