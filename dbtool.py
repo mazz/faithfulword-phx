@@ -718,7 +718,7 @@ class Dbtool(object):
                                 'org_id': 1,
                                 'ordinal': row['mcabsolute_id']
                             }
-                            print("rowdict: {}".format(rowdict))
+                            # print("rowdict: {}".format(rowdict))
                             result.append(rowdict)
 
         with sourceconn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
@@ -886,7 +886,7 @@ class Dbtool(object):
                             'presented_at': datetime.datetime.now() - datetime.timedelta(days=3*365) if preaching_date is None else preaching_date,
                             'org_id': 1
                         }
-                        print("rowdict: {}".format(rowdict))
+                        # print("rowdict: {}".format(rowdict))
                         result.append(rowdict)
         return result
 
@@ -1279,7 +1279,7 @@ class Dbtool(object):
                                 'presented_at': None,
                                 'org_id': 1
                             }
-                            print("rowdict: {}".format(rowdict))
+                            # print("rowdict: {}".format(rowdict))
                             result.append(rowdict)
         return result
 

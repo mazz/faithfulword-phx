@@ -34,6 +34,7 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   version: Application.spec(:faithful_word_api, :vsn)
+  # code_reloader: false
 
 # General #####################################################################
 

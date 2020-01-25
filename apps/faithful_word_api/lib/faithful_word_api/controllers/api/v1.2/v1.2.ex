@@ -23,6 +23,10 @@ defmodule FaithfulWordApi.V12 do
 
     Logger.debug("lang #{inspect(%{attributes: languages})}")
 
+    youtube_key = System.get_env("FW_YOUTUBE_API_KEY")
+    Logger.debug("lang #{inspect(%{attributes: youtube_key})}")
+
+
     if !Enum.empty?(languages) do
       # python
       # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()
