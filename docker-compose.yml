@@ -20,7 +20,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
       - "traefik.http.routers.traefik.rule=Host(`proxy.objectaaron.com`)"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$apr1$se9V4kJV$WK3Tl27Rf1UKJs1JkOXQQ1"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$apr1$owqsude9$roVCgczVB/nQejSiLTlAz1"
       - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
       - "traefik.http.routers.traefik-secure.entrypoints=https"
