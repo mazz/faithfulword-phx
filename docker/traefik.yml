@@ -15,7 +15,7 @@ providers:
 certificatesResolvers:
   http:
     acme:
-      email: michaelkhanna@gmail.com
+      email: faithfulaudiodev@gmail.com
       storage: acme.json
       httpChallenge:
         entryPoint: http
