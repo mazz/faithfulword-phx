@@ -23,6 +23,9 @@ defmodule FaithfulWordApi.Application do
     &FaithfulWordApi.RepoInstrumenter.handle_event/4,
     nil
   )
+
+  FaithfulWordApi.Metrics.setup()
+
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts

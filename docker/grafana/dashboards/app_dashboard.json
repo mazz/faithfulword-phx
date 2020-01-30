@@ -120,7 +120,7 @@
       },
       "targets": [
         {
-          "expr": "elixir_app_zip_code_search",
+          "expr": "faithful_word_app_media_item_search",
           "format": "table",
           "instant": true,
           "refId": "A"
