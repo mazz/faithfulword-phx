@@ -1,4 +1,4 @@
-FROM bitwalker/alpine-elixir-phoenix:1.9.0 as releaser
+FROM bitwalker/alpine-elixir-phoenix:1.9.4 as releaser
 
 WORKDIR /app
 
@@ -31,7 +31,7 @@ RUN MIX_ENV=prod mix release
 
 ########################################################################
 
-FROM bitwalker/alpine-elixir-phoenix:1.9.0
+FROM bitwalker/alpine-elixir-phoenix:1.9.4
 
 EXPOSE 4000
 ENV FW_PORT=4000 \
