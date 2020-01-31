@@ -152,3 +152,4 @@ volumes:
   proxy-certificates-storage:
   database-storage:
   prometheus-data: {}
+  grafana-data: {}
