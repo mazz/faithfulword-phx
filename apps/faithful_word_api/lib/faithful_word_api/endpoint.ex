@@ -51,5 +51,9 @@ defmodule FaithfulWordApi.Endpoint do
     key: "_faithful_word_api_key",
     signing_salt: "kTTPuGj0"
 
+  # Creates the /metrics endpoint for prometheus & collect stats
+  plug FaithfulWordApi.PrometheusExporter
+  plug FaithfulWordApi.PipelineInstrumenter
+
   plug FaithfulWordApi.Router
 end

@@ -88,7 +88,27 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   check_origin: ["//localhost", "//japheth.ca"],
   secret_key_base: System.get_env("FW_SECRET_KEY_BASE"),
   render_errors: [view: FaithfulWordApi.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: FaithfulWordApi.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: FaithfulWordApi.PubSub, adapter: Phoenix.PubSub.PG2],
+  instrumenters: [FaithfulWordApi.PhoenixInstrumenter]
+
+config :prometheus, FaithfulWordApi.PipelineInstrumenter,
+  labels: [:status_class, :method, :host, :scheme, :request_path],
+  duration_buckets: [
+    10,
+    100,
+    1_000,
+    10_000,
+    100_000,
+    300_000,
+    500_000,
+    750_000,
+    1_000_000,
+    1_500_000,
+    2_000_000,
+    3_000_000
+  ],
+  registry: :default,
+  duration_unit: :microseconds
 
 config :faithful_word_api, FaithfulWordApi.Guardian,
   issuer: "FaithfulWordApi",
