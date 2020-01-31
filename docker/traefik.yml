@@ -16,6 +16,6 @@ certificatesResolvers:
   http:
     acme:
       email: faithfulaudiodev@gmail.com
-      storage: acme.json
+      storage: certificates/acme.json
       httpChallenge:
         entryPoint: http
