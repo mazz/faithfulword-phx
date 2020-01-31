@@ -19,3 +19,6 @@ certificatesResolvers:
       storage: certificates/acme.json
       httpChallenge:
         entryPoint: http
+log:
+  level:
+    DEBUG
