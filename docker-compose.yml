@@ -71,6 +71,28 @@ services:
       - "traefik.http.routers.faithful_word_umbrella-secure.service=faithful_word_umbrella"
       - "traefik.http.services.faithful_word_umbrella.loadbalancer.server.port=4000"
       - "traefik.docker.network=proxy-network"
+  prometheus:
+    image: prom/prometheus:v2.11.2
+    ports:
+      - '9090:9090'
+    restart: unless-stopped
+    depends_on:
+      - proxy
+    networks:
+      - proxy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=9090"
+      - "traefik.https.routers.prometheus.entrypoints=https"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+    volumes:
+      - "./docker/prometheus/:/etc/prometheus/"
+      - "prometheus-data:/prometheus"
+    command: |
+        --config.file=/etc/prometheus/config.yml
+        --storage.tsdb.path=/prometheus
+        --web.console.libraries=/usr/share/prometheus/console_libraries
+        --web.console.templates=/usr/share/prometheus/consoles
 networks:
   db-network:
   proxy-network:
@@ -79,3 +101,4 @@ networks:
 volumes:
   proxy-certificates-storage:
   database-storage:
+  prometheus-data: {}
