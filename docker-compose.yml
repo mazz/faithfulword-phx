@@ -1,45 +1,35 @@
 version: '3.7'
-
 services:
   proxy:
-    image: traefik:v1.7
+    image: traefik:v2.1
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy-network
     ports:
       - 80:80
       - 443:443
-    networks:
-      - proxy-network
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      # - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/traefik.yml:/traefik.yml:ro
+      # - ./docker/acme.json:/acme.json
       - proxy-certificates-storage:/certificates
-    command: >
-      --docker
-      --docker.watch
-      --docker.exposedbydefault=false
-      --constraints=tag==proxy-public
-      --entrypoints='Name:http Address::80'
-      --entrypoints='Name:https Address::443 TLS'
-      --acme
-      --acme.email=${EMAIL?Variable EMAIL not set}
-      --acme.storage="certificates/acme.json"
-      --acme.entryPoint=https
-      --acme.httpChallenge.entryPoint=http
-      --acme.onhostrule=true
-      --acme.acmelogging=true
-      --logLevel=INFO
-      --accessLog
-      --api
     labels:
-      - traefik.frontend.rule=Host:proxy.${DOMAIN?Variable DOMAIN not set}
-      - traefik.enable=true
-      - traefik.port=8080
-      - traefik.tags=proxy-public
-      - traefik.docker.network=proxy-network
-      # Traefik service that listens to HTTP
-      - traefik.redirectorservice.frontend.entryPoints=http
-      - traefik.redirectorservice.frontend.redirect.entryPoint=https
-      # Traefik service that listens to HTTPS
-      - traefik.webservice.frontend.entryPoints=https
-      - traefik.frontend.auth.basic.users=${TKUSERNAME?Variable TKUSERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`proxy.${DOMAIN?Variable DOMAIN not set}`)"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TKUSERNAME?Variable TKUSERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`proxy.${DOMAIN?Variable DOMAIN not set}`)"
+      - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=http"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
 
   postgres:
     image: postgres:12.1-alpine
@@ -53,7 +43,8 @@ services:
       - database-storage:/var/lib/postgresql/data
 
   faithful_word_umbrella:
-    restart: on-failure
+    container_name: faithful_word_umbrella
+    restart: unless-stopped
     build: .
     image: faithful_word_umbrella
     ports:
@@ -67,17 +58,91 @@ services:
       - db-network
       - proxy-network
     labels:
-      - traefik.frontend.rule=Host:${DOMAIN?Variable DOMAIN not set}
-      - traefik.enable=true
-      - traefik.port=4000
-      - traefik.tags=proxy-public
-      - traefik.docker.network=proxy-network
-      # Traefik service that listens to HTTP
-      - traefik.redirectorservice.frontend.entryPoints=http
-      - traefik.redirectorservice.frontend.redirect.entryPoint=https
-      # Traefik service that listens to HTTPS
-      - traefik.webservice.frontend.entryPoints=https
-
+      - "traefik.enable=true"
+      - "traefik.port=4000"
+      - "traefik.http.routers.faithful_word_umbrella.entrypoints=http"
+      - "traefik.http.routers.faithful_word_umbrella.rule=Host(`${DOMAIN?Variable DOMAIN not set}`)"
+      - "traefik.http.middlewares.faithful_word_umbrella-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.faithful_word_umbrella.middlewares=faithful_word_umbrella-https-redirect"
+      - "traefik.http.routers.faithful_word_umbrella-secure.entrypoints=https"
+      - "traefik.http.routers.faithful_word_umbrella-secure.rule=Host(`${DOMAIN?Variable DOMAIN not set}`)"
+      - "traefik.http.routers.faithful_word_umbrella-secure.tls=true"
+      - "traefik.http.routers.faithful_word_umbrella-secure.tls.certresolver=http"
+      - "traefik.http.routers.faithful_word_umbrella-secure.service=faithful_word_umbrella"
+      - "traefik.http.services.faithful_word_umbrella.loadbalancer.server.port=4000"
+      - "traefik.docker.network=proxy-network"
+  prometheus:
+    image: prom/prometheus:v2.11.2
+    ports:
+      - '9090:9090'
+    restart: unless-stopped
+    depends_on:
+      - proxy
+    networks:
+      - proxy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=9090"
+      - "traefik.https.routers.prometheus.entrypoints=https"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+    volumes:
+      - "./docker/prometheus/:/etc/prometheus/"
+      - "prometheus-data:/prometheus"
+    command: |
+        --config.file=/etc/prometheus/config.yml
+        --storage.tsdb.path=/prometheus
+        --web.console.libraries=/usr/share/prometheus/console_libraries
+        --web.console.templates=/usr/share/prometheus/consoles
+  grafana:
+    image: grafana/grafana:6.3.3
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+      - proxy
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./docker/grafana/:/etc/grafana/provisioning/
+      - /var/run/docker.sock:/var/run/docker.sock
+      # - proxy-certificates-storage:/certificates
+    env_file:
+      - ./docker/grafana/.env
+    networks:
+      - proxy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=3000"
+      - "traefik.http.routers.grafana.entrypoints=http"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
+      - "traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.grafana.middlewares=grafana-https-redirect"
+      - "traefik.http.routers.grafana-secure.entrypoints=https"
+      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
+      - "traefik.http.routers.grafana-secure.tls=true"
+      - "traefik.http.routers.grafana-secure.tls.certresolver=http"
+      - "traefik.http.routers.grafana-secure.service=grafana"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy-network"
+  postgres_exporter:
+    image: wrouesnel/postgres_exporter:v0.5.1
+    ports:
+      - '9187:9187'
+    depends_on:
+      - postgres
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=9187"
+      - "traefik.https.routers.postgres_exporter.entrypoints=https"
+      - "traefik.http.services.postgres_exporter.loadbalancer.server.port=9187"
+    environment:
+      DATA_SOURCE_USER: ${FW_DATABASE_USERNAME?Variable FW_DATABASE_USERNAME not set}
+      DATA_SOURCE_PASS: ${FW_DATABASE_PASSWORD?Variable FW_DATABASE_PASSWORD not set}
+      DATA_SOURCE_URI: ${FW_DATABASE_HOSTNAME?Variable FW_DATABASE_HOSTNAME not set}:5432/?sslmode=disable
+    networks:
+      - db-network
+      - proxy-network
 networks:
   db-network:
   proxy-network:
@@ -86,3 +151,5 @@ networks:
 volumes:
   proxy-certificates-storage:
   database-storage:
+  prometheus-data: {}
+  grafana-data: {}

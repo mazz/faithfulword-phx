@@ -71,7 +71,7 @@ FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py
 # 2020-01-24-media-item-bin-v1.3.sql
 ### export db as a complete seeded file to production:
 ```
-./dbtool.py exportdb faithful_word_dev /usr/bin 2019-11-10-media-item-seeded-not-materialized.pgsql
+./dbtool.py exportdb faithful_word_dev /Applications/Postgres.app/Contents/Versions/12/bin 2020-01-24-media-item-bin-v1.3-seeded-mat.sql
 ```
 ### run
 FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix phx.server
