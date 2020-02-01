@@ -4,57 +4,76 @@ defmodule FaithfulWord.PushNotifications do
   """
   import Ecto.Query, warn: false
   alias Db.Repo
-  alias Db.Schema.PushMessage
+  alias Db.Schema.{PushMessage, ClientDevice, MediaItem}
+
   require Logger
 
   def send_pushmessage_now(message) do
+    # push to all_devices
+    # TODO: only push to devices for an org_id
 
-    # case Repo.get_by(ClientDevice, firebase_token: fcm_token) do
-    #   nil ->
-    #     ClientDevice.changeset(%ClientDevice{}, %{
-    #       apns_token: apns_token,
-    #       firebase_token: fcm_token,
-    #       preferred_language: preferred_language,
-    #       user_agent: user_agent,
-    #       user_version: user_version,
-    #       uuid: Ecto.UUID.generate()
-    #     })
-    #     |> Repo.insert()
+    fw_hostname = System.get_env("FW_HOSTNAME")
+    Logger.debug("fw_hostname #{inspect(%{attributes: fw_hostname})}")
 
-    #   client_device ->
-    #     ClientDevice.changeset(%ClientDevice{id: client_device.id}, %{
-    #       apns_token: apns_token,
-    #       firebase_token: fcm_token,
-    #       preferred_language: preferred_language,
-    #       user_agent: user_agent,
-    #       user_version: user_version,
-    #       uuid: client_device.uuid
-    #     })
-    #     |> Repo.update()
-    # end
 
-    [
-      "fo6cdLGfU7k:APA91bHKQ3d7l8z6JlepC-xX4iUWicuNNxlAq7GNpVogSv47Nb2gkF2DBME6NFAomtiae-8QVkOvNZQbsM-9GqutPj1a94OKL_sG9OAb9qBbMhH81-6yo7v7MGYhkI7aUF5LD09JHZ_w"
-    ]
-    |> Pigeon.FCM.Notification.new()
-    |> Pigeon.FCM.Notification.put_notification(%{
-      "title" => message.title,
-      "body" => message.message
-    })
-    |> Pigeon.FCM.Notification.put_data(%{
-      "deeplink" => "https://site/m/j4X8",
-      "media_type" => "mediaitem",
-      "media_uuid" => "82d66cbb-ae6a-4b4e-bbf5-39ee2bb4fc0e",
-      "org_uuid" => "fwbcapp",
-      "image_thumbnail_path" => "thumbs/lg/0005-0026-Psalm81-en.jpg",
-      "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg",
-      "mutable-content" => true,
-      "version" => "1.3"
-    })
-    |> Pigeon.FCM.Notification.put_mutable_content(true)
-    |> Pigeon.FCM.push(on_response: &handle_push/1)
+    Repo.all(ClientDevice)
+      |> Enum.map(fn(device) -> device.firebase_token end)
+      |> Pigeon.FCM.Notification.new()
+      |> Pigeon.FCM.Notification.put_notification(%{
+        "title" => message.title,
+        "body" => message.message
+      })
+      |> Pigeon.FCM.Notification.put_data(%{
+        "push_message_uuid" => message.uuid,
+        "deep_link_route" => "/fwbcapp/push_message/#{message.uuid}",
+        "short_url" => "https://#{fw_hostname}/push_message_hashid",
+        "media_type" => "push_message",
+        "image_thumbnail_path" => "thumbs/lg/0005-0026-Psalm81-en.jpg",
+        "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg",
+        "mutable-content" => true,
+        "version" => "1.3"
+      })
+      |> Pigeon.FCM.Notification.put_mutable_content(true)
+      |> Pigeon.FCM.push(on_response: &handle_push/1)
+  end
 
-    # |> Pigeon.FCM.push()
+  def send_pushmessage_now(message, media_item_uuid) do
+    case Repo.get_by(MediaItem, uuid: media_item_uuid) do
+      # add media_item
+      nil ->
+        Logger.debug("could not find media item with uuid: #{inspect(%{attributes: media_item_uuid})}")
+
+      media_item ->
+        Logger.debug("found media item with uuid: #{inspect(%{attributes: media_item_uuid})}")
+
+        # push to all_devices
+        # TODO: only push to devices for an org_id
+
+        fw_hostname = System.get_env("FW_HOSTNAME")
+        Logger.debug("fw_hostname #{inspect(%{attributes: fw_hostname})}")
+
+        Repo.all(ClientDevice)
+          |> Enum.map(fn(device) -> device.firebase_token end)
+          |> Pigeon.FCM.Notification.new()
+          |> Pigeon.FCM.Notification.put_notification(%{
+            "title" => message.title,
+            "body" => message.message
+          })
+          |> Pigeon.FCM.Notification.put_data(%{
+            "push_message_uuid" => message.uuid,
+            "deep_link_route" => "/fwbcapp/media_item/#{media_item.uuid}",
+            "short_url" => "https://#{fw_hostname}/m/#{media_item.hash_id}",
+            "hash_id" => media_item.hash_id,
+            "media_type" => "media_item",
+            "media_uuid" => media_item.uuid,
+            "image_thumbnail_path" => media_item.large_thumbnail_path,
+            "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg",
+            "mutable-content" => true,
+            "version" => "1.3"
+          })
+          |> Pigeon.FCM.Notification.put_mutable_content(true)
+          |> Pigeon.FCM.push(on_response: &handle_push/1)
+    end
   end
 
   def handle_push(%Pigeon.FCM.Notification{status: :success} = notif) do

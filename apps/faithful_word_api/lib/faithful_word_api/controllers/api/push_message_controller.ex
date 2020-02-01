@@ -18,10 +18,13 @@ defmodule FaithfulWordApi.PushMessageController do
 
   # post "/send", PushMessageController, :sendv13
 
-  def send(conn, %{
+  def send(conn, params = %{
         "message_uuid" => message_uuid
       }) do
-    V13.send_push_message(message_uuid)
+
+        media_item_uuid = Map.get(params, "media_item_uuid", nil)
+
+    V13.send_push_message(message_uuid, media_item_uuid)
     |> case do
       {:error, _changeset} ->
         put_status(conn, 403)

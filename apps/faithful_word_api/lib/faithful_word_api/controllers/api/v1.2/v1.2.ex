@@ -23,9 +23,6 @@ defmodule FaithfulWordApi.V12 do
 
     Logger.debug("lang #{inspect(%{attributes: languages})}")
 
-    youtube_key = System.get_env("FW_YOUTUBE_API_KEY")
-    Logger.debug("lang #{inspect(%{attributes: youtube_key})}")
-
 
     if !Enum.empty?(languages) do
       # python
