@@ -991,7 +991,7 @@ defmodule FaithfulWordApi.V13 do
         where: pl.uuid == ^pid_uuid,
         where: mi.playlist_id == pl.id,
         where: ^conditions,
-        # where: mi.language_id == ^language_id,
+        where: mi.language_id == ^language_id,
         order_by: [{^direction, field(mi, ^sorting)}],
         select: %{
           ordinal: mi.ordinal,
