@@ -18,10 +18,13 @@ defmodule FaithfulWordApi.PushMessageController do
 
   # post "/send", PushMessageController, :sendv13
 
-  def send(conn, %{
+  def send(conn, params = %{
         "message_uuid" => message_uuid
       }) do
-    V13.send_push_message(message_uuid)
+
+        media_item_uuid = Map.get(params, "media_item_uuid", nil)
+
+    V13.send_push_message(message_uuid, media_item_uuid)
     |> case do
       {:error, _changeset} ->
         put_status(conn, 403)
@@ -50,10 +53,12 @@ defmodule FaithfulWordApi.PushMessageController do
     # |> GuardianImpl.Plug.current_resource()
     # optional params
     message_uuid = Map.get(params, "message_uuid", nil)
+    thumbnail_path = Map.get(params, "thumbnail_path", nil)
 
     V13.add_or_update_push_message(
       title,
       message,
+      thumbnail_path,
       org_id,
       message_uuid
     )

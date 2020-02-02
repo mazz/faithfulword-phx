@@ -38,9 +38,10 @@ defmodule FaithfulWordApi.ClientDeviceController do
         "apnsToken" => apns_token,
         "preferredLanguage" => preferred_language,
         "userAgent" => user_agent,
-        "userVersion" => user_version
+        "userVersion" => user_version,
+        "orgId" => org_id
       }) do
-    V13.add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version)
+    V13.add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version, org_id)
     |> case do
       nil ->
         put_status(conn, 403)

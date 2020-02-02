@@ -250,6 +250,7 @@ defmodule FaithfulWordApi.V13 do
   def add_or_update_push_message(
         title,
         message,
+        thumbnail_path,
         org_id,
         message_uuid \\ nil
       ) do
@@ -266,6 +267,7 @@ defmodule FaithfulWordApi.V13 do
           PushMessage.changeset(%PushMessage{}, %{
             title: title,
             message: message,
+            thumbnail_path: thumbnail_path,
             org_id: org_id,
             uuid: Ecto.UUID.generate()
           })
@@ -287,6 +289,7 @@ defmodule FaithfulWordApi.V13 do
             message: message,
             title: title,
             updated_at: DateTime.utc_now(),
+            thumbnail_path: thumbnail_path,
             org_id: org_id,
             uuid: push_message.uuid,
             sent: push_message.sent
@@ -305,7 +308,7 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def send_push_message(message_uuid) do
+  def send_push_message(message_uuid, media_item_uuid) when is_nil(media_item_uuid) do
     {:ok, messageuuid} = Ecto.UUID.dump(message_uuid)
 
     case Repo.get_by(PushMessage, uuid: messageuuid) do
@@ -319,6 +322,41 @@ defmodule FaithfulWordApi.V13 do
           PushMessage.changeset(%PushMessage{id: push_message.id}, %{
             message: push_message.message,
             title: push_message.title,
+            thumbnail_path: push_message.thumbnail_path,
+            updated_at: DateTime.utc_now(),
+            org_id: push_message.org_id,
+            uuid: push_message.uuid,
+            sent: true
+          })
+
+        Multi.new()
+        |> Multi.update(:push_message, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{push_message: push_message}} ->
+            {:ok, push_message}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+    end
+  end
+
+  def send_push_message(message_uuid, media_item_uuid) do
+    {:ok, messageuuid} = Ecto.UUID.dump(message_uuid)
+
+    case Repo.get_by(PushMessage, uuid: messageuuid) do
+      nil ->
+        {:error, :not_found}
+
+      push_message ->
+        PushNotifications.send_pushmessage_now(push_message, media_item_uuid)
+
+        changeset =
+          PushMessage.changeset(%PushMessage{id: push_message.id}, %{
+            message: push_message.message,
+            title: push_message.title,
+            thumbnail_path: push_message.thumbnail_path,
             updated_at: DateTime.utc_now(),
             org_id: push_message.org_id,
             uuid: push_message.uuid,
@@ -763,7 +801,7 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
-  def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version) do
+  def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version, org_id) do
     case Repo.get_by(ClientDevice, firebase_token: fcm_token) do
       nil ->
         ClientDevice.changeset(%ClientDevice{}, %{
@@ -772,6 +810,7 @@ defmodule FaithfulWordApi.V13 do
           preferred_language: preferred_language,
           user_agent: user_agent,
           user_version: user_version,
+          org_id: org_id,
           uuid: Ecto.UUID.generate()
         })
         |> Repo.insert()
@@ -783,6 +822,7 @@ defmodule FaithfulWordApi.V13 do
           preferred_language: preferred_language,
           user_agent: user_agent,
           user_version: user_version,
+          org_id: org_id,
           uuid: client_device.uuid
         })
         |> Repo.update()
@@ -991,7 +1031,7 @@ defmodule FaithfulWordApi.V13 do
         where: pl.uuid == ^pid_uuid,
         where: mi.playlist_id == pl.id,
         where: ^conditions,
-        # where: mi.language_id == ^language_id,
+        where: mi.language_id == ^language_id,
         order_by: [{^direction, field(mi, ^sorting)}],
         select: %{
           ordinal: mi.ordinal,
