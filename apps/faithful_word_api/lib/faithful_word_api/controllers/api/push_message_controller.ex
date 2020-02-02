@@ -46,7 +46,6 @@ defmodule FaithfulWordApi.PushMessageController do
         params = %{
           "title" => title,
           "message" => message,
-          "thumbnail_path" => thumbnail_path,
           "org_id" => org_id
         }
       ) do
@@ -54,6 +53,7 @@ defmodule FaithfulWordApi.PushMessageController do
     # |> GuardianImpl.Plug.current_resource()
     # optional params
     message_uuid = Map.get(params, "message_uuid", nil)
+    thumbnail_path = Map.get(params, "thumbnail_path", nil)
 
     V13.add_or_update_push_message(
       title,
