@@ -46,6 +46,7 @@ defmodule FaithfulWordApi.PushMessageController do
         params = %{
           "title" => title,
           "message" => message,
+          "thumbnail_path" => thumbnail_path,
           "org_id" => org_id
         }
       ) do
@@ -57,6 +58,7 @@ defmodule FaithfulWordApi.PushMessageController do
     V13.add_or_update_push_message(
       title,
       message,
+      thumbnail_path,
       org_id,
       message_uuid
     )

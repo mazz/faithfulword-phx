@@ -250,6 +250,7 @@ defmodule FaithfulWordApi.V13 do
   def add_or_update_push_message(
         title,
         message,
+        thumbnail_path,
         org_id,
         message_uuid \\ nil
       ) do
@@ -266,6 +267,7 @@ defmodule FaithfulWordApi.V13 do
           PushMessage.changeset(%PushMessage{}, %{
             title: title,
             message: message,
+            thumbnail_path: thumbnail_path,
             org_id: org_id,
             uuid: Ecto.UUID.generate()
           })
@@ -287,6 +289,7 @@ defmodule FaithfulWordApi.V13 do
             message: message,
             title: title,
             updated_at: DateTime.utc_now(),
+            thumbnail_path: thumbnail_path,
             org_id: org_id,
             uuid: push_message.uuid,
             sent: push_message.sent
@@ -319,6 +322,7 @@ defmodule FaithfulWordApi.V13 do
           PushMessage.changeset(%PushMessage{id: push_message.id}, %{
             message: push_message.message,
             title: push_message.title,
+            thumbnail_path: push_message.thumbnail_path,
             updated_at: DateTime.utc_now(),
             org_id: push_message.org_id,
             uuid: push_message.uuid,
@@ -352,6 +356,7 @@ defmodule FaithfulWordApi.V13 do
           PushMessage.changeset(%PushMessage{id: push_message.id}, %{
             message: push_message.message,
             title: push_message.title,
+            thumbnail_path: push_message.thumbnail_path,
             updated_at: DateTime.utc_now(),
             org_id: push_message.org_id,
             uuid: push_message.uuid,

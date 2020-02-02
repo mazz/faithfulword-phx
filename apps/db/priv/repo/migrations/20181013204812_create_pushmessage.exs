@@ -8,6 +8,7 @@ defmodule Db.Repo.Migrations.CreatePushmessage do
       # add :updated_at, :utc_datetime
       add :title, :string
       add :message, :string, size: 4096
+      add :thumbnail_path, :string
       add :sent, :boolean, default: false, null: false
 
       timestamps(type: :utc_datetime)

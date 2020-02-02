@@ -15,7 +15,10 @@ defmodule FaithfulWord.PushNotifications do
     fw_hostname = System.get_env("FW_HOSTNAME")
     Logger.debug("fw_hostname #{inspect(%{attributes: fw_hostname})}")
 
-    edge_content = System.get_env("EDGE_CONTENT_ROOT")
+    edge_content = System.get_env("FW_EDGE_CONTENT_ROOT")
+
+    # if the pushmessage does not have a custom thumbnail path, use the "default" creation-lrg.png
+    image_thumbnail_url = if (message.thumbnail_path == nil), do: "#{edge_content}/img/thumb/mi/lrg/creation-lrg.png", else: "#{edge_content}/#{message.thumbnail_path}"
 
     Repo.all(ClientDevice)
       |> Enum.map(fn(device) -> device.firebase_token end)
@@ -30,7 +33,7 @@ defmodule FaithfulWord.PushNotifications do
         "short_url" => "https://#{fw_hostname}/push_message_hashid",
         "media_type" => "push_message",
         "image_thumbnail_path" => "thumbs/lg/0005-0026-Psalm81-en.jpg",
-        "image_thumbnail_url" => "#{edge_content}/img/thumb/mi/lrg/creation-lrg.png",
+        "image_thumbnail_url" => image_thumbnail_url,
         "mutable-content" => true,
         "version" => "1.3"
       })
@@ -40,7 +43,6 @@ defmodule FaithfulWord.PushNotifications do
 
   def send_pushmessage_now(message, media_item_uuid) do
     case Repo.get_by(MediaItem, uuid: media_item_uuid) do
-      # add media_item
       nil ->
         Logger.debug("could not find media item with uuid: #{inspect(%{attributes: media_item_uuid})}")
 
@@ -52,7 +54,10 @@ defmodule FaithfulWord.PushNotifications do
 
         fw_hostname = System.get_env("FW_HOSTNAME")
         Logger.debug("fw_hostname #{inspect(%{attributes: fw_hostname})}")
-        edge_content = System.get_env("EDGE_CONTENT_ROOT")
+        edge_content = System.get_env("FW_EDGE_CONTENT_ROOT")
+
+        # if the pushmessage does not have a custom thumbnail path, use the "default" creation-lrg.png
+        image_thumbnail_url = if (message.thumbnail_path == nil), do: "#{edge_content}/img/thumb/mi/lrg/creation-lrg.png", else: "#{edge_content}/#{message.thumbnail_path}"
 
         Repo.all(ClientDevice)
           |> Enum.map(fn(device) -> device.firebase_token end)
@@ -69,7 +74,7 @@ defmodule FaithfulWord.PushNotifications do
             "media_type" => "media_item",
             "media_uuid" => media_item.uuid,
             "image_thumbnail_path" => media_item.large_thumbnail_path,
-            "image_thumbnail_url" => "#{edge_content}/img/thumb/mi/lrg/creation-lrg.png",
+            "image_thumbnail_url" => image_thumbnail_url,
             "mutable-content" => true,
             "version" => "1.3"
           })
