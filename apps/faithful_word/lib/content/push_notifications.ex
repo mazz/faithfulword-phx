@@ -15,6 +15,7 @@ defmodule FaithfulWord.PushNotifications do
     fw_hostname = System.get_env("FW_HOSTNAME")
     Logger.debug("fw_hostname #{inspect(%{attributes: fw_hostname})}")
 
+    edge_content = System.get_env("EDGE_CONTENT_ROOT")
 
     Repo.all(ClientDevice)
       |> Enum.map(fn(device) -> device.firebase_token end)
@@ -29,7 +30,7 @@ defmodule FaithfulWord.PushNotifications do
         "short_url" => "https://#{fw_hostname}/push_message_hashid",
         "media_type" => "push_message",
         "image_thumbnail_path" => "thumbs/lg/0005-0026-Psalm81-en.jpg",
-        "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg",
+        "image_thumbnail_url" => "#{edge_content}/img/thumb/mi/lrg/creation-lrg.png",
         "mutable-content" => true,
         "version" => "1.3"
       })
@@ -51,6 +52,7 @@ defmodule FaithfulWord.PushNotifications do
 
         fw_hostname = System.get_env("FW_HOSTNAME")
         Logger.debug("fw_hostname #{inspect(%{attributes: fw_hostname})}")
+        edge_content = System.get_env("EDGE_CONTENT_ROOT")
 
         Repo.all(ClientDevice)
           |> Enum.map(fn(device) -> device.firebase_token end)
@@ -67,7 +69,7 @@ defmodule FaithfulWord.PushNotifications do
             "media_type" => "media_item",
             "media_uuid" => media_item.uuid,
             "image_thumbnail_path" => media_item.large_thumbnail_path,
-            "image_thumbnail_url" => "https://i.ytimg.com/vi/zPNyuv3fw_4/hqdefault.jpg",
+            "image_thumbnail_url" => "#{edge_content}/img/thumb/mi/lrg/creation-lrg.png",
             "mutable-content" => true,
             "version" => "1.3"
           })
