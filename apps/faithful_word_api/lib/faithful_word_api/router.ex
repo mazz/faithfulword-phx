@@ -107,13 +107,17 @@ defmodule FaithfulWordApi.Router do
           get "/:uuid/playlists", PlaylistController, :indexv13
         end
 
-        scope "/playlist" do
+        scope "/playlists" do
           get "/:uuid/details", PlaylistController, :detailsv13
         end
 
         scope "/playlists" do
           # post "/add", PlaylistController, :addv13
           get "/:uuid/media", MediaItemController, :indexv13
+        end
+
+        scope "/mediaitem" do
+          get "/:uuid/details", MediaItemController, :detailsv13
         end
 
         scope "/search" do

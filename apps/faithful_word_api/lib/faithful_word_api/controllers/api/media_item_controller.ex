@@ -125,4 +125,24 @@ defmodule FaithfulWordApi.MediaItemController do
         end
     end
   end
+
+  def detailsv13(conn, %{"uuid" => uuid_str} ) do
+
+    V13.media_item_details_by_uuid(uuid_str)
+    |> case do
+      {:error, nil} ->
+        put_status(conn, 403)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
+
+      {:ok, media_item_v13} ->
+        Logger.debug("media_item_v13 #{inspect(%{attributes: media_item_v13})}")
+        conn
+        |> put_view(MediaItemV13View)
+        |> render("addv13.json", %{
+          media_item_v13: media_item_v13,
+          api_version: "1.3"
+        })
+    end
+  end
 end
