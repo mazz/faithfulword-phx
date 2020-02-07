@@ -1136,7 +1136,7 @@ defmodule FaithfulWordApi.V13 do
           published_at: mi.published_at,
           hash_id: mi.hash_id,
           playlist_uuid: pl.uuid,
-          playlist_id: pl.id,
+          # playlist_id: pl.id,
           duration: mi.duration
         }
       )
