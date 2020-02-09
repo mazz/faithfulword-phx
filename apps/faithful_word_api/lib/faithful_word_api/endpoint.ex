@@ -17,7 +17,7 @@ defmodule FaithfulWordApi.Endpoint do
 
   plug Plug.Static,
     at: "/.well-known",
-    from: {:faithful_word_api, "priv/static/well-known"},
+    from: :faithful_word_api,
     gzip: false,
     content_types: %{"apple-app-site-association" => "application/json"}
 
