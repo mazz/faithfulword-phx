@@ -15,6 +15,13 @@ defmodule FaithfulWordApi.Endpoint do
     gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt .well-known)
 
+  plug Plug.Static,
+    at: "/.well-known",
+    from: {:faithful_word_api, "priv/static/well-known"},
+    gzip: false,
+    content_types: %{"apple-app-site-association" => "application/json"}
+
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
