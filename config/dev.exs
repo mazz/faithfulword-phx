@@ -62,7 +62,7 @@ config :faithful_word_api, FaithfulWordApi.Endpoint,
   #         otp_app: :phoenix_oauth2_mock_server,
   #         keyfile: "priv/keys/localhost.key",
   #         certfile: "priv/keys/localhost.cert"],
-  debug_errors: true,
+  debug_errors: false,
   code_reloader: true,
   check_origin: false,
   watchers: [
