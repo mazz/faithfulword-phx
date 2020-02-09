@@ -13,7 +13,7 @@ defmodule FaithfulWordApi.Endpoint do
     at: "/",
     from: :faithful_word_api,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt .well-known)
+    only: ~w(css fonts images js favicon.ico robots.txt)
 
   plug Plug.Static,
     at: "/.well-known",
