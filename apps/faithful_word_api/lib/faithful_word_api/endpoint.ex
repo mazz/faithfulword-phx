@@ -16,7 +16,7 @@ defmodule FaithfulWordApi.Endpoint do
     only: ~w(css fonts images js favicon.ico robots.txt)
 
   plug Plug.Static,
-    at: "/.well-known",
+    at: "/",
     from: :faithful_word_api,
     gzip: false,
     content_types: %{"apple-app-site-association" => "application/json"}
