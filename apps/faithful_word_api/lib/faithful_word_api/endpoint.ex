@@ -13,13 +13,13 @@ defmodule FaithfulWordApi.Endpoint do
     at: "/",
     from: :faithful_word_api,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(css fonts images js favicon.ico robots.txt apple-app-site-association assetlinks.json)
 
-  plug Plug.Static,
-    at: "/",
-    from: :faithful_word_api,
-    gzip: false,
-    content_types: %{"apple-app-site-association" => "application/json"}
+  # plug Plug.Static,
+  #   at: "/",
+  #   from: :faithful_word_api,
+  #   gzip: false,
+  #   content_types: %{"apple-app-site-association" => "application/json"}
 
 
   # Code reloading can be explicitly enabled under the
