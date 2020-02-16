@@ -18,6 +18,7 @@ defmodule Db.Schema.PushMessage do
     field :message, :string, size: 4096
     field :sent, :boolean, default: false
     field :title, :string
+    field :thumbnail_path, :string
     # field :updated_at, :utc_datetime
     field :org_id, :integer
     field :uuid, Ecto.UUID
@@ -32,6 +33,7 @@ defmodule Db.Schema.PushMessage do
       :uuid,
       :title,
       :message,
+      :thumbnail_path,
       :sent,
       :org_id
     ])
