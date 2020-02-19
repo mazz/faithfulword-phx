@@ -12,12 +12,23 @@ services:
       - 80:80
       - 443:443
     command:
+      - --api.dashboard=true
+      - --entrypoints.http.address=:80
+      - --entrypoints.https.address=:443
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
       - --providers.file.directory=/dynamic_config
       - --providers.file.watch=true
+      - --certificatesresolvers.http.acme.email=faithfulaudiodev@gmail.com
+      - --certificatesresolvers.http.acme.storage=certificates/acme.json
+      - --certificatesresolvers.http.acme.httpChallenge.entryPoint=http
+      - --log.level=DEBUG
+      
     volumes: 
       - ./dynamic_config:/dynamic_config:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./docker/traefik.yml:/traefik.yml:ro
+      # - ./docker/traefik.yml:/traefik.yml:ro
       # - ./traefik.toml:/etc/traefik/traefik.toml
       - proxy-certificates-storage:/certificates
       # - ./docker/traefik/dynamic_config:/dynamic_config:ro
