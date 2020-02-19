@@ -12,13 +12,14 @@ services:
       - 80:80
       - 443:443
     command:
-      - --providers.file.directory=./docker/traefik/dynamic_config
+      - --providers.file.directory=/dynamic_config
       - --providers.file.watch=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./docker/traefik/traefik.yml:/traefik.yml:ro
       # - ./traefik.toml:/etc/traefik/traefik.toml
       - proxy-certificates-storage:/certificates
+      - ./docker/traefik/dynamic_config:/dynamic_config:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
