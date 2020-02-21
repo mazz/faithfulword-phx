@@ -1066,6 +1066,8 @@ defmodule FaithfulWordApi.V13 do
   end
 
   def media_item_by_hash_id(hash_id) do
+    Logger.debug("hash_id: #{hash_id}")
+
     query =
       from(mi in MediaItem,
         join: pl in Playlist,
@@ -1099,11 +1101,16 @@ defmodule FaithfulWordApi.V13 do
         }
       )
 
-    query
-    |> Repo.one()
+
+    case Repo.one(query) do
+      nil ->
+        {:error, nil}
+      media_item ->
+        {:ok, media_item}
+    end
   end
 
-  def media_item_details_by_uuid(uuid_str) do
+  def media_item_by_uuid(uuid_str) do
     {:ok, media_item_uuid} = Ecto.UUID.dump(uuid_str)
     Logger.debug("media_item_uuid: #{uuid_str}")
 
