@@ -23,6 +23,7 @@ services:
       - --certificatesresolvers.http.acme.email=faithfulaudiodev@gmail.com
       - --certificatesresolvers.http.acme.storage=certificates/acme.json
       - --certificatesresolvers.http.acme.httpChallenge.entryPoint=http
+      - --metrics.prometheus=true
       - --log.level=DEBUG
       
     volumes: 
