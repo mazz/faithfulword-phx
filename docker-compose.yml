@@ -47,7 +47,7 @@ services:
       - "traefik.http.routers.traefik-secure.service=api@internal"
 
   postgres:
-    image: postgres:12.3-alpine
+    image: postgres:12.2-alpine
     environment:
       POSTGRES_DB: ${FW_DATABASE_NAME?Variable FW_DATABASE_NAME not set}
       POSTGRES_PASSWORD: ${FW_DATABASE_PASSWORD?Variable FW_DATABASE_PASSWORD not set}
