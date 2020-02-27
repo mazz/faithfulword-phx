@@ -85,7 +85,7 @@ config :faithful_word_api,
 # Configures the endpoint
 config :faithful_word_api, FaithfulWordApi.Endpoint,
   # url: [host: "api.faithfulword.app"],
-  check_origin: ["//localhost", "//japheth.ca"],
+  check_origin: ["//localhost", "//#{System.get_env("FW_HOSTNAME")}"],
   secret_key_base: System.get_env("FW_SECRET_KEY_BASE"),
   render_errors: [view: FaithfulWordApi.ErrorView, accepts: ~w(html json)],
   pubsub: [name: FaithfulWordApi.PubSub, adapter: Phoenix.PubSub.PG2],

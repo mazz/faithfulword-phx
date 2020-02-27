@@ -18,7 +18,7 @@ defmodule FaithfulWord.PushNotifications do
     edge_content = System.get_env("FW_EDGE_CONTENT_ROOT")
 
     # if the pushmessage does not have a custom thumbnail path, use the "default" creation-lrg.png
-    image_thumbnail_url = if (message.thumbnail_path == nil), do: "#{edge_content}/img/thumb/mi/lrg/creation-lrg.png", else: "#{edge_content}/#{message.thumbnail_path}"
+    image_thumbnail_url = if (message.thumbnail_path == nil), do: "#{edge_content}/fwbcapp/img/thumb/mi/lrg/creation-lrg.png", else: "#{edge_content}/#{message.thumbnail_path}"
 
     Repo.all(ClientDevice)
       |> Enum.map(fn(device) -> device.firebase_token end)
@@ -57,7 +57,7 @@ defmodule FaithfulWord.PushNotifications do
         edge_content = System.get_env("FW_EDGE_CONTENT_ROOT")
 
         # if the pushmessage does not have a custom thumbnail path, use the "default" creation-lrg.png
-        image_thumbnail_url = if (message.thumbnail_path == nil), do: "#{edge_content}/img/thumb/mi/lrg/creation-lrg.png", else: "#{edge_content}/#{message.thumbnail_path}"
+        image_thumbnail_url = if (message.thumbnail_path == nil), do: "#{edge_content}/fwbcapp/img/thumb/mi/lrg/creation-lrg.png", else: "#{edge_content}/#{message.thumbnail_path}"
 
         Repo.all(ClientDevice)
           |> Enum.map(fn(device) -> device.firebase_token end)
