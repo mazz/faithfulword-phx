@@ -1066,6 +1066,8 @@ defmodule FaithfulWordApi.V13 do
   end
 
   def media_item_by_hash_id(hash_id) do
+    Logger.debug("hash_id: #{hash_id}")
+
     query =
       from(mi in MediaItem,
         join: pl in Playlist,
@@ -1099,8 +1101,59 @@ defmodule FaithfulWordApi.V13 do
         }
       )
 
-    query
-    |> Repo.one()
+
+    case Repo.one(query) do
+      nil ->
+        {:error, nil}
+      media_item ->
+        {:ok, media_item}
+    end
+  end
+
+  def media_item_by_uuid(uuid_str) do
+    {:ok, media_item_uuid} = Ecto.UUID.dump(uuid_str)
+    Logger.debug("media_item_uuid: #{uuid_str}")
+
+    query =
+      from(mi in MediaItem,
+        join: pl in Playlist,
+        where: mi.uuid == ^media_item_uuid,
+        where: mi.playlist_id == pl.id,
+        select: %{
+          ordinal: mi.ordinal,
+          uuid: mi.uuid,
+          track_number: mi.track_number,
+          medium: mi.medium,
+          localizedname: mi.localizedname,
+          multilanguage: pl.multilanguage,
+          path: mi.path,
+          content_provider_link: mi.content_provider_link,
+          ipfs_link: mi.ipfs_link,
+          language_id: mi.language_id,
+          presenter_name: mi.presenter_name,
+          source_material: mi.source_material,
+          tags: mi.tags,
+          small_thumbnail_path: mi.small_thumbnail_path,
+          med_thumbnail_path: mi.med_thumbnail_path,
+          large_thumbnail_path: mi.large_thumbnail_path,
+          inserted_at: mi.inserted_at,
+          updated_at: mi.updated_at,
+          media_category: mi.media_category,
+          presented_at: mi.presented_at,
+          published_at: mi.published_at,
+          hash_id: mi.hash_id,
+          playlist_uuid: pl.uuid,
+          # playlist_id: pl.id,
+          duration: mi.duration
+        }
+      )
+
+      case Repo.one(query) do
+        nil ->
+          {:error, nil}
+        media_item ->
+          {:ok, media_item}
+      end
   end
 
   def orgs_default_org(offset \\ 0, limit \\ 0, updated_after) do

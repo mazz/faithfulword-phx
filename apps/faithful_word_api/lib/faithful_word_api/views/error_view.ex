@@ -25,17 +25,40 @@ defmodule FaithfulWordApi.ErrorView do
     %{error: "not_found"}
   end
 
+  def render("500.json", assigns) do
+    Logger.debug(inspect(assigns))
+    %{error: "There was an error"}
+  end
+
   def render("error.json", %{message: message}) do
     %{error: message}
   end
 
   def render("error.json", assigns) do
     Logger.debug(inspect(assigns))
-    %{error: "unexpected"}
+    %{error: "There was an error -- error.json catchall"}
   end
 
-  def render(_, assigns) do
-    Logger.debug(inspect(assigns))
-    %{error: "unexpected"}
+  def render("401.html", _assigns) do
+    render("401_page.html", %{})
   end
+
+  def render("403.html", _assigns) do
+    render("403_page.html", %{})
+  end
+
+  def render("404.html", _assigns) do
+    render("404_page.html", %{})
+  end
+
+  def render("500.html", _assigns) do
+    render("500_page.html", %{})
+  end
+
+
+  # def render(_, assigns) do
+  #   Logger.debug("second error.json")
+  #   Logger.debug(inspect(assigns))
+  #   %{error: "unexpected"}
+  # end
 end
