@@ -11,12 +11,27 @@ services:
     ports:
       - 80:80
       - 443:443
-    volumes:
-      # - /etc/localtime:/etc/localtime:ro
+    command:
+      - --api.dashboard=true
+      - --entrypoints.http.address=:80
+      - --entrypoints.https.address=:443
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.file.directory=/dynamic_config
+      - --providers.file.watch=true
+      - --certificatesresolvers.http.acme.email=faithfulaudiodev@gmail.com
+      - --certificatesresolvers.http.acme.storage=certificates/acme.json
+      - --certificatesresolvers.http.acme.httpChallenge.entryPoint=http
+      - --log.level=DEBUG
+      
+    volumes: 
+      - ./dynamic_config:/dynamic_config:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./docker/traefik.yml:/traefik.yml:ro
-      # - ./docker/acme.json:/acme.json
+      # - ./docker/traefik.yml:/traefik.yml:ro
+      # - ./traefik.toml:/etc/traefik/traefik.toml
       - proxy-certificates-storage:/certificates
+      # - ./docker/traefik/dynamic_config:/dynamic_config:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
@@ -32,7 +47,7 @@ services:
       - "traefik.http.routers.traefik-secure.service=api@internal"
 
   postgres:
-    image: postgres:12.1-alpine
+    image: postgres:12.2-alpine
     environment:
       POSTGRES_DB: ${FW_DATABASE_NAME?Variable FW_DATABASE_NAME not set}
       POSTGRES_PASSWORD: ${FW_DATABASE_PASSWORD?Variable FW_DATABASE_PASSWORD not set}
