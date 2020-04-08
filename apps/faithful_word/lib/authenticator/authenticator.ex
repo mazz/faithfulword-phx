@@ -18,65 +18,14 @@ defmodule FaithfulWord.Authenticator do
   """
   def get_user_for_email_or_name_password(email_or_name, password) do
 
-  #   Ecto.Query.from(org in Org,
-  #   where: org.shortname == "faithfulwordapp",
-  #   where: ^conditions,
-  #   preload: [:channels],
-  #   order_by: org.id,
-  #   select: %{
-  #     org: org
-  #   }
-  # )
-  # |> Repo.paginate(page: offset, page_size: limit)
+    # swipe 2
+    user = Repo.one from user in User,
+      where: user.email == ^email_or_name or user.username == ^email_or_name,
+      left_join: orgs in assoc(user, :orgs),
+      left_join: channels in assoc(orgs, :channels),
+      preload: [orgs: {orgs, channels: channels}]
 
-#   from(mi in MediaItem,
-#   join: pl in Playlist,
-#   where: mi.playlist_id == pl.id,
-#   where: pl.uuid == ^playlist_uuid,
-#   where: ^conditions
-# )
-
-
-
-# languages =
-#   Ecto.Query.from(language in LanguageIdentifier,
-#     select: language.identifier
-#   )
-#   |> Repo.all()
-
-  # Ecto.Query.from(u in User,
-  #   join: org in Org,
-  #   join: ch in Channel,
-  #   join: pl in Playlist,
-  #   where: u.org_id == org.id,
-  #   preload: []
-  # )
-
-
-
-    # user =
-    #   User
-    #   |> where([u], u.email == ^email_or_name or u.username == ^email_or_name)
-    #   |> Repo.preload([orgs: :channels])
-
-    user = Ecto.Query.from(u in User,
-      where: u.email == ^email_or_name or u.username == ^email_or_name,
-      preload: [orgs: :channels]
-      )
-
-    user = Repo.one!(user)
-      # |> Repo.one()
-      # |> Repo.preload(:orgs)
-      # |> Repo.preload(:channels)
-
-    # user = Repo.preload(user, :orgs)
-    Logger.debug("user preload orgs: #{inspect(%{attributes: user})}")
-
-    # orgs = user.orgs
-    # Logger.debug("user.orgs: #{inspect(%{attributes: orgs})}")
-
-    # orgs = Repo.preload(user.orgs, :channels)
-    # Logger.debug("orgs preload channels: #{inspect(%{attributes: orgs})}")
+      Logger.debug("user preload orgs channels: #{inspect(%{attributes: user})}")
 
     with user when not is_nil(user) <- user,
          true <- validate_pass(user.encrypted_password, password) do
