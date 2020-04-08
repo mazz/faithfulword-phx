@@ -49,8 +49,7 @@ config :faithful_word, FaithfulWord.Mailer,
 
 config :pigeon, :fcm,
   fcm_default: %{
-    key:
-    System.get_env("FW_PIGEON_KEY")
+    key: System.get_env("FW_PIGEON_KEY")
   }
 
 # config :faithful_word, FaithfulWordApi.Auth.Guardian,

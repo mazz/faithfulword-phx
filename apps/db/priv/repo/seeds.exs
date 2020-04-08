@@ -11,8 +11,9 @@
 # and so on) as they will fail if something goes wrong.
 
 alias Db.Repo
-alias Db.Schema.User
+alias Db.Schema.{User, Org}
 require Logger
+require Ecto.Query
 
 # book =
 #   Db.Schema.Book.changeset(%Db.Schema.Book{}, %{
@@ -32,24 +33,52 @@ Logger.debug("Application.get_env #{Application.get_env(:db, :env)}")
 # default_org = Org
 # |> Repo.one!()
 
+faithfulwordapp = Repo.get(Org, 1)
+
+# Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "amos@faithfulword.app", password: "password"}))
+
+# amos = %User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: faithfulwordapp.id, email: "amos@faithfulword.app", password: "password", encrypted_password: Bcrypt.hash_pwd_salt("password")}
+# amos = Repo.insert!(amos)
+
+amos_changeset = User.registration_changeset(%User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "amos@faithfulword.app", password: "password"})
+# amos = %User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}
+# amos_changeset = User.registration_changeset(amos, %{email: "amos@faithfulword.app", password: "password"})
+Repo.insert(amos_changeset)
+
+# amos = %User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: faithfulwordapp.id, email: "amos@faithfulword.app", password: "password", encrypted_password: Bcrypt.hash_pwd_salt("password")}
+# amos = Repo.insert!(amos)
+
+# amos = User |> where([u], u.username == "amos" |> Repo.one()
+
+amos_query = Ecto.Query.from(u in User,
+    where: u.username == "amos")
+
+amos = Repo.one!(amos_query)
+
+faithfulwordapp = Repo.preload(faithfulwordapp, [:channels, :users])
+faithfulwordapp_changeset = Ecto.Changeset.change(faithfulwordapp)
+faithfulwordapp_users_changeset = faithfulwordapp_changeset |> Ecto.Changeset.put_assoc(:users, [amos])
+
+Repo.update!(faithfulwordapp_users_changeset)
+
 # No need to warn if already exists
-Repo.insert(
-  User.registration_changeset(
-    %User{
-      reputation: 4200,
-      username: "amos",
-      name: "Amos",
-      locale: "en",
-      is_publisher: true,
-      uuid: Ecto.UUID.generate(),
-      org_id: 1
-    },
-    %{
-      email: "amos@faithfulword.app",
-      password: "password"
-    }
-  )
-)
+# Repo.insert(
+#   User.registration_changeset(
+#     %User{
+#       reputation: 4200,
+#       username: "amos",
+#       name: "Amos",
+#       locale: "en",
+#       is_publisher: true,
+#       uuid: Ecto.UUID.generate(),
+#       org_id: 1
+#     },
+#     %{
+#       email: "amos@faithfulword.app",
+#       password: "password"
+#     }
+#   )
+# )
 
 Repo.insert(
   User.registration_changeset(

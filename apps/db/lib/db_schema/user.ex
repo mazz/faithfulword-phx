@@ -44,6 +44,7 @@ defmodule Db.Schema.User do
 
     # Assocs
     has_many(:actions, UserAction, on_delete: :nilify_all)
+    many_to_many :orgs, Db.Schema.Org, join_through: "orgs_users"
     # has_many(:comments, Comment, on_delete: :nilify_all)
     # has_many(:votes, Vote, on_delete: :delete_all)
     # has_many(:flags_posted, Flag, foreign_key: :source_user_id, on_delete: :delete_all)

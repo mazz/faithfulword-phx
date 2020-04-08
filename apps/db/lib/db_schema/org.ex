@@ -14,7 +14,8 @@ defmodule Db.Schema.Org do
     field :hash_id, :string
 
     has_many :channels, Db.Schema.Channel
-    has_many :users, Db.Schema.User
+    # has_many :users, Db.Schema.User
+    many_to_many :users, Db.Schema.User, join_through: "orgs_users"
 
     timestamps(type: :utc_datetime)
 

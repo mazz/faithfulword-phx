@@ -10,15 +10,63 @@ defmodule FaithfulWord.Authenticator do
   alias FaithfulWord.Authenticator.OAuth
   alias Kaur.Result
 
+  require Logger
+
   @doc """
   Get user from its email address or user name and check password.
   Returns nil if no User for email or if password is invalid.
   """
   def get_user_for_email_or_name_password(email_or_name, password) do
+
+  #   Ecto.Query.from(org in Org,
+  #   where: org.shortname == "faithfulwordapp",
+  #   where: ^conditions,
+  #   preload: [:channels],
+  #   order_by: org.id,
+  #   select: %{
+  #     org: org
+  #   }
+  # )
+  # |> Repo.paginate(page: offset, page_size: limit)
+
+#   from(mi in MediaItem,
+#   join: pl in Playlist,
+#   where: mi.playlist_id == pl.id,
+#   where: pl.uuid == ^playlist_uuid,
+#   where: ^conditions
+# )
+
+
+
+# languages =
+#   Ecto.Query.from(language in LanguageIdentifier,
+#     select: language.identifier
+#   )
+#   |> Repo.all()
+
+  # Ecto.Query.from(u in User,
+  #   join: org in Org,
+  #   join: ch in Channel,
+  #   join: pl in Playlist,
+  #   where: u.org_id == org.id,
+  #   preload: []
+  # )
+
+
+
     user =
       User
       |> where([u], u.email == ^email_or_name or u.username == ^email_or_name)
       |> Repo.one()
+
+    user = Repo.preload(user, :orgs)
+    Logger.debug("user preload orgs: #{inspect(%{attributes: user})}")
+
+    orgs = user.orgs
+    Logger.debug("user.orgs: #{inspect(%{attributes: orgs})}")
+
+    orgs = Repo.preload(orgs, :channels)
+    Logger.debug("orgs preload channels: #{inspect(%{attributes: orgs})}")
 
     with user when not is_nil(user) <- user,
          true <- validate_pass(user.encrypted_password, password) do

@@ -29,7 +29,7 @@ defmodule Db.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ecto_sql, "~> 3.1", override: true},
+      {:ecto_sql, "~> 3.3"},
       {:postgrex, ">= 0.0.0"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_s3, "~> 2.0"},
@@ -38,10 +38,11 @@ defmodule Db.MixProject do
       {:ecto_enum, "~> 1.2"},
       {:xml_builder, "~> 2.1", override: true},
       {:slugger, "~> 0.3"},
-      {:comeonin, "~> 5.1"},
+      {:comeonin, "~> 5.1.3"},
       {:bcrypt_elixir, "~> 2.0"},
       {:burnex, "~> 1.1"},
       {:hashids, "~> 2.0"},
+      {:jason, "~> 1.1.2"},
       {:kaur, "~> 1.1"},
       {:mime, "~> 1.2"},
       {:scrivener_ecto, "~> 2.2"}
