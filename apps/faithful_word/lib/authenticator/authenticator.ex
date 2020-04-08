@@ -54,19 +54,29 @@ defmodule FaithfulWord.Authenticator do
 
 
 
-    user =
-      User
-      |> where([u], u.email == ^email_or_name or u.username == ^email_or_name)
-      |> Repo.one()
+    # user =
+    #   User
+    #   |> where([u], u.email == ^email_or_name or u.username == ^email_or_name)
+    #   |> Repo.preload([orgs: :channels])
 
-    user = Repo.preload(user, :orgs)
+    user = Ecto.Query.from(u in User,
+      where: u.email == ^email_or_name or u.username == ^email_or_name,
+      preload: [orgs: :channels]
+      )
+
+    user = Repo.one!(user)
+      # |> Repo.one()
+      # |> Repo.preload(:orgs)
+      # |> Repo.preload(:channels)
+
+    # user = Repo.preload(user, :orgs)
     Logger.debug("user preload orgs: #{inspect(%{attributes: user})}")
 
-    orgs = user.orgs
-    Logger.debug("user.orgs: #{inspect(%{attributes: orgs})}")
+    # orgs = user.orgs
+    # Logger.debug("user.orgs: #{inspect(%{attributes: orgs})}")
 
-    orgs = Repo.preload(orgs, :channels)
-    Logger.debug("orgs preload channels: #{inspect(%{attributes: orgs})}")
+    # orgs = Repo.preload(user.orgs, :channels)
+    # Logger.debug("orgs preload channels: #{inspect(%{attributes: orgs})}")
 
     with user when not is_nil(user) <- user,
          true <- validate_pass(user.encrypted_password, password) do

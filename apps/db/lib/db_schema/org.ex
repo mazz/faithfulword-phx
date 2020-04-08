@@ -3,6 +3,22 @@ defmodule Db.Schema.Org do
   import Ecto.Changeset
   alias Db.Type.OrgHashId
 
+  @derive {Jason.Encoder,
+  only: [
+    :basename,
+    :shortname,
+    :small_thumbnail_path,
+    :med_thumbnail_path,
+    :large_thumbnail_path,
+    :banner_path,
+    :uuid,
+    :id,
+    :hash_id,
+    :channels,
+    :updated_at,
+    :inserted_at
+  ]}
+
   schema "orgs" do
     field :basename, :string
     field :shortname, :string
