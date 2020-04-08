@@ -33,157 +33,68 @@ Logger.debug("Application.get_env #{Application.get_env(:db, :env)}")
 # default_org = Org
 # |> Repo.one!()
 
-faithfulwordapp = Repo.get(Org, 1)
-
 # Repo.insert(User.registration_changeset(%User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "amos@faithfulword.app", password: "password"}))
 
 # amos = %User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: faithfulwordapp.id, email: "amos@faithfulword.app", password: "password", encrypted_password: Bcrypt.hash_pwd_salt("password")}
 # amos = Repo.insert!(amos)
 
-amos_changeset = User.registration_changeset(%User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "amos@faithfulword.app", password: "password"})
 # amos = %User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}
 # amos_changeset = User.registration_changeset(amos, %{email: "amos@faithfulword.app", password: "password"})
-Repo.insert(amos_changeset)
 
 # amos = %User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: faithfulwordapp.id, email: "amos@faithfulword.app", password: "password", encrypted_password: Bcrypt.hash_pwd_salt("password")}
 # amos = Repo.insert!(amos)
-
 # amos = User |> where([u], u.username == "amos" |> Repo.one()
 
-amos_query = Ecto.Query.from(u in User,
-    where: u.username == "amos")
-
+amos_changeset = User.registration_changeset(%User{reputation: 4200, username: "amos", name: "Amos", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "amos@faithfulword.app", password: "password"})
+Repo.insert(amos_changeset)
+amos_query = Ecto.Query.from(u in User, where: u.username == "amos")
 amos = Repo.one!(amos_query)
 
+peter_changeset = User.registration_changeset(%User{reputation: 4200, username: "peter", name: "Peter", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "peter@faithfulword.app", password: "password"})
+Repo.insert(peter_changeset)
+peter_query = Ecto.Query.from(u in User, where: u.username == "peter")
+peter = Repo.one!(peter_query)
+
+joseph_changeset = User.registration_changeset(%User{reputation: 4200, username: "joseph", name: "Joseph", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "joseph@faithfulword.app", password: "password"})
+Repo.insert(joseph_changeset)
+joseph_query = Ecto.Query.from(u in User, where: u.username == "joseph")
+joseph = Repo.one!(joseph_query)
+
+adam_changeset = User.registration_changeset(%User{reputation: 4200, username: "adam", name: "Adam", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "adam@faithfulword.app", password: "password"})
+Repo.insert(adam_changeset)
+adam_query = Ecto.Query.from(u in User, where: u.username == "adam")
+adam = Repo.one!(adam_query)
+
+faithfulwordapp = Repo.get(Org, 1)
 faithfulwordapp = Repo.preload(faithfulwordapp, [:channels, :users])
 faithfulwordapp_changeset = Ecto.Changeset.change(faithfulwordapp)
-faithfulwordapp_users_changeset = faithfulwordapp_changeset |> Ecto.Changeset.put_assoc(:users, [amos])
+faithfulwordapp_users_changeset = faithfulwordapp_changeset |> Ecto.Changeset.put_assoc(:users, [amos, peter, joseph, adam])
 
 Repo.update!(faithfulwordapp_users_changeset)
 
-# No need to warn if already exists
-# Repo.insert(
-#   User.registration_changeset(
-#     %User{
-#       reputation: 4200,
-#       username: "amos",
-#       name: "Amos",
-#       locale: "en",
-#       is_publisher: true,
-#       uuid: Ecto.UUID.generate(),
-#       org_id: 1
-#     },
-#     %{
-#       email: "amos@faithfulword.app",
-#       password: "password"
-#     }
-#   )
-# )
+jonathan_changeset = User.registration_changeset(%User{reputation: 4200, username: "jonathan", name: "Jonathan", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "jonathan@faithfulword.app", password: "password"})
+Repo.insert(jonathan_changeset)
+jonathan_query = Ecto.Query.from(u in User, where: u.username == "jonathan")
+jonathan = Repo.one!(jonathan_query)
 
-Repo.insert(
-  User.registration_changeset(
-    %User{
-      reputation: 4200,
-      username: "peter",
-      name: "Peter",
-      locale: "en",
-      is_publisher: true,
-      uuid: Ecto.UUID.generate(),
-      org_id: 1
-    },
-    %{
-      email: "peter@faithfulword.app",
-      password: "password"
-    }
-  )
-)
+collin_changeset = User.registration_changeset(%User{reputation: 4200, username: "collin", name: "Collin", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "collin@faithfulword.app", password: "password"})
+Repo.insert(collin_changeset)
+collin_query = Ecto.Query.from(u in User, where: u.username == "collin")
+collin = Repo.one!(collin_query)
 
-Repo.insert(
-  User.registration_changeset(
-    %User{
-      reputation: 4200,
-      username: "joseph",
-      name: "Joseph",
-      locale: "en",
-      is_publisher: true,
-      uuid: Ecto.UUID.generate(),
-      org_id: 1
-    },
-    %{
-      email: "joseph@faithfulword.app",
-      password: "password"
-    }
-  )
-)
+mark_changeset = User.registration_changeset(%User{reputation: 4200, username: "mark", name: "Mark", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "mark@faithfulword.app", password: "password"})
+Repo.insert(mark_changeset)
+mark_query = Ecto.Query.from(u in User, where: u.username == "mark")
+mark = Repo.one!(mark_query)
 
-Repo.insert(
-  User.registration_changeset(
-    %User{
-      reputation: 4200,
-      username: "adam",
-      name: "Adam",
-      locale: "en",
-      is_publisher: true,
-      uuid: Ecto.UUID.generate(),
-      org_id: 1
-    },
-    %{
-      email: "adam@faithfulword.app",
-      password: "password"
-    }
-  )
-)
+michael_changeset = User.registration_changeset(%User{reputation: 4200, username: "michael", name: "Michael", locale: "en", is_publisher: true, uuid: Ecto.UUID.generate(), org_id: 1}, %{email: "michael@faithfulword.app", password: "password"})
+Repo.insert(michael_changeset)
+michael_query = Ecto.Query.from(u in User, where: u.username == "michael")
+michael = Repo.one!(michael_query)
 
-Repo.insert(
-  User.registration_changeset(
-    %User{
-      reputation: 4200,
-      username: "jonathan",
-      name: "Jonathan",
-      locale: "en",
-      is_publisher: true,
-      uuid: Ecto.UUID.generate(),
-      org_id: 1
-    },
-    %{
-      email: "jonathan@faithfulword.app",
-      password: "password"
-    }
-  )
-)
+fwbc = Repo.get(Org, 2)
+fwbc = Repo.preload(fwbc, [:channels, :users])
+fwbc_changeset = Ecto.Changeset.change(fwbc)
+fwbc_users_changeset = fwbc_changeset |> Ecto.Changeset.put_assoc(:users, [jonathan, collin, mark, michael])
 
-Repo.insert(
-  User.registration_changeset(
-    %User{
-      reputation: 4200,
-      username: "collin",
-      name: "Collin",
-      locale: "en",
-      is_publisher: true,
-      uuid: Ecto.UUID.generate(),
-      org_id: 1
-    },
-    %{
-      email: "collin@faithfulword.app",
-      password: "password"
-    }
-  )
-)
-
-Repo.insert(
-  User.registration_changeset(
-    %User{
-      reputation: 4200,
-      username: "michael",
-      name: "Michael",
-      locale: "en",
-      is_publisher: true,
-      uuid: Ecto.UUID.generate(),
-      org_id: 1
-    },
-    %{
-      email: "michael@faithfulword.app",
-      password: "password"
-    }
-  )
-)
+Repo.update!(fwbc_users_changeset)
