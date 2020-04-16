@@ -23,15 +23,15 @@ defmodule FaithfulWordApi.ChannelController do
         params = %{
           "ordinal" => ordinal,
           "basename" => basename,
-          "small_thumbnail_path" => small_thumbnail_path,
-          "med_thumbnail_path" => med_thumbnail_path,
-          "large_thumbnail_path" => large_thumbnail_path,
-          "banner_path" => banner_path,
           "org_id" => org_id
         }
       ) do
     # optional params
     channel_uuid = Map.get(params, "channel_uuid", nil)
+    small_thumbnail_path = Map.get(params, "small_thumbnail_path", nil)
+    med_thumbnail_path = Map.get(params, "med_thumbnail_path", nil)
+    large_thumbnail_path = Map.get(params, "large_thumbnail_path", nil)
+    banner_path = Map.get(params, "banner_path", nil)
 
     V13.add_or_update_channel(
       ordinal,

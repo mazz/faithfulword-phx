@@ -62,17 +62,17 @@ defmodule FaithfulWordApi.PlaylistController do
         params = %{
           "ordinal" => ordinal,
           "basename" => basename,
-          "small_thumbnail_path" => small_thumbnail_path,
-          "med_thumbnail_path" => med_thumbnail_path,
-          "large_thumbnail_path" => large_thumbnail_path,
-          "banner_path" => banner_path,
           "media_category" => media_category,
-          "localized_titles" => localized_titles,
           "channel_id" => channel_id
         }
       ) do
     # optional params
     playlist_uuid = Map.get(params, "playlist_uuid", nil)
+    small_thumbnail_path = Map.get(params, "small_thumbnail_path", nil)
+    med_thumbnail_path = Map.get(params, "med_thumbnail_path", nil)
+    large_thumbnail_path = Map.get(params, "large_thumbnail_path", nil)
+    banner_path = Map.get(params, "banner_path", nil)
+    localized_titles = Map.get(params, "localized_titles", nil)
 
     V13.add_or_update_playlist(
       ordinal,

@@ -28,23 +28,35 @@ defmodule FaithfulWordApi.MediaItemController do
           "path" => path,
           "language_id" => language_id,
           "playlist_id" => playlist_id,
-          "org_id" => org_id,
+          "org_id" => org_id
           # optional >>>
-          "track_number" => track_number,
-          "tags" => tags,
-          "small_thumbnail_path" => small_thumbnail_path,
-          "med_thumbnail_path" => med_thumbnail_path,
-          "large_thumbnail_path" => large_thumbnail_path,
-          "content_provider_link" => content_provider_link,
-          "ipfs_link" => ipfs_link,
-          "presenter_name" => presenter_name,
-          "presented_at" => presented_at,
-          "source_material" => source_material,
-          "duration" => duration
+          # "track_number" => track_number,
+          # "tags" => tags,
+          # "small_thumbnail_path" => small_thumbnail_path,
+          # "med_thumbnail_path" => med_thumbnail_path,
+          # "large_thumbnail_path" => large_thumbnail_path,
+          # "content_provider_link" => content_provider_link,
+          # "ipfs_link" => ipfs_link,
+          # "presenter_name" => presenter_name,
+          # "presented_at" => presented_at,
+          # "source_material" => source_material,
+          # "duration" => duration
         }
       ) do
     # optional params
     media_item_uuid = Map.get(params, "media_item_uuid", nil)
+
+    track_number = Map.get(params, "track_number", nil)
+    tags = Map.get(params, "tags", nil)
+    small_thumbnail_path = Map.get(params, "small_thumbnail_path", nil)
+    med_thumbnail_path = Map.get(params, "med_thumbnail_path", nil)
+    large_thumbnail_path = Map.get(params, "large_thumbnail_path", nil)
+    content_provider_link = Map.get(params, "content_provider_link", nil)
+    ipfs_link = Map.get(params, "ipfs_link", nil)
+    presenter_name = Map.get(params, "presenter_name", nil)
+    presented_at = Map.get(params, "presented_at", nil)
+    source_material = Map.get(params, "source_material", nil)
+    duration = Map.get(params, "duration", nil)
 
     V13.add_or_update_media_item(
       ordinal,

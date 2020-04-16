@@ -8,6 +8,10 @@ defmodule FaithfulWordApi.ErrorView do
     render_one(message, FaithfulWordApi.ErrorView, "error.json")
   end
 
+  def render("400.json", _) do
+    %{error: "bad_request"}
+  end
+
   def render("401.json", _) do
     %{error: "unauthorized"}
   end
@@ -37,6 +41,10 @@ defmodule FaithfulWordApi.ErrorView do
   def render("error.json", assigns) do
     Logger.debug(inspect(assigns))
     %{error: "There was an error -- error.json catchall"}
+  end
+
+  def render("400.html", _assigns) do
+    render("400_page.html", %{})
   end
 
   def render("401.html", _assigns) do
