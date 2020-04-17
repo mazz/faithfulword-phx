@@ -484,11 +484,11 @@ defmodule FaithfulWordApi.V13 do
           })
 
         Multi.new()
-        |> Multi.update(:channel, changeset)
+        |> Multi.update(:media_item, changeset)
         |> Repo.transaction()
         |> case do
-          {:ok, %{channel: channel}} ->
-            {:ok, channel}
+          {:ok, %{media_item: media_item}} ->
+            {:ok, media_item}
 
           {:error, _, error, _} ->
             {:error, error}
