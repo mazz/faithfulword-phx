@@ -1196,6 +1196,37 @@ defmodule FaithfulWordApi.V13 do
       end
   end
 
+  def orgs(offset \\ 0, limit \\ 0, updated_after) do
+    conditions = true
+
+    Logger.debug("offset: #{offset}")
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([orgs], orgs.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
+
+    Ecto.Query.from(org in Org,
+      where: ^conditions,
+      preload: [:channels],
+      order_by: org.id,
+      select: %{
+        org: org
+      }
+    )
+    |> Repo.paginate(page: offset, page_size: limit)
+  end
+
   def orgs_default_org(offset \\ 0, limit \\ 0, updated_after) do
     # python
     # localized_titles = dbsession.query(BookTitle, Book).join(Book).filter(BookTitle.language_id == language_id).order_by(Book.absolute_id.asc()).all()

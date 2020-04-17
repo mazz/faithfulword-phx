@@ -98,6 +98,7 @@ defmodule FaithfulWordApi.Router do
         end
 
         scope "/orgs" do
+          get "/", OrgController, :indexv13
           get "/default", OrgController, :defaultv13
           get "/:uuid/channels", OrgController, :channelsv13
         end

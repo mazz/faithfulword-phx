@@ -11,6 +11,30 @@ defmodule FaithfulWordApi.OrgController do
 
   action_fallback FaithfulWordApi.FallbackController
 
+  def indexv13(conn, params = %{"offset" => offset, "limit" => limit}) do
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
+
+    Logger.debug("offset #{inspect %{attributes: offset}}")
+    V13.orgs(offset, limit, updated_after)
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened"})
+
+      org_v13 ->
+        # Logger.debug("books #{inspect %{attributes: books}}")
+        # Enum.at(conn.path_info, 1)
+        # |> case do
+          #   api_version ->
+            # api_version = String.trim_leading(api_version, "v")
+        conn
+        |> put_view(OrgV13View)
+        |> render("defaultv13.json", %{org_v13: org_v13, api_version: "1.3"})
+    end
+  end
+
   def defaultv13(conn, params = %{"offset" => offset, "limit" => limit}) do
     # optional params
     updated_after = Map.get(params, "upd-after", nil)
@@ -21,7 +45,7 @@ defmodule FaithfulWordApi.OrgController do
       nil ->
         put_status(conn, 403)
         |> put_view(ErrorView)
-        |> render("403.json", %{message: "language not found in supported list."})
+        |> render("403.json", %{message: "something happened"})
 
       org_v13 ->
         # Logger.debug("books #{inspect %{attributes: books}}")
