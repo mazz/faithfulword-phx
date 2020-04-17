@@ -1269,6 +1269,7 @@ defmodule FaithfulWordApi.V13 do
               med_thumbnail_path: med_thumbnail_path,
               large_thumbnail_path: large_thumbnail_path,
               banner_path: banner_path,
+              hash_id: org.hash_id,
               updated_at: DateTime.utc_now()
             }
           )
