@@ -101,6 +101,33 @@ defmodule FaithfulWordApi.MediaItemController do
     end
   end
 
+  def delete_v13(
+        conn,
+        %{
+          "media_item_uuid" => media_item_uuid
+        }
+      ) do
+    V13.delete_media_item(media_item_uuid)
+    # |> IO.inspect()
+    |> case do
+      {:ok, media_item} ->
+        Logger.debug("media_item #{inspect(%{attributes: media_item})}")
+
+        conn
+        |> put_view(MediaItemV13View)
+        |> render("deletev13.json", %{
+          media_item_v13: media_item,
+          api_version: "1.3"
+        })
+
+      {:error, error} ->
+        conn
+        |> put_status(error)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
+    end
+  end
+
   def indexv13(
         conn,
         params = %{

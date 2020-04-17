@@ -88,4 +88,31 @@ defmodule FaithfulWordApi.ChannelController do
         # end
     end
   end
+
+  def delete_v13(
+        conn,
+        %{
+          "channel_uuid" => channel_uuid
+        }
+      ) do
+    V13.delete_channel(channel_uuid)
+    # |> IO.inspect()
+    |> case do
+      {:ok, channel} ->
+        Logger.debug("channel #{inspect(%{attributes: channel})}")
+
+        conn
+        |> put_view(ChannelV13View)
+        |> render("deletev13.json", %{
+          channel_v13: channel,
+          api_version: "1.3"
+        })
+
+      {:error, error} ->
+        conn
+        |> put_status(error)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
+    end
+  end
 end

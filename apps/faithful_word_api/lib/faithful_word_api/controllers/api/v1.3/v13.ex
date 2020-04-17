@@ -496,6 +496,26 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
+  def delete_media_item(media_item_uuid) do
+    {:ok, media_itemuuid} =
+      if media_item_uuid do
+        Ecto.UUID.dump(media_item_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(MediaItem, uuid: media_itemuuid) do
+      # no media_item title by that uuid
+      nil ->
+        {:error, :not_found}
+
+        media_item ->
+        Repo.delete!(media_item)
+
+        {:ok, media_item}
+    end
+  end
+
   def delete_playlist_title(playlist_title_uuid) do
     {:ok, playlisttitleuuid} =
       if playlist_title_uuid do
@@ -798,6 +818,26 @@ defmodule FaithfulWordApi.V13 do
           {:error, _, error, _} ->
             {:error, error}
         end
+    end
+  end
+
+  def delete_channel(channel_uuid) do
+    {:ok, channeluuid} =
+      if channel_uuid do
+        Ecto.UUID.dump(channel_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Channel, uuid: channeluuid) do
+      # no channel title by that uuid
+      nil ->
+        {:error, :not_found}
+
+        channel ->
+        Repo.delete!(channel)
+
+        {:ok, channel}
     end
   end
 
@@ -1286,6 +1326,26 @@ defmodule FaithfulWordApi.V13 do
           {:error, _, error, _} ->
             {:error, error}
         end
+    end
+  end
+
+  def delete_org(org_uuid) do
+    {:ok, orguuid} =
+      if org_uuid do
+        Ecto.UUID.dump(org_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Org, uuid: orguuid) do
+      # no org title by that uuid
+      nil ->
+        {:error, :not_found}
+
+      org ->
+        Repo.delete!(org)
+
+        {:ok, org}
     end
   end
 

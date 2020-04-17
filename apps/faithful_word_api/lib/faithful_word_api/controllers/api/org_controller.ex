@@ -80,6 +80,35 @@ defmodule FaithfulWordApi.OrgController do
     end
   end
 
+  def delete_v13(
+        conn,
+        %{
+          "org_uuid" => org_uuid
+        }
+      ) do
+    V13.delete_org(org_uuid)
+    |> IO.inspect()
+    |> case do
+      {:ok, org} ->
+        Logger.debug("just deleted and about to render org")
+
+        conn
+        |> put_view(OrgV13View)
+        |> render("deletev13.json", %{
+          org_v13: org,
+          api_version: "1.3"
+        })
+
+      {:error, error} ->
+        Logger.debug("org deletion failed {:error, :not_found}")
+
+        conn
+        |> put_status(error)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
+    end
+  end
+
   def channelsv13(conn, params = %{"uuid" => orguuid, "offset" => offset, "limit" => limit}) do
     Logger.debug("orguuid #{inspect(%{attributes: orguuid})}")
     # optional params

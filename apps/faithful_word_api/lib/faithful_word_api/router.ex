@@ -220,10 +220,12 @@ defmodule FaithfulWordApi.Router do
 
           scope "/orgs" do
             post "/addorupdate", OrgController, :add_or_update_v13
+            post "/delete", OrgController, :delete_v13
           end
 
           scope "/channels" do
             post "/addorupdate", ChannelController, :add_or_update_v13
+            post "/delete", ChannelController, :delete_v13
           end
 
           scope "/playlisttitles" do
@@ -237,6 +239,7 @@ defmodule FaithfulWordApi.Router do
 
           scope "/mediaitems" do
             post "/addorupdate", MediaItemController, :add_or_update_v13
+            post "/delete", MediaItemController, :delete_v13
             # get "/:uuid/media", MediaItemController, :indexv13
           end
         end
