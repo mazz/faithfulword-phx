@@ -218,6 +218,10 @@ defmodule FaithfulWordApi.Router do
             post "/send", PushMessageController, :send
           end
 
+          scope "/orgs" do
+            post "/addorupdate", OrgController, :add_or_update_v13
+          end
+
           scope "/channels" do
             post "/addorupdate", ChannelController, :add_or_update_v13
           end

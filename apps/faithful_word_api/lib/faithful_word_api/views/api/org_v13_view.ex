@@ -20,6 +20,27 @@ defmodule FaithfulWordApi.OrgV13View do
     %{data: render_one(org_v13, OrgV13View, "org_v13.json")}
   end
 
+  def render("add_org_v13.json", %{add_org_v13: add_org_v13}) do
+    # {"Revelation", "Apocalipse", "2c22a08a-80ee-4ec1-be94-f018892fe8ba", "pt"}
+    # {b.basename, title.localizedname, b.uuid, title.language_id}
+    Logger.debug("org #{inspect(%{attributes: add_org_v13})}")
+
+    %{
+      uuid: add_org_v13.uuid,
+      basename: add_org_v13.basename,
+      shortname: add_org_v13.shortname,
+      small_thumbnail_path: add_org_v13.small_thumbnail_path,
+      med_thumbnail_path: add_org_v13.med_thumbnail_path,
+      large_thumbnail_path: add_org_v13.large_thumbnail_path,
+      banner_path: add_org_v13.banner_path,
+      hash_id: add_org_v13.hash_id,
+      # , ## |> render_unix_timestamp(),
+      inserted_at: add_org_v13.inserted_at,
+      # |> render_unix_timestamp()
+      updated_at: add_org_v13.updated_at
+    }
+  end
+
   def render("org_v13.json", %{org_v13: org_v13}) do
     # {"Revelation", "Apocalipse", "2c22a08a-80ee-4ec1-be94-f018892fe8ba", "pt"}
     # {b.basename, title.localizedname, b.uuid, title.language_id}

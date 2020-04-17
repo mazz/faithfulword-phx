@@ -37,6 +37,49 @@ defmodule FaithfulWordApi.OrgController do
     end
   end
 
+  def add_or_update_v13(
+        conn,
+        params = %{
+          "basename" => basename,
+          "shortname" => shortname
+        }
+      ) do
+    # optional params
+    small_thumbnail_path = Map.get(params, "small_thumbnail_path", nil)
+    med_thumbnail_path = Map.get(params, "med_thumbnail_path", nil)
+    large_thumbnail_path = Map.get(params, "large_thumbnail_path", nil)
+    banner_path = Map.get(params, "banner_path", nil)
+    org_uuid = Map.get(params, "org_uuid", nil)
+
+    V13.add_or_update_org(
+      basename,
+      shortname,
+      small_thumbnail_path,
+      med_thumbnail_path,
+      large_thumbnail_path,
+      banner_path,
+      org_uuid
+    )
+    # |> IO.inspect()
+    |> case do
+      {:ok, org} ->
+        Logger.debug("org #{inspect(%{attributes: org})}")
+
+        conn
+        |> put_view(OrgV13View)
+        |> render("add_org_v13.json", %{
+          add_org_v13: org,
+          api_version: "1.3"
+        })
+
+      {:error, _changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
+    end
+  end
+
   def channelsv13(conn, params = %{"uuid" => orguuid, "offset" => offset, "limit" => limit}) do
     Logger.debug("orguuid #{inspect(%{attributes: orguuid})}")
     # optional params

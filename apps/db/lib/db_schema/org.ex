@@ -66,12 +66,12 @@ defmodule Db.Schema.Org do
     |> validate_required([
       :uuid,
       :basename,
-      :shortname,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
-      :small_thumbnail_path,
-      :banner_path,
-      :hash_id
+      :shortname
+      # :large_thumbnail_path,
+      # :med_thumbnail_path,
+      # :small_thumbnail_path,
+      # :banner_path,
+      # :hash_id
     ])
   end
 end

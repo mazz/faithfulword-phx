@@ -1191,6 +1191,103 @@ defmodule FaithfulWordApi.V13 do
     |> Repo.paginate(page: offset, page_size: limit)
   end
 
+  def add_or_update_org(
+    basename,
+    shortname,
+    small_thumbnail_path,
+    med_thumbnail_path,
+    large_thumbnail_path,
+    banner_path,
+    org_uuid
+  ) do
+    {:ok, orguuid} =
+      if org_uuid do
+        Ecto.UUID.dump(org_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Org, uuid: orguuid) do
+      nil ->
+        Logger.debug("new org changeset")
+        changeset =
+          Org.changeset(
+            %Org{
+              basename: basename,
+              shortname: shortname,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path
+            },
+            %{
+              basename: basename,
+              shortname: shortname,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              uuid: Ecto.UUID.generate()
+            }
+          )
+        Logger.debug("new changeset")
+        IO.inspect(changeset)
+
+        Multi.new()
+        |> Multi.insert(:item_without_hash_id, changeset)
+        |> Multi.run(:org, fn _repo, %{item_without_hash_id: org} ->
+          org
+          |> Org.changeset_generate_hash_id()
+          |> Repo.update()
+        end)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{org: org}} ->
+            Logger.debug("about to return new org")
+            IO.inspect(org)
+            {:ok, org}
+
+          {:error, _, error, _} ->
+            Logger.debug("about to return new error")
+            IO.inspect(error)
+            {:error, error}
+        end
+
+        org ->
+          Logger.debug("found org")
+          IO.inspect(org)
+        changeset =
+          Org.changeset(
+            %Org{
+              id: org.id
+            },
+            %{
+              basename: basename,
+              shortname: shortname,
+              uuid: org.uuid,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              updated_at: DateTime.utc_now()
+            }
+          )
+        Logger.debug("changeset")
+        IO.inspect(changeset)
+
+        Multi.new()
+        |> Multi.update(:org, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{org: org}} ->
+            {:ok, org}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+    end
+  end
+
   def search(
         query_string,
         offset \\ 0,
