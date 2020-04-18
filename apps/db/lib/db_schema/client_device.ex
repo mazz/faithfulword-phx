@@ -7,7 +7,7 @@ defmodule Db.Schema.ClientDevice do
     field :firebase_token, :string
     field :preferred_language, :string
     field :user_agent, :string
-    field :org_id, :integer
+    # field :org_id, :integer
     field :user_version, :string
     # field :user_uuid, Ecto.UUID
     field :uuid, Ecto.UUID
@@ -24,7 +24,7 @@ defmodule Db.Schema.ClientDevice do
       :apns_token,
       :preferred_language,
       :user_agent,
-      :org_id,
+      # :org_id,
       :user_version
     ])
     |> validate_required([
@@ -32,8 +32,8 @@ defmodule Db.Schema.ClientDevice do
       :firebase_token,
       :apns_token,
       :preferred_language,
-      :user_agent,
-      :org_id
+      :user_agent
+      # :org_id
       ])
   end
 end

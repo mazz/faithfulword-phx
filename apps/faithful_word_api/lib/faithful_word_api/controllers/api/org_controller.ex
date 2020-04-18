@@ -96,11 +96,15 @@ defmodule FaithfulWordApi.OrgController do
           api_version: "1.3"
         })
 
-      {:error, _changeset} ->
+      {:error, changeset = %Ecto.Changeset{}} ->
         conn
-        |> put_status(:unprocessable_entity)
-        |> put_view(ErrorView)
-        |> render("403.json", %{message: "something happened."})
+        |> put_status(:bad_request)
+        |> render(FaithfulWordApi.ChangesetView, "error.json", changeset: changeset)
+      # {:error, error} ->
+      #   conn
+      #   |> put_status(:unprocessable_entity)
+      #   |> put_view(ErrorView)
+      #   |> render("403.json", %{message: "something happened."})
     end
   end
 

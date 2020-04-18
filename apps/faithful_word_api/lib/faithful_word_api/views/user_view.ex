@@ -34,7 +34,6 @@ defmodule FaithfulWordApi.UserView do
       uuid: user.uuid,
       email: user.email,
       email_confirmed: user.email_confirmed,
-      org_id: user.org_id,
       orgs: user.orgs,
       fb_user_id: user.fb_user_id,
       name: user.name,

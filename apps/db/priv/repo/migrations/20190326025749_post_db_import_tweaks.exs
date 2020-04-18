@@ -21,13 +21,15 @@ defmodule Db.Repo.Migrations.PostDbImportTweaks do
       add :shortname, :string
     end
 
+    create(unique_index(:orgs, [:shortname]))
+
     # alter table(:clientdevices) do
     #   add :user_uuid, :uuid
     # end
 
-    alter table(:users) do
-      add :org_id, references(:orgs, on_delete: :delete_all)
-    end
+    # alter table(:users) do
+    #   add :org_id, references(:orgs, on_delete: :delete_all)
+    # end
 
     # create(unique_index(:videos, [:tags]))
 

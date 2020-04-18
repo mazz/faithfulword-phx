@@ -149,7 +149,7 @@ defmodule FaithfulWord.Accounts do
   defp do_create_account(user_params, provider_params) do
     %User{}
     |> User.registration_changeset(user_params)
-    |> User.org_changeset(user_params)
+    # |> User.org_changeset(user_params)
     |> User.provider_changeset(provider_params)
     |> Repo.insert()
   end

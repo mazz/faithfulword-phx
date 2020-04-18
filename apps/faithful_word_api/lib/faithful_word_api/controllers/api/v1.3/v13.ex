@@ -1321,7 +1321,7 @@ defmodule FaithfulWordApi.V13 do
           {:error, _, error, _} ->
             Logger.debug("about to return new error")
             IO.inspect(error)
-            {:error, error}
+            {:error, changeset}
         end
 
         org ->

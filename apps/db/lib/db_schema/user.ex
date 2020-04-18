@@ -30,7 +30,7 @@ defmodule Db.Schema.User do
     field(:is_publisher, :boolean, default: false)
     field(:completed_onboarding_steps, {:array, :integer}, default: [])
 
-    field :org_id, :id
+    # field :org_id, :id
 
     # Social networks profiles
     field(:fb_user_id, :string)
@@ -267,25 +267,25 @@ defmodule Db.Schema.User do
 
   def validate_locale(changeset), do: changeset
 
-  def org_changeset(model, params \\ %{}) do
-    model
-    |> cast(params, [:org_id])
-    |> validate_required([:org_id])
+  # def org_changeset(model, params \\ %{}) do
+  #   model
+  #   |> cast(params, [:org_id])
+  #   |> validate_required([:org_id])
 
-    case Repo.get_by(Org, id: params["org_id"]) do
-      nil ->
-        Logger.debug("did not find org: #{params["org_id"]}")
+  #   case Repo.get_by(Org, id: params["org_id"]) do
+  #     nil ->
+  #       Logger.debug("did not find org: #{params["org_id"]}")
 
-        model
-        |> add_error(model, :org_id, "non-existent org")
+  #       model
+  #       |> add_error(model, :org_id, "non-existent org")
 
-      org ->
-        Logger.debug("found org: #{org.id}")
+  #     org ->
+  #       Logger.debug("found org: #{org.id}")
 
-        model
-        |> put_change(:org_id, org.id)
-    end
-  end
+  #       model
+  #       |> put_change(:org_id, org.id)
+  #   end
+  # end
 
   @forbidden_username_keywords ~w(faithfulword faithful admin newuser temporary deleted supprimé)
   # Only alphanum, '-' and '_'

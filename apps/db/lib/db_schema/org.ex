@@ -31,7 +31,7 @@ defmodule Db.Schema.Org do
 
     has_many :channels, Db.Schema.Channel
     # has_many :users, Db.Schema.User
-    many_to_many :users, Db.Schema.User, join_through: "orgs_users"
+    many_to_many :users, Db.Schema.User, join_through: "orgs_users", on_replace: :delete
 
     timestamps(type: :utc_datetime)
 
@@ -63,6 +63,7 @@ defmodule Db.Schema.Org do
       :banner_path,
       :hash_id
     ])
+    |> unique_constraint(:shortname)
     |> validate_required([
       :uuid,
       :basename,
