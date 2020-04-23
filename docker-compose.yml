@@ -86,6 +86,22 @@ services:
       - "traefik.http.routers.faithful_word_umbrella-secure.service=faithful_word_umbrella"
       - "traefik.http.services.faithful_word_umbrella.loadbalancer.server.port=4000"
       - "traefik.docker.network=proxy-network"
+
+  pushsocket:
+    image: faithfulaudiodev/faithfulword-ws:latest
+    ports:
+      - '4004:4004'
+    restart: unless-stopped
+    depends_on:
+      - proxy
+    networks:
+      - proxy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=4004"
+      - "traefik.https.routers.pushsocket.entrypoints=https"
+      - "traefik.http.services.pushsocket.loadbalancer.server.port=4004"
+
   prometheus:
     image: prom/prometheus:v2.11.2
     ports:
