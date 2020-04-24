@@ -1,50 +1,50 @@
 version: '3.7'
 services:
-  proxy:
-    image: traefik:v2.2
-    container_name: traefik
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - proxy-network
-    ports:
-      - 80:80
-      - 443:443
-    command:
-      - --api.dashboard=true
-      - --entrypoints.http.address=:80
-      - --entrypoints.https.address=:443
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --providers.docker.endpoint=unix:///var/run/docker.sock
-      - --providers.file.directory=/dynamic_config
-      - --providers.file.watch=true
-      - --certificatesresolvers.http.acme.email=faithfulaudiodev@gmail.com
-      - --certificatesresolvers.http.acme.storage=certificates/acme.json
-      - --certificatesresolvers.http.acme.httpChallenge.entryPoint=http
-      - --log.level=DEBUG
-      
-    volumes: 
-      - ./dynamic_config:/dynamic_config:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - ./docker/traefik.yml:/traefik.yml:ro
-      # - ./traefik.toml:/etc/traefik/traefik.toml
-      - proxy-certificates-storage:/certificates
-      # - ./docker/traefik/dynamic_config:/dynamic_config:ro
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=http"
-      - "traefik.http.routers.traefik.rule=Host(`proxy.${DOMAIN?Variable DOMAIN not set}`)"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TKUSERNAME?Variable TKUSERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}"
-      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
-      - "traefik.http.routers.traefik-secure.entrypoints=https"
-      - "traefik.http.routers.traefik-secure.rule=Host(`proxy.${DOMAIN?Variable DOMAIN not set}`)"
-      - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik-secure.tls=true"
-      - "traefik.http.routers.traefik-secure.tls.certresolver=http"
-      - "traefik.http.routers.traefik-secure.service=api@internal"
+  # proxy:
+  #   image: traefik:v2.2
+  #   container_name: traefik
+  #   restart: unless-stopped
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   networks:
+  #     - proxy-network
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   command:
+  #     - --api.dashboard=true
+  #     - --entrypoints.http.address=:80
+  #     - --entrypoints.https.address=:443
+  #     - --providers.docker=true
+  #     - --providers.docker.exposedbydefault=false
+  #     - --providers.docker.endpoint=unix:///var/run/docker.sock
+  #     - --providers.file.directory=/dynamic_config
+  #     - --providers.file.watch=true
+  #     - --certificatesresolvers.http.acme.email=faithfulaudiodev@gmail.com
+  #     - --certificatesresolvers.http.acme.storage=certificates/acme.json
+  #     - --certificatesresolvers.http.acme.httpChallenge.entryPoint=http
+  #     - --log.level=DEBUG
+  #     # - --certificatesresolvers.http.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+  #   volumes: 
+  #     - ./dynamic_config:/dynamic_config:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     # - ./docker/traefik.yml:/traefik.yml:ro
+  #     # - ./traefik.toml:/etc/traefik/traefik.toml
+  #     - proxy-certificates-storage:/certificates
+  #     # - ./docker/traefik/dynamic_config:/dynamic_config:ro
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.traefik.entrypoints=http"
+  #     - "traefik.http.routers.traefik.rule=Host(`proxy.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.middlewares.traefik-auth.basicauth.users=${TKUSERNAME?Variable TKUSERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}"
+  #     - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+  #     - "traefik.http.routers.traefik-secure.entrypoints=https"
+  #     - "traefik.http.routers.traefik-secure.rule=Host(`proxy.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+  #     - "traefik.http.routers.traefik-secure.tls=true"
+  #     - "traefik.http.routers.traefik-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.traefik-secure.service=api@internal"
 
   postgres:
     image: postgres:12.2-alpine
@@ -189,11 +189,11 @@ services:
       - proxy-network
 networks:
   db-network:
-  proxy-network:
-    external: true
+  # proxy-network:
+  #   external: true
 
 volumes:
-  proxy-certificates-storage:
+  # proxy-certificates-storage:
   database-storage:
   prometheus-data: {}
   grafana-data: {}
