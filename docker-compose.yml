@@ -189,8 +189,8 @@ services:
       - proxy-network
 networks:
   db-network:
-  # proxy-network:
-  #   external: true
+  proxy-network:
+    external: true
 
 volumes:
   # proxy-certificates-storage:
