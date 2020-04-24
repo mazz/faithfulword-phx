@@ -67,7 +67,7 @@ services:
     env_file:
       - .faithful_word_umbrella_env
     depends_on:
-      - proxy
+      # - proxy
       - postgres
     networks:
       - db-network
@@ -120,8 +120,8 @@ services:
     ports:
       - '9090:9090'
     restart: unless-stopped
-    depends_on:
-      - proxy
+    # depends_on:
+    #   - proxy
     networks:
       - proxy-network
     labels:
@@ -144,7 +144,7 @@ services:
     restart: unless-stopped
     depends_on:
       - prometheus
-      - proxy
+      # - proxy
     volumes:
       - grafana-data:/var/lib/grafana
       - ./docker/grafana/:/etc/grafana/provisioning/
@@ -174,7 +174,7 @@ services:
       - '9187:9187'
     depends_on:
       - postgres
-      - proxy
+      # - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.port=9187"
