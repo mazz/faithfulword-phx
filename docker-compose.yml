@@ -87,33 +87,34 @@ services:
       - "traefik.http.services.faithful_word_umbrella.loadbalancer.server.port=4000"
       - "traefik.docker.network=proxy-network"
 
-  pushsocket:
-    image: faithfulaudiodev/faithfulword-ws:latest
-    ports:
-      - '4004:4004'
-    restart: unless-stopped
-    depends_on:
-      - proxy
-    networks:
-      - proxy-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=4004"
-      # - "traefik.http.routers.pushsocket.entrypoints=http"
-      - "traefik.http.routers.pushsocket.rule=Host(`ws.${DOMAIN?Variable DOMAIN not set}`)"
-      - "traefik.http.middlewares.pushsocket-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.pushsocket.middlewares=pushsocket-https-redirect"
-      # - "traefik.http.routers.pushsocket-secure.entrypoints=https"
-      - "traefik.http.routers.pushsocket-secure.rule=Host(`ws.${DOMAIN?Variable DOMAIN not set}`)"
-      - "traefik.http.routers.pushsocket-secure.tls=true"
-      - "traefik.http.routers.pushsocket-secure.tls.certresolver=http"
-      - "traefik.http.routers.pushsocket-secure.service=pushsocket"
-      - "traefik.http.services.pushsocket.loadbalancer.server.port=4004"
-      - "traefik.docker.network=proxy-network"
-      - "traefik.https.routers.pushsocket.entrypoints=http,https,ws,wss"
-      # - "traefik.hub.frontend.rule=Host:vault.domain.com;Path:/notifications/hub"
-      # - "traefik.hub.port=3012"
-      # - "traefik.hub.protocol=ws"
+  # pushsocket:
+  #   image: faithfulaudiodev/faithfulword-ws:latest
+  #   ports:
+  #     - '4004:4004'
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - proxy
+  #   networks:
+  #     - proxy-network
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=4004"
+  #     # - "traefik.http.routers.pushsocket.entrypoints=http"
+  #     - "traefik.http.routers.pushsocket.rule=Host(`ws.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.middlewares.pushsocket-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.pushsocket.middlewares=pushsocket-https-redirect"
+  #     # - "traefik.http.routers.pushsocket-secure.entrypoints=https"
+  #     - "traefik.http.routers.pushsocket-secure.rule=Host(`ws.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.routers.pushsocket-secure.tls=true"
+  #     - "traefik.http.routers.pushsocket-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.pushsocket-secure.service=pushsocket"
+  #     - "traefik.http.services.pushsocket.loadbalancer.server.port=4004"
+  #     - "traefik.docker.network=proxy-network"
+  #     - "traefik.https.routers.pushsocket.entrypoints=http,https,ws,wss"
+  #     # - "traefik.hub.frontend.rule=Host:vault.domain.com;Path:/notifications/hub"
+  #     # - "traefik.hub.port=3012"
+  #     # - "traefik.hub.protocol=ws"
+
   prometheus:
     image: prom/prometheus:v2.11.2
     ports:
