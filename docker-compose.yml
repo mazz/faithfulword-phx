@@ -65,7 +65,7 @@ services:
     ports:
       - '4000:4000'
     env_file:
-      - .faithful_word_umbrella_env
+      - .env
     depends_on:
       # - proxy
       - postgres

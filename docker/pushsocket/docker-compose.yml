@@ -7,8 +7,8 @@ services:
     image: faithfulaudiodev/faithfulword-ws:latest
     ports:
       - '4004:4004'
-    # env_file:
-    #   - .faithful_word_umbrella_env
+    env_file:
+      - .env
     depends_on:
       - proxy
     networks:
