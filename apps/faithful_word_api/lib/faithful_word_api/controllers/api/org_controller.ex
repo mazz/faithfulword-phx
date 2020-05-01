@@ -1,0 +1,64 @@
+defmodule FaithfulWordApi.OrgController do
+  use FaithfulWordApi, :controller
+
+  alias FaithfulWordApi.ErrorView
+  alias FaithfulWordApi.OrgV13View
+  alias FaithfulWordApi.ChannelV13View
+  alias FaithfulWordApi.V13
+
+  require Logger
+  require Ecto.Query
+
+  action_fallback FaithfulWordApi.FallbackController
+
+  def defaultv13(conn, params = %{"offset" => offset, "limit" => limit}) do
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
+
+    # Logger.debug("orgid #{inspect %{attributes: orgid}}")
+    V13.orgs_default_org(offset, limit, updated_after)
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "language not found in supported list."})
+
+      org_v13 ->
+        # Logger.debug("books #{inspect %{attributes: books}}")
+        Enum.at(conn.path_info, 1)
+        |> case do
+          api_version ->
+            api_version = String.trim_leading(api_version, "v")
+
+            conn
+            |> put_view(OrgV13View)
+            |> render("defaultv13.json", %{org_v13: org_v13, api_version: api_version})
+        end
+    end
+  end
+
+  def channelsv13(conn, params = %{"uuid" => orguuid, "offset" => offset, "limit" => limit}) do
+    Logger.debug("orguuid #{inspect(%{attributes: orguuid})}")
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
+
+    V13.channels_by_org_uuid(orguuid, offset, limit, updated_after)
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "language not found in supported list."})
+
+      channel_v13 ->
+        Enum.at(conn.path_info, 1)
+        |> case do
+          api_version ->
+            api_version = String.trim_leading(api_version, "v")
+
+            conn
+            |> put_view(ChannelV13View)
+            |> render("channelsv13.json", %{channel_v13: channel_v13, api_version: api_version})
+        end
+    end
+  end
+end

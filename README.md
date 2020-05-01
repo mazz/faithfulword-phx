@@ -1,20 +1,91 @@
-# Olivetree
+The devnotes.md has some commands to get your environment up but you'll need asdf:
 
-To start your Phoenix server:
+### go to this page and follow how to install asdf:
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+https://asdf-vm.com/#/core-manage-asdf-vm
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+then:
+```
+asdf plugin-add elixir
+asdf plugin-add erlang
+asdf plugin-add nodejs
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+asdf install elixir 1.9.1
+asdf install erlang 22.0.7
+NODEJS_CHECK_SIGNATURES=no asdf install nodejs 11.15.0
+```
 
-## Learn more
+### install a local postgresql db server
+mac: go to https://postgresapp.com and download latest binary
+linux ubuntu: install psql
 
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+### now you're ready to install the web app:
+
+```
+cd ~/faithfulword-phx
+git fetch
+git checkout develop # latest working branch
+mix deps.get && mix deps.compile
+cd apps/faithful_word_api
+cd assets && npm install
+cd ../../
+python3 -m venv my3venv
+source my3venv/bin/activate
+pip install -U pip
+pip install psycopg2
+cd ../faithfulword-phx
+
+### latest db file:
+2020-01-21-mediaitem-v1.3-bin.sql
+
+
+## linux local postgresql
+
+sudo vim /etc/postgresql/10/main/pg_hba.conf
+```
+```
+local   all             postgres                                trust
+local   all             all                                     trust
+host    all             all             127.0.0.1/32            trust
+host    all             all             ::1/128                 trust
+```
+
+### create postgres/postgres
+```
+sudo -u postgres psql
+```
+psql:
+```
+postgres=# ALTER USER postgres PASSWORD 'postgres';
+postgres=# CREATE ROLE michael WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'michael';
+postgres=# CREATE ROLE faithful_word WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'faithful_word';
+postgres=# create database michael;
+```
+
+```
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2020-01-24-media-item-bin-v1.3.sql faithful_word_dev /usr/bin ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+```
+
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev ./dbtool.py migratefromwebsauna ./2020-01-24-media-item-bin-v1.3.sql faithful_word_dev /Applications/Postgres.app/Contents/Versions/12/bin ; ./dbtool.py convertv12bibletoplaylists faithful_word_dev ; ./dbtool.py convertv12gospeltoplaylists faithful_word_dev ; ./dbtool.py convertv12musictoplaylists faithful_word_dev ; ./dbtool.py normalizemusic faithful_word_dev ; ./dbtool.py normalizegospel faithful_word_dev ; ./dbtool.py normalizepreaching faithful_word_dev ; ./dbtool.py normalizebible faithful_word_dev ; ./dbtool.py misccleanup faithful_word_dev ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/seeds.exs ; FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix run apps/db/priv/repo/hash_ids.exs
+
+# 2020-01-24-media-item-bin-v1.3.sql
+### export db as a complete seeded file to production:
+```
+./dbtool.py exportdb faithful_word_dev /Applications/Postgres.app/Contents/Versions/12/bin 2020-01-24-media-item-bin-v1.3-seeded-mat.sql
+```
+### run
+FW_DATABASE_URL=ecto://postgres:postgres@localhost/faithful_word_dev mix phx.server
+```
+
+### open url in browser
+```
+http://localhost:4000/v1.2/books?language-id=en
+
+```
+currently we manually refresh the ts_vector index because the PG triggers slow down the dbtool.py import script.
+If you want /v1.3/search to return results you must run this SQL statement:
+
+refresh materialized view media_items_search
+
+```
+
