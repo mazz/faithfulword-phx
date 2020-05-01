@@ -1,0 +1,199 @@
+version: '3.7'
+services:
+  proxy:
+    image: traefik:v2.2
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy-network
+    ports:
+      - 80:80
+      - 443:443
+    command:
+      - --api.dashboard=true
+      - --entrypoints.http.address=:80
+      - --entrypoints.https.address=:443
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.file.directory=/dynamic_config
+      - --providers.file.watch=true
+      - --certificatesresolvers.http.acme.email=faithfulaudiodev@gmail.com
+      - --certificatesresolvers.http.acme.storage=certificates/acme.json
+      - --certificatesresolvers.http.acme.httpChallenge.entryPoint=http
+      - --log.level=DEBUG
+      # - --certificatesresolvers.http.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+    volumes: 
+      - ./dynamic_config:/dynamic_config:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - ./docker/traefik.yml:/traefik.yml:ro
+      # - ./traefik.toml:/etc/traefik/traefik.toml
+      - proxy-certificates-storage:/certificates
+      # - ./docker/traefik/dynamic_config:/dynamic_config:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`proxy.${DOMAIN?Variable DOMAIN not set}`)"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TKUSERNAME?Variable TKUSERNAME not set}:${HASHED_PASSWORD?Variable HASHED_PASSWORD not set}"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`proxy.${DOMAIN?Variable DOMAIN not set}`)"
+      - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=http"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+
+  # postgres:
+  #   image: postgres:12.2-alpine
+  #   environment:
+  #     POSTGRES_DB: ${FW_DATABASE_NAME?Variable FW_DATABASE_NAME not set}
+  #     POSTGRES_PASSWORD: ${FW_DATABASE_PASSWORD?Variable FW_DATABASE_PASSWORD not set}
+  #     POSTGRES_USER: ${FW_DATABASE_USERNAME?Variable FW_DATABASE_USERNAME not set}
+  #   networks:
+  #     - db-network
+  #   volumes:
+  #     - database-storage:/var/lib/postgresql/data
+
+  # faithful_word_umbrella:
+  #   container_name: faithful_word_umbrella
+  #   restart: unless-stopped
+  #   build: .
+  #   image: faithful_word_umbrella
+  #   ports:
+  #     - '4000:4000'
+  #   env_file:
+  #     - .faithful_word_umbrella_env
+  #   depends_on:
+  #     - proxy
+  #     - postgres
+  #   networks:
+  #     - db-network
+  #     - proxy-network
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=4000"
+  #     - "traefik.http.routers.faithful_word_umbrella.entrypoints=http"
+  #     - "traefik.http.routers.faithful_word_umbrella.rule=Host(`${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.middlewares.faithful_word_umbrella-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.faithful_word_umbrella.middlewares=faithful_word_umbrella-https-redirect"
+  #     - "traefik.http.routers.faithful_word_umbrella-secure.entrypoints=https"
+  #     - "traefik.http.routers.faithful_word_umbrella-secure.rule=Host(`${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.routers.faithful_word_umbrella-secure.tls=true"
+  #     - "traefik.http.routers.faithful_word_umbrella-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.faithful_word_umbrella-secure.service=faithful_word_umbrella"
+  #     - "traefik.http.services.faithful_word_umbrella.loadbalancer.server.port=4000"
+  #     - "traefik.docker.network=proxy-network"
+
+  # pushsocket:
+  #   image: faithfulaudiodev/faithfulword-ws:latest
+  #   ports:
+  #     - '4004:4004'
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - proxy
+  #   networks:
+  #     - proxy-network
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=4004"
+  #     # - "traefik.http.routers.pushsocket.entrypoints=http"
+  #     - "traefik.http.routers.pushsocket.rule=Host(`ws.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.middlewares.pushsocket-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.pushsocket.middlewares=pushsocket-https-redirect"
+  #     # - "traefik.http.routers.pushsocket-secure.entrypoints=https"
+  #     - "traefik.http.routers.pushsocket-secure.rule=Host(`ws.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.routers.pushsocket-secure.tls=true"
+  #     - "traefik.http.routers.pushsocket-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.pushsocket-secure.service=pushsocket"
+  #     - "traefik.http.services.pushsocket.loadbalancer.server.port=4004"
+  #     - "traefik.docker.network=proxy-network"
+  #     - "traefik.https.routers.pushsocket.entrypoints=http,https,ws,wss"
+  #     # - "traefik.hub.frontend.rule=Host:vault.domain.com;Path:/notifications/hub"
+  #     # - "traefik.hub.port=3012"
+  #     # - "traefik.hub.protocol=ws"
+
+  # prometheus:
+  #   image: prom/prometheus:v2.11.2
+  #   ports:
+  #     - '9090:9090'
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - proxy
+  #   networks:
+  #     - proxy-network
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=9090"
+  #     - "traefik.https.routers.prometheus.entrypoints=https"
+  #     - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+  #   volumes:
+  #     - "./docker/prometheus/:/etc/prometheus/"
+  #     - "prometheus-data:/prometheus"
+  #   command: |
+  #       --config.file=/etc/prometheus/config.yml
+  #       --storage.tsdb.path=/prometheus
+  #       --web.console.libraries=/usr/share/prometheus/console_libraries
+  #       --web.console.templates=/usr/share/prometheus/consoles
+  # grafana:
+  #   image: grafana/grafana:6.3.3
+  #   ports:
+  #     - '3000:3000'
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - prometheus
+  #     - proxy
+  #   volumes:
+  #     - grafana-data:/var/lib/grafana
+  #     - ./docker/grafana/:/etc/grafana/provisioning/
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     # - proxy-certificates-storage:/certificates
+  #   env_file:
+  #     - ./docker/grafana/.env
+  #   networks:
+  #     - proxy-network
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=3000"
+  #     - "traefik.http.routers.grafana.entrypoints=http"
+  #     - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.grafana.middlewares=grafana-https-redirect"
+  #     - "traefik.http.routers.grafana-secure.entrypoints=https"
+  #     - "traefik.http.routers.grafana-secure.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.routers.grafana-secure.tls=true"
+  #     - "traefik.http.routers.grafana-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.grafana-secure.service=grafana"
+  #     - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+  #     - "traefik.docker.network=proxy-network"
+  # postgres_exporter:
+  #   image: wrouesnel/postgres_exporter:v0.5.1
+  #   ports:
+  #     - '9187:9187'
+  #   depends_on:
+  #     - postgres
+  #     - proxy
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=9187"
+  #     - "traefik.https.routers.postgres_exporter.entrypoints=https"
+  #     - "traefik.http.services.postgres_exporter.loadbalancer.server.port=9187"
+  #   environment:
+  #     DATA_SOURCE_USER: ${FW_DATABASE_USERNAME?Variable FW_DATABASE_USERNAME not set}
+  #     DATA_SOURCE_PASS: ${FW_DATABASE_PASSWORD?Variable FW_DATABASE_PASSWORD not set}
+  #     DATA_SOURCE_URI: ${FW_DATABASE_HOSTNAME?Variable FW_DATABASE_HOSTNAME not set}:5432/?sslmode=disable
+  #   networks:
+  #     - db-network
+  #     - proxy-network
+networks:
+  # db-network:
+  proxy-network:
+    external: true
+
+volumes:
+  proxy-certificates-storage:
+  # database-storage:
+  # prometheus-data: {}
+  # grafana-data: {}

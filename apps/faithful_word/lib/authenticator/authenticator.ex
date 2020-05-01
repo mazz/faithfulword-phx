@@ -10,15 +10,22 @@ defmodule FaithfulWord.Authenticator do
   alias FaithfulWord.Authenticator.OAuth
   alias Kaur.Result
 
+  require Logger
+
   @doc """
   Get user from its email address or user name and check password.
   Returns nil if no User for email or if password is invalid.
   """
   def get_user_for_email_or_name_password(email_or_name, password) do
-    user =
-      User
-      |> where([u], u.email == ^email_or_name or u.username == ^email_or_name)
-      |> Repo.one()
+
+    # swipe 2
+    user = Repo.one from user in User,
+      where: user.email == ^email_or_name or user.username == ^email_or_name,
+      left_join: orgs in assoc(user, :orgs),
+      left_join: channels in assoc(orgs, :channels),
+      preload: [orgs: {orgs, channels: channels}]
+
+      Logger.debug("user preload orgs channels: #{inspect(%{attributes: user})}")
 
     with user when not is_nil(user) <- user,
          true <- validate_pass(user.encrypted_password, password) do

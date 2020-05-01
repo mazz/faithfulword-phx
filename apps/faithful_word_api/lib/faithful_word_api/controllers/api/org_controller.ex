@@ -11,6 +11,30 @@ defmodule FaithfulWordApi.OrgController do
 
   action_fallback FaithfulWordApi.FallbackController
 
+  def indexv13(conn, params = %{"offset" => offset, "limit" => limit}) do
+    # optional params
+    updated_after = Map.get(params, "upd-after", nil)
+
+    Logger.debug("offset #{inspect %{attributes: offset}}")
+    V13.orgs(offset, limit, updated_after)
+    |> case do
+      nil ->
+        put_status(conn, 403)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened"})
+
+      org_v13 ->
+        # Logger.debug("books #{inspect %{attributes: books}}")
+        # Enum.at(conn.path_info, 1)
+        # |> case do
+          #   api_version ->
+            # api_version = String.trim_leading(api_version, "v")
+        conn
+        |> put_view(OrgV13View)
+        |> render("defaultv13.json", %{org_v13: org_v13, api_version: "1.3"})
+    end
+  end
+
   def defaultv13(conn, params = %{"offset" => offset, "limit" => limit}) do
     # optional params
     updated_after = Map.get(params, "upd-after", nil)
@@ -21,7 +45,7 @@ defmodule FaithfulWordApi.OrgController do
       nil ->
         put_status(conn, 403)
         |> put_view(ErrorView)
-        |> render("403.json", %{message: "language not found in supported list."})
+        |> render("403.json", %{message: "something happened"})
 
       org_v13 ->
         # Logger.debug("books #{inspect %{attributes: books}}")
@@ -34,6 +58,82 @@ defmodule FaithfulWordApi.OrgController do
             |> put_view(OrgV13View)
             |> render("defaultv13.json", %{org_v13: org_v13, api_version: api_version})
         end
+    end
+  end
+
+  def add_or_update_v13(
+        conn,
+        params = %{
+          "basename" => basename,
+          "shortname" => shortname
+        }
+      ) do
+    # optional params
+    small_thumbnail_path = Map.get(params, "small_thumbnail_path", nil)
+    med_thumbnail_path = Map.get(params, "med_thumbnail_path", nil)
+    large_thumbnail_path = Map.get(params, "large_thumbnail_path", nil)
+    banner_path = Map.get(params, "banner_path", nil)
+    org_uuid = Map.get(params, "org_uuid", nil)
+
+    V13.add_or_update_org(
+      basename,
+      shortname,
+      small_thumbnail_path,
+      med_thumbnail_path,
+      large_thumbnail_path,
+      banner_path,
+      org_uuid
+    )
+    # |> IO.inspect()
+    |> case do
+      {:ok, org} ->
+        Logger.debug("org #{inspect(%{attributes: org})}")
+
+        conn
+        |> put_view(OrgV13View)
+        |> render("add_org_v13.json", %{
+          add_org_v13: org,
+          api_version: "1.3"
+        })
+
+      {:error, changeset = %Ecto.Changeset{}} ->
+        conn
+        |> put_status(:bad_request)
+        |> render(FaithfulWordApi.ChangesetView, "error.json", changeset: changeset)
+      # {:error, error} ->
+      #   conn
+      #   |> put_status(:unprocessable_entity)
+      #   |> put_view(ErrorView)
+      #   |> render("403.json", %{message: "something happened."})
+    end
+  end
+
+  def delete_v13(
+        conn,
+        %{
+          "org_uuid" => org_uuid
+        }
+      ) do
+    V13.delete_org(org_uuid)
+    |> IO.inspect()
+    |> case do
+      {:ok, org} ->
+        Logger.debug("just deleted and about to render org")
+
+        conn
+        |> put_view(OrgV13View)
+        |> render("deletev13.json", %{
+          org_v13: org,
+          api_version: "1.3"
+        })
+
+      {:error, error} ->
+        Logger.debug("org deletion failed {:error, :not_found}")
+
+        conn
+        |> put_status(error)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
     end
   end
 

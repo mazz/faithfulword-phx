@@ -20,7 +20,6 @@ defmodule Db.Repo.Migrations.CreateOrgs do
     # Create unique index on hash_id
     create(unique_index(:orgs, [:hash_id]))
     create index(:orgs, [:uuid])
-
     flush()
   end
 end

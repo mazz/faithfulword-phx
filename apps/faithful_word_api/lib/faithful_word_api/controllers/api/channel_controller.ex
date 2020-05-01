@@ -23,15 +23,15 @@ defmodule FaithfulWordApi.ChannelController do
         params = %{
           "ordinal" => ordinal,
           "basename" => basename,
-          "small_thumbnail_path" => small_thumbnail_path,
-          "med_thumbnail_path" => med_thumbnail_path,
-          "large_thumbnail_path" => large_thumbnail_path,
-          "banner_path" => banner_path,
           "org_id" => org_id
         }
       ) do
     # optional params
     channel_uuid = Map.get(params, "channel_uuid", nil)
+    small_thumbnail_path = Map.get(params, "small_thumbnail_path", nil)
+    med_thumbnail_path = Map.get(params, "med_thumbnail_path", nil)
+    large_thumbnail_path = Map.get(params, "large_thumbnail_path", nil)
+    banner_path = Map.get(params, "banner_path", nil)
 
     V13.add_or_update_channel(
       ordinal,
@@ -86,6 +86,33 @@ defmodule FaithfulWordApi.ChannelController do
         })
 
         # end
+    end
+  end
+
+  def delete_v13(
+        conn,
+        %{
+          "channel_uuid" => channel_uuid
+        }
+      ) do
+    V13.delete_channel(channel_uuid)
+    # |> IO.inspect()
+    |> case do
+      {:ok, channel} ->
+        Logger.debug("channel #{inspect(%{attributes: channel})}")
+
+        conn
+        |> put_view(ChannelV13View)
+        |> render("deletev13.json", %{
+          channel_v13: channel,
+          api_version: "1.3"
+        })
+
+      {:error, error} ->
+        conn
+        |> put_status(error)
+        |> put_view(ErrorView)
+        |> render("403.json", %{message: "something happened."})
     end
   end
 end

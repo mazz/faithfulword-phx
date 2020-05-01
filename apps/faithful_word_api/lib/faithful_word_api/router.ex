@@ -98,6 +98,7 @@ defmodule FaithfulWordApi.Router do
         end
 
         scope "/orgs" do
+          get "/", OrgController, :indexv13
           get "/default", OrgController, :defaultv13
           get "/:uuid/channels", OrgController, :channelsv13
         end
@@ -107,13 +108,21 @@ defmodule FaithfulWordApi.Router do
           get "/:uuid/playlists", PlaylistController, :indexv13
         end
 
-        scope "/playlist" do
+        scope "/playlists" do
           get "/:uuid/details", PlaylistController, :detailsv13
         end
 
         scope "/playlists" do
           # post "/add", PlaylistController, :addv13
           get "/:uuid/media", MediaItemController, :indexv13
+        end
+
+        scope "/mediaitem" do
+          get "/:uuid/details", MediaItemController, :detailsv13
+        end
+
+        scope "/mediaitem" do
+          get "/:hashId/detailshashid", MediaItemController, :detailshashidv13
         end
 
         scope "/search" do
@@ -210,8 +219,14 @@ defmodule FaithfulWordApi.Router do
             post "/send", PushMessageController, :send
           end
 
+          scope "/orgs" do
+            post "/addorupdate", OrgController, :add_or_update_v13
+            post "/delete", OrgController, :delete_v13
+          end
+
           scope "/channels" do
             post "/addorupdate", ChannelController, :add_or_update_v13
+            post "/delete", ChannelController, :delete_v13
           end
 
           scope "/playlisttitles" do
@@ -225,6 +240,7 @@ defmodule FaithfulWordApi.Router do
 
           scope "/mediaitems" do
             post "/addorupdate", MediaItemController, :add_or_update_v13
+            post "/delete", MediaItemController, :delete_v13
             # get "/:uuid/media", MediaItemController, :indexv13
           end
         end

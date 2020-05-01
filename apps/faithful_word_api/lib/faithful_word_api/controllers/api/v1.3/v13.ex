@@ -484,15 +484,35 @@ defmodule FaithfulWordApi.V13 do
           })
 
         Multi.new()
-        |> Multi.update(:channel, changeset)
+        |> Multi.update(:media_item, changeset)
         |> Repo.transaction()
         |> case do
-          {:ok, %{channel: channel}} ->
-            {:ok, channel}
+          {:ok, %{media_item: media_item}} ->
+            {:ok, media_item}
 
           {:error, _, error, _} ->
             {:error, error}
         end
+    end
+  end
+
+  def delete_media_item(media_item_uuid) do
+    {:ok, media_itemuuid} =
+      if media_item_uuid do
+        Ecto.UUID.dump(media_item_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(MediaItem, uuid: media_itemuuid) do
+      # no media_item title by that uuid
+      nil ->
+        {:error, :not_found}
+
+        media_item ->
+        Repo.delete!(media_item)
+
+        {:ok, media_item}
     end
   end
 
@@ -801,6 +821,26 @@ defmodule FaithfulWordApi.V13 do
     end
   end
 
+  def delete_channel(channel_uuid) do
+    {:ok, channeluuid} =
+      if channel_uuid do
+        Ecto.UUID.dump(channel_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Channel, uuid: channeluuid) do
+      # no channel title by that uuid
+      nil ->
+        {:error, :not_found}
+
+        channel ->
+        Repo.delete!(channel)
+
+        {:ok, channel}
+    end
+  end
+
   def add_client_device(fcm_token, apns_token, preferred_language, user_agent, user_version, org_id) do
     case Repo.get_by(ClientDevice, firebase_token: fcm_token) do
       nil ->
@@ -1066,6 +1106,8 @@ defmodule FaithfulWordApi.V13 do
   end
 
   def media_item_by_hash_id(hash_id) do
+    Logger.debug("hash_id: #{hash_id}")
+
     query =
       from(mi in MediaItem,
         join: pl in Playlist,
@@ -1099,8 +1141,90 @@ defmodule FaithfulWordApi.V13 do
         }
       )
 
-    query
-    |> Repo.one()
+
+    case Repo.one(query) do
+      nil ->
+        {:error, nil}
+      media_item ->
+        {:ok, media_item}
+    end
+  end
+
+  def media_item_by_uuid(uuid_str) do
+    {:ok, media_item_uuid} = Ecto.UUID.dump(uuid_str)
+    Logger.debug("media_item_uuid: #{uuid_str}")
+
+    query =
+      from(mi in MediaItem,
+        join: pl in Playlist,
+        where: mi.uuid == ^media_item_uuid,
+        where: mi.playlist_id == pl.id,
+        select: %{
+          ordinal: mi.ordinal,
+          uuid: mi.uuid,
+          track_number: mi.track_number,
+          medium: mi.medium,
+          localizedname: mi.localizedname,
+          multilanguage: pl.multilanguage,
+          path: mi.path,
+          content_provider_link: mi.content_provider_link,
+          ipfs_link: mi.ipfs_link,
+          language_id: mi.language_id,
+          presenter_name: mi.presenter_name,
+          source_material: mi.source_material,
+          tags: mi.tags,
+          small_thumbnail_path: mi.small_thumbnail_path,
+          med_thumbnail_path: mi.med_thumbnail_path,
+          large_thumbnail_path: mi.large_thumbnail_path,
+          inserted_at: mi.inserted_at,
+          updated_at: mi.updated_at,
+          media_category: mi.media_category,
+          presented_at: mi.presented_at,
+          published_at: mi.published_at,
+          hash_id: mi.hash_id,
+          playlist_uuid: pl.uuid,
+          # playlist_id: pl.id,
+          duration: mi.duration
+        }
+      )
+
+      case Repo.one(query) do
+        nil ->
+          {:error, nil}
+        media_item ->
+          {:ok, media_item}
+      end
+  end
+
+  def orgs(offset \\ 0, limit \\ 0, updated_after) do
+    conditions = true
+
+    Logger.debug("offset: #{offset}")
+
+    conditions =
+      if updated_after != nil do
+        updated_after_int = String.to_integer(updated_after)
+
+        if updated_after_int do
+          {:ok, datetime} = DateTime.from_unix(updated_after_int, :second)
+          naive = DateTime.to_naive(datetime)
+          dynamic([orgs], orgs.updated_at >= ^naive and ^conditions)
+        else
+          conditions
+        end
+      else
+        true
+      end
+
+    Ecto.Query.from(org in Org,
+      where: ^conditions,
+      preload: [:channels],
+      order_by: org.id,
+      select: %{
+        org: org
+      }
+    )
+    |> Repo.paginate(page: offset, page_size: limit)
   end
 
   def orgs_default_org(offset \\ 0, limit \\ 0, updated_after) do
@@ -1136,6 +1260,124 @@ defmodule FaithfulWordApi.V13 do
       }
     )
     |> Repo.paginate(page: offset, page_size: limit)
+  end
+
+  def add_or_update_org(
+    basename,
+    shortname,
+    small_thumbnail_path,
+    med_thumbnail_path,
+    large_thumbnail_path,
+    banner_path,
+    org_uuid
+  ) do
+    {:ok, orguuid} =
+      if org_uuid do
+        Ecto.UUID.dump(org_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Org, uuid: orguuid) do
+      nil ->
+        Logger.debug("new org changeset")
+        changeset =
+          Org.changeset(
+            %Org{
+              basename: basename,
+              shortname: shortname,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path
+            },
+            %{
+              basename: basename,
+              shortname: shortname,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              uuid: Ecto.UUID.generate()
+            }
+          )
+        Logger.debug("new changeset")
+        IO.inspect(changeset)
+
+        Multi.new()
+        |> Multi.insert(:item_without_hash_id, changeset)
+        |> Multi.run(:org, fn _repo, %{item_without_hash_id: org} ->
+          org
+          |> Org.changeset_generate_hash_id()
+          |> Repo.update()
+        end)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{org: org}} ->
+            Logger.debug("about to return new org")
+            IO.inspect(org)
+            {:ok, org}
+
+          {:error, _, error, _} ->
+            Logger.debug("about to return new error")
+            IO.inspect(error)
+            {:error, changeset}
+        end
+
+        org ->
+          Logger.debug("found org")
+          IO.inspect(org)
+        changeset =
+          Org.changeset(
+            %Org{
+              id: org.id
+            },
+            %{
+              basename: basename,
+              shortname: shortname,
+              uuid: org.uuid,
+              small_thumbnail_path: small_thumbnail_path,
+              med_thumbnail_path: med_thumbnail_path,
+              large_thumbnail_path: large_thumbnail_path,
+              banner_path: banner_path,
+              hash_id: org.hash_id,
+              updated_at: DateTime.utc_now()
+            }
+          )
+        Logger.debug("changeset")
+        IO.inspect(changeset)
+
+        Multi.new()
+        |> Multi.update(:org, changeset)
+        |> Repo.transaction()
+        |> case do
+          {:ok, %{org: org}} ->
+            {:ok, org}
+
+          {:error, _, error, _} ->
+            {:error, error}
+        end
+    end
+  end
+
+  def delete_org(org_uuid) do
+    {:ok, orguuid} =
+      if org_uuid do
+        Ecto.UUID.dump(org_uuid)
+      else
+        Ecto.UUID.dump("00000000-0000-0000-0000-000000000000")
+      end
+
+    case Repo.get_by(Org, uuid: orguuid) do
+      # no org title by that uuid
+      nil ->
+        {:error, :not_found}
+
+      org ->
+        Repo.delete!(org)
+
+        {:ok, org}
+    end
   end
 
   def search(

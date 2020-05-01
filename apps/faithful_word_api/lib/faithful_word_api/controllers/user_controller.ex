@@ -36,6 +36,7 @@ defmodule FaithfulWordApi.UserController do
       {:ok, user} ->
         {:ok, token, _claims} = GuardianImpl.encode_and_sign(user, [])
 
+        user = Repo.preload(user, [orgs: :channels])
         conn
         |> put_status(:created)
         |> render("user_with_token.json", %{user: user, token: token})
@@ -60,7 +61,10 @@ defmodule FaithfulWordApi.UserController do
   end
 
   def show_me(conn, _params) do
-    render(conn, UserView, :show, user: GuardianImpl.Plug.current_resource(conn))
+    user = GuardianImpl.Plug.current_resource(conn)
+    |> Repo.preload([orgs: :channels])
+    render(conn, UserView, :show, user: user)
+    # render(conn, UserView, :show, user: GuardianImpl.Plug.current_resource(conn))
   end
 
   def update(conn, params) do
@@ -190,11 +194,13 @@ defmodule FaithfulWordApi.UserController do
 
   def reset_password_verify(conn, %{"token" => token}) do
     user = Accounts.check_reset_password_token!(token)
+    user = Repo.preload(user, [orgs: :channels])
     render(conn, UserView, :show, %{user: user})
   end
 
   def reset_password_confirm(conn, %{"token" => token, "password" => password}) do
     user = Accounts.confirm_password_reset!(token, password)
+    user = Repo.preload(user, [orgs: :channels])
     render(conn, UserView, :show, %{user: user})
   end
 

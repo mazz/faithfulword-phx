@@ -1,0 +1,116 @@
+version: '3.7'
+services:
+  pushsocket:
+    container_name: pushsocket
+    restart: unless-stopped
+    # build: .
+    image: faithfulaudiodev/faithfulword-ws:latest
+    ports:
+      - '4004:4004'
+    env_file:
+      - .env
+    # depends_on:
+      # - proxy
+    networks:
+      - proxy-network
+    labels:
+      - traefik.docker.network=proxy-network
+      - traefik.http.middlewares.redirect-https.redirectScheme.scheme=https
+      - traefik.http.middlewares.redirect-https.redirectScheme.permanent=true
+      - traefik.http.routers.pushsocket-web-https.rule=Host(`pushsocket.japheth.ca`) && Path(`/api/push`)
+      - traefik.http.routers.pushsocket-web-https.entrypoints=websecure
+      - traefik.http.routers.pushsocket-web-https.tls=true
+      - traefik.http.routers.pushsocket-web-https.service=pushsocket-web
+      - traefik.http.routers.pushsocket-web-http.rule=Host(`pushsocket.japheth.ca`)
+      - traefik.http.routers.pushsocket-web-http.entrypoints=web
+      - traefik.http.routers.pushsocket-web-http.middlewares=redirect-https
+      - traefik.http.routers.pushsocket-web-http.service=pushsocket-web
+      - traefik.http.services.pushsocket-web.loadbalancer.server.port=4004
+      - traefik.wss.routers.pushsocket-ws-https.entrypoints=websecure
+      - traefik.wss.routers.pushsocket-ws-https.tls=true
+      - traefik.wss.routers.pushsocket-ws-https.service=pushsocket-ws
+      - traefik.wss.routers.pushsocket-ws-http.rule=Host(`pushsocket.japheth.ca`) && Path(`/socket/websocket`)
+      - traefik.wss.routers.pushsocket-ws-http.entrypoints=web
+      # - traefik.wss.routers.pushsocket-ws-http.middlewares=redirect-https
+      - traefik.wss.routers.pushsocket-ws-http.service=pushsocket-ws
+      - traefik.wss.services.pushsocket-ws.loadbalancer.server.port=4004
+      - traefik.wss.protocol=ws
+
+      # - "traefik.enable=true"
+      # - "traefik.docker.network=proxy-network"
+      # - "traefik.http.services.pushsocket.loadbalancer.server.port=80"
+      # - "traefik.backend=pushsocket"
+      # - "traefik.http.routers.pushsocket.rule=Host(`pushsocket.japheth.ca`)"
+      # - "traefik.wss.routers.pushsocket.rule=HostRegexp(`pushsocket.japheth.ca:4004`)"
+      # - "traefik.wss.protocol=ws"
+      # - "traefik.wss.port=4004"
+
+      # - "traefik.port=4004"
+      # - "traefik.http.routers.pushsocket.entrypoints=http"
+      # - "traefik.http.routers.pushsocket.rule=Host(`pushsocket.${PUSHSOCKET_DOMAIN?Variable PUSHSOCKET_DOMAIN not set}`)"
+      # - "traefik.http.middlewares.pushsocket-https-redirect.redirectscheme.scheme=https"
+      # - "traefik.http.routers.pushsocket.middlewares=pushsocket-https-redirect"
+      # - "traefik.http.routers.pushsocket-secure.entrypoints=https"
+      # - "traefik.http.routers.pushsocket-secure.rule=Host(`pushsocket.${PUSHSOCKET_DOMAIN?Variable PUSHSOCKET_DOMAIN not set}`)"
+      # - "traefik.http.routers.pushsocket-secure.tls=true"
+      # - "traefik.http.routers.pushsocket-secure.tls.certresolver=http"
+      # - "traefik.http.routers.pushsocket-secure.service=pushsocket"
+      # - "traefik.http.services.pushsocket.loadbalancer.server.port=4004"
+      # - "traefik.docker.network=proxy-network"
+
+      # - "traefik.web.frontend.rule=Host:pushsocket.${PUSHSOCKET_DOMAIN?Variable PUSHSOCKET_DOMAIN not set}"
+      # - "traefik.web.port=80"
+      # - "traefik.hub.frontend.rule=Host:pushsocket.${PUSHSOCKET_DOMAIN?Variable PUSHSOCKET_DOMAIN not set}"
+      # - "traefik.hub.port=4004"
+      # - "traefik.hub.protocol=ws"
+      # - "traefik.docker.network=proxy-network"
+      # - "traefik.frontend.headers.SSLRedirect=true"
+      # - "traefik.frontend.headers.STSSeconds=315360000"
+      # - "traefik.frontend.headers.browserXSSFilter=true"
+      # - "traefik.frontend.headers.contentTypeNosniff=true"
+      # - "traefik.frontend.headers.forceSTSHeader=true"
+      # - "traefik.frontend.headers.SSLHost=pushsocket.${PUSHSOCKET_DOMAIN?Variable PUSHSOCKET_DOMAIN not set}"
+      # - "traefik.frontend.headers.SSLForceHost=true"
+      # - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      # - "traefik.frontend.headers.STSPreload=true"
+      # - "traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex"
+      # - "traefik.frontend.headers.frameDeny=true"
+
+  # pushsocket:
+  #   image: faithfulaudiodev/faithfulword-ws:latest
+  #   ports:
+  #     - '4004:4004'
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - proxy
+  #   networks:
+  #     - proxy-network
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=4004"
+  #     # - "traefik.http.routers.pushsocket.entrypoints=http"
+  #     - "traefik.http.routers.pushsocket.rule=Host(`ws.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.middlewares.pushsocket-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.pushsocket.middlewares=pushsocket-https-redirect"
+  #     # - "traefik.http.routers.pushsocket-secure.entrypoints=https"
+  #     - "traefik.http.routers.pushsocket-secure.rule=Host(`ws.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.routers.pushsocket-secure.tls=true"
+  #     - "traefik.http.routers.pushsocket-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.pushsocket-secure.service=pushsocket"
+  #     - "traefik.http.services.pushsocket.loadbalancer.server.port=4004"
+  #     - "traefik.docker.network=proxy-network"
+  #     - "traefik.https.routers.pushsocket.entrypoints=http,https,ws,wss"
+  #     # - "traefik.hub.frontend.rule=Host:vault.domain.com;Path:/notifications/hub"
+  #     # - "traefik.hub.port=3012"
+  #     # - "traefik.hub.protocol=ws"
+
+networks:
+  # db-network:
+  proxy-network:
+    external: true
+
+volumes:
+  proxy-certificates-storage:
+  # database-storage:
+  # prometheus-data: {}
+  # grafana-data: {}

@@ -3,6 +3,22 @@ defmodule Db.Schema.Org do
   import Ecto.Changeset
   alias Db.Type.OrgHashId
 
+  @derive {Jason.Encoder,
+  only: [
+    :basename,
+    :shortname,
+    :small_thumbnail_path,
+    :med_thumbnail_path,
+    :large_thumbnail_path,
+    :banner_path,
+    :uuid,
+    :id,
+    :hash_id,
+    :channels,
+    :updated_at,
+    :inserted_at
+  ]}
+
   schema "orgs" do
     field :basename, :string
     field :shortname, :string
@@ -14,7 +30,8 @@ defmodule Db.Schema.Org do
     field :hash_id, :string
 
     has_many :channels, Db.Schema.Channel
-    has_many :users, Db.Schema.User
+    # has_many :users, Db.Schema.User
+    many_to_many :users, Db.Schema.User, join_through: "orgs_users", on_replace: :delete
 
     timestamps(type: :utc_datetime)
 
@@ -46,15 +63,16 @@ defmodule Db.Schema.Org do
       :banner_path,
       :hash_id
     ])
+    |> unique_constraint(:shortname)
     |> validate_required([
       :uuid,
       :basename,
-      :shortname,
-      :large_thumbnail_path,
-      :med_thumbnail_path,
-      :small_thumbnail_path,
-      :banner_path,
-      :hash_id
+      :shortname
+      # :large_thumbnail_path,
+      # :med_thumbnail_path,
+      # :small_thumbnail_path,
+      # :banner_path,
+      # :hash_id
     ])
   end
 end

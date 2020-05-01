@@ -13,6 +13,33 @@ defmodule FaithfulWordApi.ChannelV13View do
     %{add_channel_v13: add_channel_v13}
   end
 
+  def render("deletev13.json", %{channel_v13: channel_v13, api_version: api_version}) do
+    Logger.debug("render channel_v13 #{inspect(%{attributes: channel_v13})}")
+
+    channel_map = %{
+      # hash_id: task_v10.rubric.hash_id,
+      basename: channel_v13.basename,
+      # languageId: channel_v13.language_id,
+      uuid: channel_v13.uuid,
+      ordinal: channel_v13.ordinal,
+      small_thumbnail_path: channel_v13.small_thumbnail_path,
+      med_thumbnail_path: channel_v13.med_thumbnail_path,
+      large_thumbnail_path: channel_v13.large_thumbnail_path,
+      banner_path: channel_v13.banner_path,
+      hash_id: channel_v13.hash_id,
+      # , ## |> render_unix_timestamp(),
+      inserted_at: channel_v13.inserted_at,
+      # |> render_unix_timestamp()
+      updated_at: channel_v13.updated_at
+    }
+
+    %{result: channel_map, status: "success", version: api_version}
+  end
+
+  def render("deletev13.json", %{delete_channel_v13: delete_channel_v13}) do
+    %{delete_channel_v13: delete_channel_v13}
+  end
+
   def render("channelsv13.json", %{channel_v13: channel_v13, api_version: api_version}) do
     %{
       result: render_many(channel_v13, ChannelV13View, "channel_v13.json"),
