@@ -33,8 +33,11 @@ config :faithful_word, FaithfulWord.Mailer, adapter: Bamboo.LocalAdapter
 #   issuer: "FaithfulWordApi"
 
 # General config
+fw_domain = System.get_env("DOMAIN")
+frontend_url = String.trim_trailing("https://webclient.#{fw_domain}") <> "/"
+
 config :faithful_word,
-  frontend_url: "http://localhost:3333/",
+  frontend_url: fw_domain,
   oauth: [
     facebook: [
       client_id: "client_id",

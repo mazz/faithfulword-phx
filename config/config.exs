@@ -16,7 +16,8 @@ config :db,
 
 # faithful_word ###############################################################
 
-frontend_url = String.trim_trailing("http://localhost:3000/") <> "/"
+fw_domain = System.get_env("DOMAIN")
+frontend_url = String.trim_trailing("https://webclient.#{fw_domain}") <> "/"
 
 config :faithful_word,
   env: Mix.env(),

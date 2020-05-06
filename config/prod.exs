@@ -4,7 +4,10 @@ use Mix.Config
 
 config :faithful_word, Db.Repo, pool_size: 30
 
-frontend_url = String.trim_trailing("http://localhost:3000/") <> "/"
+fw_domain = System.get_env("DOMAIN")
+frontend_url = String.trim_trailing("https://webclient.#{fw_domain}") <> "/"
+
+# frontend_url = String.trim_trailing("http://localhost:3000/") <> "/"
 
 config :faithful_word,
   env: Mix.env(),
