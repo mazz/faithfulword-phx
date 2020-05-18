@@ -4,7 +4,6 @@ defmodule FaithfulWordApi.SearchController do
   alias FaithfulWordApi.V13
   alias FaithfulWordApi.ErrorView
   alias FaithfulWordApi.SearchV13View
-  alias FaithfulWordApi.{Metrics}
 
   require Logger
 
@@ -21,8 +20,6 @@ defmodule FaithfulWordApi.SearchController do
     published_after = Map.get(params, "publishedAfter", nil)
     updated_after = Map.get(params, "updatedAfter", nil)
     presented_after = Map.get(params, "presentedAfter", nil)
-
-    Metrics.increment_media_item_search(query_string)
 
     V13.search(
       query_string,

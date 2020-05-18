@@ -7,25 +7,6 @@ defmodule FaithfulWordApi.Application do
 
   def start(_type, _args) do
 
-  # Start all the instrumenters
-  FaithfulWordApi.PhoenixInstrumenter.setup()
-  FaithfulWordApi.PipelineInstrumenter.setup()
-  FaithfulWordApi.RepoInstrumenter.setup()
-  FaithfulWordApi.PrometheusExporter.setup()
-
-  # NOTE: Only for FreeBSD, Linux and OSX (experimental)
-  # https://github.com/deadtrickster/prometheus_process_collector
-  Prometheus.Registry.register_collector(:prometheus_process_collector)
-
-  :telemetry.attach(
-    "prometheus-ecto",
-    [:elixir_monitoring_prom, :repo, :query],
-    &FaithfulWordApi.RepoInstrumenter.handle_event/4,
-    nil
-  )
-
-  FaithfulWordApi.Metrics.setup()
-
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
