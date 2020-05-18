@@ -10,7 +10,8 @@ defmodule FaithfulWordApi.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      FaithfulWordApi.Endpoint
+      FaithfulWordApi.Endpoint,
+      FaithfulWordApi.Telemetry
       # Starts a worker by calling: FaithfulWordApi.Worker.start_link(arg)
       # {FaithfulWordApi.Worker, arg},
     ]

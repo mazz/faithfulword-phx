@@ -25,13 +25,13 @@ defmodule FaithfulWordApi.Router do
 
   scope "/" do
     pipe_through [:browser, :admins_only]
-    live_dashboard "/dashboard"
+    live_dashboard "/dashboard", metrics: FaithfulWordApi.Telemetry
   end
 
   if Mix.env() == :dev do
     scope "/" do
       pipe_through :browser
-      live_dashboard "/dashboard"
+      live_dashboard "/dashboard", metrics: FaithfulWordApi.Telemetry
     end
   end
 

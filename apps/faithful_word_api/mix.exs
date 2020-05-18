@@ -25,7 +25,7 @@ defmodule FaithfulWordApi.MixProject do
   def application do
     [
       mod: {FaithfulWordApi.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -59,6 +59,8 @@ defmodule FaithfulWordApi.MixProject do
       {:argon2_elixir, "~> 2.0"},
       {:corsica, "~> 1.1"},
       {:phoenix_live_dashboard, "~> 0.2"},
+      {:telemetry_poller, "~> 0.4"},
+      {:telemetry_metrics, "~> 0.4"},
       # {:prometheus, "~> 4.4.1"},
       # {:prometheus_ex, "~> 3.0.5"},
       # {:prometheus_ecto, "~> 1.4.3"},
