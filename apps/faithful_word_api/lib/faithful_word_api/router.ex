@@ -2,6 +2,7 @@ defmodule FaithfulWordApi.Router do
   use FaithfulWordApi, :router
   alias FaithfulWord.Authenticator.GuardianImpl
   import Phoenix.LiveDashboard.Router
+  import Plug.BasicAuth
 
   # ---- Pipelines ----
   pipeline :browser do
@@ -16,6 +17,15 @@ defmodule FaithfulWordApi.Router do
 
   pipeline :authentication_required do
     plug Guardian.Plug.EnsureAuthenticated
+  end
+
+  pipeline :admins_only do
+    plug :basic_auth, username: "admin", password: "admin"
+  end
+
+  scope "/" do
+    pipe_through [:browser, :admins_only]
+    live_dashboard "/dashboard"
   end
 
   if Mix.env() == :dev do
