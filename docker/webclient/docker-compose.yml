@@ -1,12 +1,12 @@
 version: '3.7'
 services:
-  pushsocket:
-    container_name: pushsocket
+  webclient:
+    container_name: webclient
     restart: unless-stopped
     # build: .
-    image: faithfulaudiodev/faithfulword-ws:latest
+    image: faithfulaudiodev/faithfulword-webclient:latest
     ports:
-      - '4004:4004'
+      - '8080:8080'
     env_file:
       - .env
     # depends_on:
@@ -15,19 +15,17 @@ services:
       - proxy-network
     labels:
       - "traefik.enable=true"
-      - "traefik.port=4004"
-      - "traefik.http.routers.pushsocket.entrypoints=http"
-      - "traefik.tcp.routers.pushsocket.entrypoints=ws" # Connect stream to traefik using WS/WSS
-      - "traefik.tcp.services.pushsocket.loadbalancer.server.port=4004" # Set the port for WS/WSS on the backend
-      - "traefik.http.routers.pushsocket.rule=Host(`pushsocket.${PUSHSOCKET_DOMAIN?Variable PUSHSOCKET_DOMAIN not set}`)"
-      - "traefik.http.middlewares.pushsocket-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.pushsocket.middlewares=pushsocket-https-redirect"
-      - "traefik.http.routers.pushsocket-secure.entrypoints=https"
-      - "traefik.http.routers.pushsocket-secure.rule=Host(`pushsocket.${PUSHSOCKET_DOMAIN?Variable PUSHSOCKET_DOMAIN not set}`)"
-      - "traefik.http.routers.pushsocket-secure.tls=true"
-      - "traefik.http.routers.pushsocket-secure.tls.certresolver=http"
-      - "traefik.http.routers.pushsocket-secure.service=pushsocket"
-      - "traefik.http.services.pushsocket.loadbalancer.server.port=4004"
+      - "traefik.port=8080"
+      - "traefik.http.routers.webclient.entrypoints=http"
+      - "traefik.http.routers.webclient.rule=Host(`webclient.japheth.ca`)"
+      - "traefik.http.middlewares.webclient-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.webclient.middlewares=webclient-https-redirect"
+      - "traefik.http.routers.webclient-secure.entrypoints=https"
+      - "traefik.http.routers.webclient-secure.rule=Host(`webclient.japheth.ca`)"
+      - "traefik.http.routers.webclient-secure.tls=true"
+      - "traefik.http.routers.webclient-secure.tls.certresolver=http"
+      - "traefik.http.routers.webclient-secure.service=webclient"
+      - "traefik.http.services.webclient.loadbalancer.server.port=8080"
       - "traefik.docker.network=proxy-network"
 
       # - "traefik.enable=true"
