@@ -137,56 +137,58 @@ services:
   #       --storage.tsdb.path=/prometheus
   #       --web.console.libraries=/usr/share/prometheus/console_libraries
   #       --web.console.templates=/usr/share/prometheus/consoles
-  grafana:
-    image: grafana/grafana:6.3.3
-    ports:
-      - '3000:3000'
-    restart: unless-stopped
-    depends_on:
-      - prometheus
-      # - proxy
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - ./docker/grafana/:/etc/grafana/provisioning/
-      - /var/run/docker.sock:/var/run/docker.sock
-      # - proxy-certificates-storage:/certificates
-    env_file:
-      - ./docker/grafana/.env
-    networks:
-      - proxy-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=3000"
-      - "traefik.http.routers.grafana.entrypoints=http"
-      - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
-      - "traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.grafana.middlewares=grafana-https-redirect"
-      - "traefik.http.routers.grafana-secure.entrypoints=https"
-      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
-      - "traefik.http.routers.grafana-secure.tls=true"
-      - "traefik.http.routers.grafana-secure.tls.certresolver=http"
-      - "traefik.http.routers.grafana-secure.service=grafana"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-      - "traefik.docker.network=proxy-network"
-  postgres_exporter:
-    image: wrouesnel/postgres_exporter:v0.5.1
-    ports:
-      - '9187:9187'
-    depends_on:
-      - postgres
-      # - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.port=9187"
-      - "traefik.https.routers.postgres_exporter.entrypoints=https"
-      - "traefik.http.services.postgres_exporter.loadbalancer.server.port=9187"
-    environment:
-      DATA_SOURCE_USER: ${FW_DATABASE_USERNAME?Variable FW_DATABASE_USERNAME not set}
-      DATA_SOURCE_PASS: ${FW_DATABASE_PASSWORD?Variable FW_DATABASE_PASSWORD not set}
-      DATA_SOURCE_URI: ${FW_DATABASE_HOSTNAME?Variable FW_DATABASE_HOSTNAME not set}:5432/?sslmode=disable
-    networks:
-      - db-network
-      - proxy-network
+
+  # grafana:
+  #   image: grafana/grafana:6.3.3
+  #   ports:
+  #     - '3000:3000'
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - prometheus
+  #     # - proxy
+  #   volumes:
+  #     - grafana-data:/var/lib/grafana
+  #     - ./docker/grafana/:/etc/grafana/provisioning/
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     # - proxy-certificates-storage:/certificates
+  #   env_file:
+  #     - ./docker/grafana/.env
+  #   networks:
+  #     - proxy-network
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=3000"
+  #     - "traefik.http.routers.grafana.entrypoints=http"
+  #     - "traefik.http.routers.grafana.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme=https"
+  #     - "traefik.http.routers.grafana.middlewares=grafana-https-redirect"
+  #     - "traefik.http.routers.grafana-secure.entrypoints=https"
+  #     - "traefik.http.routers.grafana-secure.rule=Host(`grafana.${DOMAIN?Variable DOMAIN not set}`)"
+  #     - "traefik.http.routers.grafana-secure.tls=true"
+  #     - "traefik.http.routers.grafana-secure.tls.certresolver=http"
+  #     - "traefik.http.routers.grafana-secure.service=grafana"
+  #     - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+  #     - "traefik.docker.network=proxy-network"
+      
+  # postgres_exporter:
+  #   image: wrouesnel/postgres_exporter:v0.5.1
+  #   ports:
+  #     - '9187:9187'
+  #   depends_on:
+  #     - postgres
+  #     # - proxy
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.port=9187"
+  #     - "traefik.https.routers.postgres_exporter.entrypoints=https"
+  #     - "traefik.http.services.postgres_exporter.loadbalancer.server.port=9187"
+  #   environment:
+  #     DATA_SOURCE_USER: ${FW_DATABASE_USERNAME?Variable FW_DATABASE_USERNAME not set}
+  #     DATA_SOURCE_PASS: ${FW_DATABASE_PASSWORD?Variable FW_DATABASE_PASSWORD not set}
+  #     DATA_SOURCE_URI: ${FW_DATABASE_HOSTNAME?Variable FW_DATABASE_HOSTNAME not set}:5432/?sslmode=disable
+  #   networks:
+  #     - db-network
+  #     - proxy-network
 networks:
   db-network:
   proxy-network:
