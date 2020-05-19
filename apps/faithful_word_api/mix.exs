@@ -25,7 +25,7 @@ defmodule FaithfulWordApi.MixProject do
   def application do
     [
       mod: {FaithfulWordApi.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -45,8 +45,8 @@ defmodule FaithfulWordApi.MixProject do
       # {:google_api_you_tube, "~> 0.2.0"},
       {:kaur, "~> 1.1"},
       {:oauth2, "~> 2.0"},
-      {:phoenix, "~> 1.4"},
-      {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix, "~> 1.5"},
+      {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:phoenix_html, "~> 2.13"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -58,12 +58,15 @@ defmodule FaithfulWordApi.MixProject do
       {:bcrypt_elixir, "~> 2.0"},
       {:argon2_elixir, "~> 2.0"},
       {:corsica, "~> 1.1"},
-      {:prometheus, "~> 4.4.1"},
-      {:prometheus_ex, "~> 3.0.5"},
-      {:prometheus_ecto, "~> 1.4.3"},
-      {:prometheus_phoenix, "~> 1.3.0"},
-      {:prometheus_plugs, "~> 1.1.5"},
-      {:prometheus_process_collector, "~> 1.4.3"},
+      {:phoenix_live_dashboard, "~> 0.2"},
+      {:telemetry_poller, "~> 0.4"},
+      {:telemetry_metrics, "~> 0.4"},
+      # {:prometheus, "~> 4.4.1"},
+      # {:prometheus_ex, "~> 3.0.5"},
+      # {:prometheus_ecto, "~> 1.4.3"},
+      # {:prometheus_phoenix, "~> 1.3.0"},
+      # {:prometheus_plugs, "~> 1.1.5"},
+      # {:prometheus_process_collector, "~> 1.4.3"},
       # ---- Internal ----
       {:faithful_word, in_umbrella: true},
       {:db, in_umbrella: true}

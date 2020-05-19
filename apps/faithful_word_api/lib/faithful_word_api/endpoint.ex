@@ -5,6 +5,8 @@ defmodule FaithfulWordApi.Endpoint do
     websocket: true,
     longpoll: false
 
+  socket "/live", Phoenix.LiveView.Socket
+
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phx.digest
@@ -22,6 +24,10 @@ defmodule FaithfulWordApi.Endpoint do
     plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
   end
+
+  plug Phoenix.LiveDashboard.RequestLogger,
+    param_key: "request_logger",
+    cookie_key: "request_logger"
 
   plug Plug.RequestId
   plug Plug.Logger
@@ -50,10 +56,6 @@ defmodule FaithfulWordApi.Endpoint do
     # max_age: 24*60*60*37,       # 37 days
     key: "_faithful_word_api_key",
     signing_salt: "kTTPuGj0"
-
-  # Creates the /metrics endpoint for prometheus & collect stats
-  plug FaithfulWordApi.PrometheusExporter
-  plug FaithfulWordApi.PipelineInstrumenter
 
   plug FaithfulWordApi.Router
 end

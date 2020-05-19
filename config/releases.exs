@@ -23,6 +23,8 @@ config :faithful_word, FaithfulWord.Mailer,
 config :faithful_word_api, FaithfulWordApi.Endpoint,
   http: [port: port],
   url: [host: System.fetch_env!("FW_HOSTNAME"), port: port],
+  #check_origin: ["//localhost", "//#{System.get_env("FW_HOSTNAME")}"],
+  check_origin: ["//#{System.get_env("FW_HOSTNAME")}"],
   secret_key_base: System.fetch_env!("FW_SECRET_KEY_BASE")
 
 config :faithful_word_api, FaithfulWordApi.Guardian,
